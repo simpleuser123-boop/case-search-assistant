@@ -47,3 +47,7 @@ apps/api/C*/
 docs/development/*-final-verification-*.md
 docs/development/*-parameter-version-*.json
 docs/development/*-release-gate-*.json
+
+# --- public repository cleanup ---
+# Keep local planning/report docs out of the public code-only repository.
+*.md
