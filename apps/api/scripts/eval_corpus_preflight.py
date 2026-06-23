@@ -27,7 +27,7 @@ from app.eval.bm25_baseline import iter_corpus_docs, read_jsonl
 
 DEFAULT_LECARD_QUERIES = PROJECT_ROOT / "data/eval/lecardv2_queries.jsonl"
 DEFAULT_LECARD_QRELS = PROJECT_ROOT / "data/eval/lecardv2_qrels.jsonl"
-DEFAULT_LECARD_CORPUS = Path(r"C:\Users\yyl\Downloads\LeCaRDv2-main\candidate")
+DEFAULT_LECARD_CORPUS = PROJECT_ROOT / "data/external/LeCaRDv2-main/candidate"
 DEFAULT_PRODUCT_QUERIES = PROJECT_ROOT / "data/eval/product_eval_queries.jsonl"
 DEFAULT_PRODUCT_QRELS = PROJECT_ROOT / "data/eval/product_eval_qrels.jsonl"
 DEFAULT_PRODUCT_CASES = PROJECT_ROOT / "data/processed/cases.jsonl"

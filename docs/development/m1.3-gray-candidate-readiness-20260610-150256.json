@@ -159,8 +159,8 @@
   },
   "product_eval_result": {
     "command": "python -m app.eval.product_eval --comparison-mode product_chain --out <temp>/product-eval-product-chain.json --bad-cases-out <temp>/product-bad-cases-product-chain.json",
-    "evidence_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/product-eval-product-chain.json",
-    "bad_cases_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/product-bad-cases-product-chain.json",
+    "evidence_path": "[temp-artifact-dir]/case-search-m13-gray-20260610-144843/product-eval-product-chain.json",
+    "bad_cases_path": "[temp-artifact-dir]/case-search-m13-gray-20260610-144843/product-bad-cases-product-chain.json",
     "run_id": "product_eval_20260610_144907",
     "baseline": {
       "precision_at_5": 0.032,
@@ -190,8 +190,8 @@
   },
   "fixed_regression_result": {
     "command": "python scripts/m1_2_regression.py --comparison-mode product_chain --out <temp>/fixed-regression-product-chain.json --parameter-version-out <temp>/fixed-regression-parameter-version.json",
-    "evidence_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/fixed-regression-product-chain.json",
-    "parameter_version_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/fixed-regression-parameter-version.json",
+    "evidence_path": "[temp-artifact-dir]/case-search-m13-gray-20260610-144843/fixed-regression-product-chain.json",
+    "parameter_version_path": "[temp-artifact-dir]/case-search-m13-gray-20260610-144843/fixed-regression-parameter-version.json",
     "run_id": "m1_2_regression_20260610_144952",
     "overall_metrics": {
       "baseline": {
@@ -243,7 +243,7 @@
   },
   "performance_smoke_result": {
     "command": "python scripts/day3_7_3_performance_smoke.py --out <temp>/performance-smoke.json",
-    "evidence_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/performance-smoke.json",
+    "evidence_path": "[temp-artifact-dir]/case-search-m13-gray-20260610-144843/performance-smoke.json",
     "status_counts": {
       "200": 5
     },
@@ -260,7 +260,7 @@
   },
   "rollback_drill_result": {
     "command": "python scripts/day3_7_5_rollback_drill.py --out <temp>/rollback-drill.json",
-    "evidence_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/rollback-drill.json",
+    "evidence_path": "[temp-artifact-dir]/case-search-m13-gray-20260610-144843/rollback-drill.json",
     "status": "passed",
     "recovery_within_60_seconds": true,
     "max_rollback_elapsed_ms": 16,

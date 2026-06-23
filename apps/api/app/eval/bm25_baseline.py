@@ -17,6 +17,8 @@ from pathlib import Path
 
 RE_LATIN = re.compile(r"[a-zA-Z0-9]+")
 RE_CJK = re.compile(r"[\u4e00-\u9fff]")
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
+DEFAULT_LECARD_CORPUS = PROJECT_ROOT / "data/external/LeCaRDv2-main/candidate"
 
 
 def read_jsonl(path: Path) -> list[dict]:
@@ -307,7 +309,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--queries", default="data/eval/lecardv2_queries.jsonl")
     ap.add_argument("--qrels", default="data/eval/lecardv2_qrels.jsonl")
-    ap.add_argument("--corpus", default=r"C:\Users\yyl\Downloads\LeCaRDv2-main\candidate")
+    ap.add_argument("--corpus", default=str(DEFAULT_LECARD_CORPUS))
     ap.add_argument("--out", default="data/eval/bm25_baseline_report.json")
     ap.add_argument("--limit-queries", type=int, default=0)
     ap.add_argument("--top-k", type=int, default=100)

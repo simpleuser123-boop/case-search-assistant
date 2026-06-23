@@ -1,7 +1,7 @@
 # E7-4 CaseFolder 共享与协作权限 - Host 复核收口
 
 - 复核时间：`20260623-101905`
-- 环境：host `C:\Users\yyl\Desktop\类案检索助手\.venv311\Scripts\python.exe`（Python 3.11.9）, Windows PowerShell
+- 环境：host `python`（Python 3.11.9）, Windows PowerShell
 - 结论：**GO（E7-4 host 复核已收口）**
 - 关联 gate：`docs/development/e7-casebook-sharing-20260622-131903.json` / `docs/development/e7-casebook-sharing-20260622-131903.md`
 

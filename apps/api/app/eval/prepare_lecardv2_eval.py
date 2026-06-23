@@ -21,7 +21,8 @@ from pathlib import Path
 from app.query_processing.term_mapping import DEFAULT_TERM_MAPPINGS, TERM_MAPPING_VERSION
 
 
-DEFAULT_LECARD_ROOT = Path(r"C:\Users\yyl\Downloads\LeCaRDv2-main")
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
+DEFAULT_LECARD_ROOT = PROJECT_ROOT / "data/external/LeCaRDv2-main"
 VERSION = "lecardv2_day0_v1"
 TERM_MAPPINGS = DEFAULT_TERM_MAPPINGS
 

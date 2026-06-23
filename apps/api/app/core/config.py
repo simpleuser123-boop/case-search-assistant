@@ -14,6 +14,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[4]
 ENV_FILE = PROJECT_ROOT / ".env"
 
 
+def _default_chroma_persist_dir() -> str:
+    return (PROJECT_ROOT / "data" / "chroma").as_posix()
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=str(ENV_FILE),
@@ -101,8 +105,9 @@ class Settings(BaseSettings):
     EMBEDDING_CACHE_MAX_ENTRIES: int = 256
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     CHROMA_COLLECTION: str = "case_chunks_bge_m3_v1"
-    # Windows 本机使用 ASCII 路径，避免 Chroma/HNSW 在中文项目路径下持久化异常。
-    CHROMA_PERSIST_DIR: str = "C:/Users/yyl/Desktop/case_search_chroma_bge_m3"
+    # Public default stays repo-relative. On Windows checkouts under non-ASCII paths,
+    # set CHROMA_PERSIST_DIR explicitly to an ASCII directory if Chroma/HNSW misbehaves.
+    CHROMA_PERSIST_DIR: str = _default_chroma_persist_dir()
     CHROMA_QUERY_TIMEOUT_SECONDS: int = 3
 
     # --- 基础设施 ---

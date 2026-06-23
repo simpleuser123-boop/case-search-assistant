@@ -44,3 +44,6 @@ data/logs/
 *.db
 *.db-*
 apps/api/C*/
+docs/development/*-final-verification-*.md
+docs/development/*-parameter-version-*.json
+docs/development/*-release-gate-*.json

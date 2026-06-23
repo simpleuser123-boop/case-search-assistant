@@ -48,6 +48,7 @@ from app.retrieval import (
 REPORT_VERSION = "day3_7_2_rerank_eval_v1"
 LECARDV2_BM25_POOL_SOURCE = "lecardv2_bm25_candidate_pool"
 RELEVANCE_THRESHOLD = 2
+DEFAULT_LECARD_CORPUS = PROJECT_ROOT / "data/external/LeCaRDv2-main/candidate"
 
 BAD_CASE_REASON_LABELS = [
     "RECALL_MISS",
@@ -801,7 +802,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--queries", default="data/eval/lecardv2_queries.jsonl")
     parser.add_argument("--qrels", default="data/eval/lecardv2_qrels.jsonl")
-    parser.add_argument("--corpus", default=r"C:\Users\yyl\Downloads\LeCaRDv2-main\candidate")
+    parser.add_argument("--corpus", default=str(DEFAULT_LECARD_CORPUS))
     parser.add_argument("--baseline-report", default="data/eval/bm25_baseline_report.json")
     parser.add_argument("--out", default=f"data/eval/day3_rerank_eval_{today}.json")
     parser.add_argument("--rerun-baseline", action="store_true")
