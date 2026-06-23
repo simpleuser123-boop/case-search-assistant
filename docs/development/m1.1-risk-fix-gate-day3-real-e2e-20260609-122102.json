@@ -1,0 +1,15 @@
+{
+  "command": "npm run smoke:day3:7.1",
+  "cwd": "C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\web",
+  "exit_code": 0,
+  "duration_ms": 18446,
+  "timed_out": false,
+  "stdout_line_count": 38,
+  "stderr_line_count": 0,
+  "stdout_sha256": "0fe548f72e00a5e0735146ad11d2bfe75d116a5afd463e8ad951b24b6f031fe5",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 873,
+  "stderr_bytes": 0,
+  "output_policy": "stdout/stderr are hashed only to avoid writing raw query or case facts.",
+  "dry_run_summary": null
+}

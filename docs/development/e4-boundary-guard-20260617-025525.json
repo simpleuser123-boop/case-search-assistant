@@ -1,0 +1,123 @@
+{
+  "step": "E4-5",
+  "title": "消费边界与护栏守门",
+  "timestamp": "20260617-025525",
+  "baseline": "e4-intake-frontend-20260617-020738 (E4-4 GO)",
+  "verdict": "GO",
+  "allow_enter_e4_6": true,
+  "changes_runtime_behavior": false,
+  "summary": "把 E4 架构纪律与隐私红线固化为可执行守门测试；新增 tests/test_e4_intake_boundaries.py（44 用例），并向 tests/test_e2a_kernel_boundary.py 追加 3 条 E4 跨包 import 静态规则（append-only，未放宽任何 E-2/E-3 既有规则）。无业务功能改动、无端点注册、无排序/召回/summary 变更。",
+  "files_added": [
+    "apps/api/tests/test_e4_intake_boundaries.py",
+    "docs/development/e4-boundary-guard-20260617-025525.md",
+    "docs/development/e4-boundary-guard-20260617-025525.json"
+  ],
+  "files_modified": [
+    "apps/api/tests/test_e2a_kernel_boundary.py (append-only +3 E4 规则)",
+    "落地设计文档/19-E4案情录入端分步骤系统提示词文档.md (E4-5 落地结论补记)"
+  ],
+  "guard_coverage": {
+    "1_intake_public_face_and_gated": {
+      "status": "PASS",
+      "tests": [
+        "test_intake_public_face_present",
+        "test_enable_intake_defaults_false",
+        "test_intake_endpoint_gated_disabled_returns_403",
+        "test_intake_route_prefix_is_api_intake"
+      ],
+      "note": "ENABLE_INTAKE 默认 false；端点 403 降级，不回显 query_text、无 candidate_refs。"
+    },
+    "2_product_packages_no_cross_import": {
+      "status": "PASS",
+      "tests": [
+        "test_intake_does_not_import_other_product_packages",
+        "test_intake_not_imported_by_other_product_packages",
+        "test_e4_intake_does_not_import_other_product_packages (e2a)"
+      ]
+    },
+    "3_no_deep_retrieval_import_via_kernel_surface": {
+      "status": "PASS",
+      "tests": [
+        "test_intake_does_not_deep_import_retrieval_layer",
+        "test_intake_consumes_only_kernel_top_surface",
+        "test_intake_service_references_internal_search_service",
+        "test_e4_intake_consumes_only_kernel_public_surface (e2a)",
+        "test_e4_intake_does_not_reference_ai_extraction_flag_in_imports (e2a)"
+      ]
+    },
+    "4_only_intake_product_package_exists": {
+      "status": "PASS",
+      "tests": ["test_only_intake_product_package_exists"],
+      "evidence": "intake EXISTS; statute/drafting/casebook absent"
+    },
+    "5_request_schema_whitelist_extra_forbid": {
+      "status": "PASS",
+      "tests": [
+        "test_intake_request_schema_whitelist_and_extra_forbid",
+        "test_intake_request_rejects_body_and_pii_keys_at_model_layer",
+        "test_intake_request_accepts_pure_whitelist_payload"
+      ],
+      "note": "请求体严格 = SearchProfile 五字段 + mode/limit；extra=forbid；raw_case/raw_query/PII/正文型键模型层即拒。"
+    },
+    "6_candidate_ref_whitelist_anchors_zero_body": {
+      "status": "PASS",
+      "tests": [
+        "test_intake_candidate_ref_view_is_e1_seven_fields",
+        "test_intake_candidate_ref_view_requires_source_anchors",
+        "test_intake_candidate_ref_view_forbids_body_keys",
+        "test_intake_source_anchor_view_is_metadata_only",
+        "test_intake_candidate_ref_view_dump_only_whitelist_keys"
+      ]
+    },
+    "7_raw_case_zero_upload_no_persistence": {
+      "status": "PASS",
+      "tests": [
+        "test_intake_executable_code_has_no_body_or_pii_data_tokens",
+        "test_intake_does_not_persist_anything",
+        "test_intake_modules_do_not_import_persistence_layer"
+      ],
+      "note": "可执行代码（剔除 docstring/注释）无正文/PII 型数据键；无持久层 import、无落库迹象。"
+    },
+    "8_ai_extraction_flag_off_no_on_path": {
+      "status": "PASS",
+      "tests": [
+        "test_ai_extraction_flag_defaults_false",
+        "test_ai_extraction_flag_declared_false_in_config",
+        "test_intake_executable_code_does_not_reference_ai_extraction_flag",
+        "test_intake_has_no_server_side_ai_or_raw_text_intake_path"
+      ]
+    },
+    "9_include_router_13_no_out_of_bound_endpoint": {
+      "status": "PASS",
+      "tests": [
+        "test_include_router_count_is_13",
+        "test_no_out_of_bound_endpoints_registered",
+        "test_intake_registers_only_search_endpoint"
+      ],
+      "evidence": "include_router=13; intake router 仅 1 个端点 POST /api/intake/search；无 /api/internal、/api/ecosystem、其它产品端点。"
+    },
+    "10_fixtures_docs_no_real_body_or_pii": {
+      "status": "PASS",
+      "tests": [
+        "test_e4_test_fixtures_have_no_long_body_text",
+        "test_e4_docs_have_no_long_body_text"
+      ],
+      "note": "e4-* 测试 fixture 与 docs 最长连续中文 ≤20，阈值 40（E3 同口径）。"
+    }
+  },
+  "test_results": {
+    "cmd1_e4_suite": "tests/test_e4_intake_boundaries.py + test_e4_intake_api.py + test_e4_intake_sanitize.py = 90 passed",
+    "cmd2_e1_e2_e3_regression": "test_e1_contracts + test_e2a_kernel_boundary + test_e2b_shim_equivalence + test_e3_internal_search_contracts + test_e3_internal_search_service + test_e3_search_api_parity + test_e3_internal_search_boundaries = 172 passed (host .venv311 权威口径)",
+    "e4_1_contracts": "tests/test_e4_intake_contracts.py = 36 passed",
+    "new_boundary_file": "tests/test_e4_intake_boundaries.py = 44 passed",
+    "e2a_after_append": "tests/test_e2a_kernel_boundary.py = 13 passed (was 10, +3 new E4 rules)"
+  },
+  "count_correction_note": "本文件初稿写 CMD2=169 / E2a=10→7 实为 VM bash 读到 stale mount(只见 10 个 test 函数, 缺我追加的 3 个 E4 函数, 文件 278 行)。host 磁盘文件实含 13 个函数(356 行), Edit/codex 均作用于 host 磁盘。codex E4-6(e4-final-verification-20260617-112542.md §3.2)以 host .venv311 实跑为准: E2a=13, CMD2=172, E4全套=126。本处已校正为权威口径。教训: VM bash 的 pytest 计数在 host→VM mount stale 时不可信, 须以 host .venv311 复跑为准。",
+  "e2_e3_rules_loosened": false,
+  "env_note": "VM 缺后端依赖；本步在 VM 内 pip install --break-system-packages 安装 fastapi==0.111.0/pydantic==2.7.1/pydantic-settings==2.2.1/sqlmodel==0.0.18/SQLAlchemy==2.0.30/httpx==0.27.0/pytest==8.2.0 后用 Python 3.10.12 实跑全绿。建议 E4-6 在 host .venv311(Py3.11.9) 复跑以与 E3-5 权威口径一致。",
+  "flag_defaults": {
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false
+  },
+  "next_step_title": "类案检索助手 E4-6 验收与下一步门禁"
+}

@@ -1,0 +1,174 @@
+{
+  "artifact": "e3-entry-check",
+  "milestone": "E 系列多产品生态全链路闭环（E-3 检索内部服务接口）",
+  "step": "E3-0",
+  "step_title": "入场复核与阻塞清零",
+  "generated_at": "2026-06-15T15:33:49",
+  "nature": "纯复核步：只验证 E-3 是否具备入场条件，不实现 E3 服务契约、不改搜索链路、不新增测试、不修复前端业务文件。",
+  "baseline": "docs/development/e2b-release-gate-20260615-113552.json（E-2 末态，即 E-3 比对基线）",
+  "based_on": {
+    "design_doc_16": "落地设计文档/16-多产品生态全链路闭环设计文档.md（§3.3 检索助手作为内部服务、§4 契约对象、§5 红线、§6 步骤表）",
+    "design_doc_17": "落地设计文档/17-E系列分步骤文档.md（全文）",
+    "e2b_kernel_migration": "docs/development/e2b-kernel-migration-20260615-113552.md",
+    "e2b_release_gate": "docs/development/e2b-release-gate-20260615-113552.json",
+    "e2b_parameter_version": "docs/development/e2b-parameter-version-20260615-113552.json",
+    "e1_release_gate": "docs/development/e1-release-gate-20260615-075029.json"
+  },
+  "brief_vs_reality_note": {
+    "brief_claimed": "任务简报称 E-2b gate 为 CONDITIONAL_GO，E3 前置阻塞为『用户恢复 10 个被截断前端文件并复跑 build 确认 118 modules』。",
+    "actual_gate_state": "实读 e2b-release-gate-20260615-113552.json：overall=GO，frontend build parity 已标记为 GO（118 modules / tsc 0 error / 35 test files passed），next_step.precondition=『无前置阻塞』。",
+    "resolution": "本步不轻信任一方说法，独立在 VM 现盘上复核：前端文件完整性 + 实跑 build + 后端核心回归，以现盘事实为准。结论见下。"
+  },
+  "checks": {
+    "1_e2b_backend_go_and_sole_blocker_was_frontend_parity": {
+      "e2b_overall": "GO",
+      "backend_kernel_migration_conclusions_all_go": true,
+      "e2b_conclusions": {
+        "basic_search_continues_available_backend": "GO",
+        "kernel_physically_migrated_history_env_limited": "GO",
+        "old_path_shims_identity_preserving_no_fork": "GO",
+        "e2b_backend_zero_behavior_change_vs_e2a": "GO",
+        "frontend_build_parity_vs_e2a": "GO (118 modules, tsc 0 error, 35 test files all passed)"
+      },
+      "verdict": "E-2b 后端共享内核迁移为 GO；gate 自身未把前端 parity 留为开放阻塞（已记为 GO）。本步对前端做了独立复跑以二次确认。"
+    },
+    "2_ten_truncated_frontend_files_status": {
+      "instruction": "检查 E-2b 记录的（14 个）前端文件是否仍为截断状态，不重写。",
+      "files_checked": 15,
+      "all_intact": true,
+      "method": "逐文件检查行数/字节数 + tail 收尾语法（是否以完整 } / ); 结尾，非半句截断）。",
+      "files": [
+        {"path": "src/vite-env.d.ts", "lines": 29, "bytes": 1414, "tail_ok": true},
+        {"path": "src/config/featureFlags.ts", "lines": 135, "bytes": 8212, "tail_ok": true},
+        {"path": "src/components/bulkImport/BulkImportPanel.tsx", "lines": 198, "bytes": 8064, "tail_ok": true},
+        {"path": "src/components/bulkImport/BulkImportPanel.test.tsx", "lines": 100, "bytes": 3728, "tail_ok": true},
+        {"path": "src/components/permission/PermissionPanel.tsx", "lines": 195, "bytes": 7047, "tail_ok": true},
+        {"path": "src/components/permission/PermissionPanel.test.tsx", "lines": 75, "bytes": 2861, "tail_ok": true},
+        {"path": "src/components/sharing/SharingPanel.tsx", "lines": 159, "bytes": 6023, "tail_ok": true},
+        {"path": "src/components/sharing/SharingPanel.test.tsx", "lines": 69, "bytes": 2568, "tail_ok": true},
+        {"path": "src/components/team/TeamWorkspacePanel.tsx", "lines": 152, "bytes": 5605, "tail_ok": true},
+        {"path": "src/components/team/TeamWorkspacePanel.test.tsx", "lines": 70, "bytes": 2688, "tail_ok": true},
+        {"path": "src/pages/HomePage.tsx", "lines": 48, "bytes": 1864, "tail_ok": true},
+        {"path": "src/pages/HomePage.test.tsx", "lines": 221, "bytes": 7839, "tail_ok": true},
+        {"path": "src/pages/SearchPage.test.tsx", "lines": 1692, "bytes": 59145, "tail_ok": true},
+        {"path": "src/services/billingApi.ts", "lines": 244, "bytes": 7561, "tail_ok": true},
+        {"path": "src/services/tendencyApi.ts", "lines": 142, "bytes": 4651, "tail_ok": true}
+      ],
+      "verdict": "全部完整，无半句截断。E-2b 记录的 mount flush 截断阻塞在现盘已清零（未重写任何文件）。"
+    },
+    "3_frontend_build": {
+      "command_primary": "npm run build  (tsc -b && vite build)",
+      "tsc_exit": 0,
+      "modules_transformed": 118,
+      "modules_match_e2b_118": true,
+      "primary_build_outcome": "tsc 0 error 且 vite『✓ 118 modules transformed』；随后在 emptyDir 阶段报 EPERM unlink dist/assets/*.css（挂载盘拒删既有 dist），属环境写权限限制、非编译/代码失败。",
+      "secondary_build_to_fresh_outdir": {
+        "command": "npx vite build --outDir /sessions/.../outputs/e3-web-build --emptyOutDir",
+        "outcome": "✓ 118 modules transformed → rendering chunks → 成功写出产物",
+        "artifacts": {
+          "index.html": "0.39 kB",
+          "assets/index-BQFKuWrM.css": "21.92 kB",
+          "assets/index-C2UWiuii.js": "416.20 kB"
+        },
+        "hash_identical_to_prior_e2b_dist": true,
+        "note": "资源 hash（index-BQFKuWrM.css / index-C2UWiuii.js）与 E-2b 既有 dist 逐字节一致，证明可复现且 118 modules parity 成立。"
+      },
+      "verdict": "前端 build 已恢复 118 modules（tsc 0 error）；唯一一次失败是挂载盘拒删既有 dist 的 EPERM 环境限制，改写到新 out-dir 即完整成功。build parity = 通过。"
+    },
+    "4_backend_e2b_core_regression": {
+      "command": "DATABASE_URL=sqlite:///./e3_tmp.db python3 -B -m pytest tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e2b_shim_equivalence.py",
+      "total_passed": 80,
+      "total_failed": 0,
+      "exit_code": 0,
+      "per_file": {
+        "test_e1_contracts.py": 24,
+        "test_e2a_kernel_boundary.py": 7,
+        "test_e2b_shim_equivalence.py": 49
+      },
+      "matches_e2b_gate_record": true,
+      "matches_note": "24+7+49=80，与 e2b-release-gate 记录的 E-1 契约 24 + 边界守门 7 + shim 等价 49 逐位一致。",
+      "env_setup": "VM 内 .venv311/.venv 均为 Windows 格式不可用；system Python3.10 重装 requirements.txt 全量依赖（含 chromadb 0.5.0），并将 numpy 降级至 1.26.4 以兼容 chromadb（np.float_ 在 numpy 2.0 被移除）。仅为复核装依赖，未改任何源码。",
+      "verdict": "E-2b 后端核心回归全绿，无新增失败，与 E-2b 末态一致。"
+    },
+    "5_no_product_packages": {
+      "checked": ["app/intake", "app/statute", "app/drafting", "app/casebook"],
+      "all_absent": true,
+      "app_top_level_dirs": ["account", "api", "billing", "bulk_import", "case_store", "contracts", "core", "eval", "kernel", "permission", "pipeline", "query_processing", "rerank", "retrieval", "sharing", "summary", "team", "tendency_analysis", "tendency_gate"],
+      "verdict": "四个 E-4~E-7 产品能力包均不存在，符合 E3-0 入场要求。"
+    },
+    "6_no_e3_endpoints": {
+      "internal_search_endpoint_present": false,
+      "searchprofile_candidateref_endpoint_wired": false,
+      "contracts_module_wired_to_any_endpoint": false,
+      "router_include_count": 12,
+      "routers": ["health", "search", "cases", "events", "feedback", "auth", "team", "permission", "sharing", "bulk_import", "tendency", "billing"],
+      "router_count_discrepancy_note": "E-2b 报告称『10 router 不变』，实测 main.py include_router 为 12（含 M5 的 tendency/billing，E 系列之前即存在）。此为 E-2b 自身计数口径出入，与 E3-0 无关：E3-0 仅校验有无【新增 E3 端点】，结论为无。所有 12 个路由均为 M1~M5 既有路由，无任何 internal/search 或产品端点。",
+      "verdict": "无任何 E-3 范畴的内部检索服务端点或产品端点被注册。"
+    },
+    "7_flags_default_false": {
+      "ENABLE_WEIGHTED_RERANK": false,
+      "ENABLE_QUERY_REWRITE": false,
+      "ENABLE_SUMMARY": false,
+      "ENABLE_EXPANDED_SEARCH": false,
+      "ENABLE_ACCOUNT_SYSTEM": false,
+      "ENABLE_TEAM_WORKSPACE": false,
+      "ENABLE_PERMISSION_TIERING": false,
+      "ENABLE_TEAM_SHARING": false,
+      "ENABLE_TENDENCY_ANALYSIS": false,
+      "ENABLE_BILLING": false,
+      "ENABLE_ECOSYSTEM": false,
+      "ENABLE_INTAKE": false,
+      "ENABLE_STATUTE_SEARCH": false,
+      "ENABLE_DRAFTING": false,
+      "ENABLE_CASEBOOK": false,
+      "any_flag_default_true": false,
+      "verdict": "config.py 中全部业务 flag 默认 false，ENABLE_WEIGHTED_RERANK 仍为 false；无任一 flag 默认 true。"
+    }
+  },
+  "scope_compliance": {
+    "did_not_fix_truncated_frontend_files": true,
+    "did_not_implement_e3_1_or_e3_2": true,
+    "did_not_modify_search_py": true,
+    "did_not_modify_kernel": true,
+    "did_not_modify_schemas": true,
+    "search_py_mtime": "2026-06-15T09:46 (本会话之前)",
+    "kernel_init_mtime": "2026-06-15T11:07 (本会话之前)",
+    "only_side_effects": "为跑后端回归装了 Python 依赖（system Python）；前端 build 产物写到 outputs/ 临时目录，未污染仓库 dist。"
+  },
+  "verification_commands": [
+    "前端文件完整性：逐文件 wc -l / wc -c / tail -c 40（15 个文件）",
+    "前端 build：cd apps/web && npm run build（tsc 0 error，118 modules；EPERM 仅挂载盘拒删 dist）",
+    "前端 build 二次确认：npx vite build --outDir <fresh> --emptyOutDir（118 modules，产物 hash 与 E-2b dist 一致）",
+    "后端回归：DATABASE_URL=sqlite:///./e3_tmp.db python3 -B -m pytest tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e2b_shim_equivalence.py → 80 passed exit 0",
+    "产品包：ls app/{intake,statute,drafting,casebook} → 全 absent",
+    "E3 端点：grep -rnE 'internal/search|SearchProfile|CandidateRef' app/api app/main.py → 无接线；include_router=12 全为既有",
+    "flags：grep -nE 'ENABLE_*' app/core/config.py → 全 false；grep 'bool = True' → none"
+  ],
+  "hard_gates": {
+    "e2b_backend_was_go": true,
+    "frontend_build_restored_118_modules": true,
+    "backend_e2b_core_regression_all_green": true,
+    "no_product_package": true,
+    "no_e3_internal_service_endpoint": true,
+    "no_new_endpoint_registered_beyond_existing": true,
+    "all_business_flags_default_false": true,
+    "weighted_rerank_default_false": true,
+    "did_not_touch_search_kernel_schemas": true,
+    "did_not_fix_frontend_or_start_e3_impl": true
+  },
+  "conclusions": {
+    "frontend_build_parity_blocker_cleared": "GO (118 modules, tsc 0 error, 现盘 15 文件完整)",
+    "backend_e2b_core_regression": "GO (80 passed / 0 failed)",
+    "no_scope_creep_into_e3_or_products": "GO"
+  },
+  "overall": "GO",
+  "e3_entry_decision": "GO — 允许进入 E3-1。",
+  "overall_explanation": "E-2b 唯一前置阻塞（前端 build parity / 截断文件恢复）在现盘已清零：15 个曾被报告截断的前端文件全部完整，npm run build 复跑 tsc 0 error 且 118 modules transformed（EPERM 仅为挂载盘拒删既有 dist 的环境写权限限制，改写新 out-dir 即完整成功，产物 hash 与 E-2b dist 逐字节一致）。后端 E-2b 核心回归 80 passed/0 failed（24+7+49，与 e2b gate 逐位一致）。四产品包均不存在、无任何 E3 内部服务端点、全部 flag 默认 false（含 ENABLE_WEIGHTED_RERANK）。本步未修复前端、未实现 E3、未触碰 search.py/kernel/schemas。E3 具备入场条件。",
+  "blockers": [],
+  "allow_enter_e3_1": true,
+  "next_step": {
+    "step": "E3-1",
+    "title": "类案检索助手 E3-1 内部服务契约冻结",
+    "baseline": "本 e3-entry-check 即 E3-1 入场确认；行为零变化比对基线仍为 e2b-release-gate-20260615-113552.json（E-2 末态）。"
+  }
+}

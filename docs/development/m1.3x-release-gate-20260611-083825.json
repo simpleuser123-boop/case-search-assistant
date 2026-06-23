@@ -1,0 +1,450 @@
+{
+  "version": "m1_3x_release_gate_v1",
+  "generated_at": "2026-06-11T08:40:33+08:00",
+  "scope": "M1.3x-8 final verification and M2 entry decision only",
+  "base_search_status": "GO",
+  "weighted_rerank_gray_candidate_status": "NO_GO",
+  "m2_readiness_status": "NO_GO",
+  "selected_candidate": {
+    "candidate_id": null,
+    "candidate_name": null,
+    "status": "NO_GO",
+    "exactly_one_selected_candidate": false,
+    "all_candidates_no_go": true,
+    "reason_codes": [
+      "NO_CANDIDATE_SATISFIES_ALL_HARD_GATES",
+      "RELATIVE_BEST_SELECTION_FORBIDDEN"
+    ],
+    "evidence": [
+      "docs/development/m1.3x-candidate-comparison-20260610-200044.json",
+      "docs/development/m1.3x-parameter-version-20260610-200044.json",
+      "docs/development/m1.3x-final-candidate-comparison-20260611-083825.json",
+      "docs/development/m1.3x-final-candidate-parameter-version-20260611-083825.json"
+    ]
+  },
+  "blocker_summary": {
+    "frozen_register": {
+      "artifact": "docs/development/m1.3x-blocker-register-20260610-161732.json",
+      "total_entries": 43,
+      "unique_query_count": 17,
+      "unexplained_conflict_count": 0
+    },
+    "root_cause_matrix": {
+      "artifact": "docs/development/m1.3x-metric-regression-root-cause-20260610-165416.json",
+      "covered_metric_regression_count": 7,
+      "baseline_protection_gap_count": 4,
+      "vector_bucket_tie_break_error_count": 3,
+      "sorting_layer_count": 7
+    },
+    "release_blockers_cleared": false,
+    "remaining_release_blockers": [
+      {
+        "reason_code": "PRIMARY_AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "count": 7,
+        "blocking": true
+      },
+      {
+        "reason_code": "PRIMARY_METRIC_REGRESSION_GT_0",
+        "count": 7,
+        "blocking": true
+      },
+      {
+        "reason_code": "COMPATIBILITY_BEFORE_VS_AFTER_REGRESSED_GT_0",
+        "count": 4,
+        "blocking": true
+      },
+      {
+        "reason_code": "COMPATIBILITY_AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "count": 9,
+        "blocking": true
+      },
+      {
+        "reason_code": "BASELINE_TOP10_BELOW_M2_THRESHOLD",
+        "actual": 0.48,
+        "threshold": 0.6,
+        "blocking": true
+      }
+    ]
+  },
+  "metric_summary": {
+    "artifact": "docs/development/m1.3x-final-product-eval-product-chain-20260611-083825.json",
+    "run_id": "product_eval_20260611_083911",
+    "evaluated_query_count": 25,
+    "baseline": {
+      "precision_at_5": 0.032,
+      "ndcg_at_10": 0.134,
+      "top10_hit_rate": 0.48
+    },
+    "current_offline_candidate": {
+      "precision_at_5": 0.048,
+      "ndcg_at_10": 0.171,
+      "top10_hit_rate": 0.68
+    },
+    "delta": {
+      "precision_at_5": 0.016,
+      "ndcg_at_10": 0.037,
+      "top10_hit_rate": 0.2
+    },
+    "metric_regression_count": 7,
+    "recall_miss_count": 7,
+    "gray_candidate_hard_gate_passed": false,
+    "interpretation": "Aggregate metrics are positive, but per-query metric regressions remain and override aggregate improvement."
+  },
+  "regression_summary": {
+    "primary_gate": {
+      "runner": "m1_3_candidate_comparison",
+      "artifact": "docs/development/m1.3x-final-candidate-comparison-20260611-083825.json",
+      "run_id": "m1_3_candidate_comparison_20260611_083952",
+      "selected_candidate_id": null,
+      "selected_status": "NO_GO",
+      "m1_3_combined_candidate": {
+        "before_vs_after_regressed_count": 0,
+        "after_vs_baseline_regressed_count": 7,
+        "metric_regression_count": 7,
+        "recall_miss_count": 7,
+        "top10_hit_rate": 0.68,
+        "status": "NO_GO"
+      },
+      "m1_3x_guard_v2_candidate": {
+        "before_vs_after_regressed_count": 5,
+        "after_vs_baseline_regressed_count": 3,
+        "metric_regression_count": 3,
+        "recall_miss_count": 9,
+        "top10_hit_rate": 0.64,
+        "status": "NO_GO"
+      }
+    },
+    "compatibility_gate": {
+      "runner": "m1_2_regression",
+      "artifact": "docs/development/m1.3x-final-regression-run-20260611-083825.json",
+      "run_id": "m1_2_regression_20260611_083911",
+      "before_vs_after_regressed_count": 4,
+      "after_vs_baseline_regressed_count": 9,
+      "metric_regression_count": 9,
+      "recall_miss_count": 8,
+      "current_after_top10_hit_rate": 0.64,
+      "weighted_rerank_gray_candidate": false
+    },
+    "fixed_regression_zero": false,
+    "metric_regression_zero": false
+  },
+  "recall_miss_summary": {
+    "artifact": "docs/development/m1.3x-recall-miss-closure-20260610-184500.json",
+    "before_count": 7,
+    "after_count": 7,
+    "decreased": false,
+    "all_remaining_items_explained": true,
+    "explained_not_fixed_count": 7,
+    "new_metric_regression_introduced_by_closure": false,
+    "new_fixed_regression_introduced_by_closure": false,
+    "stop_loss_applied": true,
+    "default_path_promotion_allowed": false,
+    "reason_distribution": {
+      "VECTOR_MISS": 2,
+      "BM25_MISS": 2,
+      "GATING_DROPPED": 5,
+      "UNREPAIRABLE_WITH_CURRENT_SIGNALS": 7
+    }
+  },
+  "performance_summary": {
+    "artifact": "docs/development/m1.3x-final-performance-smoke-20260611-083825.json",
+    "status": "GO",
+    "sample_count": 5,
+    "http_200_count": 5,
+    "error_rate": 0.0,
+    "warm_response_p95_ms": 596,
+    "warm_api_wall_p95_ms": 603,
+    "warm_p95_under_3s": true,
+    "vector_error_rate": 0.0,
+    "llm_timeout_rate": 0.0,
+    "slowest_warm_stage": "embedding_duration_ms"
+  },
+  "rollback_summary": {
+    "artifact": "docs/development/m1.3x-final-rollback-drill-20260611-083825.json",
+    "status": "GO",
+    "recovery_within_60_seconds": true,
+    "max_rollback_elapsed_ms": 84,
+    "weighted_rerank_rollback_elapsed_ms": 12,
+    "weighted_rerank_score_mode_after_rollback": "base_retrieval",
+    "vector_index_rebuild_required": false,
+    "rollback_event_logged": true,
+    "raw_query_written": false
+  },
+  "feature_flag_summary": {
+    "settings_default_ENABLE_WEIGHTED_RERANK": false,
+    "env_ENABLE_WEIGHTED_RERANK": null,
+    "env_example_ENABLE_WEIGHTED_RERANK": "false",
+    "health_feature_flag_from_m1_3x_7": false,
+    "default_false_preserved": true,
+    "changed_in_this_step": false,
+    "default_enable_allowed": false,
+    "offline_candidate_only": true
+  },
+  "privacy_check": {
+    "status": "GO",
+    "raw_query_written": false,
+    "case_body_written": false,
+    "candidate_body_written": false,
+    "chunk_body_written": false,
+    "final_artifacts_allowed_field_classes_only": true,
+    "m1_3x_json_artifact_parse_audit": {
+      "artifact_count": 46,
+      "invalid_json_count": 0
+    },
+    "logging_boundary": "Search and evaluation logs use ids, hashes, counts, statuses, reason codes, and timings."
+  },
+  "definition_of_done": {
+    "overall_status": "NO_GO",
+    "items": [
+      {
+        "name": "frozen_blocker_register_exists",
+        "status": "GO"
+      },
+      {
+        "name": "metric_regression_root_cause_matrix_exists",
+        "status": "GO"
+      },
+      {
+        "name": "baseline_protection_gate_and_tests_exist",
+        "status": "GO"
+      },
+      {
+        "name": "metric_regression_zero_or_final_no_go",
+        "status": "GO",
+        "actual": 7,
+        "resolution": "final NO_GO"
+      },
+      {
+        "name": "fixed_regression_before_vs_after_zero",
+        "status": "GO",
+        "actual_on_m1_3_combined_candidate": 0
+      },
+      {
+        "name": "fixed_regression_after_vs_baseline_zero",
+        "status": "NO_GO",
+        "actual_on_m1_3_combined_candidate": 7
+      },
+      {
+        "name": "remaining_recall_miss_explained_with_stop_loss",
+        "status": "GO",
+        "actual": 7
+      },
+      {
+        "name": "one_candidate_passes_or_all_candidates_no_go",
+        "status": "GO",
+        "resolution": "all candidates NO_GO"
+      },
+      {
+        "name": "weighted_rerank_gray_gate_exists",
+        "status": "GO",
+        "result": "NO_GO"
+      },
+      {
+        "name": "m2_readiness_gate_exists",
+        "status": "GO",
+        "result": "NO_GO"
+      },
+      {
+        "name": "default_feature_flags_remain_closed",
+        "status": "GO"
+      },
+      {
+        "name": "no_m2_m3_m4_scope_mixed_in",
+        "status": "GO"
+      },
+      {
+        "name": "privacy_boundary_preserved",
+        "status": "GO"
+      }
+    ],
+    "interpretation": "The acceptance process is complete, but the quality Definition of Done is not fully satisfied because after-vs-baseline fixed regression is not zero."
+  },
+  "m2_entry_checklist": {
+    "overall_status": "NO_GO",
+    "items": [
+      {
+        "name": "base_search_GO",
+        "status": "GO"
+      },
+      {
+        "name": "weighted_rerank_gray_GO_or_baseline_quality_sufficient",
+        "status": "NO_GO",
+        "evidence": "weighted rerank is NO_GO and baseline Top10 hit rate is 0.48"
+      },
+      {
+        "name": "product_local_top10_hit_rate_at_least_0_60",
+        "status": "GO",
+        "actual_on_offline_candidate": 0.68
+      },
+      {
+        "name": "fixed_regression_zero",
+        "status": "NO_GO",
+        "actual_after_vs_baseline": 7
+      },
+      {
+        "name": "metric_regression_zero",
+        "status": "NO_GO",
+        "actual": 7
+      },
+      {
+        "name": "remaining_recall_miss_explained_with_stop_loss",
+        "status": "GO",
+        "actual": 7
+      },
+      {
+        "name": "warm_p95_under_3s",
+        "status": "GO",
+        "actual_ms": 596
+      },
+      {
+        "name": "rollback_under_60s_without_index_rebuild",
+        "status": "GO",
+        "actual_ms": 84
+      },
+      {
+        "name": "privacy_boundary_preserved",
+        "status": "GO"
+      },
+      {
+        "name": "ENABLE_WEIGHTED_RERANK_default_false",
+        "status": "GO"
+      }
+    ]
+  },
+  "validation_summary": {
+    "commands": [
+      {
+        "command": "cd apps/api; pytest",
+        "status": "GO",
+        "summary": "189 passed in 23.17s"
+      },
+      {
+        "command": "cd apps/web; npm test",
+        "status": "GO",
+        "summary": "4 files and 40 tests passed"
+      },
+      {
+        "command": "cd apps/web; npm run build",
+        "status": "GO",
+        "summary": "Vite production build passed"
+      },
+      {
+        "command": "python -m app.eval.product_eval --comparison-mode product_chain --current-weighted-rerank",
+        "status": "GO",
+        "summary": "Evaluation completed; weighted rerank hard gate remains false"
+      },
+      {
+        "command": "python scripts/m1_3_candidate_comparison.py",
+        "status": "GO",
+        "summary": "Runner completed with selected status NO_GO"
+      },
+      {
+        "command": "python scripts/m1_2_regression.py --comparison-mode product_chain",
+        "status": "GO",
+        "summary": "Compatibility runner completed; regression blockers remain"
+      },
+      {
+        "command": "python scripts/day3_7_3_performance_smoke.py",
+        "status": "GO",
+        "summary": "5 of 5 HTTP 200; warm response P95 596ms"
+      },
+      {
+        "command": "python scripts/day3_7_5_rollback_drill.py",
+        "status": "GO",
+        "summary": "Passed; max 84ms; no index rebuild"
+      }
+    ],
+    "non_gate_command_failure": {
+      "command": "git status --short",
+      "error": "not a git repository",
+      "affects_acceptance": false
+    }
+  },
+  "unresolved_issues": [
+    {
+      "reason_code": "NO_SELECTED_CANDIDATE",
+      "blocking": true,
+      "summary": "No candidate satisfies every hard gate."
+    },
+    {
+      "reason_code": "PRIMARY_PER_QUERY_REGRESSION_REMAINS",
+      "blocking": true,
+      "summary": "M1.3 combined candidate has after-vs-baseline REGRESSED=7 and METRIC_REGRESSION=7."
+    },
+    {
+      "reason_code": "GUARD_V2_NOT_STABLY_POSITIVE",
+      "blocking": true,
+      "summary": "Guard v2 reduces some regressions but reintroduces before-vs-after REGRESSED=5 and increases RECALL_MISS to 9."
+    },
+    {
+      "reason_code": "COMPATIBILITY_REGRESSION_REMAINS",
+      "blocking": true,
+      "summary": "M1.2 compatibility runner remains at before-vs-after=4, after-vs-baseline=9, and METRIC_REGRESSION=9."
+    },
+    {
+      "reason_code": "RECALL_MISS_EXPLAINED_NOT_FIXED",
+      "blocking": false,
+      "summary": "Seven remaining recall misses have query-id-level explanation and stop-loss, but are not fixed."
+    },
+    {
+      "reason_code": "BASELINE_M2_QUALITY_INSUFFICIENT",
+      "blocking": true,
+      "summary": "Baseline Top10 hit rate is 0.48, so M2 cannot bypass the weighted rerank gate."
+    }
+  ],
+  "next_recommendation": {
+    "status": "NO_GO",
+    "stage": "remain within M1.3x controlled evaluation",
+    "actions": [
+      "Keep ENABLE_WEIGHTED_RERANK=false.",
+      "Do not enter M2 trusted retrieval preparation.",
+      "Retain only evaluation, sanitized logging, regression gates, rollback drills, and controlled offline experiments.",
+      "Any future authorized candidate must independently clear before-vs-after REGRESSED=0, after-vs-baseline REGRESSED=0, and METRIC_REGRESSION=0 before gray-candidate review.",
+      "Do not describe the relative-best guard v2 result as GO."
+    ]
+  },
+  "source_artifacts": [
+    "落地设计文档/11-M1.3x回归清零版分步骤文档.md",
+    "docs/development/m1.3-final-verification-20260610-152812.md",
+    "docs/development/m1.3-release-gate-20260610-152812.json",
+    "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+    "docs/development/m1.3-final-candidate-parameter-version-20260610-152812.json",
+    "docs/development/m1.3x-blocker-register-20260610-161732.json",
+    "docs/development/m1.3x-metric-regression-root-cause-20260610-165416.json",
+    "docs/development/m1.3x-baseline-protection-gate-20260610-171726.json",
+    "docs/development/m1.3x-rerank-guard-v2-20260610-180500.json",
+    "docs/development/m1.3x-recall-miss-closure-20260610-184500.json",
+    "docs/development/m1.3x-candidate-comparison-20260610-200044.json",
+    "docs/development/m1.3x-parameter-version-20260610-200044.json",
+    "docs/development/m1.3x-gray-candidate-readiness-20260610-210411.json",
+    "docs/development/m1.3x-final-product-eval-product-chain-20260611-083825.json",
+    "docs/development/m1.3x-final-product-bad-cases-product-chain-20260611-083825.json",
+    "docs/development/m1.3x-final-regression-run-20260611-083825.json",
+    "docs/development/m1.3x-final-regression-parameter-version-20260611-083825.json",
+    "docs/development/m1.3x-final-performance-smoke-20260611-083825.json",
+    "docs/development/m1.3x-final-rollback-drill-20260611-083825.json",
+    "docs/development/m1.3x-final-candidate-comparison-20260611-083825.json",
+    "docs/development/m1.3x-final-candidate-comparison-20260611-083825.md",
+    "docs/development/m1.3x-final-candidate-parameter-version-20260611-083825.json",
+    "apps/api/app/core/config.py",
+    "apps/api/app/api/search.py",
+    "apps/api/app/api/health.py",
+    "apps/api/app/rerank/service.py",
+    "apps/api/scripts/m1_3_candidate_comparison.py",
+    "apps/api/scripts/m1_2_regression.py",
+    "apps/api/scripts/day3_7_3_performance_smoke.py",
+    "apps/api/scripts/day3_7_5_rollback_drill.py"
+  ],
+  "boundary_confirmation": {
+    "sorting_fix_added": false,
+    "recall_fix_added": false,
+    "qrels_modified": false,
+    "historical_evaluation_modified": false,
+    "bad_samples_deleted": false,
+    "case_id_hardcoding_added": false,
+    "query_id_special_case_added": false,
+    "manual_rank_edit_added": false,
+    "default_weighted_rerank_enabled": false,
+    "m2_implementation_started": false
+  }
+}

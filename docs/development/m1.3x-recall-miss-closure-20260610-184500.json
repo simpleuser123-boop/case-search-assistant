@@ -1,0 +1,2271 @@
+{
+  "version": "m1_3x_recall_miss_closure_v1",
+  "generatedAt": "2026-06-10T19:11:47",
+  "scope": {
+    "step": "M1.3x-5",
+    "name": "remaining RECALL_MISS closure and stop-loss",
+    "logicChange": "none",
+    "defaultRecallPoolExpanded": false,
+    "rankingGuardV2Entered": false,
+    "weightedRerankDefaultChanged": false
+  },
+  "privacy": {
+    "rawQueryTextWritten": false,
+    "caseFactTextWritten": false,
+    "candidateTextWritten": false,
+    "chunkTextWritten": false,
+    "allowedFieldClasses": [
+      "query id",
+      "case id",
+      "rank",
+      "score",
+      "bucket",
+      "label",
+      "count",
+      "status",
+      "reason code",
+      "runner name",
+      "gate name"
+    ]
+  },
+  "inputs": {
+    "blockerRegister": "docs\\development\\m1.3x-blocker-register-20260610-161732.json",
+    "priorComparison": "docs\\development\\m1.3x-rerank-guard-v2-candidate-comparison-20260610-180500.json",
+    "priorProductEval": "docs\\development\\m1.3x-rerank-guard-v2-product-eval-20260610-180500.json",
+    "priorRecallRepair": "docs\\development\\m1.3-recall-repair-20260610-113200.json",
+    "queries": "data\\eval\\product_eval_queries.jsonl",
+    "qrels": "data\\eval\\product_eval_qrels.jsonl",
+    "cases": "data\\processed\\cases.jsonl",
+    "chunks": "data\\processed\\chunks.jsonl",
+    "regressionSet": "data\\eval\\m1_2_regression_set_20260609.json"
+  },
+  "outputs": {
+    "markdown": "docs\\development\\m1.3x-recall-miss-closure-20260610-184500.md",
+    "json": "docs\\development\\m1.3x-recall-miss-closure-20260610-184500.json"
+  },
+  "allowedRepairRulesEvaluated": [
+    "controlled BM25 supplement",
+    "recall-only query mapping",
+    "merge admission rule"
+  ],
+  "prohibitedActionsConfirmed": {
+    "caseIdHardcoding": false,
+    "queryIdSpecialInsertion": false,
+    "manualRankEdit": false,
+    "qrelsModified": false,
+    "badSamplesDeleted": false,
+    "historicalEvalModified": false,
+    "globalTopKExpanded": false,
+    "weightedRerankDefaultEnabled": false
+  },
+  "summary": {
+    "targetRecallMissCount": 7,
+    "coveredQueryCount": 7,
+    "fixedQueryIds": [],
+    "explainedNotFixedQueryIds": [
+      "product_q001",
+      "product_q002",
+      "product_q003",
+      "product_q004",
+      "product_q006",
+      "product_q009",
+      "product_q013"
+    ],
+    "stillOpenNoGoQueryIds": [],
+    "missTypeDistribution": {
+      "BM25_MISS": 2,
+      "GATING_DROPPED": 5,
+      "UNREPAIRABLE_WITH_CURRENT_SIGNALS": 7,
+      "VECTOR_MISS": 2
+    },
+    "outcomeDistribution": {
+      "EXPLAINED_NOT_FIXED": 7
+    },
+    "recallMissBefore": 7,
+    "recallMissAfter": 7,
+    "recallMissDelta": 0,
+    "recallMissDecreased": false,
+    "allRemainingExplained": true,
+    "newMetricRegression": false,
+    "newFixedRegression": false,
+    "top10HitRate": 0.68,
+    "precisionAt5": 0.048,
+    "ndcgAt10": 0.171,
+    "stepConclusion": "GO"
+  },
+  "metrics": {
+    "currentM13CombinedCandidate": {
+      "candidateId": "m1_3_combined_candidate",
+      "Precision@5": 0.048,
+      "NDCG@10": 0.171,
+      "Top10 hit rate": 0.68,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 7,
+      "METRIC_REGRESSION count": 7,
+      "RECALL_MISS count": 7,
+      "RECALL_MISS ids": [
+        "product_q001",
+        "product_q002",
+        "product_q003",
+        "product_q004",
+        "product_q006",
+        "product_q009",
+        "product_q013"
+      ],
+      "globalBlockedItems": []
+    },
+    "priorM13CombinedCandidate": {
+      "candidateId": "m1_3_combined_candidate",
+      "Precision@5": 0.048,
+      "NDCG@10": 0.171,
+      "Top10 hit rate": 0.68,
+      "METRIC_REGRESSION count": 7,
+      "RECALL_MISS count": 7,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 7,
+      "goNoGo": "NO_GO"
+    },
+    "priorProductEval": {
+      "Precision@5": 0.048,
+      "NDCG@10": 0.171,
+      "Top10 hit rate": 0.68,
+      "METRIC_REGRESSION count": 7,
+      "RECALL_MISS count": 7,
+      "reasonDistribution": {
+        "METRIC_REGRESSION": 7,
+        "RECALL_MISS": 7
+      },
+      "hardGateDataComplete": false,
+      "weightedRerankGrayCandidate": false
+    }
+  },
+  "performance": {
+    "artifact": "docs\\development\\m1.3x-recall-miss-closure-performance-smoke-20260610-184500.json",
+    "status": null,
+    "warmP95Ms": 416,
+    "warmApiWallP95Ms": 420,
+    "warmP95Under3s": true,
+    "errorRate": 0.0,
+    "blocked": false
+  },
+  "rollback": {
+    "artifact": "docs\\development\\m1.3x-recall-miss-closure-rollback-drill-20260610-184500.json",
+    "status": "passed",
+    "recoveryWithin60Seconds": true,
+    "maxRollbackElapsedMs": 15,
+    "requiresIndexRebuild": false,
+    "weightedRerankReturnsBaseRetrieval": true,
+    "weightedRerankElapsedMs": 7,
+    "globalEnableWeightedRerankDefault": false,
+    "blocked": false
+  },
+  "featureFlagState": {
+    "settings_ENABLE_WEIGHTED_RERANK": false,
+    "env_ENABLE_WEIGHTED_RERANK": null,
+    "env_example_ENABLE_WEIGHTED_RERANK": "false",
+    "config_default": "False",
+    "featureFlagChanged": false
+  },
+  "rows": [
+    {
+      "blockerId": "PROD-RECALL-001",
+      "queryId": "product_q001",
+      "targetCaseIds": [
+        "561314d5-2ad3-48fa-b514-1cd8b982100a",
+        "d34eda6a-a5c6-4152-8fca-9084f4f90934",
+        "f6300f37-2b14-4aca-8c43-75f25f80a0d1"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "qrelRelevantCaseCount": 3,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": false,
+        "mappingLabels": [],
+        "queryVariantCount": 0,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false,
+        "degradedReasons": [
+          "QUERY_REWRITE_DISABLED"
+        ]
+      },
+      "targetCaseEvidence": [
+        {
+          "caseId": "561314d5-2ad3-48fa-b514-1cd8b982100a",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 38,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 38,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "d34eda6a-a5c6-4152-8fca-9084f4f90934",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": null,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": null,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "f6300f37-2b14-4aca-8c43-75f25f80a0d1",
+          "relevance": 2,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": null,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": null,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        }
+      ],
+      "snapshot": {
+        "channels": {
+          "originalVector": {
+            "topK": 50,
+            "uniqueCaseCount": 49,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "mappedRewriteVector": {
+            "topK": 30,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "recallOnlyMappingVector": {
+            "topK": 30,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "cleanedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 75,
+            "presence": {
+              "hit": true,
+              "bestRank": 38,
+              "caseId": "561314d5-2ad3-48fa-b514-1cd8b982100a",
+              "relevance": 3
+            },
+            "score": 0.827429
+          },
+          "expandedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 75,
+            "presence": {
+              "hit": true,
+              "bestRank": 38,
+              "caseId": "561314d5-2ad3-48fa-b514-1cd8b982100a",
+              "relevance": 3
+            },
+            "score": 0.827429
+          },
+          "controlledBm25Supplement": {
+            "topK": 4,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          }
+        },
+        "pool": {
+          "rawCandidateCount": 50,
+          "rawUniqueCaseCount": 49,
+          "mergedCandidateCount": 49,
+          "rawPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null
+          },
+          "mergedPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null
+          },
+          "finalPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null,
+            "score": null,
+            "retrievalScore": null,
+            "retrievalSource": [],
+            "candidateSource": null,
+            "recallStage": [],
+            "filteredReason": null,
+            "dedupReason": null,
+            "fusionGuards": [],
+            "finalScoreSource": null
+          },
+          "dedupeDropped": false,
+          "mergeDropped": false,
+          "gatingDropped": false,
+          "bm25VectorTop10Overlap": 0
+        }
+      },
+      "offlineRecallOnlyProbes": [],
+      "missTypes": [
+        "VECTOR_MISS",
+        "UNREPAIRABLE_WITH_CURRENT_SIGNALS"
+      ],
+      "outcome": "EXPLAINED_NOT_FIXED",
+      "reasonCodes": [
+        "BM25_SIGNAL_EXISTS_BUT_CONTROLLED_ADMISSION_DOES_NOT_REACH_TARGET",
+        "NO_RELEVANT_CASE_IN_VECTOR_TOPK"
+      ],
+      "safeM13xRepairAvailable": false,
+      "stopLossBoundary": {
+        "currentSignalInsufficient": true,
+        "cannotSafelyFixInM13x": true,
+        "doesNotBlockM2ReadinessByItself": true,
+        "reasonCodes": [
+          "BM25_SIGNAL_EXISTS_BUT_CONTROLLED_ADMISSION_DOES_NOT_REACH_TARGET",
+          "NO_RELEVANT_CASE_IN_VECTOR_TOPK"
+        ],
+        "blockedRepairClasses": [
+          "global_topk_expansion",
+          "ranking_adjustment",
+          "query_id_or_case_id_special_case",
+          "qrels_or_bad_sample_edit"
+        ],
+        "futureNeeds": [
+          "stronger non-qrels recall signal",
+          "ranking evidence outside M1.3x-5"
+        ]
+      }
+    },
+    {
+      "blockerId": "PROD-RECALL-002",
+      "queryId": "product_q002",
+      "targetCaseIds": [
+        "101305d2-00d3-443e-8f36-3843cbeb3379",
+        "6475c2e9-90a0-4744-a0d1-37808f0ce3a7",
+        "bae4f3fd-158e-467b-85bf-3128679b68f5"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "qrelRelevantCaseCount": 3,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "dangerous_driving_alcohol"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false,
+        "degradedReasons": [
+          "QUERY_REWRITE_DISABLED"
+        ]
+      },
+      "targetCaseEvidence": [
+        {
+          "caseId": "101305d2-00d3-443e-8f36-3843cbeb3379",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": null,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": null,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "6475c2e9-90a0-4744-a0d1-37808f0ce3a7",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": null,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": null,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "bae4f3fd-158e-467b-85bf-3128679b68f5",
+          "relevance": 2,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": null,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": null,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        }
+      ],
+      "snapshot": {
+        "channels": {
+          "originalVector": {
+            "topK": 50,
+            "uniqueCaseCount": 50,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "mappedRewriteVector": {
+            "topK": 30,
+            "uniqueCaseCount": 30,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "recallOnlyMappingVector": {
+            "topK": 30,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "cleanedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 67,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            },
+            "score": null
+          },
+          "expandedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 67,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            },
+            "score": null
+          },
+          "controlledBm25Supplement": {
+            "topK": 4,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          }
+        },
+        "pool": {
+          "rawCandidateCount": 80,
+          "rawUniqueCaseCount": 53,
+          "mergedCandidateCount": 53,
+          "rawPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null
+          },
+          "mergedPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null
+          },
+          "finalPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null,
+            "score": null,
+            "retrievalScore": null,
+            "retrievalSource": [],
+            "candidateSource": null,
+            "recallStage": [],
+            "filteredReason": null,
+            "dedupReason": null,
+            "fusionGuards": [],
+            "finalScoreSource": null
+          },
+          "dedupeDropped": false,
+          "mergeDropped": false,
+          "gatingDropped": false,
+          "bm25VectorTop10Overlap": 2
+        }
+      },
+      "offlineRecallOnlyProbes": [
+        {
+          "mappingLabel": "dangerous_driving_alcohol",
+          "mode": "legal_term",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": true,
+            "bestRank": 13,
+            "caseId": "bae4f3fd-158e-467b-85bf-3128679b68f5",
+            "relevance": 2
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 66,
+            "caseId": "bae4f3fd-158e-467b-85bf-3128679b68f5",
+            "relevance": 2,
+            "score": 0.710955,
+            "retrievalScore": 0.673591,
+            "retrievalSource": [
+              "recall_only_mapping_vector"
+            ],
+            "candidateSource": "vector+rewrite",
+            "recallStage": [
+              "recall_only_mapping_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": null,
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support",
+              "no_fact_guard_relaxed_multi_source",
+              "weak_signal_tiebreak_limited_to_vector_bucket"
+            ],
+            "finalScoreSource": "guarded_vector_bucket"
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 75,
+          "queryId": "product_q002"
+        },
+        {
+          "mappingLabel": "dangerous_driving_alcohol",
+          "mode": "case_cause_plus_expansion",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null
+          },
+          "finalPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null,
+            "score": null,
+            "retrievalScore": null,
+            "retrievalSource": [],
+            "candidateSource": null,
+            "recallStage": [],
+            "filteredReason": null,
+            "dedupReason": null,
+            "fusionGuards": [],
+            "finalScoreSource": null
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 64,
+          "queryId": "product_q002"
+        },
+        {
+          "mappingLabel": "dangerous_driving_alcohol",
+          "mode": "legal_cause_expansion",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null
+          },
+          "finalPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null,
+            "score": null,
+            "retrievalScore": null,
+            "retrievalSource": [],
+            "candidateSource": null,
+            "recallStage": [],
+            "filteredReason": null,
+            "dedupReason": null,
+            "fusionGuards": [],
+            "finalScoreSource": null
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 63,
+          "queryId": "product_q002"
+        }
+      ],
+      "missTypes": [
+        "VECTOR_MISS",
+        "BM25_MISS",
+        "UNREPAIRABLE_WITH_CURRENT_SIGNALS"
+      ],
+      "outcome": "EXPLAINED_NOT_FIXED",
+      "reasonCodes": [
+        "NO_RELEVANT_CASE_IN_BM25_TOPK_OR_SUPPLEMENT",
+        "NO_RELEVANT_CASE_IN_VECTOR_TOPK",
+        "RECALL_ONLY_PROBE_RETRIEVES_RELEVANT_BUT_STILL_OUTSIDE_TOP10"
+      ],
+      "safeM13xRepairAvailable": false,
+      "stopLossBoundary": {
+        "currentSignalInsufficient": true,
+        "cannotSafelyFixInM13x": true,
+        "doesNotBlockM2ReadinessByItself": true,
+        "reasonCodes": [
+          "NO_RELEVANT_CASE_IN_BM25_TOPK_OR_SUPPLEMENT",
+          "NO_RELEVANT_CASE_IN_VECTOR_TOPK",
+          "RECALL_ONLY_PROBE_RETRIEVES_RELEVANT_BUT_STILL_OUTSIDE_TOP10"
+        ],
+        "blockedRepairClasses": [
+          "global_topk_expansion",
+          "ranking_adjustment",
+          "query_id_or_case_id_special_case",
+          "qrels_or_bad_sample_edit"
+        ],
+        "futureNeeds": [
+          "stronger non-qrels recall signal",
+          "ranking evidence outside M1.3x-5"
+        ]
+      }
+    },
+    {
+      "blockerId": "PROD-RECALL-003",
+      "queryId": "product_q003",
+      "targetCaseIds": [
+        "211091c2-6eb0-4de2-b8d7-c55529053ea0",
+        "94517b43-ac1f-4694-b627-f312ce99bc3e",
+        "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "qrelRelevantCaseCount": 3,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": false,
+        "mappingLabels": [],
+        "queryVariantCount": 0,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false,
+        "degradedReasons": [
+          "QUERY_REWRITE_DISABLED"
+        ]
+      },
+      "targetCaseEvidence": [
+        {
+          "caseId": "211091c2-6eb0-4de2-b8d7-c55529053ea0",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": null,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": null,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "94517b43-ac1f-4694-b627-f312ce99bc3e",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 88,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 88,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a",
+          "relevance": 2,
+          "inCorpus": true,
+          "originalVectorRank": 15,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 38,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 38,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": 15,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": 15,
+          "mergedTop10Hit": false,
+          "finalRank": 15,
+          "finalTop10Hit": false
+        }
+      ],
+      "snapshot": {
+        "channels": {
+          "originalVector": {
+            "topK": 50,
+            "uniqueCaseCount": 50,
+            "presence": {
+              "hit": true,
+              "bestRank": 15,
+              "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a",
+              "relevance": 2
+            }
+          },
+          "mappedRewriteVector": {
+            "topK": 30,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "recallOnlyMappingVector": {
+            "topK": 30,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "cleanedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 99,
+            "presence": {
+              "hit": true,
+              "bestRank": 38,
+              "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a",
+              "relevance": 2
+            },
+            "score": 0.623167
+          },
+          "expandedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 99,
+            "presence": {
+              "hit": true,
+              "bestRank": 38,
+              "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a",
+              "relevance": 2
+            },
+            "score": 0.623167
+          },
+          "controlledBm25Supplement": {
+            "topK": 4,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          }
+        },
+        "pool": {
+          "rawCandidateCount": 50,
+          "rawUniqueCaseCount": 50,
+          "mergedCandidateCount": 50,
+          "rawPresence": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a",
+            "relevance": 2
+          },
+          "mergedPresence": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a",
+            "relevance": 2
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a",
+            "relevance": 2,
+            "score": 0.801081,
+            "retrievalScore": 0.782106,
+            "retrievalSource": [
+              "original_vector"
+            ],
+            "candidateSource": "vector",
+            "recallStage": [
+              "original_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": null,
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support",
+              "no_fact_guard_relaxed_strong_vector",
+              "weak_signal_tiebreak_limited_to_vector_bucket"
+            ],
+            "finalScoreSource": "guarded_vector_bucket"
+          },
+          "dedupeDropped": false,
+          "mergeDropped": false,
+          "gatingDropped": true,
+          "bm25VectorTop10Overlap": 0
+        }
+      },
+      "offlineRecallOnlyProbes": [],
+      "missTypes": [
+        "GATING_DROPPED",
+        "UNREPAIRABLE_WITH_CURRENT_SIGNALS"
+      ],
+      "outcome": "EXPLAINED_NOT_FIXED",
+      "reasonCodes": [
+        "RELEVANT_CASE_IN_POOL_BUT_RANKING_OR_SIGNAL_STRENGTH_OUT_OF_SCOPE",
+        "RELEVANT_CASE_PRESENT_AFTER_MERGE_BUT_OUTSIDE_TOP10"
+      ],
+      "safeM13xRepairAvailable": false,
+      "stopLossBoundary": {
+        "currentSignalInsufficient": true,
+        "cannotSafelyFixInM13x": true,
+        "doesNotBlockM2ReadinessByItself": true,
+        "reasonCodes": [
+          "RELEVANT_CASE_IN_POOL_BUT_RANKING_OR_SIGNAL_STRENGTH_OUT_OF_SCOPE",
+          "RELEVANT_CASE_PRESENT_AFTER_MERGE_BUT_OUTSIDE_TOP10"
+        ],
+        "blockedRepairClasses": [
+          "global_topk_expansion",
+          "ranking_adjustment",
+          "query_id_or_case_id_special_case",
+          "qrels_or_bad_sample_edit"
+        ],
+        "futureNeeds": [
+          "stronger non-qrels recall signal",
+          "ranking evidence outside M1.3x-5"
+        ]
+      }
+    },
+    {
+      "blockerId": "PROD-RECALL-004",
+      "queryId": "product_q004",
+      "targetCaseIds": [
+        "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+        "886d5b3e-863e-4106-9ac7-1afe4cc9583e",
+        "e9760ce5-799d-4a8d-8dc1-8409a795bb76"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "qrelRelevantCaseCount": 3,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "theft_household"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false,
+        "degradedReasons": [
+          "QUERY_REWRITE_DISABLED"
+        ]
+      },
+      "targetCaseEvidence": [
+        {
+          "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+          "relevance": 2,
+          "inCorpus": true,
+          "originalVectorRank": 47,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": null,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": null,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": 47,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": 47,
+          "mergedTop10Hit": false,
+          "finalRank": 23,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "886d5b3e-863e-4106-9ac7-1afe4cc9583e",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": null,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": null,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "e9760ce5-799d-4a8d-8dc1-8409a795bb76",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": null,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": null,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        }
+      ],
+      "snapshot": {
+        "channels": {
+          "originalVector": {
+            "topK": 50,
+            "uniqueCaseCount": 49,
+            "presence": {
+              "hit": true,
+              "bestRank": 47,
+              "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+              "relevance": 2
+            }
+          },
+          "mappedRewriteVector": {
+            "topK": 30,
+            "uniqueCaseCount": 30,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "recallOnlyMappingVector": {
+            "topK": 30,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "cleanedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 69,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            },
+            "score": null
+          },
+          "expandedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 69,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            },
+            "score": null
+          },
+          "controlledBm25Supplement": {
+            "topK": 4,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          }
+        },
+        "pool": {
+          "rawCandidateCount": 80,
+          "rawUniqueCaseCount": 50,
+          "mergedCandidateCount": 50,
+          "rawPresence": {
+            "hit": true,
+            "bestRank": 47,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+            "relevance": 2
+          },
+          "mergedPresence": {
+            "hit": true,
+            "bestRank": 47,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+            "relevance": 2
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 23,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+            "relevance": 2,
+            "score": 0.729831,
+            "retrievalScore": 0.729831,
+            "retrievalSource": [
+              "original_vector"
+            ],
+            "candidateSource": "vector",
+            "recallStage": [
+              "original_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": null,
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support"
+            ],
+            "finalScoreSource": "base_retrieval_guard"
+          },
+          "dedupeDropped": false,
+          "mergeDropped": false,
+          "gatingDropped": true,
+          "bm25VectorTop10Overlap": 2
+        }
+      },
+      "offlineRecallOnlyProbes": [
+        {
+          "mappingLabel": "theft_household",
+          "mode": "legal_term",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 19,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+            "relevance": 2,
+            "score": 0.729831,
+            "retrievalScore": 0.729831,
+            "retrievalSource": [
+              "original_vector"
+            ],
+            "candidateSource": "vector",
+            "recallStage": [
+              "original_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": null,
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support"
+            ],
+            "finalScoreSource": "base_retrieval_guard"
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 58,
+          "queryId": "product_q004"
+        },
+        {
+          "mappingLabel": "theft_household",
+          "mode": "case_cause_plus_expansion",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+            "relevance": 2,
+            "score": 0.729831,
+            "retrievalScore": 0.729831,
+            "retrievalSource": [
+              "original_vector"
+            ],
+            "candidateSource": "vector",
+            "recallStage": [
+              "original_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": null,
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support"
+            ],
+            "finalScoreSource": "base_retrieval_guard"
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 54,
+          "queryId": "product_q004"
+        },
+        {
+          "mappingLabel": "theft_household",
+          "mode": "legal_cause_expansion",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 18,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+            "relevance": 2,
+            "score": 0.729831,
+            "retrievalScore": 0.729831,
+            "retrievalSource": [
+              "original_vector"
+            ],
+            "candidateSource": "vector",
+            "recallStage": [
+              "original_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": null,
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support"
+            ],
+            "finalScoreSource": "base_retrieval_guard"
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 50,
+          "queryId": "product_q004"
+        }
+      ],
+      "missTypes": [
+        "BM25_MISS",
+        "GATING_DROPPED",
+        "UNREPAIRABLE_WITH_CURRENT_SIGNALS"
+      ],
+      "outcome": "EXPLAINED_NOT_FIXED",
+      "reasonCodes": [
+        "NO_RELEVANT_CASE_IN_BM25_TOPK_OR_SUPPLEMENT",
+        "RELEVANT_CASE_IN_POOL_BUT_RANKING_OR_SIGNAL_STRENGTH_OUT_OF_SCOPE",
+        "RELEVANT_CASE_PRESENT_AFTER_MERGE_BUT_OUTSIDE_TOP10"
+      ],
+      "safeM13xRepairAvailable": false,
+      "stopLossBoundary": {
+        "currentSignalInsufficient": true,
+        "cannotSafelyFixInM13x": true,
+        "doesNotBlockM2ReadinessByItself": true,
+        "reasonCodes": [
+          "NO_RELEVANT_CASE_IN_BM25_TOPK_OR_SUPPLEMENT",
+          "RELEVANT_CASE_IN_POOL_BUT_RANKING_OR_SIGNAL_STRENGTH_OUT_OF_SCOPE",
+          "RELEVANT_CASE_PRESENT_AFTER_MERGE_BUT_OUTSIDE_TOP10"
+        ],
+        "blockedRepairClasses": [
+          "global_topk_expansion",
+          "ranking_adjustment",
+          "query_id_or_case_id_special_case",
+          "qrels_or_bad_sample_edit"
+        ],
+        "futureNeeds": [
+          "stronger non-qrels recall signal",
+          "ranking evidence outside M1.3x-5"
+        ]
+      }
+    },
+    {
+      "blockerId": "PROD-RECALL-005",
+      "queryId": "product_q006",
+      "targetCaseIds": [
+        "49654efe-c3c1-4fd5-9717-f6c295dc3f80",
+        "6051e90c-c739-4eef-a3db-673ff6a66301",
+        "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "qrelRelevantCaseCount": 3,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "intentional_injury_minor"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false,
+        "degradedReasons": [
+          "QUERY_REWRITE_DISABLED"
+        ]
+      },
+      "targetCaseEvidence": [
+        {
+          "caseId": "49654efe-c3c1-4fd5-9717-f6c295dc3f80",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": null,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 80,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "6051e90c-c739-4eef-a3db-673ff6a66301",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": 33,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": 28,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 67,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 55,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": 33,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": 33,
+          "mergedTop10Hit": false,
+          "finalRank": 53,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+          "relevance": 2,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": 19,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 17,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 12,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": 53,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": 20,
+          "mergedTop10Hit": false,
+          "finalRank": 20,
+          "finalTop10Hit": false
+        }
+      ],
+      "snapshot": {
+        "channels": {
+          "originalVector": {
+            "topK": 50,
+            "uniqueCaseCount": 50,
+            "presence": {
+              "hit": true,
+              "bestRank": 33,
+              "caseId": "6051e90c-c739-4eef-a3db-673ff6a66301",
+              "relevance": 3
+            }
+          },
+          "mappedRewriteVector": {
+            "topK": 30,
+            "uniqueCaseCount": 30,
+            "presence": {
+              "hit": true,
+              "bestRank": 19,
+              "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+              "relevance": 2
+            }
+          },
+          "recallOnlyMappingVector": {
+            "topK": 30,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "cleanedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 82,
+            "presence": {
+              "hit": true,
+              "bestRank": 17,
+              "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+              "relevance": 2
+            },
+            "score": 0.70627
+          },
+          "expandedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 82,
+            "presence": {
+              "hit": true,
+              "bestRank": 12,
+              "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+              "relevance": 2
+            },
+            "score": 0.718295
+          },
+          "controlledBm25Supplement": {
+            "topK": 4,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          }
+        },
+        "pool": {
+          "rawCandidateCount": 80,
+          "rawUniqueCaseCount": 56,
+          "mergedCandidateCount": 56,
+          "rawPresence": {
+            "hit": true,
+            "bestRank": 33,
+            "caseId": "6051e90c-c739-4eef-a3db-673ff6a66301",
+            "relevance": 3
+          },
+          "mergedPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+            "relevance": 2
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+            "relevance": 2,
+            "score": 0.811063,
+            "retrievalScore": 0.771374,
+            "retrievalSource": [
+              "variant_vector"
+            ],
+            "candidateSource": "vector+rewrite",
+            "recallStage": [
+              "rewrite_or_mapped_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": null,
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support",
+              "no_fact_guard_relaxed_strong_vector",
+              "no_fact_guard_relaxed_multi_source",
+              "weak_signal_tiebreak_limited_to_vector_bucket"
+            ],
+            "finalScoreSource": "guarded_vector_bucket"
+          },
+          "dedupeDropped": false,
+          "mergeDropped": false,
+          "gatingDropped": true,
+          "bm25VectorTop10Overlap": 2
+        }
+      },
+      "offlineRecallOnlyProbes": [
+        {
+          "mappingLabel": "intentional_injury_minor",
+          "mode": "legal_term",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null,
+            "relevance": null
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 38,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+            "relevance": 2,
+            "score": 0.811063,
+            "retrievalScore": 0.771374,
+            "retrievalSource": [
+              "variant_vector"
+            ],
+            "candidateSource": "vector+rewrite",
+            "recallStage": [
+              "rewrite_or_mapped_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": null,
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support",
+              "no_fact_guard_relaxed_strong_vector",
+              "no_fact_guard_relaxed_multi_source",
+              "weak_signal_tiebreak_limited_to_vector_bucket"
+            ],
+            "finalScoreSource": "guarded_vector_bucket"
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 65,
+          "queryId": "product_q006"
+        },
+        {
+          "mappingLabel": "intentional_injury_minor",
+          "mode": "case_cause_plus_expansion",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": true,
+            "bestRank": 10,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+            "relevance": 2
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+            "relevance": 2,
+            "score": 0.811063,
+            "retrievalScore": 0.771374,
+            "retrievalSource": [
+              "variant_vector",
+              "recall_only_mapping_vector"
+            ],
+            "candidateSource": "vector+rewrite",
+            "recallStage": [
+              "rewrite_or_mapped_query_vector",
+              "recall_only_mapping_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": "case_id_dedup_kept_top_chunk:7f217392-4533-48dc-a1d6-76b8d7b1336b_c002:source=variant_vector",
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support",
+              "no_fact_guard_relaxed_strong_vector",
+              "no_fact_guard_relaxed_multi_source",
+              "weak_signal_tiebreak_limited_to_vector_bucket"
+            ],
+            "finalScoreSource": "guarded_vector_bucket"
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 60,
+          "queryId": "product_q006"
+        },
+        {
+          "mappingLabel": "intentional_injury_minor",
+          "mode": "legal_cause_expansion",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": true,
+            "bestRank": 10,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+            "relevance": 2
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 21,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b",
+            "relevance": 2,
+            "score": 0.811064,
+            "retrievalScore": 0.772601,
+            "retrievalSource": [
+              "variant_vector",
+              "recall_only_mapping_vector"
+            ],
+            "candidateSource": "vector+rewrite",
+            "recallStage": [
+              "recall_only_mapping_vector",
+              "rewrite_or_mapped_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": "case_id_dedup_kept_top_chunk:7f217392-4533-48dc-a1d6-76b8d7b1336b_c002:source=recall_only_mapping_vector",
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support",
+              "no_fact_guard_relaxed_strong_vector",
+              "no_fact_guard_relaxed_multi_source",
+              "weak_signal_tiebreak_limited_to_vector_bucket"
+            ],
+            "finalScoreSource": "guarded_vector_bucket"
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 60,
+          "queryId": "product_q006"
+        }
+      ],
+      "missTypes": [
+        "GATING_DROPPED",
+        "UNREPAIRABLE_WITH_CURRENT_SIGNALS"
+      ],
+      "outcome": "EXPLAINED_NOT_FIXED",
+      "reasonCodes": [
+        "RELEVANT_CASE_IN_POOL_BUT_RANKING_OR_SIGNAL_STRENGTH_OUT_OF_SCOPE",
+        "RELEVANT_CASE_PRESENT_AFTER_MERGE_BUT_OUTSIDE_TOP10"
+      ],
+      "safeM13xRepairAvailable": false,
+      "stopLossBoundary": {
+        "currentSignalInsufficient": true,
+        "cannotSafelyFixInM13x": true,
+        "doesNotBlockM2ReadinessByItself": true,
+        "reasonCodes": [
+          "RELEVANT_CASE_IN_POOL_BUT_RANKING_OR_SIGNAL_STRENGTH_OUT_OF_SCOPE",
+          "RELEVANT_CASE_PRESENT_AFTER_MERGE_BUT_OUTSIDE_TOP10"
+        ],
+        "blockedRepairClasses": [
+          "global_topk_expansion",
+          "ranking_adjustment",
+          "query_id_or_case_id_special_case",
+          "qrels_or_bad_sample_edit"
+        ],
+        "futureNeeds": [
+          "stronger non-qrels recall signal",
+          "ranking evidence outside M1.3x-5"
+        ]
+      }
+    },
+    {
+      "blockerId": "PROD-RECALL-006",
+      "queryId": "product_q009",
+      "targetCaseIds": [
+        "36df2795-f259-40ac-b08e-16e42c471885",
+        "37c160b5-4c96-44bf-a7a6-f7ba96fe346e",
+        "68058dc3-da5d-45c2-883a-e143e546bf61"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "qrelRelevantCaseCount": 3,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": false,
+        "mappingLabels": [],
+        "queryVariantCount": 0,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false,
+        "degradedReasons": [
+          "QUERY_REWRITE_DISABLED"
+        ]
+      },
+      "targetCaseEvidence": [
+        {
+          "caseId": "36df2795-f259-40ac-b08e-16e42c471885",
+          "relevance": 2,
+          "inCorpus": true,
+          "originalVectorRank": 34,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 56,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 56,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": 34,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": 34,
+          "mergedTop10Hit": false,
+          "finalRank": 34,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "37c160b5-4c96-44bf-a7a6-f7ba96fe346e",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": 32,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 57,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 57,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": 32,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": 32,
+          "mergedTop10Hit": false,
+          "finalRank": 32,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": 27,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 33,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 33,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": 27,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": 27,
+          "mergedTop10Hit": false,
+          "finalRank": 27,
+          "finalTop10Hit": false
+        }
+      ],
+      "snapshot": {
+        "channels": {
+          "originalVector": {
+            "topK": 50,
+            "uniqueCaseCount": 48,
+            "presence": {
+              "hit": true,
+              "bestRank": 27,
+              "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61",
+              "relevance": 3
+            }
+          },
+          "mappedRewriteVector": {
+            "topK": 30,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "recallOnlyMappingVector": {
+            "topK": 30,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "cleanedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 63,
+            "presence": {
+              "hit": true,
+              "bestRank": 33,
+              "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61",
+              "relevance": 3
+            },
+            "score": 0.651451
+          },
+          "expandedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 63,
+            "presence": {
+              "hit": true,
+              "bestRank": 33,
+              "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61",
+              "relevance": 3
+            },
+            "score": 0.651451
+          },
+          "controlledBm25Supplement": {
+            "topK": 4,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          }
+        },
+        "pool": {
+          "rawCandidateCount": 50,
+          "rawUniqueCaseCount": 48,
+          "mergedCandidateCount": 48,
+          "rawPresence": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61",
+            "relevance": 3
+          },
+          "mergedPresence": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61",
+            "relevance": 3
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61",
+            "relevance": 3,
+            "score": 0.719017,
+            "retrievalScore": 0.719017,
+            "retrievalSource": [
+              "original_vector"
+            ],
+            "candidateSource": "vector",
+            "recallStage": [
+              "original_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": null,
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support"
+            ],
+            "finalScoreSource": "base_retrieval_guard"
+          },
+          "dedupeDropped": false,
+          "mergeDropped": false,
+          "gatingDropped": true,
+          "bm25VectorTop10Overlap": 5
+        }
+      },
+      "offlineRecallOnlyProbes": [],
+      "missTypes": [
+        "GATING_DROPPED",
+        "UNREPAIRABLE_WITH_CURRENT_SIGNALS"
+      ],
+      "outcome": "EXPLAINED_NOT_FIXED",
+      "reasonCodes": [
+        "RELEVANT_CASE_IN_POOL_BUT_RANKING_OR_SIGNAL_STRENGTH_OUT_OF_SCOPE",
+        "RELEVANT_CASE_PRESENT_AFTER_MERGE_BUT_OUTSIDE_TOP10"
+      ],
+      "safeM13xRepairAvailable": false,
+      "stopLossBoundary": {
+        "currentSignalInsufficient": true,
+        "cannotSafelyFixInM13x": true,
+        "doesNotBlockM2ReadinessByItself": true,
+        "reasonCodes": [
+          "RELEVANT_CASE_IN_POOL_BUT_RANKING_OR_SIGNAL_STRENGTH_OUT_OF_SCOPE",
+          "RELEVANT_CASE_PRESENT_AFTER_MERGE_BUT_OUTSIDE_TOP10"
+        ],
+        "blockedRepairClasses": [
+          "global_topk_expansion",
+          "ranking_adjustment",
+          "query_id_or_case_id_special_case",
+          "qrels_or_bad_sample_edit"
+        ],
+        "futureNeeds": [
+          "stronger non-qrels recall signal",
+          "ranking evidence outside M1.3x-5"
+        ]
+      }
+    },
+    {
+      "blockerId": "PROD-RECALL-007",
+      "queryId": "product_q013",
+      "targetCaseIds": [
+        "443c73ff-c05f-4b35-8770-317612d26adc",
+        "a40ca8f2-7833-4609-b299-1df502420039",
+        "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "qrelRelevantCaseCount": 3,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "casino_online_profit"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false,
+        "degradedReasons": [
+          "QUERY_REWRITE_DISABLED"
+        ]
+      },
+      "targetCaseEvidence": [
+        {
+          "caseId": "443c73ff-c05f-4b35-8770-317612d26adc",
+          "relevance": 2,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 50,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": null,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "a40ca8f2-7833-4609-b299-1df502420039",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": null,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": null,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 48,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 46,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": null,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": null,
+          "mergedTop10Hit": false,
+          "finalRank": null,
+          "finalTop10Hit": false
+        },
+        {
+          "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+          "relevance": 3,
+          "inCorpus": true,
+          "originalVectorRank": 16,
+          "originalVectorTop10Hit": false,
+          "mappedRewriteVectorRank": 19,
+          "mappedRewriteVectorTop10Hit": false,
+          "recallOnlyVectorRank": null,
+          "recallOnlyVectorTop10Hit": false,
+          "cleanedBm25Rank": 14,
+          "cleanedBm25Top10Hit": false,
+          "expandedBm25Rank": 11,
+          "expandedBm25Top10Hit": false,
+          "rawCandidateRank": 16,
+          "rawCandidateTop10Hit": false,
+          "mergedRank": 14,
+          "mergedTop10Hit": false,
+          "finalRank": 19,
+          "finalTop10Hit": false
+        }
+      ],
+      "snapshot": {
+        "channels": {
+          "originalVector": {
+            "topK": 50,
+            "uniqueCaseCount": 32,
+            "presence": {
+              "hit": true,
+              "bestRank": 16,
+              "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+              "relevance": 3
+            }
+          },
+          "mappedRewriteVector": {
+            "topK": 30,
+            "uniqueCaseCount": 23,
+            "presence": {
+              "hit": true,
+              "bestRank": 19,
+              "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+              "relevance": 3
+            }
+          },
+          "recallOnlyMappingVector": {
+            "topK": 30,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          },
+          "cleanedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 51,
+            "presence": {
+              "hit": true,
+              "bestRank": 14,
+              "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+              "relevance": 3
+            },
+            "score": 0.553607
+          },
+          "expandedBm25": {
+            "topK": 100,
+            "uniqueCaseCount": 49,
+            "presence": {
+              "hit": true,
+              "bestRank": 11,
+              "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+              "relevance": 3
+            },
+            "score": 0.613997
+          },
+          "controlledBm25Supplement": {
+            "topK": 4,
+            "uniqueCaseCount": 0,
+            "presence": {
+              "hit": false,
+              "bestRank": null,
+              "caseId": null,
+              "relevance": null
+            }
+          }
+        },
+        "pool": {
+          "rawCandidateCount": 80,
+          "rawUniqueCaseCount": 34,
+          "mergedCandidateCount": 34,
+          "rawPresence": {
+            "hit": true,
+            "bestRank": 16,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+            "relevance": 3
+          },
+          "mergedPresence": {
+            "hit": true,
+            "bestRank": 14,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+            "relevance": 3
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 19,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+            "relevance": 3,
+            "score": 0.711024,
+            "retrievalScore": 0.730385,
+            "retrievalSource": [
+              "original_vector",
+              "variant_vector"
+            ],
+            "candidateSource": "vector+rewrite",
+            "recallStage": [
+              "original_query_vector",
+              "rewrite_or_mapped_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": "case_id_dedup_kept_top_chunk:ec2f585d-9e59-4f13-838a-56cf9939c3d5_c002:source=original_vector",
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support",
+              "no_fact_guard_relaxed_multi_source",
+              "weak_signal_tiebreak_limited_to_vector_bucket"
+            ],
+            "finalScoreSource": "guarded_vector_bucket"
+          },
+          "dedupeDropped": false,
+          "mergeDropped": false,
+          "gatingDropped": true,
+          "bm25VectorTop10Overlap": 6
+        }
+      },
+      "offlineRecallOnlyProbes": [
+        {
+          "mappingLabel": "casino_online_profit",
+          "mode": "legal_term",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": true,
+            "bestRank": 9,
+            "caseId": "443c73ff-c05f-4b35-8770-317612d26adc",
+            "relevance": 2
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "443c73ff-c05f-4b35-8770-317612d26adc",
+            "relevance": 2,
+            "score": 0.711037,
+            "retrievalScore": 0.742444,
+            "retrievalSource": [
+              "recall_only_mapping_vector"
+            ],
+            "candidateSource": "vector+rewrite",
+            "recallStage": [
+              "recall_only_mapping_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": "case_id_dedup_kept_top_chunk:443c73ff-c05f-4b35-8770-317612d26adc_c002:source=recall_only_mapping_vector",
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support",
+              "no_fact_guard_relaxed_multi_source",
+              "weak_signal_tiebreak_limited_to_vector_bucket"
+            ],
+            "finalScoreSource": "guarded_vector_bucket"
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 44,
+          "queryId": "product_q013"
+        },
+        {
+          "mappingLabel": "casino_online_profit",
+          "mode": "case_cause_plus_expansion",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": true,
+            "bestRank": 14,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+            "relevance": 3
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 23,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+            "relevance": 3,
+            "score": 0.71104,
+            "retrievalScore": 0.744983,
+            "retrievalSource": [
+              "original_vector",
+              "variant_vector",
+              "recall_only_mapping_vector"
+            ],
+            "candidateSource": "vector+rewrite",
+            "recallStage": [
+              "recall_only_mapping_vector",
+              "original_query_vector",
+              "rewrite_or_mapped_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": "case_id_dedup_kept_top_chunk:ec2f585d-9e59-4f13-838a-56cf9939c3d5_c002:source=recall_only_mapping_vector",
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support",
+              "no_fact_guard_relaxed_multi_source",
+              "weak_signal_tiebreak_limited_to_vector_bucket"
+            ],
+            "finalScoreSource": "guarded_vector_bucket"
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 40,
+          "queryId": "product_q013"
+        },
+        {
+          "mappingLabel": "casino_online_profit",
+          "mode": "legal_cause_expansion",
+          "variantCount": 1,
+          "recallOnlyPresence": {
+            "hit": true,
+            "bestRank": 24,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+            "relevance": 3
+          },
+          "finalPresence": {
+            "hit": true,
+            "bestRank": 31,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+            "relevance": 3,
+            "score": 0.711029,
+            "retrievalScore": 0.735068,
+            "retrievalSource": [
+              "original_vector",
+              "variant_vector",
+              "recall_only_mapping_vector"
+            ],
+            "candidateSource": "vector+rewrite",
+            "recallStage": [
+              "recall_only_mapping_vector",
+              "original_query_vector",
+              "rewrite_or_mapped_query_vector"
+            ],
+            "filteredReason": "not_filtered",
+            "dedupReason": "case_id_dedup_kept_top_chunk:ec2f585d-9e59-4f13-838a-56cf9939c3d5_c002:source=recall_only_mapping_vector",
+            "fusionGuards": [
+              "no_fact_support_base_retrieval",
+              "key_paragraph_without_fact_support",
+              "authority_without_fact_support",
+              "no_fact_guard_relaxed_multi_source",
+              "weak_signal_tiebreak_limited_to_vector_bucket"
+            ],
+            "finalScoreSource": "guarded_vector_bucket"
+          },
+          "top10Hit": false,
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 40,
+          "queryId": "product_q013"
+        }
+      ],
+      "missTypes": [
+        "GATING_DROPPED",
+        "UNREPAIRABLE_WITH_CURRENT_SIGNALS"
+      ],
+      "outcome": "EXPLAINED_NOT_FIXED",
+      "reasonCodes": [
+        "RELEVANT_CASE_IN_POOL_BUT_RANKING_OR_SIGNAL_STRENGTH_OUT_OF_SCOPE",
+        "RELEVANT_CASE_PRESENT_AFTER_MERGE_BUT_OUTSIDE_TOP10"
+      ],
+      "safeM13xRepairAvailable": false,
+      "stopLossBoundary": {
+        "currentSignalInsufficient": true,
+        "cannotSafelyFixInM13x": true,
+        "doesNotBlockM2ReadinessByItself": true,
+        "reasonCodes": [
+          "RELEVANT_CASE_IN_POOL_BUT_RANKING_OR_SIGNAL_STRENGTH_OUT_OF_SCOPE",
+          "RELEVANT_CASE_PRESENT_AFTER_MERGE_BUT_OUTSIDE_TOP10"
+        ],
+        "blockedRepairClasses": [
+          "global_topk_expansion",
+          "ranking_adjustment",
+          "query_id_or_case_id_special_case",
+          "qrels_or_bad_sample_edit"
+        ],
+        "futureNeeds": [
+          "stronger non-qrels recall signal",
+          "ranking evidence outside M1.3x-5"
+        ]
+      }
+    }
+  ],
+  "boundaries": {
+    "m2ReadinessBlockedByThisStep": false,
+    "m2ReadinessReason": "M1.3x-5 closes recall misses by explanation. Remaining hard-gate metric regressions are not introduced by this step and stay outside M1.3x-5 recall repair.",
+    "nextRequiredCapabilityForUnfixedItems": [
+      "more discriminative evidence labels or qrels enrichment",
+      "separate ranking/guard work outside M1.3x-5",
+      "additional corpus coverage only if qrels/data boundary is confirmed"
+    ]
+  }
+}

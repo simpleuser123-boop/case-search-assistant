@@ -1,0 +1,127 @@
+{
+  "artifact": "m2-low-confidence-candidates",
+  "generated_at": "2026-06-12T15:16:24+08:00",
+  "entry_artifacts": [
+    {
+      "step": "M2-1",
+      "markdown": "docs/development/m2-entry-contract-20260612-100850.md",
+      "json": "docs/development/m2-entry-contract-20260612-100850.json",
+      "conclusion": "GO"
+    },
+    {
+      "step": "M2-2",
+      "markdown": "docs/development/m2-source-anchor-closure-20260612-104120.md",
+      "json": "docs/development/m2-source-anchor-closure-20260612-104120.json",
+      "conclusion": "GO"
+    },
+    {
+      "step": "M2-3",
+      "markdown": "docs/development/m2-coverage-privacy-20260612-140115.md",
+      "json": "docs/development/m2-coverage-privacy-20260612-140115.json",
+      "conclusion": "GO"
+    }
+  ],
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": false
+  },
+  "contract": {
+    "primary_field": "results",
+    "low_confidence_field": "low_confidence_candidates",
+    "candidate_fields": [
+      "confidence_level",
+      "confidence_reasons",
+      "confidence_score_band",
+      "original_rank"
+    ],
+    "main_result_target_count": 5,
+    "low_confidence_candidate_limit": 5,
+    "score_bands": [
+      "0.00-0.65",
+      "0.65-0.78",
+      "0.78-1.00"
+    ],
+    "reason_codes": [
+      "LOW_SCORE_BAND",
+      "RELAXED_RECALL_SOURCE",
+      "LOW_LEGAL_ELEMENT_HIT_COUNT",
+      "DEGRADED_SEARCH_PATH",
+      "MAIN_RESULT_COUNT_BELOW_TARGET"
+    ]
+  },
+  "runtime_features_used": [
+    "final_score_band",
+    "retrieval_source",
+    "legal_element_hit_count",
+    "main_result_count",
+    "degraded_reason_code"
+  ],
+  "forbidden_runtime_inputs": {
+    "qrels": false,
+    "relevance": false,
+    "label": false,
+    "query_id": false,
+    "case_id": false,
+    "manual_rank_adjustment": false,
+    "historical_eval_result": false
+  },
+  "api_field_changes": {
+    "SearchResponse": [
+      "low_confidence_candidates"
+    ],
+    "SearchResultItem": [
+      "confidence_level",
+      "confidence_reasons",
+      "confidence_score_band",
+      "original_rank"
+    ],
+    "results_semantics_changed": false,
+    "low_confidence_occupies_results": false
+  },
+  "frontend_display": {
+    "primary_results_keep_main_weight": true,
+    "low_confidence_uses_separate_panel": true,
+    "copy_reason_codes_only": true,
+    "absolute_coverage_claim": false
+  },
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_m2_low_confidence_candidates.py",
+      "result": "passed",
+      "passed_count": 5
+    },
+    {
+      "command": "cd apps/web; npm run test -- SearchPage.test.tsx",
+      "result": "passed",
+      "passed_count": 27
+    },
+    {
+      "command": "cd apps/api; pytest tests/test_m1_3_candidate_comparison.py tests/test_m1_3_legal_candidate_robustness.py tests/test_feature_flag_rollback.py tests/test_health.py tests/test_m2_low_confidence_candidates.py",
+      "result": "passed",
+      "passed_count": 46
+    },
+    {
+      "command": "cd apps/web; npm run test",
+      "result": "passed",
+      "passed_count": 42
+    },
+    {
+      "command": "cd apps/web; npm run build",
+      "result": "passed"
+    }
+  ],
+  "privacy_checks": {
+    "raw_query_saved": false,
+    "case_fact_body_saved": false,
+    "candidate_body_saved": false,
+    "chunk_body_saved": false,
+    "json_contains_body_content": false,
+    "report_contains_body_content": false
+  },
+  "data_mutation": {
+    "qrels_modified": false,
+    "labels_modified": false,
+    "historical_eval_modified": false
+  },
+  "conclusion": "GO",
+  "next_allowed_step": "M2-5"
+}

@@ -1,0 +1,114 @@
+{
+  "step": "M4-4",
+  "capability": "case_list_assembly",
+  "feature_ref": "F17",
+  "generated_at": "2026-06-13T21:12:25+08:00",
+  "go_no_go": {
+    "result": "GO",
+    "allow_next_step": true,
+    "next_step": "M4-5 清单导出",
+    "rollback_required": false,
+    "stop_loss_triggered": false
+  },
+  "prerequisites": {
+    "M4-1_entry_contract": "GO",
+    "M4-2_search_history_draft": "GO",
+    "M4-3_case_favorite": "GO"
+  },
+  "implementation": {
+    "mode": "frontend_only_localStorage",
+    "backend_files_changed": 0,
+    "feature_flag_frontend": "VITE_ENABLE_CASE_LIST",
+    "feature_flag_frontend_default": false,
+    "feature_flag_backend": "ENABLE_CASE_LIST",
+    "feature_flag_backend_default": false,
+    "closed_returns_to": "M4-3 末态",
+    "storage_key": "case-search:m4:case-list:v1",
+    "new_files": [
+      "apps/web/src/lib/caseList.ts",
+      "apps/web/src/lib/caseList.test.ts",
+      "apps/web/src/components/results/AddToListButton.tsx",
+      "apps/web/src/components/results/CaseListPanel.tsx",
+      "apps/web/src/pages/CaseListAcceptance.test.tsx"
+    ],
+    "modified_files": [
+      "apps/web/src/components/results/ResultCard.tsx",
+      "apps/web/src/components/results/ResultList.tsx",
+      "apps/web/src/components/results/LowConfidencePanel.tsx",
+      "apps/web/src/components/results/CaseCompareView.tsx",
+      "apps/web/src/pages/SearchPage.tsx",
+      "apps/web/src/config/featureFlags.ts",
+      "apps/web/src/vite-env.d.ts"
+    ]
+  },
+  "data_structure": {
+    "case_list": ["list_id", "list_title", "items", "created_at", "updated_at", "list_status"],
+    "case_list_item": ["case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchors", "note", "tag", "added_at"],
+    "list_source_anchor": ["case_id", "source_chunk_id", "anchor_type", "chunk_type"],
+    "limits": {
+      "list_title_max_chars": 40,
+      "note_max_chars": 120,
+      "tag_max_chars": 24,
+      "anchor_max_per_item": 4,
+      "max_lists": 50,
+      "max_items_per_list": 200
+    }
+  },
+  "rules": {
+    "assembly": {
+      "entry_points": ["result_list", "low_confidence_candidates", "case_compare", "detail_drawer"],
+      "dedup_same_case_within_list": true,
+      "manual_reorder": true,
+      "add_remove_items": true,
+      "delete_whole_list": true
+    },
+    "source": {
+      "min_anchor_fields": ["case_id", "source_chunk_id"],
+      "cross_case_anchor_dropped": true,
+      "no_anchor_no_delivery_or_degraded": true,
+      "fabricate_source_chunk_id": false
+    },
+    "boundaries": {
+      "stores_body_text": false,
+      "affects_runtime_ranking": false,
+      "affects_recall": false,
+      "affects_source_selection": false,
+      "manual_sort_writes_back_to_main_ranking": false,
+      "special_cases_by_query_or_case_id": false,
+      "low_confidence_repackaged_as_high": false
+    }
+  },
+  "validation": {
+    "backend_pytest": {
+      "files": ["test_search_api_fallback_smoke.py", "test_feature_flag_rollback.py", "test_performance_smoke.py"],
+      "passed": 12,
+      "failed": 0,
+      "exit_code": 0,
+      "database_url": "sqlite (temp, deleted)"
+    },
+    "frontend_vitest": {
+      "total_files": 16,
+      "passed": 167,
+      "failed": 0,
+      "m4_4_focused": {
+        "caseList.test.ts": 18,
+        "CaseListAcceptance.test.tsx": 7
+      }
+    },
+    "tsc_exit": 0,
+    "vite_build_modules": 115
+  },
+  "privacy_gate": {
+    "persist_layer_body_text": false,
+    "log_fields": ["event", "surface", "status", "reason_code", "count"],
+    "tampered_data_sanitized_on_load": true,
+    "forbidden_absolute_copy_present": false
+  },
+  "acceptance": {
+    "list_stores_references_and_user_fields_only": true,
+    "items_have_anchor_or_safe_degrade": true,
+    "list_add_remove_edit_delete": true,
+    "list_does_not_change_main_ranking": true,
+    "no_body_leak": true
+  }
+}

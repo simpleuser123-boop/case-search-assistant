@@ -1,0 +1,2890 @@
+{
+  "generated_at": "2026-06-09T20:53:53+08:00",
+  "scope": "M1.3-1 regression sample freeze and attribution relabeling only",
+  "source_files": [
+    "落地设计文档/10-M1.3回归修复版分步骤文档.md",
+    "docs/development/m1.2-final-verification-20260609-195835.md",
+    "docs/development/m1.2-release-gate-20260609-195835.json",
+    "docs/development/m1.2-regression-run-final-20260609-195835.json",
+    "docs/development/m1.2-product-bad-cases-product-chain-final-20260609-195835.json",
+    "docs/development/m1.2-parameter-version-final-20260609-195835.json",
+    "data/eval/m1_2_regression_set_20260609.json",
+    "data/eval/product_eval_queries.jsonl",
+    "data/eval/product_eval_qrels.jsonl",
+    "docs/development/m1.2-query-understanding-step5.3-20260609.md",
+    "docs/development/m1.2-query-mapping-compare-20260609-step5.3.json",
+    "docs/development/m1.2-recall-repair-20260609.md",
+    "docs/development/m1.2-recall-repair-20260609.json",
+    "docs/development/m1.2-rerank-fusion-repair-20260609.md",
+    "docs/development/m1.2-regression-report-20260609.md"
+  ],
+  "privacy": {
+    "raw_query_text_written": false,
+    "raw_case_facts_written": false,
+    "candidate_full_text_written": false,
+    "chunk_text_written": false,
+    "allowed_identifiers_only": true,
+    "note": "This artifact uses query ids, case ids, metrics, ranks, labels, and technical attribution summaries only."
+  },
+  "frozen_evidence_summary": {
+    "m1_2_gate_status": "CONDITIONAL_GO",
+    "baseline_search_usable": true,
+    "weighted_rerank_gray_candidate": false,
+    "enter_m2_readiness": false,
+    "parameter_version": "m1_2_6_guarded_rerank_v1",
+    "regression_set_version": "m1_2_fixed_regression_set_v1",
+    "evaluated_query_count": 25,
+    "sample_distribution": {
+      "high_value_bad_case": 12,
+      "typical_success": 5,
+      "weight_sensitive_boundary": 8
+    },
+    "overall_metrics": {
+      "baseline": {
+        "Precision@5": 0.032,
+        "NDCG@10": 0.134,
+        "Top10 hit rate": 0.48,
+        "evaluatedQueryCount": 25
+      },
+      "currentBefore": {
+        "Precision@5": 0.048,
+        "NDCG@10": 0.139,
+        "Top10 hit rate": 0.52,
+        "evaluatedQueryCount": 25
+      },
+      "currentAfter": {
+        "Precision@5": 0.04,
+        "NDCG@10": 0.1371,
+        "Top10 hit rate": 0.52,
+        "evaluatedQueryCount": 25
+      }
+    },
+    "metric_delta": {
+      "afterVsBaseline": {
+        "Precision@5": 0.008,
+        "NDCG@10": 0.0031,
+        "Top10 hit rate": 0.04
+      },
+      "afterVsBefore": {
+        "Precision@5": -0.008,
+        "NDCG@10": -0.0019,
+        "Top10 hit rate": 0
+      }
+    },
+    "blocked_items": [],
+    "product_local_final_bad_cases": {
+      "bad_case_count": 20,
+      "reason_distribution": {
+        "METRIC_REGRESSION": 9,
+        "RECALL_MISS": 11
+      }
+    },
+    "source_eval_files_read": {
+      "regression_set_query_count": 25,
+      "product_eval_queries_count": 25,
+      "product_eval_qrels_rows": 75
+    }
+  },
+  "regression_sets": {
+    "before_after_regressed": {
+      "count": 4,
+      "query_ids": [
+        "product_q007",
+        "product_q017",
+        "product_q021",
+        "product_q023"
+      ]
+    },
+    "after_vs_baseline_regressed": {
+      "count": 9,
+      "query_ids": [
+        "product_q008",
+        "product_q016",
+        "product_q017",
+        "product_q018",
+        "product_q020",
+        "product_q021",
+        "product_q023",
+        "product_q024",
+        "product_q025"
+      ]
+    },
+    "metric_regression": {
+      "count": 9,
+      "query_ids": [
+        "product_q008",
+        "product_q016",
+        "product_q017",
+        "product_q018",
+        "product_q020",
+        "product_q021",
+        "product_q023",
+        "product_q024",
+        "product_q025"
+      ]
+    },
+    "recall_miss": {
+      "count": 11,
+      "query_ids": [
+        "product_q001",
+        "product_q002",
+        "product_q003",
+        "product_q004",
+        "product_q005",
+        "product_q006",
+        "product_q009",
+        "product_q010",
+        "product_q011",
+        "product_q012",
+        "product_q013"
+      ]
+    },
+    "intersections": {
+      "before_after_and_after_baseline": [
+        "product_q017",
+        "product_q021",
+        "product_q023"
+      ],
+      "before_after_and_metric_regression": [
+        "product_q017",
+        "product_q021",
+        "product_q023"
+      ],
+      "before_after_and_recall_miss": [],
+      "after_baseline_and_metric_regression": [
+        "product_q008",
+        "product_q016",
+        "product_q017",
+        "product_q018",
+        "product_q020",
+        "product_q021",
+        "product_q023",
+        "product_q024",
+        "product_q025"
+      ],
+      "after_baseline_and_recall_miss": [],
+      "metric_regression_and_recall_miss": []
+    },
+    "cross_relation_summary": [
+      "after_vs_baseline REGRESSED is identical to final bad case METRIC_REGRESSION: 9/9 same query ids.",
+      "before_after REGRESSED has 4 query ids; 3 also appear in after_vs_baseline REGRESSED and METRIC_REGRESSION, while product_q007 is before_after-only and still above baseline.",
+      "final RECALL_MISS has 11 query ids and is disjoint from both REGRESSED sets and METRIC_REGRESSION; these are Top10-miss blockers but not labeled metric regression because baseline/current metrics are all zero.",
+      "product_q008 is a Top10-hit-lost metric regression against baseline, but it is not labeled RECALL_MISS in final bad cases."
+    ]
+  },
+  "triage_items": [
+    {
+      "query_id": "product_q001",
+      "target_case_ids": [
+        "561314d5-2ad3-48fa-b514-1cd8b982100a",
+        "d34eda6a-a5c6-4152-8fca-9084f4f90934",
+        "f6300f37-2b14-4aca-8c43-75f25f80a0d1"
+      ],
+      "sample_type": "high_value_bad_case",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "RECALL_MISS",
+          "bm25_hit_outside_top10_or_not_merged"
+        ],
+        "change_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": false,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 38,
+          "mapped_best_relevant_rank": 38,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": {
+          "original_vector_best_rank": null,
+          "rewrite_vector_best_rank": null,
+          "bm25_cleaned_best_rank": 38,
+          "bm25_expanded_best_rank": 38,
+          "merged_best_rank_after_repair": null,
+          "before_top10_hit": false,
+          "after_top10_hit": false,
+          "candidate_source_after_repair": "vector",
+          "repair_path": "none"
+        }
+      },
+      "primary_cause": "CANDIDATE_MERGE_GATING",
+      "priority": "P0",
+      "evidence_summary": "BM25 has relevant candidates outside Top10, but merged current pool still has no relevant Top10 hit; M1.2 recall report records BM25-hit-but-not-merged gating.",
+      "proposed_fix_scope": "M1.3-3 only: inspect controlled BM25/admission merge for listed ids; do not globally expand all candidate pools.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q002",
+      "target_case_ids": [
+        "101305d2-00d3-443e-8f36-3843cbeb3379",
+        "6475c2e9-90a0-4744-a0d1-37808f0ce3a7",
+        "bae4f3fd-158e-467b-85bf-3128679b68f5"
+      ],
+      "sample_type": "high_value_bad_case",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "RECALL_MISS",
+          "unresolved_recall_or_data_mismatch_candidate"
+        ],
+        "change_tags": [
+          "metric_equal"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "unchanged",
+          "original_best_relevant_rank": null,
+          "mapped_best_relevant_rank": null,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": {
+          "original_vector_best_rank": null,
+          "rewrite_vector_best_rank": null,
+          "bm25_cleaned_best_rank": null,
+          "bm25_expanded_best_rank": null,
+          "merged_best_rank_after_repair": null,
+          "before_top10_hit": false,
+          "after_top10_hit": false,
+          "candidate_source_after_repair": "vector+rewrite",
+          "repair_path": "none"
+        }
+      },
+      "primary_cause": "QRELS_OR_DATA_MISMATCH",
+      "priority": "P0",
+      "evidence_summary": "Relevant targets are absent across original vector, rewrite vector, cleaned BM25, and expanded BM25 in M1.2 recall repair; source labels it unresolved recall/data mismatch candidate.",
+      "proposed_fix_scope": "Evidence-first only: verify qrels/corpus alignment and per-stage target presence before any recall code change.",
+      "blocked_by_missing_evidence": {
+        "blocked": true,
+        "missing": [
+          "Need evidence distinguishing true recall-pool absence from qrels/data mismatch.",
+          "Need per-stage target presence and corpus/qrels alignment proof before code repair."
+        ]
+      }
+    },
+    {
+      "query_id": "product_q003",
+      "target_case_ids": [
+        "211091c2-6eb0-4de2-b8d7-c55529053ea0",
+        "94517b43-ac1f-4694-b627-f312ce99bc3e",
+        "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+      ],
+      "sample_type": "high_value_bad_case",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "RECALL_MISS",
+          "vector_recovered_below_top10"
+        ],
+        "change_tags": [
+          "metric_equal"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": false,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 38,
+          "mapped_best_relevant_rank": 38,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": {
+          "original_vector_best_rank": 15,
+          "rewrite_vector_best_rank": null,
+          "bm25_cleaned_best_rank": 38,
+          "bm25_expanded_best_rank": 38,
+          "merged_best_rank_after_repair": 15,
+          "before_top10_hit": false,
+          "after_top10_hit": false,
+          "candidate_source_after_repair": "vector",
+          "repair_path": "vector"
+        }
+      },
+      "primary_cause": "RERANK_SUPPRESSION",
+      "priority": "P0",
+      "evidence_summary": "Relevant target is recovered by vector below Top10; final current Top10 still has no relevant hit.",
+      "proposed_fix_scope": "M1.3-3/M1.3-4 only for listed ids: inspect candidate presence and ranking suppression; no case-id hardcoding.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q004",
+      "target_case_ids": [
+        "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+        "886d5b3e-863e-4106-9ac7-1afe4cc9583e",
+        "e9760ce5-799d-4a8d-8dc1-8409a795bb76"
+      ],
+      "sample_type": "high_value_bad_case",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "RECALL_MISS",
+          "mapping_no_measurable_gain_yet"
+        ],
+        "change_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "unchanged",
+          "original_best_relevant_rank": null,
+          "mapped_best_relevant_rank": null,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": {
+          "original_vector_best_rank": 47,
+          "rewrite_vector_best_rank": null,
+          "bm25_cleaned_best_rank": null,
+          "bm25_expanded_best_rank": null,
+          "merged_best_rank_after_repair": 47,
+          "before_top10_hit": false,
+          "after_top10_hit": false,
+          "candidate_source_after_repair": "vector+rewrite",
+          "repair_path": "vector"
+        }
+      },
+      "primary_cause": "QUERY_MAPPING_NO_GAIN",
+      "priority": "P0",
+      "evidence_summary": "Mapping was used but produced no measurable Top10 gain; vector rank remains far outside Top10 and BM25 has no target hit.",
+      "proposed_fix_scope": "M1.3-3 only: evaluate recall-only query mapping/admission for listed ids; no broad mapping expansion.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q005",
+      "target_case_ids": [
+        "2993a8d9-85c5-4f1b-ad74-3f32ecdee158",
+        "304bf74e-edae-4d90-be20-e1df152b28ca",
+        "d0bd830b-50a3-442b-8922-014ca54331f2"
+      ],
+      "sample_type": "high_value_bad_case",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "QUERY_UNDERSTANDING_GAP",
+          "rank_improved_outside_top10"
+        ],
+        "change_tags": [
+          "metric_equal"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "rank_improved",
+          "original_best_relevant_rank": 45,
+          "mapped_best_relevant_rank": 43,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": {
+          "original_vector_best_rank": 22,
+          "rewrite_vector_best_rank": null,
+          "bm25_cleaned_best_rank": 45,
+          "bm25_expanded_best_rank": 43,
+          "merged_best_rank_after_repair": 22,
+          "before_top10_hit": false,
+          "after_top10_hit": false,
+          "candidate_source_after_repair": "vector+rewrite",
+          "repair_path": "vector"
+        }
+      },
+      "primary_cause": "QUERY_MAPPING_NO_GAIN",
+      "priority": "P0",
+      "evidence_summary": "Query mapping improves best relevant rank only outside Top10; final current Top10 remains a miss.",
+      "proposed_fix_scope": "M1.3-3 only: evaluate recall-only query mapping/admission for listed ids; no broad mapping expansion.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q006",
+      "target_case_ids": [
+        "49654efe-c3c1-4fd5-9717-f6c295dc3f80",
+        "6051e90c-c739-4eef-a3db-673ff6a66301",
+        "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+      ],
+      "sample_type": "high_value_bad_case",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "QUERY_UNDERSTANDING_GAP",
+          "rank_improved_outside_top10"
+        ],
+        "change_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "rank_improved",
+          "original_best_relevant_rank": 17,
+          "mapped_best_relevant_rank": 12,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": {
+          "original_vector_best_rank": 33,
+          "rewrite_vector_best_rank": 19,
+          "bm25_cleaned_best_rank": 17,
+          "bm25_expanded_best_rank": 12,
+          "merged_best_rank_after_repair": 20,
+          "before_top10_hit": false,
+          "after_top10_hit": false,
+          "candidate_source_after_repair": "vector+rewrite",
+          "repair_path": "vector"
+        }
+      },
+      "primary_cause": "QUERY_MAPPING_NO_GAIN",
+      "priority": "P0",
+      "evidence_summary": "Query mapping/rewrite improves rank but merged best rank is still outside Top10; final current Top10 remains a miss.",
+      "proposed_fix_scope": "M1.3-3 only: evaluate recall-only query mapping/admission for listed ids; no broad mapping expansion.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q007",
+      "target_case_ids": [
+        "0a0c472b-206c-43c5-b8a6-6a81025fa1ee",
+        "8736a2e1-ec4c-48db-9687-7bbf8aa1eb5d",
+        "e2bfd330-511a-4265-b9f9-8e190dd4ee82"
+      ],
+      "sample_type": "weight_sensitive_boundary",
+      "appears_in": [
+        "fixed_before_after_REGRESSED"
+      ],
+      "before_after_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "before_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.1465,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.1161,
+          "top10_hit": true
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": -0.0304,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "IMPROVED",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.0699,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.1161,
+          "top10_hit": true
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.0462,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [],
+        "current_precision_at_5": 0.2,
+        "current_ndcg_at_10": 0.1161,
+        "current_top10_has_hit": true
+      },
+      "recall_miss": {
+        "in_final_bad_case": false,
+        "current_top10_has_hit": true,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [
+          {
+            "case_id": "8736a2e1-ec4c-48db-9687-7bbf8aa1eb5d",
+            "rank": 9,
+            "relevance": 2
+          }
+        ],
+        "current_before_relevant": [
+          {
+            "case_id": "8736a2e1-ec4c-48db-9687-7bbf8aa1eb5d",
+            "rank": 2,
+            "relevance": 2
+          }
+        ],
+        "current_after_relevant": [
+          {
+            "case_id": "8736a2e1-ec4c-48db-9687-7bbf8aa1eb5d",
+            "rank": 3,
+            "relevance": 2
+          }
+        ],
+        "best_relevant_rank": {
+          "baseline": 9,
+          "current_before": 2,
+          "current_after": 3
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "typical_hit",
+          "rerank_order_sensitive"
+        ],
+        "change_tags": [
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "precision_at_5_up",
+          "ndcg_at_10_up",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": false,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 9,
+          "mapped_best_relevant_rank": 9,
+          "original_top10_has_hit": true,
+          "mapped_top10_has_hit": true,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "GUARD_OVER_CORRECTION",
+      "priority": "P0",
+      "evidence_summary": "Guarded after lowers NDCG versus current before by moving the relevant hit down, although after still beats baseline.",
+      "proposed_fix_scope": "M1.3-4 only: analyze guard/effective-score tradeoff for listed ids; do not reopen default feature flag.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q008",
+      "target_case_ids": [
+        "5489d0c1-6517-4d59-99ff-be09aec07f56",
+        "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+        "6b92ca2b-5680-4ced-8a97-3cf6704b427c"
+      ],
+      "sample_type": "weight_sensitive_boundary",
+      "appears_in": [
+        "fixed_after_vs_baseline_REGRESSED",
+        "final_bad_case_METRIC_REGRESSION"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.1631,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": -0.1631,
+          "top10_hit_delta": -1
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": true,
+        "final_bad_case_reasons": [
+          "METRIC_REGRESSION"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": false,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [
+          {
+            "case_id": "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+            "rank": 9,
+            "relevance": 3
+          }
+        ],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": 9,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "baseline_hit",
+          "current_before_lost_hit"
+        ],
+        "change_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "top10_hit_lost",
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": false,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 9,
+          "mapped_best_relevant_rank": 9,
+          "original_top10_has_hit": true,
+          "mapped_top10_has_hit": true,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "RERANK_SUPPRESSION",
+      "priority": "P0",
+      "evidence_summary": "Baseline has a Top10 hit, while current before and guarded after both lose the Top10 hit.",
+      "proposed_fix_scope": "M1.3-3/M1.3-4 only for listed ids: inspect candidate presence and ranking suppression; no case-id hardcoding.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q009",
+      "target_case_ids": [
+        "36df2795-f259-40ac-b08e-16e42c471885",
+        "37c160b5-4c96-44bf-a7a6-f7ba96fe346e",
+        "68058dc3-da5d-45c2-883a-e143e546bf61"
+      ],
+      "sample_type": "high_value_bad_case",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "RECALL_MISS",
+          "vector_recovered_below_top10"
+        ],
+        "change_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": false,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 33,
+          "mapped_best_relevant_rank": 33,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": {
+          "original_vector_best_rank": 27,
+          "rewrite_vector_best_rank": null,
+          "bm25_cleaned_best_rank": 33,
+          "bm25_expanded_best_rank": 33,
+          "merged_best_rank_after_repair": 27,
+          "before_top10_hit": false,
+          "after_top10_hit": false,
+          "candidate_source_after_repair": "vector",
+          "repair_path": "vector"
+        }
+      },
+      "primary_cause": "RERANK_SUPPRESSION",
+      "priority": "P0",
+      "evidence_summary": "Relevant target is present only below Top10 after vector repair; final current Top10 remains a miss.",
+      "proposed_fix_scope": "M1.3-3/M1.3-4 only for listed ids: inspect candidate presence and ranking suppression; no case-id hardcoding.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q010",
+      "target_case_ids": [
+        "26627b67-8d0f-470a-84b1-2e08358fd1e8",
+        "8283a876-039c-444c-a24f-5a901980097d",
+        "df4a90b1-bf96-432a-8ec4-d61ccf817d22"
+      ],
+      "sample_type": "high_value_bad_case",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "QUERY_UNDERSTANDING_GAP",
+          "mapped_rank_improved"
+        ],
+        "change_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "rank_improved",
+          "original_best_relevant_rank": 26,
+          "mapped_best_relevant_rank": 21,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": {
+          "original_vector_best_rank": 20,
+          "rewrite_vector_best_rank": 13,
+          "bm25_cleaned_best_rank": 26,
+          "bm25_expanded_best_rank": 21,
+          "merged_best_rank_after_repair": 20,
+          "before_top10_hit": false,
+          "after_top10_hit": false,
+          "candidate_source_after_repair": "vector+rewrite",
+          "repair_path": "vector"
+        }
+      },
+      "primary_cause": "QUERY_MAPPING_NO_GAIN",
+      "priority": "P0",
+      "evidence_summary": "Mapping improves rank outside Top10 only; no current Top10 hit is produced.",
+      "proposed_fix_scope": "M1.3-3 only: evaluate recall-only query mapping/admission for listed ids; no broad mapping expansion.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q011",
+      "target_case_ids": [
+        "23e8e218-ac32-4670-83f7-e49ea45aa0ca",
+        "b7e49dc2-2a5d-41b2-8f4c-28e927d326a2",
+        "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+      ],
+      "sample_type": "high_value_bad_case",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "RECALL_MISS",
+          "bm25_hit_outside_top10_or_not_merged"
+        ],
+        "change_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": false,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 12,
+          "mapped_best_relevant_rank": 12,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": {
+          "original_vector_best_rank": null,
+          "rewrite_vector_best_rank": null,
+          "bm25_cleaned_best_rank": 12,
+          "bm25_expanded_best_rank": 12,
+          "merged_best_rank_after_repair": null,
+          "before_top10_hit": false,
+          "after_top10_hit": false,
+          "candidate_source_after_repair": "vector",
+          "repair_path": "none"
+        }
+      },
+      "primary_cause": "CANDIDATE_MERGE_GATING",
+      "priority": "P0",
+      "evidence_summary": "BM25 has a near-Top10 relevant candidate but default merged current pool still has no relevant Top10 hit; source marks BM25-hit-but-not-merged gating.",
+      "proposed_fix_scope": "M1.3-3 only: inspect controlled BM25/admission merge for listed ids; do not globally expand all candidate pools.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q012",
+      "target_case_ids": [
+        "6f832b41-3e4d-4ae6-b2b8-634d43566efa",
+        "a7dfe426-8c8d-488e-a625-571cd533762e",
+        "de1c4200-6528-4234-bdfd-30e13b63a3bf"
+      ],
+      "sample_type": "high_value_bad_case",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "QUERY_UNDERSTANDING_GAP",
+          "mapped_rank_improved"
+        ],
+        "change_tags": [
+          "metric_equal"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "rank_improved",
+          "original_best_relevant_rank": 18,
+          "mapped_best_relevant_rank": 16,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": {
+          "original_vector_best_rank": 35,
+          "rewrite_vector_best_rank": 22,
+          "bm25_cleaned_best_rank": 18,
+          "bm25_expanded_best_rank": 16,
+          "merged_best_rank_after_repair": 24,
+          "before_top10_hit": false,
+          "after_top10_hit": false,
+          "candidate_source_after_repair": "vector+rewrite",
+          "repair_path": "vector"
+        }
+      },
+      "primary_cause": "QUERY_MAPPING_NO_GAIN",
+      "priority": "P0",
+      "evidence_summary": "Mapping/rewrite improves best rank but still outside Top10; final current Top10 remains a miss.",
+      "proposed_fix_scope": "M1.3-3 only: evaluate recall-only query mapping/admission for listed ids; no broad mapping expansion.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q013",
+      "target_case_ids": [
+        "443c73ff-c05f-4b35-8770-317612d26adc",
+        "a40ca8f2-7833-4609-b299-1df502420039",
+        "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+      ],
+      "sample_type": "weight_sensitive_boundary",
+      "appears_in": [
+        "final_bad_case_RECALL_MISS"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit": false
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": false,
+        "final_bad_case_reasons": [
+          "RECALL_MISS"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0,
+        "current_top10_has_hit": false
+      },
+      "recall_miss": {
+        "in_final_bad_case": true,
+        "current_top10_has_hit": false,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [],
+        "current_before_relevant": [],
+        "current_after_relevant": [],
+        "best_relevant_rank": {
+          "baseline": null,
+          "current_before": null,
+          "current_after": null
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "weak_signal_tradeoff",
+          "bm25_same_pool_after_lost_top10"
+        ],
+        "change_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "rank_improved",
+          "original_best_relevant_rank": 14,
+          "mapped_best_relevant_rank": 11,
+          "original_top10_has_hit": false,
+          "mapped_top10_has_hit": false,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "GUARD_OVER_CORRECTION",
+      "priority": "P0",
+      "evidence_summary": "Rerank fusion report records weak-signal boost removal and fallback to baseline order; final current Top10 remains a miss.",
+      "proposed_fix_scope": "M1.3-4 only: analyze guard/effective-score tradeoff for listed ids; do not reopen default feature flag.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q016",
+      "target_case_ids": [
+        "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+        "babab651-7e15-4404-ae83-9f207cdf524e",
+        "fd819cc8-aa9d-4253-8645-d263600c0b26"
+      ],
+      "sample_type": "weight_sensitive_boundary",
+      "appears_in": [
+        "fixed_after_vs_baseline_REGRESSED",
+        "final_bad_case_METRIC_REGRESSION"
+      ],
+      "before_after_status": {
+        "label": "IMPROVED",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.1,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.1161,
+          "top10_hit": true
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.0161,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "baseline_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.2323,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.1161,
+          "top10_hit": true
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": -0.1162,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": true,
+        "final_bad_case_reasons": [
+          "METRIC_REGRESSION"
+        ],
+        "current_precision_at_5": 0.2,
+        "current_ndcg_at_10": 0.1161,
+        "current_top10_has_hit": true
+      },
+      "recall_miss": {
+        "in_final_bad_case": false,
+        "current_top10_has_hit": true,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [
+          {
+            "case_id": "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+            "rank": 1,
+            "relevance": 2
+          }
+        ],
+        "current_before_relevant": [
+          {
+            "case_id": "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+            "rank": 4,
+            "relevance": 2
+          }
+        ],
+        "current_after_relevant": [
+          {
+            "case_id": "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+            "rank": 3,
+            "relevance": 2
+          }
+        ],
+        "best_relevant_rank": {
+          "baseline": 1,
+          "current_before": 4,
+          "current_after": 3
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "metric_regression_candidate",
+          "weak_signal_guard_sensitive"
+        ],
+        "change_tags": [
+          "ndcg_at_10_up",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": false,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 1,
+          "mapped_best_relevant_rank": 1,
+          "original_top10_has_hit": true,
+          "mapped_top10_has_hit": true,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "RERANK_SUPPRESSION",
+      "priority": "P1",
+      "evidence_summary": "Current after keeps a Top10 hit but ranks the relevant case below baseline, leaving NDCG lower than baseline.",
+      "proposed_fix_scope": "M1.3-3/M1.3-4 only for listed ids: inspect candidate presence and ranking suppression; no case-id hardcoding.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q017",
+      "target_case_ids": [
+        "6bfb2334-8bec-4e1d-9a74-ae720be2ebb3",
+        "78cefdcb-f35c-46de-9540-9983c5ce6c39",
+        "a57cdb6a-2ee3-48b2-9f69-f4134835ee16"
+      ],
+      "sample_type": "weight_sensitive_boundary",
+      "appears_in": [
+        "fixed_before_after_REGRESSED",
+        "fixed_after_vs_baseline_REGRESSED",
+        "final_bad_case_METRIC_REGRESSION"
+      ],
+      "before_after_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "before_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.2097,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.171,
+          "top10_hit": true
+        },
+        "after_minus_before": {
+          "precision_at_5": -0.2,
+          "ndcg_at_10": -0.0387,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.3198,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.171,
+          "top10_hit": true
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": -0.1488,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": true,
+        "final_bad_case_reasons": [
+          "METRIC_REGRESSION"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0.171,
+        "current_top10_has_hit": true
+      },
+      "recall_miss": {
+        "in_final_bad_case": false,
+        "current_top10_has_hit": true,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [
+          {
+            "case_id": "6bfb2334-8bec-4e1d-9a74-ae720be2ebb3",
+            "rank": 9,
+            "relevance": 3
+          },
+          {
+            "case_id": "78cefdcb-f35c-46de-9540-9983c5ce6c39",
+            "rank": 10,
+            "relevance": 3
+          }
+        ],
+        "current_before_relevant": [
+          {
+            "case_id": "78cefdcb-f35c-46de-9540-9983c5ce6c39",
+            "rank": 5,
+            "relevance": 3
+          }
+        ],
+        "current_after_relevant": [
+          {
+            "case_id": "78cefdcb-f35c-46de-9540-9983c5ce6c39",
+            "rank": 8,
+            "relevance": 3
+          }
+        ],
+        "best_relevant_rank": {
+          "baseline": 9,
+          "current_before": 5,
+          "current_after": 8
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "guard_tradeoff",
+          "same_pool_recovered_but_product_chain_worsened"
+        ],
+        "change_tags": [
+          "precision_at_5_down",
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "rank_improved",
+          "original_best_relevant_rank": 9,
+          "mapped_best_relevant_rank": 7,
+          "original_top10_has_hit": true,
+          "mapped_top10_has_hit": true,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "GUARD_OVER_CORRECTION",
+      "priority": "P0",
+      "evidence_summary": "Conservative guard worsens the query versus current before and baseline; precision@5 and NDCG fall while Top10 remains hit.",
+      "proposed_fix_scope": "M1.3-4 only: analyze guard/effective-score tradeoff for listed ids; do not reopen default feature flag.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q018",
+      "target_case_ids": [
+        "4547861c-c396-4f12-8e99-05d03e928dba",
+        "8e7a94e9-528b-4f0d-a5ca-20726e876ff2",
+        "c1d7ffef-8359-4ed8-bda5-6aa4c673e047"
+      ],
+      "sample_type": "weight_sensitive_boundary",
+      "appears_in": [
+        "fixed_after_vs_baseline_REGRESSED",
+        "final_bad_case_METRIC_REGRESSION"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.1567,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.1567,
+          "top10_hit": true
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.171,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.1567,
+          "top10_hit": true
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": -0.0143,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": true,
+        "final_bad_case_reasons": [
+          "METRIC_REGRESSION"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0.1567,
+        "current_top10_has_hit": true
+      },
+      "recall_miss": {
+        "in_final_bad_case": false,
+        "current_top10_has_hit": true,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [
+          {
+            "case_id": "c1d7ffef-8359-4ed8-bda5-6aa4c673e047",
+            "rank": 8,
+            "relevance": 3
+          }
+        ],
+        "current_before_relevant": [
+          {
+            "case_id": "c1d7ffef-8359-4ed8-bda5-6aa4c673e047",
+            "rank": 10,
+            "relevance": 3
+          }
+        ],
+        "current_after_relevant": [
+          {
+            "case_id": "c1d7ffef-8359-4ed8-bda5-6aa4c673e047",
+            "rank": 10,
+            "relevance": 3
+          }
+        ],
+        "best_relevant_rank": {
+          "baseline": 8,
+          "current_before": 10,
+          "current_after": 10
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "same_pool_recovered",
+          "relevant_below_top5"
+        ],
+        "change_tags": [
+          "metric_equal",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "rank_improved",
+          "original_best_relevant_rank": 8,
+          "mapped_best_relevant_rank": 7,
+          "original_top10_has_hit": true,
+          "mapped_top10_has_hit": true,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "RERANK_SUPPRESSION",
+      "priority": "P1",
+      "evidence_summary": "Current after keeps the hit in Top10 but below baseline rank, causing NDCG regression.",
+      "proposed_fix_scope": "M1.3-3/M1.3-4 only for listed ids: inspect candidate presence and ranking suppression; no case-id hardcoding.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q020",
+      "target_case_ids": [
+        "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+        "2257114a-b61e-409a-8e85-ace02ecddbed",
+        "ba621929-822f-4603-9615-8952340fe5ce"
+      ],
+      "sample_type": "typical_success",
+      "appears_in": [
+        "fixed_after_vs_baseline_REGRESSED",
+        "final_bad_case_METRIC_REGRESSION"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.3516,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.3516,
+          "top10_hit": true
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "baseline_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.3092,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.3516,
+          "top10_hit": true
+        },
+        "after_minus_baseline": {
+          "precision_at_5": -0.2,
+          "ndcg_at_10": 0.0424,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": true,
+        "final_bad_case_reasons": [
+          "METRIC_REGRESSION"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0.3516,
+        "current_top10_has_hit": true
+      },
+      "recall_miss": {
+        "in_final_bad_case": false,
+        "current_top10_has_hit": true,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [
+          {
+            "case_id": "ba621929-822f-4603-9615-8952340fe5ce",
+            "rank": 3,
+            "relevance": 2
+          },
+          {
+            "case_id": "2257114a-b61e-409a-8e85-ace02ecddbed",
+            "rank": 6,
+            "relevance": 3
+          }
+        ],
+        "current_before_relevant": [
+          {
+            "case_id": "2257114a-b61e-409a-8e85-ace02ecddbed",
+            "rank": 7,
+            "relevance": 3
+          },
+          {
+            "case_id": "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+            "rank": 8,
+            "relevance": 3
+          }
+        ],
+        "current_after_relevant": [
+          {
+            "case_id": "2257114a-b61e-409a-8e85-ace02ecddbed",
+            "rank": 7,
+            "relevance": 3
+          },
+          {
+            "case_id": "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+            "rank": 8,
+            "relevance": 3
+          }
+        ],
+        "best_relevant_rank": {
+          "baseline": 3,
+          "current_before": 7,
+          "current_after": 7
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "stable_precision_at5",
+          "stable_top10_hit"
+        ],
+        "change_tags": [
+          "metric_equal"
+        ],
+        "after_vs_baseline_tags": [
+          "precision_at_5_down",
+          "ndcg_at_10_up",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 3,
+          "mapped_best_relevant_rank": 3,
+          "original_top10_has_hit": true,
+          "mapped_top10_has_hit": true,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "SUCCESS_SAMPLE_PROTECTION",
+      "priority": "P1",
+      "evidence_summary": "Typical success sample keeps Top10 hit but loses baseline Top5 coverage; metric regression is precision@5, not recall.",
+      "proposed_fix_scope": "M1.3-4 only: protect fixed typical-success ordering/top5 quality for listed ids while preserving bad-case gains.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q021",
+      "target_case_ids": [
+        "32f50aa8-0dba-461b-b37b-d5011cc0a313",
+        "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+        "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00"
+      ],
+      "sample_type": "typical_success",
+      "appears_in": [
+        "fixed_before_after_REGRESSED",
+        "fixed_after_vs_baseline_REGRESSED",
+        "final_bad_case_METRIC_REGRESSION"
+      ],
+      "before_after_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "before_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.3032,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.2793,
+          "top10_hit": true
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": -0.0239,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "baseline_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.3067,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.2793,
+          "top10_hit": true
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": -0.0274,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": true,
+        "final_bad_case_reasons": [
+          "METRIC_REGRESSION"
+        ],
+        "current_precision_at_5": 0.2,
+        "current_ndcg_at_10": 0.2793,
+        "current_top10_has_hit": true
+      },
+      "recall_miss": {
+        "in_final_bad_case": false,
+        "current_top10_has_hit": true,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [
+          {
+            "case_id": "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00",
+            "rank": 4,
+            "relevance": 3
+          },
+          {
+            "case_id": "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+            "rank": 8,
+            "relevance": 2
+          }
+        ],
+        "current_before_relevant": [
+          {
+            "case_id": "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+            "rank": 2,
+            "relevance": 2
+          },
+          {
+            "case_id": "32f50aa8-0dba-461b-b37b-d5011cc0a313",
+            "rank": 10,
+            "relevance": 3
+          }
+        ],
+        "current_after_relevant": [
+          {
+            "case_id": "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+            "rank": 3,
+            "relevance": 2
+          },
+          {
+            "case_id": "32f50aa8-0dba-461b-b37b-d5011cc0a313",
+            "rank": 9,
+            "relevance": 3
+          }
+        ],
+        "best_relevant_rank": {
+          "baseline": 4,
+          "current_before": 2,
+          "current_after": 3
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "stable_precision_at5",
+          "stable_top10_hit"
+        ],
+        "change_tags": [
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 4,
+          "mapped_best_relevant_rank": 4,
+          "original_top10_has_hit": true,
+          "mapped_top10_has_hit": true,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "SUCCESS_SAMPLE_PROTECTION",
+      "priority": "P0",
+      "evidence_summary": "Typical success sample regresses versus both current before and baseline; relevant ranks move lower while Top10 hit remains true.",
+      "proposed_fix_scope": "M1.3-4 only: protect fixed typical-success ordering/top5 quality for listed ids while preserving bad-case gains.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q023",
+      "target_case_ids": [
+        "7a4c7ffb-fe38-42b5-b316-a48db859cdf8",
+        "ddbbf8a3-ea2e-4f86-91f8-755dfda11344",
+        "f83c44df-84b3-4945-8d0e-ff6b54ebbcbe"
+      ],
+      "sample_type": "weight_sensitive_boundary",
+      "appears_in": [
+        "fixed_before_after_REGRESSED",
+        "fixed_after_vs_baseline_REGRESSED",
+        "final_bad_case_METRIC_REGRESSION"
+      ],
+      "before_after_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "before_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.5226,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.3806,
+          "top10_hit": true
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": -0.142,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.4265,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.3806,
+          "top10_hit": true
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": -0.0459,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": true,
+        "final_bad_case_reasons": [
+          "METRIC_REGRESSION"
+        ],
+        "current_precision_at_5": 0.2,
+        "current_ndcg_at_10": 0.3806,
+        "current_top10_has_hit": true
+      },
+      "recall_miss": {
+        "in_final_bad_case": false,
+        "current_top10_has_hit": true,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [
+          {
+            "case_id": "ddbbf8a3-ea2e-4f86-91f8-755dfda11344",
+            "rank": 6,
+            "relevance": 2
+          },
+          {
+            "case_id": "7a4c7ffb-fe38-42b5-b316-a48db859cdf8",
+            "rank": 7,
+            "relevance": 3
+          },
+          {
+            "case_id": "f83c44df-84b3-4945-8d0e-ff6b54ebbcbe",
+            "rank": 9,
+            "relevance": 3
+          }
+        ],
+        "current_before_relevant": [
+          {
+            "case_id": "7a4c7ffb-fe38-42b5-b316-a48db859cdf8",
+            "rank": 2,
+            "relevance": 3
+          },
+          {
+            "case_id": "f83c44df-84b3-4945-8d0e-ff6b54ebbcbe",
+            "rank": 7,
+            "relevance": 3
+          }
+        ],
+        "current_after_relevant": [
+          {
+            "case_id": "7a4c7ffb-fe38-42b5-b316-a48db859cdf8",
+            "rank": 5,
+            "relevance": 3
+          },
+          {
+            "case_id": "f83c44df-84b3-4945-8d0e-ff6b54ebbcbe",
+            "rank": 8,
+            "relevance": 3
+          }
+        ],
+        "best_relevant_rank": {
+          "baseline": 6,
+          "current_before": 2,
+          "current_after": 5
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "guard_tradeoff",
+          "weak_signal_guard_sensitive"
+        ],
+        "change_tags": [
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "precision_at_5_up",
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "rank_improved",
+          "original_best_relevant_rank": 6,
+          "mapped_best_relevant_rank": 3,
+          "original_top10_has_hit": true,
+          "mapped_top10_has_hit": true,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "GUARD_OVER_CORRECTION",
+      "priority": "P0",
+      "evidence_summary": "Conservative guard moves relevant hits down versus current before and below baseline NDCG; source marks guard tradeoff.",
+      "proposed_fix_scope": "M1.3-4 only: analyze guard/effective-score tradeoff for listed ids; do not reopen default feature flag.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q024",
+      "target_case_ids": [
+        "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+        "9031b615-e15e-44b1-8c23-a63d1f49db91",
+        "cefc5222-54f1-4036-8887-ee1dffdd3eeb"
+      ],
+      "sample_type": "weight_sensitive_boundary",
+      "appears_in": [
+        "fixed_after_vs_baseline_REGRESSED",
+        "final_bad_case_METRIC_REGRESSION"
+      ],
+      "before_after_status": {
+        "label": "IMPROVED",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.2537,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.4104,
+          "top10_hit": true
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.1567,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "baseline_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.4336,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0.4104,
+          "top10_hit": true
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": -0.0232,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": true,
+        "final_bad_case_reasons": [
+          "METRIC_REGRESSION"
+        ],
+        "current_precision_at_5": 0,
+        "current_ndcg_at_10": 0.4104,
+        "current_top10_has_hit": true
+      },
+      "recall_miss": {
+        "in_final_bad_case": false,
+        "current_top10_has_hit": true,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [
+          {
+            "case_id": "9031b615-e15e-44b1-8c23-a63d1f49db91",
+            "rank": 6,
+            "relevance": 3
+          },
+          {
+            "case_id": "cefc5222-54f1-4036-8887-ee1dffdd3eeb",
+            "rank": 7,
+            "relevance": 2
+          },
+          {
+            "case_id": "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+            "rank": 9,
+            "relevance": 3
+          }
+        ],
+        "current_before_relevant": [
+          {
+            "case_id": "cefc5222-54f1-4036-8887-ee1dffdd3eeb",
+            "rank": 6,
+            "relevance": 2
+          },
+          {
+            "case_id": "9031b615-e15e-44b1-8c23-a63d1f49db91",
+            "rank": 8,
+            "relevance": 3
+          }
+        ],
+        "current_after_relevant": [
+          {
+            "case_id": "cefc5222-54f1-4036-8887-ee1dffdd3eeb",
+            "rank": 6,
+            "relevance": 2
+          },
+          {
+            "case_id": "9031b615-e15e-44b1-8c23-a63d1f49db91",
+            "rank": 8,
+            "relevance": 3
+          },
+          {
+            "case_id": "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+            "rank": 10,
+            "relevance": 3
+          }
+        ],
+        "best_relevant_rank": {
+          "baseline": 6,
+          "current_before": 6,
+          "current_after": 6
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "weak_signal_guard_sensitive",
+          "ndcg_sensitive"
+        ],
+        "change_tags": [
+          "ndcg_at_10_up",
+          "top10_order_or_membership_changed"
+        ],
+        "after_vs_baseline_tags": [
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": true,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 6,
+          "mapped_best_relevant_rank": 6,
+          "original_top10_has_hit": true,
+          "mapped_top10_has_hit": true,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "RERANK_SUPPRESSION",
+      "priority": "P1",
+      "evidence_summary": "Guard-sensitive ranking improves versus current before but remains below baseline NDCG; relevant cases stay lower than baseline order.",
+      "proposed_fix_scope": "M1.3-3/M1.3-4 only for listed ids: inspect candidate presence and ranking suppression; no case-id hardcoding.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    },
+    {
+      "query_id": "product_q025",
+      "target_case_ids": [
+        "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+        "777a8109-12f6-48c0-a8cc-0be487c4087b",
+        "d02916ef-72b3-4e05-9ec2-456490dc0a9b"
+      ],
+      "sample_type": "typical_success",
+      "appears_in": [
+        "fixed_after_vs_baseline_REGRESSED",
+        "final_bad_case_METRIC_REGRESSION"
+      ],
+      "before_after_status": {
+        "label": "STABLE",
+        "is_regressed": false,
+        "before_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.4903,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.4903,
+          "top10_hit": true
+        },
+        "after_minus_before": {
+          "precision_at_5": 0,
+          "ndcg_at_10": 0,
+          "top10_hit_delta": 0
+        }
+      },
+      "after_baseline_status": {
+        "label": "REGRESSED",
+        "is_regressed": true,
+        "baseline_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.5664,
+          "top10_hit": true
+        },
+        "after_metrics": {
+          "precision_at_5": 0.2,
+          "ndcg_at_10": 0.4903,
+          "top10_hit": true
+        },
+        "after_minus_baseline": {
+          "precision_at_5": 0,
+          "ndcg_at_10": -0.0761,
+          "top10_hit_delta": 0
+        }
+      },
+      "metric_regression": {
+        "in_final_bad_case": true,
+        "final_bad_case_reasons": [
+          "METRIC_REGRESSION"
+        ],
+        "current_precision_at_5": 0.2,
+        "current_ndcg_at_10": 0.4903,
+        "current_top10_has_hit": true
+      },
+      "recall_miss": {
+        "in_final_bad_case": false,
+        "current_top10_has_hit": true,
+        "qrel_case_ids_missing_from_corpus": []
+      },
+      "rank_summary": {
+        "baseline_relevant": [
+          {
+            "case_id": "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+            "rank": 1,
+            "relevance": 2
+          },
+          {
+            "case_id": "777a8109-12f6-48c0-a8cc-0be487c4087b",
+            "rank": 8,
+            "relevance": 3
+          },
+          {
+            "case_id": "d02916ef-72b3-4e05-9ec2-456490dc0a9b",
+            "rank": 9,
+            "relevance": 3
+          }
+        ],
+        "current_before_relevant": [
+          {
+            "case_id": "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+            "rank": 2,
+            "relevance": 2
+          },
+          {
+            "case_id": "777a8109-12f6-48c0-a8cc-0be487c4087b",
+            "rank": 7,
+            "relevance": 3
+          },
+          {
+            "case_id": "d02916ef-72b3-4e05-9ec2-456490dc0a9b",
+            "rank": 9,
+            "relevance": 3
+          }
+        ],
+        "current_after_relevant": [
+          {
+            "case_id": "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+            "rank": 2,
+            "relevance": 2
+          },
+          {
+            "case_id": "777a8109-12f6-48c0-a8cc-0be487c4087b",
+            "rank": 7,
+            "relevance": 3
+          },
+          {
+            "case_id": "d02916ef-72b3-4e05-9ec2-456490dc0a9b",
+            "rank": 9,
+            "relevance": 3
+          }
+        ],
+        "best_relevant_rank": {
+          "baseline": 1,
+          "current_before": 2,
+          "current_after": 2
+        }
+      },
+      "auxiliary_evidence": {
+        "source_tags": [
+          "stable_precision_at5",
+          "stable_top10_hit"
+        ],
+        "change_tags": [
+          "metric_equal"
+        ],
+        "after_vs_baseline_tags": [
+          "ndcg_at_10_down",
+          "top10_order_or_membership_changed"
+        ],
+        "mapping": {
+          "mapping_used": false,
+          "effect": "unchanged",
+          "original_best_relevant_rank": 1,
+          "mapped_best_relevant_rank": 1,
+          "original_top10_has_hit": true,
+          "mapped_top10_has_hit": true,
+          "case_cause_noise_warning": false
+        },
+        "recall_repair": null
+      },
+      "primary_cause": "SUCCESS_SAMPLE_PROTECTION",
+      "priority": "P1",
+      "evidence_summary": "Typical success sample keeps precision@5 and Top10 hit but baseline rank quality is not protected; NDCG falls versus baseline.",
+      "proposed_fix_scope": "M1.3-4 only: protect fixed typical-success ordering/top5 quality for listed ids while preserving bad-case gains.",
+      "blocked_by_missing_evidence": {
+        "blocked": false,
+        "missing": []
+      }
+    }
+  ],
+  "unique_fix_list": [
+    {
+      "fix_id": "M13_FIX_001",
+      "primary_cause": "CANDIDATE_MERGE_GATING",
+      "priority_floor": "P0",
+      "query_ids": [
+        "product_q001",
+        "product_q011"
+      ],
+      "allowed_scope": "M1.3-3 only: inspect controlled BM25/admission merge for listed ids; do not globally expand all candidate pools.",
+      "success_check": "Listed queries gain target candidate admission without adding new fixed regression."
+    },
+    {
+      "fix_id": "M13_FIX_002",
+      "primary_cause": "QRELS_OR_DATA_MISMATCH",
+      "priority_floor": "P0 evidence-gated",
+      "query_ids": [
+        "product_q002"
+      ],
+      "allowed_scope": "Evidence-first only: verify qrels/corpus alignment and per-stage target presence before any recall code change.",
+      "success_check": "Evidence either confirms a repairable recall-pool miss or closes the item as qrels/data mismatch; no code change before evidence."
+    },
+    {
+      "fix_id": "M13_FIX_003",
+      "primary_cause": "RERANK_SUPPRESSION",
+      "priority_floor": "P0/P1",
+      "query_ids": [
+        "product_q003",
+        "product_q008",
+        "product_q009",
+        "product_q016",
+        "product_q018",
+        "product_q024"
+      ],
+      "allowed_scope": "M1.3-3/M1.3-4 only for listed ids: inspect candidate presence and ranking suppression; no case-id hardcoding.",
+      "success_check": "Relevant ranks improve to Top10/closer-to-baseline for listed queries without harming success samples."
+    },
+    {
+      "fix_id": "M13_FIX_004",
+      "primary_cause": "QUERY_MAPPING_NO_GAIN",
+      "priority_floor": "P0",
+      "query_ids": [
+        "product_q004",
+        "product_q005",
+        "product_q006",
+        "product_q010",
+        "product_q012"
+      ],
+      "allowed_scope": "M1.3-3 only: evaluate recall-only query mapping/admission for listed ids; no broad mapping expansion.",
+      "success_check": "Mapping/rewrite produces Top10 gain or is explicitly ruled out for the listed queries."
+    },
+    {
+      "fix_id": "M13_FIX_005",
+      "primary_cause": "GUARD_OVER_CORRECTION",
+      "priority_floor": "P0",
+      "query_ids": [
+        "product_q007",
+        "product_q013",
+        "product_q017",
+        "product_q023"
+      ],
+      "allowed_scope": "M1.3-4 only: analyze guard/effective-score tradeoff for listed ids; do not reopen default feature flag.",
+      "success_check": "Before-after fixed regression clears for listed guard-sensitive queries without reopening weak-signal overboost."
+    },
+    {
+      "fix_id": "M13_FIX_006",
+      "primary_cause": "SUCCESS_SAMPLE_PROTECTION",
+      "priority_floor": "P0/P1",
+      "query_ids": [
+        "product_q020",
+        "product_q021",
+        "product_q025"
+      ],
+      "allowed_scope": "M1.3-4 only: protect fixed typical-success ordering/top5 quality for listed ids while preserving bad-case gains.",
+      "success_check": "Typical-success Top5/NDCG quality is protected while existing aggregate gains are not erased."
+    }
+  ],
+  "distributions": {
+    "priority": {
+      "P0": 16,
+      "P1": 5
+    },
+    "primary_cause": {
+      "CANDIDATE_MERGE_GATING": 2,
+      "QRELS_OR_DATA_MISMATCH": 1,
+      "RERANK_SUPPRESSION": 6,
+      "QUERY_MAPPING_NO_GAIN": 5,
+      "GUARD_OVER_CORRECTION": 4,
+      "SUCCESS_SAMPLE_PROTECTION": 3
+    }
+  },
+  "stop_loss_notes": [
+    "Do not enter M1.3-2 through M1.3-7 from this artifact alone; this turn only freezes and relabels evidence.",
+    "product_q002 is evidence-gated: do not implement recall code until qrels/data mismatch versus true recall-pool miss is distinguished.",
+    "No evaluation sample, qrels, parameter file, runner, API, retrieval, rerank, guard, frontend, feature flag, database, or data reset was modified.",
+    "Later fixes must stay inside unique_fix_list query ids and scopes; no broad default candidate expansion, no case-id hardcoding, and no default ENABLE_WEIGHTED_RERANK enablement."
+  ]
+}

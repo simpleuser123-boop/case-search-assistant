@@ -1,0 +1,497 @@
+{
+  "version": "m4_workflow_entry_contract_v1",
+  "artifact": "m4-workflow-entry-contract",
+  "step": "M4-1",
+  "title": "工作流沉淀入口合同",
+  "generated_at": "2026-06-13T09:03:54+08:00",
+  "scope": {
+    "summary": "freeze M3-8 GO evidence and M4 API/UI/persistence/log/feature-flag/privacy/degrade contract; deliver persistable field whitelist only",
+    "implements_m4_2_to_m4_7": false,
+    "changes_online_sorting": false,
+    "changes_source_selection": false,
+    "changes_rerank_defaults": false,
+    "changes_qrels_or_labels": false,
+    "changes_historical_eval_artifacts": false,
+    "writes_business_persistence_behavior": false
+  },
+  "entry_register": {
+    "m3_8_artifacts": [
+      "docs/development/m3-final-verification-20260613-072734.md",
+      "docs/development/m3-release-gate-20260613-072734.json",
+      "docs/development/m3-parameter-version-20260613-072734.json"
+    ],
+    "m3_8_conclusions": {
+      "base_search_available": "GO",
+      "m3_reading_efficiency_complete": "GO",
+      "m4_entry": "GO",
+      "rollback_required": false
+    },
+    "m3_steps": [
+      {
+        "step": "M3-1",
+        "capability": "reading_entry_contract",
+        "artifact_prefix": "m3-reading-entry-contract-20260612-194511",
+        "status": "GO"
+      },
+      {
+        "step": "M3-2",
+        "capability": "holding_summary",
+        "artifact_prefix": "m3-holding-summary-closure-20260612-202913",
+        "status": "GO"
+      },
+      {
+        "step": "M3-3",
+        "capability": "issue_focus_and_key_elements",
+        "artifact_prefix": "m3-issue-focus-elements-20260612-212111",
+        "status": "GO"
+      },
+      {
+        "step": "M3-4",
+        "capability": "fact_alignment",
+        "artifact_prefix": "m3-fact-alignment-20260613-021821",
+        "status": "GO"
+      },
+      {
+        "step": "M3-5",
+        "capability": "source_highlights",
+        "artifact_prefix": "m3-source-highlights-20260613-035436",
+        "status": "GO"
+      },
+      {
+        "step": "M3-6",
+        "capability": "case_compare_view",
+        "artifact_prefix": "m3-case-compare-gate-20260613-054541",
+        "status": "GO"
+      },
+      {
+        "step": "M3-7",
+        "capability": "citation_copy_boundary",
+        "artifact_prefix": "m3-citation-copy-boundary-20260613-062814",
+        "status": "GO"
+      }
+    ],
+    "all_m3_steps_go": true,
+    "inherited_gates_from_m2_m3": {
+      "source_anchor_minimum_fields": [
+        "case_id",
+        "source_chunk_id"
+      ],
+      "case_side_ai_content_requires_source_anchors": true,
+      "unanchored_content_hidden_or_safe_degraded": true,
+      "user_side_raw_text_not_persisted": true,
+      "no_exhaustive_coverage_wording": true,
+      "no_win_loss_probability_or_certain_legal_conclusion": true,
+      "main_sorting_unchanged": true,
+      "source_selection_unchanged": true,
+      "rerank_default_unchanged": true,
+      "qrels_label_relevance_offline_only": true,
+      "no_query_id_or_case_id_runtime_special_case": true,
+      "warm_p95_under_3s": true,
+      "warm_p95_ms": 820,
+      "new_capability_must_be_disableable_or_safe_degrade": true
+    },
+    "weighted_rerank_evidence": {
+      "config_field_default": false,
+      "config_path": "apps/api/app/core/config.py",
+      "env_example_value": "false",
+      "env_example_path": ".env.example",
+      "m4_1_decision": "KEEP_FALSE"
+    }
+  },
+  "workflow_contract_fields": {
+    "search_history": {
+      "purpose": "本地/会话级检索历史，便于回到最近几次检索",
+      "feature_flag": "ENABLE_SEARCH_HISTORY",
+      "local_only_fields": [
+        "draft_text_ref_local_only",
+        "history_entries_local_only"
+      ],
+      "server_persistable_fields": [
+        "query_session_id",
+        "input_hash",
+        "result_count",
+        "degraded_status",
+        "created_at",
+        "history_status",
+        "reason_code"
+      ],
+      "forbidden_persistable_fields": [
+        "raw_query",
+        "case_fact_body",
+        "user_free_long_text"
+      ],
+      "implemented_in_m4_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "search_draft": {
+      "purpose": "草稿恢复，刷新可恢复、用户可清除",
+      "feature_flag": "ENABLE_SEARCH_HISTORY",
+      "local_only_fields": [
+        "draft_text_local_only",
+        "updated_at_local_only"
+      ],
+      "server_persistable_fields": [],
+      "forbidden_persistable_fields": [
+        "raw_query",
+        "case_fact_body",
+        "draft_body_on_server",
+        "user_free_long_text"
+      ],
+      "storage_location": "browser_local_only_clearable",
+      "implemented_in_m4_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "case_favorite": {
+      "purpose": "收藏案例的元数据与引用，不复制正文",
+      "feature_flag": "ENABLE_CASE_FAVORITE",
+      "server_persistable_fields": [
+        "case_id",
+        "case_number",
+        "court",
+        "trial_level",
+        "case_cause",
+        "judgment_date",
+        "source_anchors",
+        "note",
+        "tag",
+        "label",
+        "created_at",
+        "favorite_status",
+        "reason_code"
+      ],
+      "forbidden_persistable_fields": [
+        "case_body",
+        "summary_body",
+        "chunk_body",
+        "judgment_text"
+      ],
+      "user_filled_short_fields": [
+        "note",
+        "tag",
+        "label"
+      ],
+      "implemented_in_m4_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "case_list": {
+      "purpose": "把若干案例组装成可复用清单，受控可编辑",
+      "feature_flag": "ENABLE_CASE_LIST",
+      "server_persistable_fields": [
+        "list_id",
+        "list_title",
+        "items",
+        "created_at",
+        "updated_at",
+        "list_status",
+        "reason_code"
+      ],
+      "item_persistable_fields": [
+        "case_id",
+        "case_number",
+        "court",
+        "trial_level",
+        "case_cause",
+        "judgment_date",
+        "source_anchors",
+        "note",
+        "tag",
+        "label"
+      ],
+      "forbidden_persistable_fields": [
+        "case_body",
+        "summary_body",
+        "chunk_body",
+        "judgment_text",
+        "raw_query"
+      ],
+      "user_filled_short_fields": [
+        "list_title",
+        "note",
+        "tag",
+        "label"
+      ],
+      "dedupe_same_case_in_list": true,
+      "manual_sort_affects_display_only": true,
+      "implemented_in_m4_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "case_list_export": {
+      "purpose": "把清单导出为文件(Markdown/CSV)，只含元数据/来源链接/用户备注",
+      "feature_flag": "ENABLE_LIST_EXPORT",
+      "server_persistable_fields": [
+        "export_id",
+        "list_id",
+        "export_format",
+        "fields",
+        "export_status",
+        "degrade_reason"
+      ],
+      "export_format_allowed": [
+        "markdown",
+        "csv"
+      ],
+      "export_field_whitelist": [
+        "case_id",
+        "case_number",
+        "court",
+        "trial_level",
+        "case_cause",
+        "judgment_date",
+        "source_url_or_anchor",
+        "note"
+      ],
+      "forbidden_export_content": [
+        "case_body",
+        "summary_body",
+        "chunk_body",
+        "judgment_text",
+        "raw_query",
+        "win_loss_probability",
+        "certain_legal_conclusion"
+      ],
+      "file_must_include_disclaimer": true,
+      "implemented_in_m4_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "report_template": {
+      "purpose": "基于清单生成轻量报告骨架，不起草、不下结论",
+      "feature_flag": "ENABLE_REPORT_TEMPLATE",
+      "server_persistable_fields": [
+        "report_id",
+        "list_id",
+        "sections",
+        "report_status",
+        "degrade_reason"
+      ],
+      "section_vocab": [
+        "search_background_placeholder",
+        "list_overview",
+        "per_case_metadata_with_anchors",
+        "manual_review_points",
+        "disclaimer"
+      ],
+      "forbidden_persistable_fields": [
+        "case_body",
+        "summary_body",
+        "chunk_body",
+        "judgment_text",
+        "raw_query",
+        "auto_drafted_legal_document",
+        "win_loss_conclusion"
+      ],
+      "ai_fragment_requires_source_anchor": true,
+      "must_include_disclaimer": true,
+      "auto_drafts_legal_document": false,
+      "implemented_in_m4_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "team_reuse_capability": {
+      "purpose": "评估团队复用前置条件，预留字段与最小开关，不实现团队空间",
+      "feature_flag": "ENABLE_TEAM_REUSE",
+      "assessment_fields": [
+        "capability",
+        "readiness",
+        "prerequisite",
+        "data_structure_reserved",
+        "risk_note"
+      ],
+      "readiness_vocab": [
+        "ready",
+        "partially_ready",
+        "not_ready"
+      ],
+      "reserved_fields_default": {
+        "owner": "private",
+        "visibility": "private",
+        "sharing": "disabled"
+      },
+      "implements_real_multiuser_in_m4": false,
+      "default_cross_user_visibility": false,
+      "implemented_in_m4_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    }
+  },
+  "persistable_field_whitelist": {
+    "description": "M4 最关键产物：后续 M4-2 至 M4-7 只能向持久层写入本白名单内字段；未声明字段一律不落库。",
+    "allowed_persistable_fields": [
+      "case_id",
+      "case_number",
+      "court",
+      "trial_level",
+      "case_cause",
+      "judgment_date",
+      "source_anchors",
+      "note",
+      "tag",
+      "label",
+      "list_id",
+      "list_title",
+      "report_id",
+      "export_id",
+      "structured_relation",
+      "created_at",
+      "updated_at",
+      "timestamp",
+      "status",
+      "reason_code",
+      "feature_flag_state"
+    ],
+    "forbidden_persistable_fields": [
+      "raw_query",
+      "case_fact_body",
+      "free_text_long_fragment",
+      "candidate_body",
+      "chunk_body",
+      "judgment_long_text",
+      "summary_body_content",
+      "holding_body_content",
+      "compare_body_content",
+      "user_free_long_text",
+      "unmasked_personal_data"
+    ],
+    "local_only_clearable_fields": [
+      "draft_text_local_only",
+      "raw_case_fact_local_only",
+      "history_entries_local_only"
+    ],
+    "user_raw_case_persisted_on_server": false,
+    "draft_body_persisted_on_server": false
+  },
+  "anchor_inheritance_rules": {
+    "case_side_ai_content_must_be_traceable": true,
+    "required_anchor_fields": [
+      "case_id",
+      "source_chunk_id"
+    ],
+    "no_anchor_no_delivery": true,
+    "applies_to": [
+      "case_list",
+      "case_list_export",
+      "report_template"
+    ],
+    "unanchored_content_enters_deliverable": false,
+    "fabricates_source_chunk_id": false
+  },
+  "feature_flag_strategy": {
+    "ENABLE_WEIGHTED_RERANK": {
+      "config_default": false,
+      "env_example_default": false,
+      "m4_1_decision": "KEEP_FALSE"
+    },
+    "ENABLE_SEARCH_HISTORY": {
+      "config_default": false,
+      "env_example_default": false,
+      "m4_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_CASE_FAVORITE": {
+      "config_default": false,
+      "env_example_default": false,
+      "m4_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_CASE_LIST": {
+      "config_default": false,
+      "env_example_default": false,
+      "m4_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_LIST_EXPORT": {
+      "config_default": false,
+      "env_example_default": false,
+      "m4_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_REPORT_TEMPLATE": {
+      "config_default": false,
+      "env_example_default": false,
+      "m4_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_TEAM_REUSE": {
+      "config_default": false,
+      "env_example_default": false,
+      "m4_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "m4_flags_change_standard_search_default": false,
+    "disabled_returns_to_m3_end_state": true,
+    "new_m4_capabilities": {
+      "default_must_be_disableable": true,
+      "must_have_rollback_or_safe_degrade_path": true,
+      "must_not_mutate_current_ranking": true
+    }
+  },
+  "body_boundary_policy": {
+    "allowed_report_json_fields": [
+      "field_name",
+      "count",
+      "status",
+      "reason_code",
+      "feature_flag_state",
+      "metadata",
+      "source_anchor",
+      "user_filled_short_field",
+      "metric_summary",
+      "test_result",
+      "conclusion",
+      "sanitized_id",
+      "hash",
+      "timestamp"
+    ],
+    "forbidden_body_content_types": [
+      "original_query_body",
+      "case_fact_body",
+      "candidate_body",
+      "chunk_body",
+      "judgment_text_body",
+      "user_free_long_text",
+      "summary_or_holding_or_compare_body"
+    ],
+    "api_can_return_necessary_display_snippets": true,
+    "logs_events_reports_exports_can_store_body": false,
+    "development_artifacts_can_store_body": false,
+    "this_artifact_contains_body_text": false
+  },
+  "forbidden_behaviors": [
+    "IMPLEMENT_M4_2_TO_M4_7_CAPABILITY_IN_M4_1",
+    "PERSIST_RAW_QUERY_OR_CASE_BODY_TO_SERVER",
+    "PERSIST_CHUNK_OR_JUDGMENT_OR_SUMMARY_BODY",
+    "PERSIST_FIELD_NOT_IN_WHITELIST",
+    "ENABLE_WEIGHTED_RERANK_BY_DEFAULT",
+    "ENABLE_ANY_M4_FLAG_BY_DEFAULT",
+    "CHANGE_ONLINE_RANKING_OR_SOURCE_SELECTION",
+    "USE_QRELS_LABELS_RELEVANCE_IN_RUNTIME",
+    "USE_QUERY_ID_OR_CASE_ID_SPECIAL_CASE",
+    "MODIFY_HISTORICAL_EVAL_ARTIFACTS",
+    "PUT_UNANCHORED_AI_CONTENT_INTO_LIST_EXPORT_REPORT",
+    "PROMISE_EXHAUSTIVE_SEARCH",
+    "OUTPUT_WIN_LOSS_PROBABILITY_OR_CERTAIN_LEGAL_CONCLUSION",
+    "AUTO_DRAFT_LEGAL_DOCUMENT_IN_REPORT",
+    "DEFAULT_ENABLE_CROSS_USER_VISIBILITY"
+  ],
+  "go_no_go": {
+    "status": "GO",
+    "allows_entering_m4_2": true,
+    "allows_weighted_rerank_default_enablement": false,
+    "allows_any_m4_flag_default_enablement": false,
+    "m3_8_entry_evidence_complete": true,
+    "persistence_whitelist_defined": true,
+    "anchor_inheritance_defined": true,
+    "body_boundary_defined": true,
+    "changes_basic_search_default_behavior": false,
+    "body_leakage_in_artifact": false,
+    "failed_gates": [],
+    "reason_codes": [
+      "M3_8_M4_ENTRY_GO_CONFIRMED",
+      "ALL_M3_STEPS_GO_CONFIRMED",
+      "WEIGHTED_RERANK_DEFAULT_FALSE_CONFIRMED",
+      "M4_FLAGS_DECLARED_FALSE_SAFE_DEFAULT",
+      "PERSISTABLE_FIELD_WHITELIST_FROZEN",
+      "ANCHOR_INHERITANCE_RULES_FROZEN",
+      "BODY_BOUNDARY_POLICY_FROZEN"
+    ],
+    "next_allowed_title": "类案检索助手 M4-2 检索历史与草稿恢复"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "step": "E4-4",
+  "title": "案情录入端前端页（本地 only）",
+  "timestamp": "20260617-020738",
+  "baseline": "docs/development/e4-intake-api-20260617-001000.json (E4-3 GO, allow_enter_e4_4=true)",
+  "overall": "GO",
+  "allow_enter_e4_5": true,
+  "next_step": "类案检索助手 E4-5 消费边界与护栏守门",
+  "files": {
+    "added": [
+      "apps/web/src/pages/IntakePage.tsx",
+      "apps/web/src/pages/IntakePage.test.tsx",
+      "apps/web/src/services/intakeApi.ts",
+      "apps/web/src/services/intakeApi.test.ts",
+      "docs/development/e4-intake-frontend-20260617-020738.md",
+      "docs/development/e4-intake-frontend-20260617-020738.json"
+    ],
+    "modified": [
+      "apps/web/src/config/featureFlags.ts",
+      "apps/web/src/config/featureFlags.test.ts",
+      "apps/web/src/app/router.tsx",
+      "apps/web/src/pages/HomePage.tsx",
+      "apps/web/src/vite-env.d.ts",
+      "落地设计文档/19-E4案情录入端分步骤系统提示词文档.md"
+    ]
+  },
+  "flow": "原始案情(仅React内存) -> 本地 sanitize.ts 脱敏+要素抽取 -> 脱敏预览(展示将发送的白名单五字段) -> 用户显式确认 -> 仅 POST SearchProfile 白名单五字段到 /api/intake/search -> 展示 CandidateRef[](无正文,带source_anchors)",
+  "request_whitelist": ["case_cause", "region", "trial_level_preference", "dispute_focus_keywords", "query_text"],
+  "request_params": ["mode", "limit"],
+  "request_body_assembly": "toIntakeRequestBody 逐字段显式取白名单键(不 spread 任意对象);即使 profile 对象被注入 raw_case/raw_query/name/id_card,出参也只含 7 键",
+  "flag_gating": {
+    "VITE_ENABLE_INTAKE": "默认 false;off 时 router 不注册 /intake 路由 + HomePage 不渲染录入入口 + IntakePage 内部返回 null(三重门控)",
+    "VITE_ENABLE_INTAKE_AI_EXTRACTION": "默认 false;前端无任何「服务端 AI 增强」UI、无 on 路径",
+    "decoupled_from_m1m5_acceptance": true
+  },
+  "privacy_local_only": {
+    "raw_case_storage": "仅 React useState(内存);无 localStorage/sessionStorage/IndexedDB/cookie 写入",
+    "raw_case_in_request_body": 0,
+    "raw_case_in_url_query": 0,
+    "preview_before_send": true,
+    "explicit_user_confirm_before_send": true,
+    "pii_in_request_body": 0
+  },
+  "candidate_ref_view": {
+    "whitelist": ["case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchors"],
+    "body_fields": 0,
+    "jump_to_search_assistant": "Link to /?case=<case_id> (无 PII/正文在 query)"
+  },
+  "privacy_scan_vm": {
+    "raw_case_active_leak": 0,
+    "raw_query_active_leak": 0,
+    "pii_in_impl": 0,
+    "browser_storage_write_in_impl": 0,
+    "ai_extraction_ui": 0,
+    "banned_copy": 0,
+    "credentials": 0,
+    "note": "raw_case/raw_query 仅出现在 intakeApi.test.ts 负向 fixture(假 PII)断言被白名单丢弃,同 BulkImportPanel.test.tsx 既有模式"
+  },
+  "test_results": {
+    "src/config/featureFlags.test.ts": "5 passed",
+    "src/services/intakeApi.test.ts": "5 passed",
+    "src/pages/IntakePage.test.tsx": "6 passed",
+    "src/pages/HomePage.test.tsx": "9 passed (回归未破)",
+    "exit": 0
+  },
+  "frontend_build": {
+    "tsc_typecheck": "PASS",
+    "modules_transformed": 121,
+    "baseline_modules": 118,
+    "delta": "+3 (新增 gated IntakePage + intakeApi + route)",
+    "emit_verified_outdir": "PASS (写入非锁定目录全量产出 index.html + css + js)",
+    "default_dist_emit": "EPERM unlink on host-mounted dist/ (环境约束,非 E4-4 引入;同 E2b/E4 既有 host->VM mount 约束)"
+  },
+  "backend_untouched": {
+    "intake_endpoint_contract": "未改",
+    "api_search": "未改",
+    "e3_internal_search_service": "未改",
+    "ranking_recall_rerank": "未改",
+    "new_backend_package_or_endpoint": false
+  },
+  "flags_default": {
+    "VITE_ENABLE_INTAKE": false,
+    "VITE_ENABLE_INTAKE_AI_EXTRACTION": false
+  }
+}

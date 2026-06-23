@@ -1,0 +1,82 @@
+{
+  "milestone": "E6",
+  "step": "E6-1",
+  "generated_at": "2026-06-18T04:54:09+08:00",
+  "contract_object": "DraftDescriptor",
+  "contract_status": "E-1 frozen (3rd cross-product contract); E6-1 confirms + adds optional statute_refs via change-registration",
+  "draft_descriptor_core_fields_e1_frozen": [
+    "draft_id",
+    "structure_skeleton",
+    "candidate_refs",
+    "note",
+    "tag"
+  ],
+  "draft_descriptor_e6_fields": [
+    "draft_id",
+    "structure_skeleton",
+    "candidate_refs",
+    "statute_refs",
+    "note",
+    "tag",
+    "created_at",
+    "updated_at",
+    "owner_user_id",
+    "team_id",
+    "visibility"
+  ],
+  "contract_change_registration": {
+    "date": "2026-06-18",
+    "change": "append optional statute_refs to DraftDescriptor + persistence metadata",
+    "rationale": "E6 drafting references statutes arrived via E5 cross-jump (StatuteRef)",
+    "registered_in": ["doc16 §4", "doc17 §3.3", "doc21 E6-1 erratum"],
+    "core_five_fields_unchanged": true,
+    "e6_whitelist_constant": "DRAFT_DESCRIPTOR_E6_FIELDS",
+    "not_in_contract_field_whitelist": true,
+    "precedent": "StatuteRef (E5-1, STATUTE_REF_FIELDS independent freeze)"
+  },
+  "limits": {
+    "structure_skeleton_item_max_len": 60,
+    "structure_skeleton_max_items": 64,
+    "note_max_len": 200,
+    "tag_max_len": 40
+  },
+  "forbidden_key_classes": {
+    "draft_body": "draft_body/draft_content/generated_text/opinion_text/paragraph_body/conclusion_text/... + FORBIDDEN_BODY_KEYS",
+    "judgment_body": "chunk_text/judgment_text/summary_text/highlight_text/matched_text/... + STATUTE_FORBIDDEN_DISPLAY_KEYS",
+    "pii": "reuse intake is_forbidden_pii_key",
+    "outcome_verdict": "win_probability/outcome_prediction/predicted_outcome/verdict/litigation_outcome/...",
+    "model_generated_statute": "reuse is_forbidden_generated_statute_key"
+  },
+  "reason_codes": [
+    "FORBIDDEN_KEY",
+    "SKELETON_ITEM_TOO_LONG",
+    "SKELETON_EMPTY",
+    "SKELETON_TOO_MANY_ITEMS",
+    "SKELETON_ITEM_NOT_TITLE",
+    "REF_DROPPED_NO_ANCHOR",
+    "NOTE_TOO_LONG",
+    "TAG_TOO_LONG"
+  ],
+  "public_face": {
+    "exported_via": ["app.kernel.guardrails", "app.contracts"],
+    "identity_preserved": true
+  },
+  "flags": {
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false,
+    "ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "new_external_business_flag_added": false,
+    "ai_drafting_flag_added": false
+  },
+  "runtime_invariants": {
+    "include_router": 14,
+    "drafting_product_package_exists": false,
+    "casebook_product_package_exists": false,
+    "wiring": "none (pure data + pure functions)"
+  },
+  "baseline": "e5-release-gate-20260618-022200"
+}

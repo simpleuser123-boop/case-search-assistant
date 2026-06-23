@@ -1,0 +1,78 @@
+{
+  "step": "E7-5",
+  "title": "Casebook 消费边界与护栏守门",
+  "timestamp": "20260623-110330",
+  "overall": "GO",
+  "allow_enter_e7_6": true,
+  "scope": "tests_only_append_only_rules_no_business_changes",
+  "files": {
+    "tests": [
+      "apps/api/tests/test_e7_casebook_boundaries.py",
+      "apps/api/tests/test_e2a_kernel_boundary.py"
+    ],
+    "docs": [
+      "docs/development/e7-casebook-gate-20260623-110330.md",
+      "docs/development/e7-casebook-gate-20260623-110330.json",
+      "落地设计文档/22-E7案件协作工作台分步骤系统提示词文档.md"
+    ]
+  },
+  "guard_coverage": {
+    "collect_not_draft": "AST/importlib/runtime 守门通过；casebook service/router 无文本生成路径，CaseFolder 无综述/裁判/起草/胜负/结论字段",
+    "kernel_only_contract_consumption": "casebook 仅消费 app.kernel/app.kernel.guardrails/app.kernel.identity 公开面",
+    "anchors_required": "candidate_refs 与 draft_descriptors 内引用无锚点 fail-closed 丢弃",
+    "zero_body_persistence": "CaseFolderRow 列白名单锁定；落库 JSON 无正文/原始案情；search_profile_summary 仅脱敏子集",
+    "default_private_authz": "visibility 默认 private；private/team/跨租户矩阵通过；仅 owner 可写；越权 404",
+    "export_guard": "当前实现 absent-or-guarded；若未来落导出必须带免责头且无正文/胜负/结论",
+    "no_retrieval_runtime_import": "casebook 不 import retrieval/rerank/summary/query_processing，也不深引 app.kernel.rag.*",
+    "package_isolation": "casebook 与 intake/statute/drafting 互不 import；kernel 不反向 import casebook",
+    "contracts_still_zero_body": "CandidateRef/StatuteRef/DraftDescriptor 白名单字段未增删，零正文不变",
+    "no_e8_backfeed": "ENABLE_ECOSYSTEM 默认 false，casebook 无反馈排序/回流 rerank 路径"
+  },
+  "append_only_rules": [
+    "追加 casebook -> intake/statute/drafting 禁止 import 断言",
+    "追加 intake/statute/drafting -> casebook 禁止 import 断言",
+    "追加 kernel -> casebook 禁止 import 断言",
+    "追加 casebook 只经 app.kernel 公开面消费断言",
+    "追加 casebook 不深引 retrieval/rerank/summary/query_processing 断言",
+    "显式确认当前合法产品包基线 = intake + statute + drafting + casebook"
+  ],
+  "validation": {
+    "commands": [
+      "cd apps/api && DATABASE_URL=sqlite:///./test_e7.db python -m pytest tests/test_e7_casebook_boundaries.py tests/test_e2a_kernel_boundary.py",
+      "cd apps/api && DATABASE_URL=sqlite:///./test_e7.db python -m pytest tests/test_e7_casebook_api.py tests/test_e7_casebook_contracts.py tests/test_e7_casebook_sharing.py",
+      "cd apps/api && DATABASE_URL=sqlite:///./test_e7.db python -m pytest tests/test_e4_intake_boundaries.py tests/test_e5_statute_boundaries.py tests/test_e6_drafting_boundaries.py",
+      "rg -n \"app\\.include_router\\(\" apps/api/app/main.py"
+    ],
+    "results": {
+      "casebook_boundaries_and_e2a": "48 passed",
+      "e7_api_contracts_sharing": "100 passed",
+      "e4_e5_e6_boundary_regression": "227 passed",
+      "include_router": 16
+    }
+  },
+  "flags_default_false": [
+    "ENABLE_WEIGHTED_RERANK",
+    "ENABLE_ECOSYSTEM",
+    "ENABLE_INTAKE",
+    "ENABLE_STATUTE_SEARCH",
+    "ENABLE_DRAFTING",
+    "ENABLE_CASEBOOK",
+    "ENABLE_INTAKE_AI_EXTRACTION"
+  ],
+  "privacy_scan": {
+    "actionable_hits": 0,
+    "judgment_body": 0,
+    "draft_body": 0,
+    "raw_case": 0,
+    "outcome_verdict": 0,
+    "pii": 0,
+    "credential": 0,
+    "disabled_copy": 0,
+    "note": "纯字面 rg 仅命中设计文档、测试 denylist 与 forbidden persist key 常量；可执行路径、schema、持久层运行时断言均为 0 泄露"
+  },
+  "preexisting_violations": [],
+  "warnings": [
+    "starlette.formparsers PendingDeprecationWarning: Please use import python_multipart instead."
+  ],
+  "next_step": "类案检索助手 E7-6 E7 验收与下一步门禁"
+}

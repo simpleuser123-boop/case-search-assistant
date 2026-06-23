@@ -1,0 +1,161 @@
+{
+  "timestamp": "20260612-140115",
+  "step": "M2-3",
+  "scope": "coverage_privacy",
+  "entry_gates": {
+    "m2_1": {
+      "md": "docs/development/m2-entry-contract-20260612-100850.md",
+      "json": "docs/development/m2-entry-contract-20260612-100850.json",
+      "status": "GO"
+    },
+    "m2_2": {
+      "md": "docs/development/m2-source-anchor-closure-20260612-104120.md",
+      "json": "docs/development/m2-source-anchor-closure-20260612-104120.json",
+      "status": "GO"
+    }
+  },
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": false
+  },
+  "coverage_contract": {
+    "fields": [
+      {
+        "name": "data_source",
+        "type": "string",
+        "unavailable_state": "unavailable",
+        "trusted_source": "candidate_metadata_unique_source_name_or_data_source"
+      },
+      {
+        "name": "data_until",
+        "type": "string",
+        "unavailable_state": "unknown",
+        "trusted_source": "candidate_metadata_unique_explicit_data_until_key"
+      },
+      {
+        "name": "index_version",
+        "type": "string",
+        "unavailable_state": "unknown",
+        "trusted_source": "active_vector_collection_when_not_degraded"
+      },
+      {
+        "name": "total_candidate_count",
+        "type": "integer_or_null",
+        "unavailable_state": null,
+        "trusted_source": "runtime_merged_candidate_count"
+      },
+      {
+        "name": "search_mode",
+        "type": "standard_or_expanded",
+        "unavailable_state": "standard",
+        "trusted_source": "api_entry_mode"
+      },
+      {
+        "name": "degraded_reasons",
+        "type": "string_array",
+        "unavailable_state": [],
+        "trusted_source": "pipeline_reason_codes_and_coverage_reason_codes"
+      }
+    ],
+    "coverage_reason_codes": [
+      "DATA_SOURCE_UNAVAILABLE",
+      "DATA_UNTIL_UNKNOWN",
+      "INDEX_VERSION_UNKNOWN"
+    ],
+    "absolute_coverage_claims": false,
+    "unverified_total_volume": false
+  },
+  "frontend_display": {
+    "result_overview_metrics": [
+      "total_duration",
+      "total_candidate_count",
+      "data_source",
+      "data_until",
+      "search_mode",
+      "index_version"
+    ],
+    "degraded_copy": "FACTUAL_BASIC_RETRIEVAL",
+    "unavailable_copy": "FACTUAL_UNAVAILABLE_STATE",
+    "detail_source_entry_retained": true
+  },
+  "privacy": {
+    "backend_raw_query_persistent_log": false,
+    "backend_body_log": false,
+    "analytics_raw_query": false,
+    "frontend_raw_query_persistent_storage": false,
+    "frontend_storage_lifecycle": "react_state_and_route_state_only",
+    "report_body_leakage": false,
+    "json_body_leakage": false
+  },
+  "scan_results": {
+    "target_scope": [
+      "apps/web/src",
+      "apps/api/app",
+      "apps/api/tests"
+    ],
+    "prohibited_copy": {
+      "ABSOLUTE_COPY_EXHAUSTIVE_1": "passed",
+      "ABSOLUTE_COPY_EXHAUSTIVE_2": "passed",
+      "ABSOLUTE_COPY_RECALL_RATE": "passed",
+      "UNVERIFIED_TOTAL_VOLUME": "passed",
+      "ABSOLUTE_COVERAGE_PACKAGING": "passed",
+      "OLD_HARDCODED_DATA_UNTIL": "passed"
+    },
+    "persistent_storage": {
+      "HOME_DRAFT_KEY_IDENTIFIER": "passed",
+      "HOME_DRAFT_KEY_LITERAL": "passed",
+      "LOCAL_STORAGE_WRITE_API": "passed",
+      "SESSION_STORAGE_WRITE_API": "passed",
+      "BROWSER_DATABASE_API": "passed"
+    }
+  },
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_health.py tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py",
+      "status": "passed",
+      "count": 18
+    },
+    {
+      "command": "cd apps/api; pytest tests/test_day1_api_skeleton.py",
+      "status": "passed",
+      "count": 22
+    },
+    {
+      "command": "cd apps/web; npm run test",
+      "status": "passed",
+      "count": 41
+    },
+    {
+      "command": "cd apps/web; npm run build",
+      "status": "passed"
+    }
+  ],
+  "intermediate_failures": [
+    {
+      "command": "cd apps/web; npm run test",
+      "status": "fixed_and_rerun_passed",
+      "reason_code": "TEST_LOCATOR_MULTIPLE_MATCHES"
+    }
+  ],
+  "forbidden_scope_modified": {
+    "ranking_weights": false,
+    "recall_logic": false,
+    "source_selection": false,
+    "qrels": false,
+    "label": false,
+    "historical_eval_results": false,
+    "m2_4_to_m2_8": false
+  },
+  "go_no_go": {
+    "status": "GO",
+    "reasons": [
+      "M2_1_GO_CONFIRMED",
+      "M2_2_GO_CONFIRMED",
+      "COVERAGE_CONTRACT_IMPLEMENTED",
+      "UNAVAILABLE_FIELDS_NOT_FABRICATED",
+      "PROHIBITED_COPY_SCAN_PASSED",
+      "RAW_QUERY_PERSISTENT_STORAGE_REMOVED",
+      "VALIDATION_PASSED",
+      "ENABLE_WEIGHTED_RERANK_FALSE"
+    ]
+  }
+}

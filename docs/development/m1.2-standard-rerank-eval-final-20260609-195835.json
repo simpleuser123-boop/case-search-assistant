@@ -1,0 +1,124 @@
+{
+  "version": "day3_7_2_rerank_eval_v1",
+  "run_id": "lecardv2_rerank_eval_20260609_200134",
+  "generated_at": "2026-06-09T20:01:34",
+  "generated_date": "2026-06-09",
+  "unified_result_version": "m1_2_eval_result_v1",
+  "unified_results": [
+    {
+      "runId": "lecardv2_rerank_eval_20260609_200134",
+      "generatedAt": "2026-06-09T20:01:34",
+      "evalLine": "standard_lecardv2",
+      "dataset": {
+        "name": "LeCaRDv2",
+        "queries": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\lecardv2_queries.jsonl",
+        "qrels": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\lecardv2_qrels.jsonl"
+      },
+      "candidateCorpus": {
+        "type": "lecardv2_candidate_corpus",
+        "path": "C:\\Users\\yyl\\Downloads\\LeCaRDv2-main\\candidate",
+        "candidateSet": "per-query BM25 pool, top_k=100"
+      },
+      "mode": "baseline",
+      "Precision@5": 0.4987,
+      "NDCG@10": 0.4442,
+      "Top10 hit rate": 0.8812,
+      "blockedItems": [],
+      "notes": [
+        "BM25 baseline over LeCaRDv2 qrels and candidate corpus."
+      ]
+    },
+    {
+      "runId": "lecardv2_rerank_eval_20260609_200134",
+      "generatedAt": "2026-06-09T20:01:34",
+      "evalLine": "standard_lecardv2",
+      "dataset": {
+        "name": "LeCaRDv2",
+        "queries": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\lecardv2_queries.jsonl",
+        "qrels": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\lecardv2_qrels.jsonl"
+      },
+      "candidateCorpus": {
+        "type": "lecardv2_candidate_corpus",
+        "path": "C:\\Users\\yyl\\Downloads\\LeCaRDv2-main\\candidate",
+        "candidateSet": "per-query BM25 pool, top_k=100"
+      },
+      "mode": "current",
+      "Precision@5": null,
+      "NDCG@10": null,
+      "Top10 hit rate": null,
+      "blockedItems": [
+        "blocked_missing_candidate_corpus",
+        "LeCaRDv2 candidate case texts were not found; current rerank cannot be evaluated against qrels."
+      ],
+      "notes": [
+        "Current rerank is evaluated only over the same LeCaRDv2 BM25 candidate pool when corpus exists.",
+        "This standard line is not the release decision line for product-local JuDGE cases."
+      ]
+    }
+  ],
+  "inputs": {
+    "queries": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\lecardv2_queries.jsonl",
+    "qrels": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\lecardv2_qrels.jsonl",
+    "corpus": "C:\\Users\\yyl\\Downloads\\LeCaRDv2-main\\candidate",
+    "baseline_report": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\bm25_baseline_report.json"
+  },
+  "privacy": {
+    "raw_query_text_written": false,
+    "candidate_full_text_written": false
+  },
+  "bad_case_reason_taxonomy": [
+    "RECALL_MISS",
+    "QUERY_REWRITE_ERROR",
+    "CASE_CAUSE_OVERWEIGHT",
+    "KEY_PARAGRAPH_MISMATCH",
+    "SUMMARY_MISLEADING",
+    "DATASET_MISMATCH",
+    "DEPENDENCY_UNAVAILABLE"
+  ],
+  "baseline": {
+    "source": "read_existing_baseline_report",
+    "path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\bm25_baseline_report.json",
+    "status": "ok",
+    "method": "bm25_char_bigram_baseline",
+    "query_count": 160,
+    "evaluated_query_count": 160,
+    "corpus_doc_count": 55192,
+    "indexed_doc_count": 55192,
+    "precision_at_5": 0.4987,
+    "ndcg_at_10": 0.4442,
+    "top10_hit_rate": 0.8812
+  },
+  "current_rerank_eval": {
+    "status": "blocked_missing_candidate_corpus",
+    "reason": "LeCaRDv2 candidate case texts were not found; current rerank cannot be evaluated against qrels.",
+    "corpus_path": "C:\\Users\\yyl\\Downloads\\LeCaRDv2-main\\candidate",
+    "query_count": 160,
+    "bad_cases": [
+      {
+        "eval_query_id": "ALL",
+        "source_query_id": null,
+        "reason_labels": [
+          "DEPENDENCY_UNAVAILABLE"
+        ],
+        "short_note": "LeCaRDv2 candidate corpus is missing on this machine; rerank-vs-qrels evaluation is blocked."
+      }
+    ]
+  },
+  "current_product_smoke": {
+    "status": "skipped",
+    "reason": "product smoke disabled by --product-smoke-queries 0",
+    "comparable_with_lecardv2_qrels": false
+  },
+  "top10_subjective_hit_rate": {
+    "status": "requires_manual_review",
+    "measured": false,
+    "reason": "No human subjective Top10 labels were available in this offline run.",
+    "executable_alternative": "top10_qrels_hit_rate"
+  },
+  "release_decision": {
+    "decision": "PARTIAL_BLOCKED",
+    "enable_new_rerank": false,
+    "reason": "LeCaRDv2 candidate case texts were not found; current rerank cannot be evaluated against qrels.",
+    "can_enter_7_3": true
+  }
+}

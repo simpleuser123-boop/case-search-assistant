@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "artifact": "m3-holding-summary-closure",
+  "step": "M3-2",
+  "generated_at": "2026-06-12T20:29:13+08:00",
+  "entry_gates": {
+    "m3_1": {
+      "path": "docs/development/m3-reading-entry-contract-20260612-194511.json",
+      "status": "GO",
+      "allows_entering_m3_2": true
+    },
+    "m2_2": {
+      "path": "docs/development/m2-source-anchor-closure-20260612-104120.json",
+      "status": "GO"
+    },
+    "m2_3": {
+      "path": "docs/development/m2-coverage-privacy-20260612-140115.json",
+      "status": "GO"
+    }
+  },
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "weighted_rerank_default_changed": false,
+    "search_ranking_changed": false,
+    "candidate_recall_changed": false,
+    "source_selection_changed": false,
+    "m2_expanded_retrieval_default_changed": false
+  },
+  "implemented_contract": {
+    "response_field": "holding_summary",
+    "fields": [
+      "summary_items",
+      "source_anchors",
+      "confidence",
+      "generation_status",
+      "degrade_reason"
+    ],
+    "visible_item_requires_source_anchors": true,
+    "required_anchor_fields": [
+      "case_id",
+      "source_chunk_id"
+    ],
+    "anchor_source": "case_detail_source_chunks",
+    "fake_anchor_binding": false
+  },
+  "downgrade_policy": {
+    "hide_ai_summary_without_anchor": true,
+    "safe_fallback_without_white_screen": true,
+    "reason_codes": [
+      "missing_source_anchor",
+      "insufficient_source",
+      "model_failed",
+      "source_mismatch"
+    ]
+  },
+  "frontend_policy": {
+    "anchor_entry_required_for_visible_holding_summary": true,
+    "client_side_anchor_consistency_check": true,
+    "deterministic_legal_conclusion_copy": false,
+    "win_loss_or_probability_copy": false,
+    "safe_degrade_without_white_screen": true
+  },
+  "modified_files": [
+    "apps/api/app/schemas.py",
+    "apps/api/app/summary/service.py",
+    "apps/api/app/summary/__init__.py",
+    "apps/api/app/api/cases.py",
+    "apps/api/tests/test_m3_holding_summary.py",
+    "apps/web/src/types/search.ts",
+    "apps/web/src/components/details/CaseDetailDrawer.tsx",
+    "apps/web/src/pages/SearchPage.test.tsx"
+  ],
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_m3_holding_summary.py tests/test_summary_service.py",
+      "result": "16 passed"
+    },
+    {
+      "command": "cd apps/api; pytest tests/test_summary_service.py tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py tests/test_performance_smoke.py tests/test_m3_holding_summary.py",
+      "result": "28 passed"
+    },
+    {
+      "command": "cd apps/web; npm run test",
+      "result": "5 passed files, 49 passed tests"
+    },
+    {
+      "command": "cd apps/web; npm run build",
+      "result": "passed"
+    }
+  ],
+  "browser_acceptance": {
+    "api_started": true,
+    "web_started": true,
+    "homepage_loaded": true,
+    "search_loaded": true,
+    "detail_loaded": true,
+    "anchored_holding_summary_visible": true,
+    "source_entry_visible_for_holding_summary": true,
+    "degraded_paths_covered_by_focused_tests": true,
+    "no_white_screen": true
+  },
+  "body_leakage_check": {
+    "raw_query_text": false,
+    "case_fact_body": false,
+    "candidate_body": false,
+    "chunk_body": false,
+    "judgment_body": false,
+    "summary_body": false,
+    "source_fragment_body": false,
+    "test_snapshot_body": false,
+    "log_body": false
+  },
+  "go_no_go": {
+    "status": "GO",
+    "failed_gates": [],
+    "reason_codes": [
+      "M3_1_GO_CONFIRMED",
+      "M2_2_GO_CONFIRMED",
+      "M2_3_GO_CONFIRMED",
+      "ENABLE_WEIGHTED_RERANK_FALSE_CONFIRMED",
+      "HOLDING_SUMMARY_CONTRACT_IMPLEMENTED",
+      "VISIBLE_SUMMARY_ITEMS_REQUIRE_SOURCE_ANCHORS",
+      "UNANCHORED_SUMMARY_HIDDEN_OR_DEGRADED",
+      "VALIDATION_PASSED",
+      "NO_BODY_LEAKAGE_IN_ARTIFACT"
+    ],
+    "next_allowed_title": "类案检索助手 M3-3 争议焦点与关键要素提炼"
+  }
+}

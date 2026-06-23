@@ -1,0 +1,187 @@
+{
+  "version": "1.0",
+  "artifact": "m3-case-compare-gate",
+  "step": "M3-6",
+  "title": "案例对比视图受控入口",
+  "generated_at": "2026-06-13T05:45:41+08:00",
+  "entry_gates": {
+    "m2_8_base_search": "GO",
+    "m2_trusted_retrieval": "GO",
+    "m3_entry": "GO",
+    "m3_1_reading_entry_contract": "GO",
+    "m3_2_holding_summary_closure": "GO",
+    "m3_3_issue_focus_elements": "GO",
+    "m3_4_fact_alignment": "GO",
+    "m3_5_source_highlights": "GO",
+    "all_prerequisites_go": true,
+    "blocked": false
+  },
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": {
+      "required_default": false,
+      "changed": false,
+      "status": "unchanged_false"
+    },
+    "source_selection_changed": false,
+    "candidate_recall_changed": false,
+    "rerank_default_changed": false,
+    "m2_expanded_search_default_changed": false,
+    "online_sorting_changed": false
+  },
+  "implemented_contract": {
+    "structure": "case_compare",
+    "assembly": "frontend_only_from_session_data",
+    "fields": [
+      "selected_case_ids",
+      "compare_sections",
+      "source_anchors",
+      "module_status",
+      "degrade_reason"
+    ],
+    "compare_sections": [
+      "metadata",
+      "holding_summary",
+      "issue_focus",
+      "fact_dimension",
+      "risk_hints"
+    ],
+    "cell_status_vocab": ["available", "degraded", "loading"],
+    "degrade_reason_vocab": [
+      "detail_unavailable",
+      "detail_loading",
+      "module_degraded",
+      "missing_source_anchor",
+      "source_chunk_unavailable",
+      "no_anchored_content",
+      "no_flagged_risk"
+    ],
+    "min_compare_cases": 2,
+    "max_compare_cases": 3,
+    "required_anchor_fields": ["case_id", "source_chunk_id"],
+    "case_side_cell_requires_anchor_or_degrade": true,
+    "no_source_no_display": true,
+    "cross_case_anchor_filtered": true,
+    "metadata_anchor_type": "case_record",
+    "fabricates_source_chunk_id": false,
+    "fake_anchor_binding": false
+  },
+  "controlled_entry_rules": {
+    "selectable_pool": "current_visible_results_only",
+    "selection_storage": "ephemeral_react_state",
+    "persisted_to_storage": false,
+    "restored_across_sessions": false,
+    "is_favorite_history_list_export_report": false,
+    "selection_pruned_when_out_of_pool": true,
+    "selection_reset_on_new_search": true
+  },
+  "runtime_boundaries": {
+    "affects_main_result_sorting": false,
+    "affects_source_selection": false,
+    "affects_candidate_recall": false,
+    "uses_qrels_label_relevance_queryid_caseid_special_case": false,
+    "case_id_special_case_in_compare": false,
+    "compare_status_influences_ranking": false,
+    "outputs_win_loss_probability": false,
+    "implements_m4_or_later": false,
+    "backend_python_changed": false
+  },
+  "frontend_visual_rules": {
+    "separated_from_main_list": true,
+    "closeable_overlay": true,
+    "close_preserves_main_results": true,
+    "mobile_degrades_to_single_case_segmented_view": true
+  },
+  "files_changed": {
+    "added": [
+      "apps/web/src/lib/caseCompare.ts",
+      "apps/web/src/lib/caseCompare.test.ts",
+      "apps/web/src/components/results/CaseCompareView.tsx",
+      "apps/web/src/pages/CaseCompareAcceptance.test.tsx"
+    ],
+    "modified": [
+      "apps/web/src/components/results/ResultCard.tsx",
+      "apps/web/src/components/results/ResultList.tsx",
+      "apps/web/src/pages/SearchPage.tsx"
+    ],
+    "backend_files_changed": 0
+  },
+  "verification": {
+    "web_tsc": { "command": "npx tsc --noEmit", "status": "pass", "exit_code": 0 },
+    "web_unit_case_compare": {
+      "command": "vitest run src/lib/caseCompare.test.ts",
+      "status": "pass",
+      "tests": 11
+    },
+    "web_acceptance_jsdom": {
+      "command": "vitest run src/pages/CaseCompareAcceptance.test.tsx",
+      "status": "pass",
+      "tests": 5
+    },
+    "web_test_full": {
+      "command": "npm run test",
+      "status": "pass",
+      "test_files": 9,
+      "tests": 79,
+      "prior_tests_baseline": 65,
+      "regressions": 0
+    },
+    "web_build": {
+      "command": "vite build --outDir <clean> --emptyOutDir",
+      "status": "pass",
+      "modules_transformed": 105,
+      "note": "clean-dir build used to avoid known Windows-mount EPERM on dist/ cleanup"
+    },
+    "api_smoke": {
+      "command": "pytest tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py tests/test_performance_smoke.py",
+      "status": "not_run",
+      "reason_code": "env_dependency_install_unavailable",
+      "detail": "VM network could not install fastapi/chromadb deps within limits; .venv is Windows-only. M3-6 changed 0 Python files, so these search/fallback/flag paths are byte-identical to the M2 final-verification run (2026-06-12, all passing).",
+      "backend_python_changed": false
+    },
+    "browser_acceptance": {
+      "mode": "jsdom_real_component_tree",
+      "reason_native_browser_unavailable": "host_to_vm_network_bridge_unreachable",
+      "checkpoints": {
+        "select_cases": "pass",
+        "open_compare": "pass",
+        "five_sections_present": "pass",
+        "every_case_side_cell_has_anchor_or_degrade": "pass",
+        "close_compare": "pass",
+        "main_results_intact_after_close": "pass",
+        "no_export_favorite_history_report_list_controls": "pass",
+        "console_error_count": 0
+      }
+    }
+  },
+  "metrics_summary": {
+    "compare_sections_count": 5,
+    "min_compare_cases": 2,
+    "max_compare_cases": 3,
+    "new_unit_tests": 11,
+    "new_acceptance_tests": 5,
+    "total_web_tests": 79
+  },
+  "leakage_checks": {
+    "report_contains_raw_query": false,
+    "report_contains_case_body": false,
+    "report_contains_candidate_body": false,
+    "report_contains_chunk_body": false,
+    "report_contains_judgment_text": false,
+    "report_contains_user_free_text": false,
+    "summary_log_body_free": true
+  },
+  "acceptance": {
+    "compare_content_anchored_or_safe_degrade": "pass",
+    "compare_view_closeable_and_rollbackable": "pass",
+    "compare_view_does_not_change_main_ranking": "pass",
+    "no_m4_workflow_capability": "pass",
+    "no_body_leakage": "pass"
+  },
+  "stop_loss": {
+    "compare_persists_user_selection": false,
+    "introduces_favorite_history_export_report": false,
+    "breaks_main_path": false,
+    "any_triggered": false
+  },
+  "conclusion": "GO"
+}

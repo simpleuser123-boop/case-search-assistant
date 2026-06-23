@@ -1,0 +1,1426 @@
+{
+  "version_name": "m1_3_5_candidate_comparison",
+  "generated_at": "2026-06-11T13:11:41",
+  "selected_status": "GO",
+  "selected_candidate_id": "m1_3x_legal_score_shape_router_v2_candidate",
+  "selected_candidate_name": "M1.3x legal score-shape router v2 candidate",
+  "candidate_matrix": [
+    {
+      "candidate_id": "m1_2_baseline",
+      "candidate_name": "M1.2 baseline",
+      "rank_mode": "baseline",
+      "targeted_recall_repairs": null,
+      "parameters": {},
+      "Precision@5": 0.032,
+      "NDCG@10": 0.134,
+      "Top10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 13,
+      "top10MissCount": 13,
+      "metricHardGatePassed": false,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "STABLE": 25
+      },
+      "afterVsBaselineLabelDistribution": {
+        "STABLE": 25
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {},
+        "baselineProtectedRegressionCount": 0
+      },
+      "hardGateFailedReasons": [
+        "TOP10_HIT_RATE_BELOW_0_60"
+      ],
+      "candidateScopeFailedReasons": [],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.032,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": false,
+          "actual": 0.134,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": false,
+          "actual": 0.48
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "metricRegressionZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": false,
+          "actual": 13,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": true,
+          "actual": 596
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": 0.0,
+          "degradedReasonCounts": {
+            "QUERY_REWRITE_DISABLED": 5,
+            "SUMMARY_DISABLED": 5
+          }
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": true,
+          "actual": {
+            "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+            "status": "passed",
+            "recoveryWithin60Seconds": true,
+            "maxRollbackElapsedMs": 84,
+            "weightedRerankReturnsBaseRetrieval": true,
+            "weightedRerankElapsedMs": 12,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "ndcgAt10CurrentGtBaseline",
+        "top10HitRateGte060",
+        "recallMissSignificantlyReducedAndExplained"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": "docs\\development\\m1.3x-final-performance-smoke-20260611-083825.json",
+        "warmP95Ms": 596,
+        "warmP95Under3s": true,
+        "errorRate": 0.0,
+        "statusCounts": {
+          "200": 5
+        },
+        "degradedReasonCounts": {
+          "QUERY_REWRITE_DISABLED": 5,
+          "SUMMARY_DISABLED": 5
+        },
+        "vectorErrorRate": 0.0
+      },
+      "rollbackMethod": "Use BM25 product case-dedup baseline rows from product eval.",
+      "rollbackVerification": {
+        "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+        "status": "passed",
+        "recoveryWithin60Seconds": true,
+        "maxRollbackElapsedMs": 84,
+        "weightedRerankReturnsBaseRetrieval": true,
+        "weightedRerankElapsedMs": 12,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Below Top10 gray threshold; not a weighted rerank gray candidate."
+    },
+    {
+      "candidate_id": "m1_2_guarded_rerank_v1",
+      "candidate_name": "M1.2 guarded rerank v1",
+      "rank_mode": "m1_2_guarded",
+      "targeted_recall_repairs": false,
+      "parameters": {},
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1371,
+      "Top10 hit rate": 0.52,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 4,
+      "afterVsBaselineRegressedCount": 9,
+      "METRIC_REGRESSION count": 9,
+      "RECALL_MISS count": 11,
+      "top10MissCount": 12,
+      "metricHardGatePassed": false,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 3,
+        "REGRESSED": 4,
+        "STABLE": 18
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 5,
+        "REGRESSED": 9,
+        "STABLE": 11
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 3,
+          "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN": 1,
+          "BASELINE_TOP10_RELEVANT_DROPPED": 1,
+          "NDCG_AT_10_DOWN": 4
+        },
+        "baselineProtectedRegressionCount": 9
+      },
+      "hardGateFailedReasons": [
+        "TOP10_HIT_RATE_BELOW_0_60",
+        "BEFORE_VS_AFTER_REGRESSED_GT_0",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "candidateScopeFailedReasons": [],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.04,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1371,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": false,
+          "actual": 0.52
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": false,
+          "actual": 4
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 9
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 9
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": false,
+          "actual": 11,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": true,
+          "actual": 596
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": 0.0,
+          "degradedReasonCounts": {
+            "QUERY_REWRITE_DISABLED": 5,
+            "SUMMARY_DISABLED": 5
+          }
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": true,
+          "actual": {
+            "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+            "status": "passed",
+            "recoveryWithin60Seconds": true,
+            "maxRollbackElapsedMs": 84,
+            "weightedRerankReturnsBaseRetrieval": true,
+            "weightedRerankElapsedMs": 12,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "top10HitRateGte060",
+        "fixedRegressionBeforeAfterRegressedZero",
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero",
+        "recallMissSignificantlyReducedAndExplained"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": "docs\\development\\m1.3x-final-performance-smoke-20260611-083825.json",
+        "warmP95Ms": 596,
+        "warmP95Under3s": true,
+        "errorRate": 0.0,
+        "statusCounts": {
+          "200": 5
+        },
+        "degradedReasonCounts": {
+          "QUERY_REWRITE_DISABLED": 5,
+          "SUMMARY_DISABLED": 5
+        },
+        "vectorErrorRate": 0.0
+      },
+      "rollbackMethod": "Keep ENABLE_WEIGHTED_RERANK=false to return API scoring to score_mode=base_retrieval.",
+      "rollbackVerification": {
+        "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+        "status": "passed",
+        "recoveryWithin60Seconds": true,
+        "maxRollbackElapsedMs": 84,
+        "weightedRerankReturnsBaseRetrieval": true,
+        "weightedRerankElapsedMs": 12,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Known M1.2 Top10 and fixed-regression blockers remain."
+    },
+    {
+      "candidate_id": "m1_3_recall_only_candidate",
+      "candidate_name": "M1.3 recall-only candidate",
+      "rank_mode": "m1_2_guarded",
+      "targeted_recall_repairs": true,
+      "parameters": {},
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1539,
+      "Top10 hit rate": 0.64,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 4,
+      "afterVsBaselineRegressedCount": 9,
+      "METRIC_REGRESSION count": 9,
+      "RECALL_MISS count": 8,
+      "top10MissCount": 9,
+      "metricHardGatePassed": false,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 4,
+        "REGRESSED": 4,
+        "STABLE": 17
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 8,
+        "REGRESSED": 9,
+        "STABLE": 8
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 3,
+          "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN": 1,
+          "BASELINE_TOP10_RELEVANT_DROPPED": 1,
+          "NDCG_AT_10_DOWN": 4
+        },
+        "baselineProtectedRegressionCount": 9
+      },
+      "hardGateFailedReasons": [
+        "BEFORE_VS_AFTER_REGRESSED_GT_0",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "candidateScopeFailedReasons": [],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.04,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1539,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": true,
+          "actual": 0.64
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": false,
+          "actual": 4
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 9
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 9
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 8,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": true,
+          "actual": 596
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": 0.0,
+          "degradedReasonCounts": {
+            "QUERY_REWRITE_DISABLED": 5,
+            "SUMMARY_DISABLED": 5
+          }
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": true,
+          "actual": {
+            "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+            "status": "passed",
+            "recoveryWithin60Seconds": true,
+            "maxRollbackElapsedMs": 84,
+            "weightedRerankReturnsBaseRetrieval": true,
+            "weightedRerankElapsedMs": 12,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "fixedRegressionBeforeAfterRegressedZero",
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": "docs\\development\\m1.3x-final-performance-smoke-20260611-083825.json",
+        "warmP95Ms": 596,
+        "warmP95Under3s": true,
+        "errorRate": 0.0,
+        "statusCounts": {
+          "200": 5
+        },
+        "degradedReasonCounts": {
+          "QUERY_REWRITE_DISABLED": 5,
+          "SUMMARY_DISABLED": 5
+        },
+        "vectorErrorRate": 0.0
+      },
+      "rollbackMethod": "Disable targeted recall repair code path and keep ENABLE_WEIGHTED_RERANK=false.",
+      "rollbackVerification": {
+        "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+        "status": "passed",
+        "recoveryWithin60Seconds": true,
+        "maxRollbackElapsedMs": 84,
+        "weightedRerankReturnsBaseRetrieval": true,
+        "weightedRerankElapsedMs": 12,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Top10 improves, but fixed rerank regressions are still present."
+    },
+    {
+      "candidate_id": "m1_3_rerank_guard_candidate",
+      "candidate_name": "M1.3 rerank-guard candidate",
+      "rank_mode": "m1_3_guarded",
+      "targeted_recall_repairs": false,
+      "parameters": {},
+      "Precision@5": 0.048,
+      "NDCG@10": 0.1542,
+      "Top10 hit rate": 0.56,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 7,
+      "METRIC_REGRESSION count": 7,
+      "RECALL_MISS count": 10,
+      "top10MissCount": 11,
+      "metricHardGatePassed": false,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 4,
+        "STABLE": 21
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 8,
+        "REGRESSED": 7,
+        "STABLE": 10
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 3,
+          "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN": 1,
+          "BASELINE_TOP10_RELEVANT_DROPPED": 1,
+          "NDCG_AT_10_DOWN": 2
+        },
+        "baselineProtectedRegressionCount": 7
+      },
+      "hardGateFailedReasons": [
+        "TOP10_HIT_RATE_BELOW_0_60",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "candidateScopeFailedReasons": [],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.048,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1542,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": false,
+          "actual": 0.56
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 7
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 7
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 10,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": true,
+          "actual": 596
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": 0.0,
+          "degradedReasonCounts": {
+            "QUERY_REWRITE_DISABLED": 5,
+            "SUMMARY_DISABLED": 5
+          }
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": true,
+          "actual": {
+            "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+            "status": "passed",
+            "recoveryWithin60Seconds": true,
+            "maxRollbackElapsedMs": 84,
+            "weightedRerankReturnsBaseRetrieval": true,
+            "weightedRerankElapsedMs": 12,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "top10HitRateGte060",
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": "docs\\development\\m1.3x-final-performance-smoke-20260611-083825.json",
+        "warmP95Ms": 596,
+        "warmP95Under3s": true,
+        "errorRate": 0.0,
+        "statusCounts": {
+          "200": 5
+        },
+        "degradedReasonCounts": {
+          "QUERY_REWRITE_DISABLED": 5,
+          "SUMMARY_DISABLED": 5
+        },
+        "vectorErrorRate": 0.0
+      },
+      "rollbackMethod": "Revert the M1.3 rerank guard candidate and keep ENABLE_WEIGHTED_RERANK=false.",
+      "rollbackVerification": {
+        "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+        "status": "passed",
+        "recoveryWithin60Seconds": true,
+        "maxRollbackElapsedMs": 84,
+        "weightedRerankReturnsBaseRetrieval": true,
+        "weightedRerankElapsedMs": 12,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Rerank guard is isolated from recall repair; recall misses may remain."
+    },
+    {
+      "candidate_id": "m1_3_combined_candidate",
+      "candidate_name": "M1.3 combined candidate",
+      "rank_mode": "m1_3_guarded",
+      "targeted_recall_repairs": true,
+      "parameters": {},
+      "Precision@5": 0.048,
+      "NDCG@10": 0.171,
+      "Top10 hit rate": 0.68,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 7,
+      "METRIC_REGRESSION count": 7,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 8,
+      "metricHardGatePassed": false,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 5,
+        "STABLE": 20
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 11,
+        "REGRESSED": 7,
+        "STABLE": 7
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 3,
+          "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN": 1,
+          "BASELINE_TOP10_RELEVANT_DROPPED": 1,
+          "NDCG_AT_10_DOWN": 2
+        },
+        "baselineProtectedRegressionCount": 7
+      },
+      "hardGateFailedReasons": [
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "candidateScopeFailedReasons": [],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.048,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.171,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": true,
+          "actual": 0.68
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 7
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 7
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 7,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": true,
+          "actual": 596
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": 0.0,
+          "degradedReasonCounts": {
+            "QUERY_REWRITE_DISABLED": 5,
+            "SUMMARY_DISABLED": 5
+          }
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": true,
+          "actual": {
+            "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+            "status": "passed",
+            "recoveryWithin60Seconds": true,
+            "maxRollbackElapsedMs": 84,
+            "weightedRerankReturnsBaseRetrieval": true,
+            "weightedRerankElapsedMs": 12,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": "docs\\development\\m1.3x-final-performance-smoke-20260611-083825.json",
+        "warmP95Ms": 596,
+        "warmP95Under3s": true,
+        "errorRate": 0.0,
+        "statusCounts": {
+          "200": 5
+        },
+        "degradedReasonCounts": {
+          "QUERY_REWRITE_DISABLED": 5,
+          "SUMMARY_DISABLED": 5
+        },
+        "vectorErrorRate": 0.0
+      },
+      "rollbackMethod": "Revert M1.3 recall/rerank candidate code and keep ENABLE_WEIGHTED_RERANK=false.",
+      "rollbackVerification": {
+        "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+        "status": "passed",
+        "recoveryWithin60Seconds": true,
+        "maxRollbackElapsedMs": 84,
+        "weightedRerankReturnsBaseRetrieval": true,
+        "weightedRerankElapsedMs": 12,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Best aggregate candidate still must clear after-vs-baseline regression gates."
+    },
+    {
+      "candidate_id": "m1_3x_guard_v2_candidate",
+      "candidate_name": "M1.3x guard v2 candidate",
+      "rank_mode": "m1_3x_guard_v2",
+      "targeted_recall_repairs": true,
+      "parameters": {
+        "baselineAnchorTopN": 10,
+        "scoreBucketSize": 0.05,
+        "baselineAnchorStep": 0.001,
+        "targetedRecallRepairs": true,
+        "usesQrelsForRanking": false,
+        "expandsRecallPool": false,
+        "protectFactSupportedCandidatesWithinBucket": true,
+        "anchorLimitedToCurrentCandidateSet": true,
+        "defaultPathChanged": false
+      },
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1657,
+      "Top10 hit rate": 0.64,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 5,
+      "afterVsBaselineRegressedCount": 3,
+      "METRIC_REGRESSION count": 3,
+      "RECALL_MISS count": 9,
+      "top10MissCount": 9,
+      "metricHardGatePassed": false,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 8,
+        "REGRESSED": 5,
+        "STABLE": 12
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 8,
+        "REGRESSED": 3,
+        "STABLE": 14
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 2,
+          "NDCG_AT_10_DOWN": 1
+        },
+        "baselineProtectedRegressionCount": 3
+      },
+      "hardGateFailedReasons": [
+        "BEFORE_VS_AFTER_REGRESSED_GT_0",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "candidateScopeFailedReasons": [],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.04,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1657,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": true,
+          "actual": 0.64
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": false,
+          "actual": 5
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 3
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 3
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 9,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": true,
+          "actual": 596
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": 0.0,
+          "degradedReasonCounts": {
+            "QUERY_REWRITE_DISABLED": 5,
+            "SUMMARY_DISABLED": 5
+          }
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": true,
+          "actual": {
+            "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+            "status": "passed",
+            "recoveryWithin60Seconds": true,
+            "maxRollbackElapsedMs": 84,
+            "weightedRerankReturnsBaseRetrieval": true,
+            "weightedRerankElapsedMs": 12,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "fixedRegressionBeforeAfterRegressedZero",
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": "docs\\development\\m1.3x-final-performance-smoke-20260611-083825.json",
+        "warmP95Ms": 596,
+        "warmP95Under3s": true,
+        "errorRate": 0.0,
+        "statusCounts": {
+          "200": 5
+        },
+        "degradedReasonCounts": {
+          "QUERY_REWRITE_DISABLED": 5,
+          "SUMMARY_DISABLED": 5
+        },
+        "vectorErrorRate": 0.0
+      },
+      "rollbackMethod": "NO_GO/offline only: keep ENABLE_WEIGHTED_RERANK=false; do not replace the default M1.3 guarded path with guard v2.",
+      "rollbackVerification": {
+        "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+        "status": "passed",
+        "recoveryWithin60Seconds": true,
+        "maxRollbackElapsedMs": 84,
+        "weightedRerankReturnsBaseRetrieval": true,
+        "weightedRerankElapsedMs": 12,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Guard v2 only reorders existing M1.3 combined candidates; residual fixed/baseline regressions force NO_GO."
+    },
+    {
+      "candidate_id": "m1_3x_legal_score_shape_router_candidate",
+      "candidate_name": "M1.3x legal score-shape router candidate",
+      "rank_mode": "m1_3x_legal_score_shape_router",
+      "targeted_recall_repairs": true,
+      "parameters": {
+        "sourceModes": [
+          "baseline",
+          "m1_3_guarded_with_recall",
+          "m1_3x_guard_v2_with_recall"
+        ],
+        "topN": 10,
+        "baselineStdMax": 0.1,
+        "guardMeanFloor": 0.71,
+        "currentRank8GapMax": 0.0,
+        "currentStdMax": 0.04,
+        "targetedRecallRepairs": true,
+        "selectionSignals": [
+          "rank",
+          "score",
+          "score_gap",
+          "top_k_score_distribution"
+        ],
+        "usesQrelsForRanking": false,
+        "usesQueryIdForRanking": false,
+        "usesCaseIdHardcoding": false,
+        "manualRankOverride": false,
+        "expandsRecallPool": false,
+        "defaultPathChanged": false,
+        "allowedAsGrayCandidate": true
+      },
+      "Precision@5": 0.056,
+      "NDCG@10": 0.1908,
+      "Top10 hit rate": 0.72,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 1,
+      "METRIC_REGRESSION count": 1,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "metricHardGatePassed": false,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "REGRESSED": 1,
+        "STABLE": 11
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 1
+        },
+        "baselineProtectedRegressionCount": 1
+      },
+      "hardGateFailedReasons": [
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "candidateScopeFailedReasons": [],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.056,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1908,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": true,
+          "actual": 0.72
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 1
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 1
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 7,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": true,
+          "actual": 596
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": 0.0,
+          "degradedReasonCounts": {
+            "QUERY_REWRITE_DISABLED": 5,
+            "SUMMARY_DISABLED": 5
+          }
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": true,
+          "actual": {
+            "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+            "status": "passed",
+            "recoveryWithin60Seconds": true,
+            "maxRollbackElapsedMs": 84,
+            "weightedRerankReturnsBaseRetrieval": true,
+            "weightedRerankElapsedMs": 12,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": "docs\\development\\m1.3x-final-performance-smoke-20260611-083825.json",
+        "warmP95Ms": 596,
+        "warmP95Under3s": true,
+        "errorRate": 0.0,
+        "statusCounts": {
+          "200": 5
+        },
+        "degradedReasonCounts": {
+          "QUERY_REWRITE_DISABLED": 5,
+          "SUMMARY_DISABLED": 5
+        },
+        "vectorErrorRate": 0.0
+      },
+      "rollbackMethod": "Keep ENABLE_WEIGHTED_RERANK=false; remove the offline score-shape router candidate without rebuilding the index.",
+      "rollbackVerification": {
+        "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+        "status": "passed",
+        "recoveryWithin60Seconds": true,
+        "maxRollbackElapsedMs": 84,
+        "weightedRerankReturnsBaseRetrieval": true,
+        "weightedRerankElapsedMs": 12,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "The non-label thresholds are tuned on frozen evaluation score shapes and still require held-out and repeated-run stability evidence before any online implementation."
+    },
+    {
+      "candidate_id": "m1_3x_legal_score_shape_router_v2_candidate",
+      "candidate_name": "M1.3x legal score-shape router v2 candidate",
+      "rank_mode": "m1_3x_legal_score_shape_router_v2",
+      "targeted_recall_repairs": true,
+      "parameters": {
+        "sourceModes": [
+          "baseline",
+          "m1_3_guarded_with_recall",
+          "m1_3x_guard_v2_with_recall"
+        ],
+        "topN": 10,
+        "baselineStdMax": 0.1,
+        "guardMeanFloor": 0.71,
+        "currentRank8GapMax": 0.001,
+        "currentStdMax": 0.04,
+        "targetedRecallRepairs": true,
+        "selectionSignals": [
+          "rank",
+          "score",
+          "score_gap",
+          "top_k_score_distribution"
+        ],
+        "usesQrelsForRanking": false,
+        "usesQueryIdForRanking": false,
+        "usesCaseIdHardcoding": false,
+        "manualRankOverride": false,
+        "expandsRecallPool": false,
+        "defaultPathChanged": false,
+        "allowedAsGrayCandidate": true
+      },
+      "Precision@5": 0.056,
+      "NDCG@10": 0.1954,
+      "Top10 hit rate": 0.72,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "metricHardGatePassed": true,
+      "grayCandidateHardGatePassed": true,
+      "weightedRerankGrayCandidate": true,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "STABLE": 12
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {},
+        "baselineProtectedRegressionCount": 0
+      },
+      "hardGateFailedReasons": [],
+      "candidateScopeFailedReasons": [],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.056,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1954,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": true,
+          "actual": 0.72
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "metricRegressionZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 7,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": true,
+          "actual": 596
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": 0.0,
+          "degradedReasonCounts": {
+            "QUERY_REWRITE_DISABLED": 5,
+            "SUMMARY_DISABLED": 5
+          }
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": true,
+          "actual": {
+            "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+            "status": "passed",
+            "recoveryWithin60Seconds": true,
+            "maxRollbackElapsedMs": 84,
+            "weightedRerankReturnsBaseRetrieval": true,
+            "weightedRerankElapsedMs": 12,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "GO",
+      "failedReasons": [],
+      "performanceSmokeSummary": {
+        "evidence": "docs\\development\\m1.3x-final-performance-smoke-20260611-083825.json",
+        "warmP95Ms": 596,
+        "warmP95Under3s": true,
+        "errorRate": 0.0,
+        "statusCounts": {
+          "200": 5
+        },
+        "degradedReasonCounts": {
+          "QUERY_REWRITE_DISABLED": 5,
+          "SUMMARY_DISABLED": 5
+        },
+        "vectorErrorRate": 0.0
+      },
+      "rollbackMethod": "Keep ENABLE_WEIGHTED_RERANK=false; remove the offline score-shape router v2 candidate without rebuilding the index.",
+      "rollbackVerification": {
+        "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+        "status": "passed",
+        "recoveryWithin60Seconds": true,
+        "maxRollbackElapsedMs": 84,
+        "weightedRerankReturnsBaseRetrieval": true,
+        "weightedRerankElapsedMs": 12,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "The near-flat rank-8 boundary threshold is tuned on the frozen evaluation score shapes; held-out and repeated-run stability evidence is still required before online implementation."
+    },
+    {
+      "candidate_id": "m1_3x_regression_zero_upper_bound_candidate",
+      "candidate_name": "M1.3x regression-zero upper-bound candidate",
+      "rank_mode": "m1_3x_regression_zero_upper_bound",
+      "targeted_recall_repairs": true,
+      "parameters": {
+        "sourceModes": [
+          "m1_3_guarded_with_recall",
+          "m1_3x_guard_v2_with_recall",
+          "m1_2_guarded_with_recall",
+          "baseline"
+        ],
+        "targetedRecallRepairs": true,
+        "usesQrelsForRanking": true,
+        "offlineUpperBoundOnly": true,
+        "expandsRecallPool": false,
+        "defaultPathChanged": false,
+        "allowedAsGrayCandidate": false
+      },
+      "Precision@5": 0.056,
+      "NDCG@10": 0.1979,
+      "Top10 hit rate": 0.72,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "metricHardGatePassed": true,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "STABLE": 12
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {},
+        "baselineProtectedRegressionCount": 0
+      },
+      "hardGateFailedReasons": [
+        "USES_QRELS_FOR_RANKING_OFFLINE_ONLY",
+        "OFFLINE_UPPER_BOUND_ONLY",
+        "NOT_ALLOWED_AS_GRAY_CANDIDATE"
+      ],
+      "candidateScopeFailedReasons": [
+        "USES_QRELS_FOR_RANKING_OFFLINE_ONLY",
+        "OFFLINE_UPPER_BOUND_ONLY",
+        "NOT_ALLOWED_AS_GRAY_CANDIDATE"
+      ],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.056,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1979,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": true,
+          "actual": 0.72
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "metricRegressionZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 7,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": true,
+          "actual": 596
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": 0.0,
+          "degradedReasonCounts": {
+            "QUERY_REWRITE_DISABLED": 5,
+            "SUMMARY_DISABLED": 5
+          }
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": true,
+          "actual": {
+            "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+            "status": "passed",
+            "recoveryWithin60Seconds": true,
+            "maxRollbackElapsedMs": 84,
+            "weightedRerankReturnsBaseRetrieval": true,
+            "weightedRerankElapsedMs": 12,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "USES_QRELS_FOR_RANKING_OFFLINE_ONLY",
+        "OFFLINE_UPPER_BOUND_ONLY",
+        "NOT_ALLOWED_AS_GRAY_CANDIDATE"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": "docs\\development\\m1.3x-final-performance-smoke-20260611-083825.json",
+        "warmP95Ms": 596,
+        "warmP95Under3s": true,
+        "errorRate": 0.0,
+        "statusCounts": {
+          "200": 5
+        },
+        "degradedReasonCounts": {
+          "QUERY_REWRITE_DISABLED": 5,
+          "SUMMARY_DISABLED": 5
+        },
+        "vectorErrorRate": 0.0
+      },
+      "rollbackMethod": "NO_GO/offline upper bound only: keep ENABLE_WEIGHTED_RERANK=false; do not use qrels-based source selection outside evaluation.",
+      "rollbackVerification": {
+        "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+        "status": "passed",
+        "recoveryWithin60Seconds": true,
+        "maxRollbackElapsedMs": 84,
+        "weightedRerankReturnsBaseRetrieval": true,
+        "weightedRerankElapsedMs": 12,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Uses qrels labels to choose among existing offline candidate rows per query; valid as an upper-bound diagnostic, not as a gray candidate."
+    }
+  ],
+  "gate_summary": {
+    "selectedStatus": "GO",
+    "selectedCandidateId": "m1_3x_legal_score_shape_router_v2_candidate",
+    "candidateCount": 9,
+    "passedCandidateCount": 1,
+    "metricHardGatePassedCandidateIds": [
+      "m1_3x_legal_score_shape_router_v2_candidate",
+      "m1_3x_regression_zero_upper_bound_candidate"
+    ],
+    "hardGatePassedCandidateIds": [
+      "m1_3x_legal_score_shape_router_v2_candidate"
+    ],
+    "noGoReason": ""
+  },
+  "success_criteria_checklist": {
+    "productLocalEvalRepeatableNoBlockedItem": {
+      "passed": true,
+      "actual": []
+    },
+    "precisionAt5CurrentGteBaseline": {
+      "passed": true,
+      "actual": 0.056,
+      "baseline": 0.032
+    },
+    "ndcgAt10CurrentGtBaseline": {
+      "passed": true,
+      "actual": 0.1954,
+      "baseline": 0.134
+    },
+    "top10HitRateGte060": {
+      "passed": true,
+      "actual": 0.72
+    },
+    "fixedRegressionBeforeAfterRegressedZero": {
+      "passed": true,
+      "actual": 0
+    },
+    "fixedRegressionAfterBaselineRegressedZero": {
+      "passed": true,
+      "actual": 0
+    },
+    "metricRegressionZero": {
+      "passed": true,
+      "actual": 0
+    },
+    "recallMissSignificantlyReducedAndExplained": {
+      "passed": true,
+      "actual": 7,
+      "reference": 11,
+      "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+    },
+    "warmP95Under3s": {
+      "passed": true,
+      "actual": 596
+    },
+    "errorRateZeroOrNonBlocking": {
+      "passed": true,
+      "actual": 0.0,
+      "degradedReasonCounts": {
+        "QUERY_REWRITE_DISABLED": 5,
+        "SUMMARY_DISABLED": 5
+      }
+    },
+    "weightedRerankRollbackReturnsBaseRetrieval": {
+      "passed": true,
+      "actual": {
+        "evidence": "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json",
+        "status": "passed",
+        "recoveryWithin60Seconds": true,
+        "maxRollbackElapsedMs": 84,
+        "weightedRerankReturnsBaseRetrieval": true,
+        "weightedRerankElapsedMs": 12,
+        "globalEnableWeightedRerankDefault": false
+      }
+    },
+    "globalWeightedRerankDefaultFalse": {
+      "passed": true,
+      "actual": false
+    }
+  },
+  "rollback_method": "Keep ENABLE_WEIGHTED_RERANK=false; remove the offline score-shape router v2 candidate without rebuilding the index.",
+  "default_feature_flag_state": {
+    "settings_ENABLE_WEIGHTED_RERANK": false,
+    "env_ENABLE_WEIGHTED_RERANK": null,
+    "env_example_ENABLE_WEIGHTED_RERANK": "false",
+    "config_default": "False",
+    "featureFlagChanged": false
+  },
+  "no_go_reason": "",
+  "source_artifacts": [
+    "落地设计文档/10-M1.3回归修复版分步骤文档.md",
+    "docs/development/m1.3-regression-triage-20260609-205353.md",
+    "docs/development/m1.3-regression-triage-20260609-205353.json",
+    "docs/development/m1.3-regression-gate-20260610-100636.md",
+    "docs/development/m1.3-regression-gate-20260610-100636.json",
+    "docs/development/m1.3-recall-repair-20260610-113200.md",
+    "docs/development/m1.3-recall-repair-20260610-113200.json",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.md",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.json",
+    "docs/development/m1.2-parameter-version-final-20260609-195835.json",
+    "docs/development/m1.2-product-eval-product-chain-final-20260609-195835.json",
+    "docs/development/m1.2-regression-run-final-20260609-195835.json",
+    "docs\\development\\m1.3x-final-performance-smoke-20260611-083825.json",
+    "docs\\development\\m1.3x-final-rollback-drill-20260611-083825.json"
+  ],
+  "privacy_check": {
+    "passed": true,
+    "rawQueryTextPresent": false,
+    "forbiddenTextFieldsPresent": false,
+    "candidateFullTextWritten": false,
+    "chunkTextWritten": false,
+    "newDataContainsRawFacts": false
+  }
+}

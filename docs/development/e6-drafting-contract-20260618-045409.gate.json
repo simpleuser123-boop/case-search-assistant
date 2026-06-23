@@ -1,0 +1,64 @@
+{
+  "milestone": "E6",
+  "step": "E6-1",
+  "title": "文书工作台入口合同与 DraftDescriptor 契约确认",
+  "generated_at": "2026-06-18T04:54:09+08:00",
+  "overall": "GO",
+  "nature": "contract-confirmation-only; zero business impl, zero endpoint, zero frontend, zero db, zero behavior change",
+  "entry_gate": {
+    "e5_release_gate": "e5-release-gate-20260618-022200.json",
+    "e5_overall": "GO",
+    "allow_enter_e6": true
+  },
+  "hard_gates": {
+    "draft_descriptor_core_five_fields_unchanged": true,
+    "e6_whitelist_is_superset_with_statute_refs": true,
+    "contract_change_registered_doc16_doc17": true,
+    "draft_descriptor_e6_fields_not_in_contract_field_whitelist": true,
+    "sanitize_rejects_four_forbidden_classes": true,
+    "structure_skeleton_title_length_validated": true,
+    "refs_missing_anchor_fail_closed_dropped": true,
+    "public_face_identity_preserved": true,
+    "drafting_contract_no_runtime_or_product_import": true,
+    "include_router_unchanged_14": true,
+    "no_drafting_or_casebook_product_package": true,
+    "enable_drafting_default_false": true,
+    "enable_casebook_default_false": true,
+    "no_new_external_business_flag": true,
+    "no_ai_drafting_flag": true
+  },
+  "privacy_scan": {
+    "draft_body": 0,
+    "judgment_body": 0,
+    "pii": 0,
+    "outcome_or_verdict": 0,
+    "credentials": 0,
+    "forbidden_phrases": 0
+  },
+  "tests": {
+    "e6_drafting_contracts": "42 passed (VM, temp deps)",
+    "e1_e2a_e2b_regression": "passed (VM)",
+    "e4_e5_regression": "VM multi-mount stale snapshots (char-truncation NameError + stale router==13 assertion); NOT caused by E6-1; authoritative on host .venv311",
+    "authoritative_env": "host .venv311 (Py3.11.9)"
+  },
+  "files": {
+    "added": [
+      "apps/api/app/kernel/guardrails/contracts/drafting_contract.py",
+      "apps/api/tests/test_e6_drafting_contracts.py",
+      "docs/development/e6-drafting-contract-20260618-045409.md",
+      "docs/development/e6-drafting-contract-20260618-045409.gate.json",
+      "docs/development/e6-drafting-contract-20260618-045409.parameter.json"
+    ],
+    "modified": [
+      "apps/api/app/kernel/guardrails/contracts/__init__.py",
+      "apps/api/app/kernel/guardrails/__init__.py",
+      "落地设计文档/16-多产品生态全链路闭环设计文档.md",
+      "落地设计文档/17-E系列分步骤文档.md",
+      "落地设计文档/21-E6文书工作台分步骤系统提示词文档.md"
+    ]
+  },
+  "next_step": {
+    "allow_enter_e6_2": true,
+    "title": "类案检索助手 E6-2 drafting 后端包与 gated 端点"
+  }
+}

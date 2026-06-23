@@ -1,0 +1,46 @@
+{
+  "step": "E5-6",
+  "title": "statute consumption-boundary and guardrail gate",
+  "timestamp": "20260618-014340",
+  "scope": "guard tests + docs only; no business behavior change",
+  "baseline": "e5-statute-frontend-20260617-133220 (E5-5 GO, allow_enter_e5_6=true)",
+  "added_or_modified_files": [
+    "apps/api/tests/test_e5_statute_boundaries.py (NEW)",
+    "apps/api/tests/test_e2a_kernel_boundary.py (append-only E5 rules)",
+    "docs/development/e5-boundary-guard-20260618-014340.json (NEW)",
+    "docs/development/e5-boundary-guard-20260618-014340.md (NEW)",
+    "落地设计文档/20-E5法条检索分步骤系统提示词文档.md (E5-6 done note)"
+  ],
+  "guard_coverage": {
+    "g1_public_face_and_gated": "statute public face present; ENABLE_STATUTE_SEARCH default false; 3 endpoints 403 when disabled",
+    "g2_products_no_cross_import": "statute not import intake/drafting/casebook; not imported by them (test_e2a append + boundaries)",
+    "g3_no_deep_retrieval": "statute not deep-import retrieval/rerank/summary/query_processing; must go via kernel.rag StatuteSearchService",
+    "g4_only_intake_statute": "only intake + statute product packages; no drafting/casebook",
+    "g5_request_whitelist_forbid": "3 request schemas strict whitelist + extra=forbid; reject body/PII/raw-case/generated keys",
+    "g6_statuteref_anchored": "StatuteRef fields == E5-1 whitelist; 100% statute_anchors with text_id; no body/generated keys; article only from corpus",
+    "g7_cross_jump_contract_only": "statute->case yields CandidateRef (7-field whitelist, 100% source_anchors, 0 body); case->statute yields anchored StatuteRef; no opposite-side body",
+    "g8_no_body_pii_no_persist": "statute executable code/models/logs no body/PII tokens; no persistence layer",
+    "g9_router_14_no_oob": "include_router == 14 (intake + statute); no /api/internal or /api/ecosystem fragments; statute registers exactly 3 endpoints",
+    "g10_index_isolation": "statute collection != case collection; resolve_statute_persist_dir isolated; pipeline never writes case collection; statute code never opens case artifacts in write mode",
+    "g11_no_long_body_fixtures": "E5 test fixtures and e5-* docs max contiguous CJK <= 40"
+  },
+  "test_results": {
+    "test_e5_statute_boundaries.py": {"env": "VM python3.10 + pip deps", "result": "116 passed", "exit": 0},
+    "test_e2a_kernel_boundary.py (E5 append, 6 fns)": {"env": "VM replica run vs real app tree", "result": "6 passed", "exit": 0, "note": "host file confirmed via Read at line 358+; VM mount stale for host-edited file so in-place run shows pre-edit 13; host .venv311 authoritative"},
+    "group3_e1_e2b_e3_contracts": {"env": "VM python3.10 + pip deps", "result": "137 passed", "exit": 0},
+    "include_router_count": 14
+  },
+  "preexisting_out_of_scope_findings": {
+    "test_e3_internal_search_boundaries.py::test_e3_docs_have_no_long_body_text": "NameError name '_max_c' (truncated _max_contiguous_cjk) at line 375 - VM-mount truncation artifact; out of E5-6 scope; host .venv311 authoritative",
+    "test_e4_intake_boundaries.py::test_e4_docs_have_no_long_body_text": "NameError name 'o' (truncated offenders) at line 640 - same VM-mount truncation artifact; out of scope",
+    "test_e5_statute_api.py::test_statute_source_has_no_body_field_literals": "NameError name 'ass' (truncated assert) at line 454 - documented E5-4 VM truncation trap; out of scope",
+    "test_e5_statute_contracts.py::test_no_statute_drafting_casebook_product_package": "asserts no statute package (E5-1-era expectation) - stale vs post-E5-4 reality; out of scope, NOT relaxed by E5-6",
+    "test_e5_statute_contracts.py::test_include_router_count_still_13": "asserts 13 routers (E5-1-era) - stale vs current 14; out of scope, NOT relaxed by E5-6",
+    "disposition": "All five are pre-existing files outside the E5-6 allowed-modify list (only test_e2a + new files + docs). They are VM-environment truncation artifacts or phase-locked E5-1 assertions, not E5-6 regressions. Must be re-run / reconciled on host .venv311 in E5-7."
+  },
+  "no_relaxation_proof": "test_e2a E2/E3/E4 rules untouched (append-only after line 356); E3/E4 boundary intent preserved; no statute/StatuteSearchService/InternalSearchService/intake behavior changed; no endpoint registered; no product package created.",
+  "privacy_scan": {"raw_case_or_judgment_body_in_new_files": 0, "real_pii_in_new_files": 0, "long_cjk_runs_over_40_in_e5_docs_or_fixtures": 0},
+  "verdict": "CONDITIONAL_GO",
+  "allow_enter_e5_7": true,
+  "conditional_reason": "New E5-6 guards + group3 contracts green in VM; test_e2a E5 append host-confirmed and logic-validated (6/6 replica). Condition: full re-run on host .venv311 (Py3.11) to clear VM-mount truncation noise and reconcile the two stale E5-1 assertions in test_e5_statute_contracts.py."
+}

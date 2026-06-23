@@ -1,0 +1,222 @@
+{
+  "version": "m1_1_r5_release_gate_v1",
+  "generated_at": "2026-06-09T12:04:13",
+  "project_root": "C:\\Users\\yyl\\Desktop\\类案检索助手",
+  "dry_run": true,
+  "overall_status": "blocked",
+  "reports": {
+    "json": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-20260609-120413.json",
+    "markdown": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-20260609-120413.md"
+  },
+  "policy": {
+    "does_not_change_feature_flags": true,
+    "does_not_rebuild_vector_index": true,
+    "does_not_clear_chroma": true,
+    "does_not_delete_existing_data": true,
+    "command_output_policy": "stdout/stderr are not written verbatim to gate evidence."
+  },
+  "required_default_flags": {
+    "ENABLE_QUERY_REWRITE": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_SUMMARY": false,
+    "ENABLE_EXPANDED_SEARCH": false
+  },
+  "gates": [
+    {
+      "name": "default_feature_flags",
+      "status": "passed",
+      "command": "inspect Settings defaults and .env/.env.example feature flags",
+      "duration_ms": 1,
+      "summary": "Default enhancement flags remain closed.",
+      "details": {
+        "required_false_flags": [
+          "ENABLE_QUERY_REWRITE",
+          "ENABLE_WEIGHTED_RERANK",
+          "ENABLE_SUMMARY",
+          "ENABLE_EXPANDED_SEARCH"
+        ],
+        "settings_defaults": {
+          "ENABLE_QUERY_REWRITE": "False",
+          "ENABLE_WEIGHTED_RERANK": "False",
+          "ENABLE_SUMMARY": "False",
+          "ENABLE_EXPANDED_SEARCH": "False"
+        },
+        "env_files": {
+          ".env": {},
+          ".env.example": {
+            "ENABLE_QUERY_REWRITE": "false",
+            "ENABLE_SUMMARY": "false",
+            "ENABLE_EXPANDED_SEARCH": "false",
+            "ENABLE_WEIGHTED_RERANK": "false",
+            "VITE_ENABLE_EXPANDED_SEARCH": "false"
+          }
+        }
+      }
+    },
+    {
+      "name": "backend_tests",
+      "status": "blocked",
+      "command": "python -m pytest",
+      "duration_ms": 0,
+      "summary": "Would run the backend pytest suite.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "frontend_tests",
+      "status": "blocked",
+      "command": "npm test",
+      "duration_ms": 0,
+      "summary": "Would run the frontend npm test suite.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "frontend_build",
+      "status": "blocked",
+      "command": "npm run build",
+      "duration_ms": 0,
+      "summary": "Would run the frontend production build.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "day3_real_e2e",
+      "status": "blocked",
+      "command": "npm run smoke:day3:7.1",
+      "duration_ms": 0,
+      "summary": "Would run Day3 real E2E without --mock.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "runtime_preflight",
+      "status": "blocked",
+      "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\runtime_preflight.py\"",
+      "duration_ms": 0,
+      "summary": "Would compare live /health with source TestClient /health.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "db_smoke",
+      "status": "blocked",
+      "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\db_smoke.py\"",
+      "duration_ms": 0,
+      "summary": "Would run the R2 DB smoke.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "performance",
+      "status": "blocked",
+      "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\day3_7_3_performance_smoke.py\" --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-performance-smoke-20260609-120413.json\"",
+      "duration_ms": 0,
+      "summary": "Would run R3 performance smoke and require warm P95 < 3000ms.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "eval_corpus_preflight",
+      "status": "blocked",
+      "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\eval_corpus_preflight.py\" --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-eval-preflight-20260609-120413.json\" --allow-blocked",
+      "duration_ms": 0,
+      "summary": "Would run R4 eval corpus preflight.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "rerank_eval",
+      "status": "blocked",
+      "command": "python -m app.eval.day3_rerank_eval --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-rerank-eval-20260609-120413.json\"",
+      "duration_ms": 0,
+      "summary": "Would run the Day3 rerank evaluation runner.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "product_eval",
+      "status": "blocked",
+      "command": "python -m app.eval.product_eval --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-product-eval-20260609-120413.json\" --bad-cases-out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-product-bad-cases-20260609-120413.json\"",
+      "duration_ms": 0,
+      "summary": "Would run R4 product-local evaluation.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "rollback",
+      "status": "blocked",
+      "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\day3_7_5_rollback_drill.py\" --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-rollback-drill-20260609-120413.json\"",
+      "duration_ms": 0,
+      "summary": "Would run R4 rollback drill for four feature flags.",
+      "failure_reason": "dry_run_not_executed"
+    },
+    {
+      "name": "privacy",
+      "status": "passed",
+      "command": "internal privacy scan",
+      "duration_ms": 22,
+      "summary": "Gate and latest recognizable reports do not contain collected raw query/case terms or forbidden raw fields.",
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-privacy-scan-20260609-120413.json",
+      "details": {
+        "scanned_file_count": 8,
+        "violation_count": 0
+      }
+    }
+  ],
+  "decisions": {
+    "internal_basic_search": {
+      "decision": "NO_GO",
+      "reason": "Internal basic search is blocked by one or more main-chain gates.",
+      "blocking_gates": [
+        "backend_tests",
+        "frontend_tests",
+        "frontend_build",
+        "day3_real_e2e",
+        "runtime_preflight",
+        "performance",
+        "rollback"
+      ]
+    },
+    "external_gray": {
+      "decision": "NO_GO",
+      "reason": "External gray is blocked by main-chain, eval, runtime, rollback, performance, or privacy gates.",
+      "blocking_gates": [
+        "backend_tests",
+        "day3_real_e2e",
+        "eval_corpus_preflight",
+        "frontend_build",
+        "frontend_tests",
+        "performance",
+        "product_eval",
+        "rerank_eval",
+        "rollback",
+        "runtime_preflight"
+      ]
+    },
+    "new_rerank": {
+      "decision": "NO_GO",
+      "reason": "No positive new-rerank evidence was produced.",
+      "blocking_gates": [
+        "backend_tests",
+        "day3_real_e2e",
+        "eval_corpus_preflight",
+        "frontend_build",
+        "frontend_tests",
+        "performance",
+        "product_eval",
+        "rerank_eval",
+        "rollback",
+        "runtime_preflight"
+      ],
+      "eval_gray_candidate_eligible": false
+    },
+    "rule_inputs": {
+      "main_chain_ok": false,
+      "runtime_ok": false,
+      "performance_ok": false,
+      "eval_comparable": false,
+      "rollback_ok": false,
+      "db_ok": false,
+      "privacy_ok": true,
+      "new_rerank_positive": false
+    },
+    "db_note": {
+      "decision": "CONDITIONAL",
+      "reason": "DB smoke failed/degraded. This does not block search-only release decisions here, but it blocks any next version that requires history, feedback, favorites, or durable events.",
+      "blocking_gates": [
+        "db_smoke"
+      ]
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "step": "E3-2",
+  "title": "检索执行服务适配层",
+  "timestamp": "2026-06-15T17:30:30",
+  "baseline": {
+    "e3_1_contract_gate": "docs/development/e3-service-contract-20260615-162202.json",
+    "e2b_release_gate": "docs/development/e2b-release-gate-20260615-113552.json"
+  },
+  "overall": "GO",
+  "next_step_allowed": "E3-3",
+  "next_step_title": "类案检索助手 E3-3 搜索 API 消费内部服务",
+  "files": {
+    "added": [
+      "apps/api/app/kernel/rag/internal_search_service.py",
+      "apps/api/tests/test_e3_internal_search_service.py",
+      "docs/development/e3-internal-search-service-20260615-173030.md",
+      "docs/development/e3-internal-search-service-20260615-173030.json"
+    ],
+    "modified": [
+      "apps/api/app/kernel/rag/__init__.py"
+    ],
+    "untouched_critical": [
+      "apps/api/app/api/search.py",
+      "apps/api/app/main.py"
+    ]
+  },
+  "service_surface": {
+    "importable_from": ["app.kernel.rag", "app.kernel"],
+    "identity_preserved": true,
+    "symbols": [
+      "InternalSearchService",
+      "InternalSearchExecutionResult",
+      "CANDIDATE_REF_DROPPED_NO_ANCHOR"
+    ],
+    "methods": {
+      "execute": "InternalSearchRequest -> InternalSearchExecutionResult (rich, for E3-3 /api/search reuse)",
+      "search_candidate_refs": "SearchProfile | InternalSearchRequest -> InternalSearchResult (CandidateRef[] only, zero body)"
+    }
+  },
+  "gates": {
+    "contract_gate": "GO",
+    "service_gate": "GO",
+    "surface_gate": "GO",
+    "boundary_gate": "GO",
+    "privacy_gate": "GO",
+    "regression_gate": "GO",
+    "flag_gate": "GO"
+  },
+  "tests": {
+    "command_1": "pytest tests/test_e3_internal_search_contracts.py tests/test_e3_internal_search_service.py",
+    "command_2": "pytest tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e2b_shim_equivalence.py",
+    "results": {
+      "test_e3_internal_search_contracts.py": 39,
+      "test_e3_internal_search_service.py": 15,
+      "test_e1_contracts.py": 24,
+      "test_e2a_kernel_boundary.py": 7,
+      "test_e2b_shim_equivalence.py": 49,
+      "total_passed": 134,
+      "failed": 0
+    }
+  },
+  "boundary_compliance": {
+    "new_product_packages": false,
+    "new_http_endpoints": false,
+    "include_router_count": 12,
+    "api_search_modified": false,
+    "api_search_refs_new_service": 0,
+    "service_imports_app_schemas_or_fastapi": false,
+    "service_deep_imports_legacy_paths": false,
+    "ranking_recall_summary_strategy_changed": false,
+    "real_db_or_history_or_favorite_or_report_writes": false
+  },
+  "privacy_scan": {
+    "candidate_ref_whitelist_only": true,
+    "candidate_ref_body_fields": 0,
+    "service_logs_query_text": false,
+    "body_data_field_tokens_in_new_files": 0,
+    "forbidden_marketing_phrases": 0,
+    "fixtures_use_fake_short_data_only": true
+  },
+  "flag_defaults_unchanged": {
+    "ENABLE_QUERY_REWRITE": false,
+    "ENABLE_SUMMARY": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_ECOSYSTEM": false
+  },
+  "temporary_duplication": {
+    "present": true,
+    "description": "execute() orchestration mirrors api/search._handle_search_request (same order, same helper semantics); candidate->CandidateRef mapping is a minimal no-side-effect subset of _candidate_to_result.",
+    "no_behavior_fork": true,
+    "resolution_step": "E3-3 will switch /api/search to consume InternalSearchService.execute() and delete the duplicated orchestration in search.py."
+  }
+}

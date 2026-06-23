@@ -1,0 +1,187 @@
+{
+  "status": "ok",
+  "method": "bm25_char_bigram_baseline",
+  "query_count": 3,
+  "evaluated_query_count": 3,
+  "corpus_doc_count": 55192,
+  "indexed_doc_count": 55192,
+  "query_vocab_size": 387,
+  "precision_at_5": 0.2667,
+  "ndcg_at_10": 0.2656,
+  "per_query": [
+    {
+      "eval_query_id": "lecardv2_q720",
+      "source_query_id": "720",
+      "precision_at_5": 0.4,
+      "ndcg_at_10": 0.4179,
+      "top10": [
+        {
+          "candidate_case_id": "3790916",
+          "score": 314.292885,
+          "relevance": 1
+        },
+        {
+          "candidate_case_id": "2696884",
+          "score": 309.748554,
+          "relevance": 1
+        },
+        {
+          "candidate_case_id": "3758652",
+          "score": 281.1485,
+          "relevance": 3
+        },
+        {
+          "candidate_case_id": "3025340",
+          "score": 268.906314,
+          "relevance": 1
+        },
+        {
+          "candidate_case_id": "3826376",
+          "score": 262.514725,
+          "relevance": 2
+        },
+        {
+          "candidate_case_id": "3271634",
+          "score": 248.070985,
+          "relevance": 1
+        },
+        {
+          "candidate_case_id": "1313103",
+          "score": 247.159702,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "3476009",
+          "score": 241.52847,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "3472516",
+          "score": 239.562581,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "1908014",
+          "score": 229.726525,
+          "relevance": 1
+        }
+      ]
+    },
+    {
+      "eval_query_id": "lecardv2_q730",
+      "source_query_id": "730",
+      "precision_at_5": 0.4,
+      "ndcg_at_10": 0.2973,
+      "top10": [
+        {
+          "candidate_case_id": "3506804",
+          "score": 246.858395,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "2416729",
+          "score": 223.899117,
+          "relevance": 2
+        },
+        {
+          "candidate_case_id": "1700107",
+          "score": 197.989675,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "485093",
+          "score": 192.254013,
+          "relevance": 2
+        },
+        {
+          "candidate_case_id": "2460858",
+          "score": 191.958661,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "3018244",
+          "score": 189.695161,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "2409980",
+          "score": 187.086479,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "3366970",
+          "score": 185.550776,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "1732121",
+          "score": 184.168105,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "2011273",
+          "score": 182.965807,
+          "relevance": 2
+        }
+      ]
+    },
+    {
+      "eval_query_id": "lecardv2_q760",
+      "source_query_id": "760",
+      "precision_at_5": 0.0,
+      "ndcg_at_10": 0.0815,
+      "top10": [
+        {
+          "candidate_case_id": "17552",
+          "score": 353.409753,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "2603084",
+          "score": 352.913999,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "1842027",
+          "score": 340.822656,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "4178517",
+          "score": 338.462085,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "3130563",
+          "score": 331.037429,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "798247",
+          "score": 328.895304,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "1489237",
+          "score": 327.950439,
+          "relevance": 2
+        },
+        {
+          "candidate_case_id": "4073636",
+          "score": 321.02647,
+          "relevance": 2
+        },
+        {
+          "candidate_case_id": "1944359",
+          "score": 313.614168,
+          "relevance": 0
+        },
+        {
+          "candidate_case_id": "2380388",
+          "score": 309.691236,
+          "relevance": 0
+        }
+      ]
+    }
+  ]
+}

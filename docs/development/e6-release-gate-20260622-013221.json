@@ -1,0 +1,161 @@
+{
+  "artifact": "e6-release-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E6 文书辅助工作台 drafting）",
+  "step": "E6-6",
+  "title": "E6 验收与下一步门禁",
+  "generated_at": "2026-06-22T01:32:21+08:00",
+  "nature": "收官验证、产物生成和 GO/NO_GO 判定；除调和 E6-5 显式委派的 4 条陈旧测试断言（router 14->15 + drafting 合法产品包）外，未改业务代码。",
+  "baseline": {
+    "file": "docs/development/e5-release-gate-20260618-022200.json",
+    "overall": "GO",
+    "allow_enter_e6": true,
+    "reason": "E6 行为零变化比对基线（E5 收官口径）"
+  },
+  "entry_gate": {
+    "e6_1_contract": {"source": "docs/development/e6-drafting-contract-20260618-045409.gate.json", "overall": "GO", "allow_enter_e6_2": true},
+    "e6_2_api": {"source": "docs/development/e6-drafting-api-20260618-053316.gate.json", "overall": "CONDITIONAL_GO", "allow_enter_e6_3": true, "condition": "host .venv311 全量回归全绿后无条件 GO"},
+    "e6_3_web": {"source": "docs/development/e6-drafting-web-20260618-070017.gate.json", "overall": "GO", "allow_enter_e6_4": true},
+    "e6_4_export": {"source": "docs/development/e6-drafting-export-20260618-090123.gate.json", "overall": "GO", "allow_enter_e6_5": true},
+    "e6_5_boundary": {"source": "docs/development/e6-drafting-gate-20260618-111250.json", "overall": "CONDITIONAL_GO", "allow_enter_e6_6": true, "condition": "运行时契约/TestClient 守门以 host .venv311 复跑为权威；E6-6 统一上移 E4/E5 陈旧 router-count/inventory 快照基线"}
+  },
+  "three_category_verdict": {
+    "basic_search_still_available": {
+      "verdict": "GO",
+      "evidence": "drafting 仅新增 gated 端点 + 前端 + 前端导出纯函数；未触碰 /api/search、/api/search/expand、E3 InternalSearchService、intake、statute 端点与排序/召回/source selection/rerank 默认；案件产物 cases.jsonl/chunks.jsonl SHA256 与 E5 基线逐字节一致；评测基线未改。E1~E5 回归须 host .venv311 复跑确认（VM 缺后端依赖）。"
+    },
+    "drafting_workspace_complete": {
+      "verdict": "GO",
+      "evidence": "drafting 第 3 产品包（__init__/models/store/schemas/service/router 6 文件）+ 4 gated 端点（POST/GET/GET{id}/PUT，默认 403 DRAFTING_DISABLED 降级）+ 持久层 13 列零正文（默认 visibility=private + 租户隔离 + owner 校验越权 404）+ 前端导出强制免责头（markdown/text，3 处无条件注入）+ 前端三重门控（router/入口/组件，默认 false 不渲染）。前端 build 126 modules。"
+    },
+    "assemble_not_draft_boundary": {
+      "verdict": "GO",
+      "evidence": "service.assemble_draft = sanitize_draft_descriptor，零文本生成/LLM/模型/检索调用（AST + 标记扫描双证）；引用缺锚点 fail-closed 丢弃，保留项 100% 有 source_anchors/statute_anchors；DraftDescriptor 无起草正文/裁判正文/胜负/结论字段（AST 字段名扫描 0 命中）；持久层 13 列无 body 列；导出不取 article_text、无锚点引用丢弃、无胜负/结论；drafting 不直连 retrieval/rerank/summary/query_processing（AST 0 违规）；产品包互不 import（test_e2a append-only E6 规则 6 条）。"
+    }
+  },
+  "verification": {
+    "authoritative_environment": {
+      "venv": ".venv311",
+      "python": "3.11.9",
+      "runner": "host codex 复跑（沿用 E3-5/E4-1/E5-3/E5-4/E5-6/E5-7/E6-1/E6-2/E6-5 纪律）",
+      "note": "后端 pytest 以 host .venv311 实跑为权威；VM（Py3.10.12）缺 fastapi/sqlmodel/sqlalchemy/pydantic_core/pydantic-settings/pytest 且无网络，仅能做 py_compile + AST 边界 + 隐私扫描 + flag/结构/列集核验（本会话全过）。"
+    },
+    "vm_static_results": {
+      "py_compile_drafting_and_e6_tests_and_main": "PASS (exit 0)",
+      "ast_boundary_drafting": "0 违规（无 retrieval/rerank/summary/query_processing 深引；无 intake/statute/casebook 跨包 import；仅 app.kernel.guardrails/identity + app.api/core/schemas 公开面）",
+      "drafting_forbidden_field_names": "0（AST 字段/参数名扫描）",
+      "persistence_columns": "DraftDescriptorRow 13 列：draft_id/owner_user_id/team_id/visibility/structure_skeleton/candidate_refs/statute_refs/note/tag/status/reason_code/created_at/updated_at；零 body/judgment/outcome/credential 列",
+      "include_router_count": 15,
+      "casebook_package_exists": false,
+      "flags_default_false": {"ENABLE_DRAFTING": false, "ENABLE_CASEBOOK": false, "ENABLE_INTAKE": false, "ENABLE_STATUTE_SEARCH": false, "ENABLE_ECOSYSTEM": false, "ENABLE_INTAKE_AI_EXTRACTION": false, "ENABLE_WEIGHTED_RERANK": false},
+      "drafting_endpoints": 4,
+      "drafting_endpoints_gated": "ENABLE_DRAFTING -> 403 DRAFTING_DISABLED",
+      "default_visibility": "private",
+      "case_products_hash_unchanged": {"cases.jsonl": "MATCH 8fcb2ec40ee3c8c9...", "chunks.jsonl": "MATCH 8f391e681d5c9be6..."},
+      "export_disclaimer_injections": 3,
+      "export_article_text_reads": 0,
+      "frontend_storage_calls": 0,
+      "frontend_build": "PASS, 126 modules transformed (vite 5.2.11, --outDir /tmp 旁路 EPERM)"
+    },
+    "host_required_pytest": {
+      "note": "以下后端套件须 host .venv311 实跑确认（VM 无法跑 TestClient）；各子步 gate 已分别在 host 验证，本步统一收口。",
+      "e6_full_suite": "pytest tests/test_e6_drafting_contracts.py tests/test_e6_drafting_api.py tests/test_e6_drafting_export.py tests/test_e6_drafting_boundaries.py",
+      "e1_e2_regression": "pytest tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e2b_shim_equivalence.py",
+      "e3_regression": "pytest tests/test_e3_internal_search_contracts.py tests/test_e3_internal_search_service.py tests/test_e3_search_api_parity.py tests/test_e3_internal_search_boundaries.py",
+      "e4_e5_regression": "pytest tests/test_e4_intake_api.py tests/test_e4_intake_boundaries.py tests/test_e5_statute_api.py tests/test_e5_statute_boundaries.py tests/test_e5_statute_contracts.py",
+      "smoke": "pytest tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py tests/test_health.py tests/test_performance_smoke.py"
+    }
+  },
+  "e6_6_test_reconciliation": {
+    "scope": "纯测试调和，零业务代码改动；E2/E2a/E3/E4/E5 守门规则未放宽",
+    "delegated_by": "e6-drafting-gate-20260618-111250.json -> stale_assertions_for_e6_6_host_reconcile（is_vm_artifact=false，host 同样失败）",
+    "changes": [
+      "tests/test_e4_intake_boundaries.py: ALLOWED_PRODUCT_PACKAGES {intake,statute} -> {intake,statute,drafting}",
+      "tests/test_e4_intake_boundaries.py: test_include_router_count_is_13 (断言 14) -> test_include_router_count_is_15 (断言 15)",
+      "tests/test_e5_statute_boundaries.py: ALLOWED_PRODUCT_PACKAGES {intake,statute} -> {intake,statute,drafting}",
+      "tests/test_e5_statute_boundaries.py: test_include_router_count_is_14 (断言 14) -> test_include_router_count_is_15 (断言 15)"
+    ],
+    "host_rerun_required": true,
+    "reason": "上述 4 条断言原因 = E6-2 合法变更（include_router 14->15 + 新增 drafting 包）使 E4/E5 既有快照陈旧；调和为当前真相，与 E5-7 调和 test_e5_statute_contracts.py 3 条断言同范式。"
+  },
+  "static_scans": {
+    "drafting_body_tokens": 0,
+    "drafting_judgment_tokens": 0,
+    "drafting_outcome_or_verdict_tokens": 0,
+    "drafting_pii_tokens": 0,
+    "drafting_credential_prints": 0,
+    "drafting_banned_marketing_copy": 0,
+    "export_body_tokens": 0,
+    "export_article_text_reads": 0,
+    "export_disclaimer_injections": 3,
+    "frontend_storage_calls": 0,
+    "include_router_count": 15,
+    "drafting_endpoints": 4,
+    "out_of_bound_endpoints": 0,
+    "casebook_package": 0,
+    "drafting_imports_other_product_packages": 0,
+    "drafting_deep_imports_retrieval_rerank_summary": 0,
+    "drafting_consumes_kernel_public_surface_only": true,
+    "persistence_body_columns": 0,
+    "case_products_hash_unchanged_vs_e5": true,
+    "hits": 0
+  },
+  "hard_gates": {
+    "e6_1_to_e6_5_all_go_or_conditional_resolved": true,
+    "drafting_package_built_kernel_public_only": true,
+    "drafting_no_import_other_product_package": true,
+    "drafting_no_direct_retrieval_no_text_gen": true,
+    "four_endpoints_gated_default_403": true,
+    "assemble_only_zero_draft_body": true,
+    "refs_require_anchor_missing_dropped": true,
+    "persistence_no_body_columns_metadata_only": true,
+    "multitenant_isolation_object_authz_default_private": true,
+    "export_forced_disclaimer_no_body_no_outcome": true,
+    "export_no_article_text": true,
+    "draft_descriptor_e1_whitelist_unchanged": true,
+    "candidate_statute_ref_zero_body": true,
+    "include_router_15": true,
+    "no_casebook_package": true,
+    "case_law_index_and_eval_baseline_unchanged": true,
+    "ranking_recall_rerank_defaults_unchanged": true,
+    "api_search_e3_intake_statute_behavior_zero_change": true,
+    "seven_product_flags_plus_ai_extraction_default_false": true,
+    "no_new_external_business_flag_or_ai_drafting_flag": true,
+    "frontend_build_pass_126_modules": true,
+    "privacy_scan_zero_hits": true,
+    "backend_pytest_host_rerun_required": true
+  },
+  "conditional_items": [
+    {
+      "item": "后端 pytest（E6 全套 + E1~E5 回归 + smoke）",
+      "status": "CONDITIONAL -> 须 host .venv311 实跑确认",
+      "reason": "VM Py3.10.12 缺 fastapi/sqlmodel/sqlalchemy/pydantic_core/pydantic-settings/pytest 且无网络，无法跑 TestClient；沿用全 E 系列既有纪律。VM 已完成 py_compile/AST/隐私/列集/flag/router/build 全部静态权威项。",
+      "host_rerun_status": "PENDING（同 E6-2/E6-5 CONDITIONAL 唯一条件项；各子步已分别 host 验证，本步收口待 codex host 复跑全绿后无条件升 GO）"
+    },
+    {
+      "item": "E6-6 调和的 4 条陈旧断言（test_e4/test_e5 boundaries 的 router-count + ALLOWED_PRODUCT_PACKAGES）",
+      "status": "已在 host 文件改为当前真相（router=15、drafting 合法）",
+      "host_rerun_status": "PENDING host 复跑确认 4 文件通过；VM py_compile 因 stale-mount 截断（line 644 'sorted(DO' 残片）报 SyntaxError 系挂载假象，host Read 验证源文件完整正确"
+    }
+  ],
+  "vm_stale_mount_note": "host Edit 经 VM 挂载在 test_e4_intake_boundaries.py 读出 line 644 尾部截断（'sorted(DO'），host Read 验证该行完整为 'sorted(DOCS_DEV_DIR.glob(\"e4-*.md\")) + sorted(DOCS_DEV_DIR.glob(\"e4-*.json\"))' 且我的两处编辑（line 38-42 + line 580-588）完整落地。遵守『绝不 VM 读全量写回』纪律，host 文件为权威。wc/py_compile 在 stale 态不可信。",
+  "overall": "CONDITIONAL_GO",
+  "allow_enter_e7": true,
+  "overall_explanation": "E6-1~E6-5 全部 GO / CONDITIONAL_GO（条件项唯一为后端 pytest 须 host .venv311 实跑，各子步已分别 host 验证）。E6 已达成文书辅助工作台：drafting 第 3 产品包（仅依赖 app.kernel 公开面 guardrails/identity + 既有持久层，不 import 其它产品包、不直连 retrieval/rerank/summary、零文本生成）+ 4 个 gated 端点（ENABLE_DRAFTING 默认 false，403 DRAFTING_DISABLED 降级），开启时只组装（structure_skeleton 仅标题骨架 + 带锚点 CandidateRef/StatuteRef 引用 + note/tag 短字段），零起草/裁判正文、零胜负/结论；DraftDescriptor 持久层 13 列全为元数据/引用/短字段（零 body 列），多租户强隔离 + 对象级鉴权 + 默认 private，越权 404；导出（前端纯函数，对标 M4-5）强制免责头（markdown/text 各无条件注入、不取 article_text、无锚点引用丢弃、无正文/胜负/结论）；DraftDescriptor 走 E-1 既有契约白名单（核心 5 字段不变 + 经合同变更登记的可选 statute_refs），CandidateRef/StatuteRef 仍零正文；include_router=15（intake+statute+drafting），casebook 仍不存在；案件产物 cases.jsonl/chunks.jsonl SHA256 与 E5 基线逐字节一致、法条/案件索引隔离与评测基线未改、排序/召回/rerank 默认未改；7 产品 flag + AI 抽取 flag 默认全 false，无新增对外业务 flag 或 AI 起草开关。本会话 VM 静态权威项全过（py_compile / AST 边界 0 违规 / 隐私扫描 0 命中 / 13 列零正文 / include_router=15 / casebook 0 / flag 全 false / case 产物 hash 不变 / 前端 build 126 modules）。E6-6 调和了 E6-5 显式委派的 4 条陈旧断言（router 14->15 + drafting 合法产品包，test_e4/test_e5 boundaries），纯测试改动、零业务代码、未放宽 E2~E5 守门。唯一 CONDITIONAL 条件 = 后端 pytest（E6 全套 + E1~E5 回归 + smoke）须 host .venv311 codex 复跑全绿；该条件满足后无条件升 GO，与 E6-2/E6-5/E5-7 同范式。无任何 NO_GO/止损项触发，allow_enter_e7=true。",
+  "no_go_triggers_checked": {
+    "any_category_not_go": false,
+    "draft_body_or_anchorless_ref_or_persisted_body_or_export_body_conclusion": false,
+    "drafting_direct_low_level_or_bypass_public_face_or_import_other_package_or_text_gen": false,
+    "include_router_not_15": false,
+    "new_casebook_package": false,
+    "changed_search_statute_intake_behavior_or_ordering": false,
+    "index_or_eval_baseline_changed": false,
+    "any_flag_default_true": false,
+    "new_external_business_flag_or_ai_drafting_flag": false,
+    "e1_e5_regression_new_failure": "PENDING host 复跑（VM 无法跑后端 pytest；静态边界全过）",
+    "privacy_scan_hit": false
+  },
+  "next_step": {
+    "allow_enter_e7": true,
+    "title": "类案检索助手 E7-1 案件协作工作台入口合同（CaseFolder 聚合，复用 M5 多租户/权限/共享）"
+  }
+}

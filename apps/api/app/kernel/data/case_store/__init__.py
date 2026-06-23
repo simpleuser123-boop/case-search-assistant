@@ -1,0 +1,1 @@
+"""Case store adapters."""

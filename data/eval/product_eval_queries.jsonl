@@ -1,0 +1,25 @@
+{"eval_query_id":"product_q001","query_text":"走私 贩卖 运输 制造毒品 甲基苯丙胺 毒品交易","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q002","query_text":"危险驾驶 醉酒驾驶 血液酒精含量 认罪认罚","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q003","query_text":"强奸罪 违背妇女意愿 暴力胁迫","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q004","query_text":"盗窃罪 入室盗窃 财物价值 退赃","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q005","query_text":"容留他人吸毒 提供场所 多人吸毒","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q006","query_text":"故意伤害 轻伤 持械 殴打","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q007","query_text":"诈骗罪 虚构事实 隐瞒真相 非法占有","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q008","query_text":"寻衅滋事 随意殴打 破坏社会秩序","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q009","query_text":"交通肇事 致人死亡 逃逸 赔偿","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q010","query_text":"抢劫罪 持刀 暴力 胁迫 抢钱","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q011","query_text":"非法持有 私藏枪支 弹药","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q012","query_text":"非法持有毒品 甲基苯丙胺 毒品数量","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q013","query_text":"开设赌场 网络赌博 抽头渔利","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q014","query_text":"赌博罪 聚众赌博 赌资","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q015","query_text":"职务侵占 利用职务便利 占有公司资金","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q016","query_text":"非法经营 未经许可 经营","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q017","query_text":"滥伐林木 未办采伐许可证 林木","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q018","query_text":"敲诈勒索 威胁 恐吓 索要财物","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q019","query_text":"侵犯著作权 未经许可 复制发行","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q020","query_text":"妨害公务 暴力 阻碍民警 执法","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q021","query_text":"合同诈骗 签订合同 骗取财物","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q022","query_text":"非法占用农用地 改变土地用途 林地","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q023","query_text":"非法吸收公众存款 高息集资 返本付息","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q024","query_text":"组织领导传销活动 拉人头 层级返利","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}
+{"eval_query_id":"product_q025","query_text":"污染环境 非法倾倒 危险废物","query_type":"case_cause","source":"product_local_eval","version":"product_eval_m1_1_r4_v1"}

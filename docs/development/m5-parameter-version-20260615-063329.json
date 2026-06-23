@@ -1,0 +1,81 @@
+{
+  "artifact": "m5-parameter-version",
+  "step": "M5-10",
+  "generated_at": "2026-06-15T06:33:29",
+  "feature_flags": {
+    "ENABLE_QUERY_REWRITE": false,
+    "ENABLE_SUMMARY": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_SEARCH_HISTORY": false,
+    "ENABLE_CASE_FAVORITE": false,
+    "ENABLE_CASE_LIST": false,
+    "ENABLE_LIST_EXPORT": false,
+    "ENABLE_REPORT_TEMPLATE": false,
+    "ENABLE_TEAM_REUSE": false,
+    "ENABLE_ACCOUNT_SYSTEM": false,
+    "ENABLE_TEAM_WORKSPACE": false,
+    "ENABLE_PERMISSION_TIERING": false,
+    "ENABLE_TEAM_SHARING": false,
+    "ENABLE_BULK_IMPORT": false,
+    "ENABLE_TENDENCY_ANALYSIS": false,
+    "ENABLE_BILLING": false
+  },
+  "flag_groups": {
+    "m2_m3_capability_flags": ["ENABLE_QUERY_REWRITE", "ENABLE_SUMMARY", "ENABLE_EXPANDED_SEARCH"],
+    "weighted_rerank": ["ENABLE_WEIGHTED_RERANK"],
+    "m4_capability_flags": ["ENABLE_SEARCH_HISTORY", "ENABLE_CASE_FAVORITE", "ENABLE_CASE_LIST", "ENABLE_LIST_EXPORT", "ENABLE_REPORT_TEMPLATE", "ENABLE_TEAM_REUSE"],
+    "m5_capability_flags": ["ENABLE_ACCOUNT_SYSTEM", "ENABLE_TEAM_WORKSPACE", "ENABLE_PERMISSION_TIERING", "ENABLE_TEAM_SHARING", "ENABLE_BULK_IMPORT", "ENABLE_TENDENCY_ANALYSIS", "ENABLE_BILLING"]
+  },
+  "rerank_weights_inactive_because_flag_off": {
+    "RERANK_WEIGHT_VECTOR_SIMILARITY": 0.55,
+    "RERANK_WEIGHT_LEGAL_ELEMENT_OVERLAP": 0.20,
+    "RERANK_WEIGHT_CASE_CAUSE_MATCH": 0.10,
+    "RERANK_WEIGHT_KEY_PARAGRAPH_MATCH": 0.10,
+    "RERANK_WEIGHT_AUTHORITY_SIGNAL": 0.05
+  },
+  "frontend_vite_flags": {
+    "VITE_ENABLE_EXPANDED_SEARCH": false,
+    "VITE_ENABLE_SEARCH_HISTORY": false,
+    "VITE_ENABLE_CASE_FAVORITE": false,
+    "VITE_ENABLE_CASE_LIST": false,
+    "VITE_ENABLE_LIST_EXPORT": false,
+    "VITE_ENABLE_REPORT_TEMPLATE": false,
+    "VITE_ENABLE_ACCOUNT_SYSTEM": false,
+    "VITE_ENABLE_TEAM_WORKSPACE": false,
+    "VITE_ENABLE_PERMISSION_TIERING": false,
+    "VITE_ENABLE_TEAM_SHARING": false,
+    "VITE_ENABLE_BULK_IMPORT": false,
+    "VITE_ENABLE_TENDENCY_ANALYSIS": false,
+    "VITE_ENABLE_BILLING": false
+  },
+  "m5_7_tendency_gate": {
+    "gate_version": "m5-7-tendency-data-gate-v2",
+    "overall_status": "pass",
+    "f19_can_go_live": true,
+    "enable_tendency_analysis_recommended": true,
+    "note": "门禁 PASS 仅授权 M5-8 展示能力存在；生产 ENABLE_TENDENCY_ANALYSIS 仍默认 false，需运营侧显式开启",
+    "critical_dimensions_all_pass": true,
+    "total_sample": 80996,
+    "judge_dimension": "已于 v2 移除(与隐私红线对撞，不存具名法官/不预测具名法官)"
+  },
+  "tendency_analysis_bounds": {
+    "min_sample_per_bucket": 30,
+    "max_case_refs_per_bucket": 20,
+    "refs_are_case_id_only": true,
+    "no_body_fields": true
+  },
+  "invariants": {
+    "main_sorting_unchanged": true,
+    "source_selection_unchanged": true,
+    "rerank_default_switch_unchanged": true,
+    "config_py_all_flags_default_false": true,
+    "env_example_all_flags_default_false": true,
+    "no_flag_defaulted_true_in_env_example": true
+  },
+  "consistency_check": {
+    "config_py_matches_env_example": true,
+    "verified_lines_config_py": "31-70",
+    "verified_lines_env_example": "12-105"
+  }
+}

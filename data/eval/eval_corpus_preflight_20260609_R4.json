@@ -1,0 +1,108 @@
+{
+  "version": "m1_1_r4_eval_corpus_preflight_v1",
+  "status": "blocked",
+  "privacy": {
+    "raw_query_text_written": false,
+    "candidate_full_text_written": false,
+    "chunk_text_written": false
+  },
+  "lecardv2": {
+    "status": "blocked",
+    "errors": [
+      "candidate_corpus_path_missing"
+    ],
+    "queries": {
+      "path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\lecardv2_queries.jsonl",
+      "read_error": null,
+      "query_count": 160,
+      "eval_query_id_count": 160
+    },
+    "qrels": {
+      "path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\lecardv2_qrels.jsonl",
+      "read_error": null,
+      "qrels_count": 4795,
+      "qrels_query_count": 160,
+      "relevant_query_count": 159,
+      "candidate_id_count": 4655,
+      "query_overlap_count": 160
+    },
+    "candidate_corpus": {
+      "path": "C:\\Users\\yyl\\Downloads\\LeCaRDv2-main\\candidate",
+      "found": false,
+      "readable": false,
+      "doc_count": 0,
+      "reason": "candidate_corpus_path_missing"
+    },
+    "id_overlap": {
+      "qrels_candidate_id_count": 4655,
+      "candidate_doc_id_count": 0,
+      "overlap_count": 0,
+      "sample_overlap_ids": [],
+      "sample_qrels_ids_without_doc": [
+        "1001291",
+        "1001442",
+        "1001586",
+        "1001999",
+        "1005443",
+        "100687",
+        "1007338",
+        "1009704",
+        "1010570",
+        "1010727"
+      ]
+    }
+  },
+  "product_local": {
+    "status": "ok",
+    "errors": [],
+    "queries": {
+      "path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\product_eval_queries.jsonl",
+      "read_error": null,
+      "query_count": 25,
+      "eval_query_id_count": 25
+    },
+    "qrels": {
+      "path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\product_eval_qrels.jsonl",
+      "read_error": null,
+      "qrels_count": 75,
+      "qrels_query_count": 25,
+      "relevant_query_count": 25,
+      "candidate_id_count": 75,
+      "query_overlap_count": 25
+    },
+    "candidate_corpus": {
+      "cases": {
+        "path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\processed\\cases.jsonl",
+        "found": true,
+        "readable": true,
+        "doc_count": 2505,
+        "duplicate_case_id_count": 0
+      },
+      "chunks": {
+        "path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\processed\\chunks.jsonl",
+        "found": true,
+        "readable": true,
+        "chunk_count": 9621,
+        "case_id_count": 2505
+      }
+    },
+    "id_overlap": {
+      "qrels_candidate_id_count": 75,
+      "product_case_id_count": 2505,
+      "overlap_count": 75,
+      "sample_overlap_ids": [
+        "03051f13-5be3-4f93-80eb-de7b9da0c972",
+        "0a0c472b-206c-43c5-b8a6-6a81025fa1ee",
+        "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+        "0e2f16ed-8db7-4451-b9ef-0afb3c0bb015",
+        "101305d2-00d3-443e-8f36-3843cbeb3379",
+        "211091c2-6eb0-4de2-b8d7-c55529053ea0",
+        "2257114a-b61e-409a-8e85-ace02ecddbed",
+        "23e8e218-ac32-4670-83f7-e49ea45aa0ca",
+        "26627b67-8d0f-470a-84b1-2e08358fd1e8",
+        "2937388b-0059-4204-b633-b74a87f001d0"
+      ],
+      "sample_qrels_ids_without_case": []
+    }
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "generatedAt": "2026-06-09T20:07:00+08:00",
+  "version": "M1.2",
+  "gateStatus": "CONDITIONAL_GO",
+  "baselineSearchUsable": true,
+  "weightedRerankGrayCandidate": false,
+  "enterM2Readiness": false,
+  "defaultFeatureFlags": {
+    "ENABLE_QUERY_REWRITE": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_SUMMARY": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "VITE_ENABLE_EXPANDED_SEARCH": false,
+    "sources": {
+      "runtimeSettings": "apps/api/app/core/config.py",
+      "localEnv": ".env has no feature-flag overrides",
+      "envExample": ".env.example",
+      "frontend": "apps/web/src/config/featureFlags.ts"
+    },
+    "recommendation": "Keep ENABLE_WEIGHTED_RERANK closed by default."
+  },
+  "metrics": {
+    "productLocalFinal": {
+      "evidence": "docs/development/m1.2-product-eval-product-chain-final-20260609-195835.json",
+      "evaluatedQueryCount": 25,
+      "baseline": {
+        "Precision@5": 0.032,
+        "NDCG@10": 0.134,
+        "Top10 hit rate": 0.48
+      },
+      "current": {
+        "Precision@5": 0.04,
+        "NDCG@10": 0.1371,
+        "Top10 hit rate": 0.52
+      },
+      "delta": {
+        "Precision@5": 0.008,
+        "NDCG@10": 0.0031,
+        "Top10 hit rate": 0.04
+      },
+      "grayCandidate": {
+        "eligible": false,
+        "reason": "Top10 hit rate is below the 60% candidate threshold.",
+        "thresholds": {
+          "Precision@5": "current >= baseline",
+          "NDCG@10": "current > baseline",
+          "Top10 hit rate": "current >= 0.6"
+        }
+      },
+      "badCases": {
+        "evidence": "docs/development/m1.2-product-bad-cases-product-chain-final-20260609-195835.json",
+        "badCaseCount": 20,
+        "reasonDistribution": {
+          "METRIC_REGRESSION": 9,
+          "RECALL_MISS": 11
+        }
+      }
+    },
+    "fixedRegression": {
+      "evidence": "docs/development/m1.2-regression-run-final-20260609-195835.json",
+      "regressionSetVersion": "m1_2_fixed_regression_set_v1",
+      "queryCount": 25,
+      "sampleDistribution": {
+        "high_value_bad_case": 12,
+        "typical_success": 5,
+        "weight_sensitive_boundary": 8
+      },
+      "overallMetrics": {
+        "baseline": {
+          "Precision@5": 0.032,
+          "NDCG@10": 0.134,
+          "Top10 hit rate": 0.48
+        },
+        "currentBefore": {
+          "Precision@5": 0.048,
+          "NDCG@10": 0.139,
+          "Top10 hit rate": 0.52
+        },
+        "currentAfter": {
+          "Precision@5": 0.04,
+          "NDCG@10": 0.1371,
+          "Top10 hit rate": 0.52
+        }
+      },
+      "metricDelta": {
+        "afterVsBaseline": {
+          "Precision@5": 0.008,
+          "NDCG@10": 0.0031,
+          "Top10 hit rate": 0.04
+        },
+        "afterVsBefore": {
+          "Precision@5": -0.008,
+          "NDCG@10": -0.0019,
+          "Top10 hit rate": 0.0
+        }
+      },
+      "labelDistributionBeforeToAfter": {
+        "IMPROVED": 3,
+        "STABLE": 18,
+        "REGRESSED": 4
+      },
+      "labelDistributionAfterVsBaseline": {
+        "IMPROVED": 5,
+        "STABLE": 11,
+        "REGRESSED": 9
+      },
+      "blockedItems": []
+    },
+    "standardLeCaRDv2": {
+      "evidence": "docs/development/m1.2-standard-rerank-eval-final-20260609-195835.json",
+      "baseline": {
+        "Precision@5": 0.4987,
+        "NDCG@10": 0.4442,
+        "Top10 hit rate": 0.8812,
+        "evaluatedQueryCount": 160
+      },
+      "currentStatus": "blocked_missing_candidate_corpus",
+      "enableNewRerank": false
+    },
+    "performance": {
+      "evidence": "docs/development/m1.2-performance-smoke-final-20260609-195835.json",
+      "sampleCount": 5,
+      "statusCounts": {
+        "200": 5
+      },
+      "errorRate": 0.0,
+      "warmP95Ms": 508,
+      "warmP95Under3s": true,
+      "vectorErrorRate": 0.0,
+      "degradedReasonCounts": {
+        "QUERY_REWRITE_DISABLED": 5,
+        "SUMMARY_DISABLED": 5
+      }
+    }
+  },
+  "testResults": [
+    {
+      "name": "backend_pytest",
+      "command": "cd apps/api && pytest",
+      "status": "passed",
+      "summary": "151 passed in 20.66s; pytest-asyncio warning only."
+    },
+    {
+      "name": "frontend_tests",
+      "command": "cd apps/web && npm test",
+      "status": "passed",
+      "summary": "4 test files and 40 tests passed."
+    },
+    {
+      "name": "frontend_build",
+      "command": "cd apps/web && npm run build",
+      "status": "passed",
+      "summary": "tsc -b and vite build passed."
+    },
+    {
+      "name": "eval_corpus_preflight",
+      "command": "cd apps/api && python scripts/eval_corpus_preflight.py --out docs/development/m1.2-eval-preflight-final-20260609-195835.json",
+      "status": "blocked",
+      "exitCode": 1,
+      "summary": "product_local is ok and m1_2_minimum_status=ok; standard LeCaRDv2 current line is blocked by missing candidate corpus.",
+      "blocks": [
+        "weighted rerank standard-line evidence",
+        "M2 readiness"
+      ]
+    },
+    {
+      "name": "product_eval_product_chain",
+      "command": "cd apps/api && python -m app.eval.product_eval --comparison-mode product_chain ...",
+      "status": "passed",
+      "summary": "Current aggregate is above baseline, but Top10 hit rate=0.52 remains below 0.60 candidate threshold."
+    },
+    {
+      "name": "m1_2_regression",
+      "command": "cd apps/api && python scripts/m1_2_regression.py --comparison-mode product_chain ...",
+      "status": "passed",
+      "summary": "No blocked items; REGRESSED=4 vs before and REGRESSED=9 vs baseline."
+    },
+    {
+      "name": "standard_rerank_eval",
+      "command": "cd apps/api && python -m app.eval.day3_rerank_eval --product-smoke-queries 0 ...",
+      "status": "blocked",
+      "summary": "Current rerank cannot be evaluated against LeCaRDv2 qrels because candidate case texts are missing."
+    },
+    {
+      "name": "performance_smoke",
+      "command": "cd apps/api && python scripts/day3_7_3_performance_smoke.py ...",
+      "status": "passed",
+      "summary": "5/5 HTTP 200; warm P95=508ms; vector error rate=0."
+    },
+    {
+      "name": "rollback_drill",
+      "command": "cd apps/api && python scripts/day3_7_5_rollback_drill.py ...",
+      "status": "passed",
+      "summary": "max rollback=21ms; ENABLE_WEIGHTED_RERANK rollback returned score_mode=base_retrieval."
+    }
+  ],
+  "rollbackReady": {
+    "ready": true,
+    "evidence": "docs/development/m1.2-rollback-drill-final-20260609-195835.json",
+    "recoveryWithin60Seconds": true,
+    "maxRollbackElapsedMs": 21,
+    "weightedRerankRollback": {
+      "elapsedMs": 11,
+      "scoreMode": "base_retrieval",
+      "rawQueryLogged": false
+    },
+    "indexRebuildRequired": false
+  },
+  "unresolvedIssues": [
+    {
+      "id": "top10_below_gray_threshold",
+      "severity": "blocking_for_weighted_rerank_gray",
+      "detail": "Final product-local Top10 hit rate is 0.52, below the 0.60 candidate threshold."
+    },
+    {
+      "id": "fixed_regression_has_regressed_queries",
+      "severity": "blocking_for_weighted_rerank_gray_and_m2_readiness",
+      "detail": "Fixed regression set has REGRESSED=4 vs before and REGRESSED=9 vs baseline."
+    },
+    {
+      "id": "remaining_bad_cases",
+      "severity": "blocking_for_m2_readiness",
+      "detail": "Final bad cases include METRIC_REGRESSION=9 and RECALL_MISS=11."
+    },
+    {
+      "id": "standard_rerank_current_blocked",
+      "severity": "blocking_for_standard_eval_confidence",
+      "detail": "LeCaRDv2 current rerank remains blocked because candidate corpus is missing."
+    },
+    {
+      "id": "lint_script_missing",
+      "severity": "tooling_gap",
+      "detail": "Existing M1.2 reports record npm run lint as missing from apps/web/package.json; lint was not a required command for M1.2-8 but remains a tooling gap."
+    }
+  ],
+  "decisionReasons": [
+    "Baseline/basic search remains usable because backend tests, frontend tests, build, performance smoke, API stability checks, and rollback drill passed with default enhancement flags closed.",
+    "Weighted rerank is not a gray candidate because Top10 hit rate is below 0.60, fixed regression still has regressed queries, and the standard current rerank line is blocked.",
+    "M2 readiness is No-Go because this gate does not allow capability expansion while weighted rerank remains non-candidate and regression debt is unresolved.",
+    "ENABLE_WEIGHTED_RERANK must remain false by default; offline weighted rerank evaluation did not mutate runtime flags."
+  ],
+  "evidenceArtifacts": [
+    "docs/development/m1.2-final-verification-20260609-195835.md",
+    "docs/development/m1.2-product-eval-product-chain-final-20260609-195835.json",
+    "docs/development/m1.2-product-bad-cases-product-chain-final-20260609-195835.json",
+    "docs/development/m1.2-regression-run-final-20260609-195835.json",
+    "docs/development/m1.2-parameter-version-final-20260609-195835.json",
+    "docs/development/m1.2-eval-preflight-final-20260609-195835.json",
+    "docs/development/m1.2-standard-rerank-eval-final-20260609-195835.json",
+    "docs/development/m1.2-performance-smoke-final-20260609-195835.json",
+    "docs/development/m1.2-rollback-drill-final-20260609-195835.json"
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "artifact": "m4-release-gate",
+  "generated_at": "2026-06-14T10:27:58+08:00",
+  "scope": "M4-8 final verification and M5 entry decision",
+  "m3_8_entry_evidence": {
+    "source_artifacts": [
+      "m3-final-verification-20260613-072734.md",
+      "m3-release-gate-20260613-072734.json",
+      "m3-parameter-version-20260613-072734.json"
+    ],
+    "base_search": "GO",
+    "m3_reading_efficiency": "GO",
+    "m4_entry": "GO",
+    "rollback_required": false,
+    "enable_weighted_rerank_default": false
+  },
+  "m4_steps": [
+    { "step": "M4-1", "capability": "workflow_entry_contract", "artifact_prefix": "m4-workflow-entry-contract-20260613-090354", "status": "GO" },
+    { "step": "M4-2", "capability": "search_history_and_draft_recovery", "artifact_prefix": "m4-search-history-draft-20260613-103734", "status": "GO" },
+    { "step": "M4-3", "capability": "case_favorite", "artifact_prefix": "m4-case-favorite-20260613-113516", "status": "GO" },
+    { "step": "M4-4", "capability": "case_list_assembly", "artifact_prefix": "m4-case-list-20260613-211225", "status": "GO" },
+    { "step": "M4-5", "capability": "case_list_export", "artifact_prefix": "m4-list-export-20260614-004136", "status": "GO" },
+    { "step": "M4-6", "capability": "lightweight_report_template", "artifact_prefix": "m4-report-template-20260614-014251", "status": "GO" },
+    { "step": "M4-7", "capability": "team_reuse_assessment", "artifact_prefix": "m4-team-reuse-assessment-20260614-015309", "status": "GO" }
+  ],
+  "hard_gates": {
+    "all_m4_artifacts_exist": true,
+    "all_m4_status_go": true,
+    "persistence_whitelist_only_metadata_anchor_user_short_fields": true,
+    "user_raw_case_not_persisted_on_server": true,
+    "draft_and_history_body_local_only_clearable": true,
+    "delivery_ai_content_100pct_source_anchored": true,
+    "source_anchor_minimum_fields": ["case_id", "source_chunk_id"],
+    "unanchored_content_not_in_list_export_report": true,
+    "main_sorting_unchanged": true,
+    "source_selection_unchanged": true,
+    "rerank_default_unchanged": false,
+    "m2_m3_default_behavior_unchanged": true,
+    "qrels_label_relevance_runtime_use_detected": false,
+    "query_or_case_id_special_case_detected": false,
+    "body_leakage_in_persistence_export_report_log_snapshot_detected": false,
+    "forbidden_coverage_phrase_detected": false,
+    "win_loss_probability_or_legal_conclusion_detected": false,
+    "report_drafts_legal_document_detected": false,
+    "weighted_rerank_default_enabled": false,
+    "team_reuse_default_enabled": false,
+    "m4_feature_flags_default_off": true,
+    "env_example_weighted_rerank_default_true": false,
+    "env_example_team_reuse_default_true": false
+  },
+  "feature_flag_state": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_SEARCH_HISTORY": false,
+    "ENABLE_CASE_FAVORITE": false,
+    "ENABLE_CASE_LIST": false,
+    "ENABLE_LIST_EXPORT": false,
+    "ENABLE_REPORT_TEMPLATE": false,
+    "ENABLE_TEAM_REUSE": false,
+    "config_py_evidence": "apps/api/app/core/config.py:42,52-57",
+    "env_example_evidence": ".env.example:23,33-38 (backend) / 60-70 (VITE frontend)"
+  },
+  "verification_runs": {
+    "web_vitest": {
+      "files": 20,
+      "tests": 224,
+      "passed": 224,
+      "failed": 0,
+      "batches": ["lib1 80/80", "lib2+services 55/55", "pages-accept1 25/25", "HomePage+ListExport 16/16", "Report+SearchHistory 15/15", "SearchPage 33/33"]
+    },
+    "web_tsc_b": { "exit": 0 },
+    "web_vite_build": { "exit": 0, "modules": 118, "note": "与 M4-6 持平，M4-7 零业务改动" },
+    "api_core_gate_pytest": {
+      "files": [
+        "test_m1_3_candidate_comparison.py",
+        "test_m1_3_legal_candidate_robustness.py",
+        "test_feature_flag_rollback.py",
+        "test_health.py",
+        "test_search_api_fallback_smoke.py",
+        "test_summary_service.py",
+        "test_performance_smoke.py"
+      ],
+      "passed": 60,
+      "failed": 0
+    },
+    "api_m4_focused_pytest": {
+      "files": ["test_m4_workflow_entry_contract.py", "test_m4_team_reuse.py"],
+      "passed": 24,
+      "failed": 0
+    },
+    "api_m3_focused_pytest": {
+      "files": ["test_m3_fact_alignment.py", "test_m3_holding_summary.py", "test_m3_issue_focus.py", "test_m3_source_highlights.py"],
+      "passed": 29,
+      "failed": 0
+    },
+    "performance_smoke": { "warm_p95_ms": 820, "warm_p95_under_3s": true, "gate_uses_warm_p95": true }
+  },
+  "rollback": {
+    "m4_backend_business_changes": "none (M4-2~M4-6 全前端 localStorage；M4-1/M4-7 仅声明合同与字段位，config.py 仅新增默认 false 开关位)",
+    "m4_capabilities_degrade_path": true,
+    "each_m4_capability_flag_gated_and_closeable": true,
+    "closed_returns_to_m3_end_state": true,
+    "main_chain_survives_m4_capability_failure": true,
+    "git_working_tree_business_code_changed_this_session": false
+  },
+  "stop_loss_triggers": {
+    "body_leak_in_persistence_report_log_json_export_snapshot": false,
+    "user_raw_case_persisted_on_server": false,
+    "list_export_report_references_unanchored_ai_content": false,
+    "absolute_coverage_phrase": false,
+    "win_loss_probability_or_certain_legal_conclusion": false,
+    "report_auto_drafts_legal_document": false,
+    "qrels_label_relevance_in_history_favorite_list_export_report_or_sorting": false,
+    "query_or_case_id_special_case": false,
+    "weighted_rerank_or_team_reuse_default_on": false,
+    "m3_8_core_gate_regression": false,
+    "m4_capability_unrollbackable_or_main_chain_down": false,
+    "any_triggered": false
+  },
+  "conclusions": {
+    "base_search_available": "GO",
+    "m4_workflow_sedimentation_complete": "GO",
+    "m5_entry": "GO",
+    "rollback_required": false,
+    "next_title": "类案检索助手 M5-1 商业化扩展入口合同"
+  }
+}

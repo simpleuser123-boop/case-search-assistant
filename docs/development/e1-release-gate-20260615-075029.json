@@ -1,0 +1,173 @@
+{
+  "artifact": "e1-release-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E-1 生态入口合同）",
+  "step": "E-1",
+  "generated_at": "2026-06-15T07:50:29",
+  "nature": "合同冻结步（对标 M1-1 / M5-1 入口合同）：只冻结契约与开关，零业务实现、零行为变化",
+  "based_on": {
+    "design_doc_16": "落地设计文档/16-多产品生态全链路闭环设计文档.md",
+    "design_doc_17": "落地设计文档/17-E系列分步骤文档.md",
+    "m5_10_final_verification": "docs/development/m5-final-verification-20260615-063329.md",
+    "m5_10_release_gate": "docs/development/m5-release-gate-20260615-063329.json",
+    "m5_10_parameter_version": "docs/development/m5-parameter-version-20260615-063329.json",
+    "m4_1_field_whitelist_origin": "落地设计文档/14-M4工作流沉淀分步骤文档.md"
+  },
+  "m5_10_entry_evidence": {
+    "basic_search_go": true,
+    "m5_commercial_expansion_complete_go": true,
+    "commercial_readiness_go": true,
+    "all_m5_steps_go": true,
+    "enable_weighted_rerank_default_false": true,
+    "six_m4_flags_default_false": true,
+    "seven_m5_flags_default_false": true,
+    "entry_gate_passed": true
+  },
+  "frozen_layering_contract": {
+    "layers": ["前端层 apps/web（多入口路由/共享组件库）", "产品能力包层 apps/api/app/<product>/（互不直接 import）", "共享内核层（所有产品依赖，护栏只实现一次）"],
+    "capability_packages_depend_on_kernel_only": true,
+    "capability_packages_must_not_cross_import": true,
+    "cross_product_data_flow_via_contract_objects_only": true,
+    "guardrails_implemented_once_in_kernel": true,
+    "each_product_single_flag_default_false": true,
+    "frozen_as_doc_only_no_implementation": true
+  },
+  "frozen_contract_objects": {
+    "module": "apps/api/app/contracts/whitelist.py",
+    "object_count": 4,
+    "SearchProfile": {
+      "direction": "录入端 → 检索助手",
+      "fields": ["case_cause", "region", "trial_level_preference", "dispute_focus_keywords", "query_text"],
+      "matches_doc17_s3_1": true,
+      "no_body_field": true
+    },
+    "CandidateRef": {
+      "direction": "检索助手 → 法条/文书/协作台",
+      "fields": ["case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchors"],
+      "matches_doc17_s3_2": true,
+      "no_body_field": true
+    },
+    "DraftDescriptor": {
+      "direction": "文书工作台 → 协作台",
+      "fields": ["draft_id", "structure_skeleton", "candidate_refs", "note", "tag"],
+      "matches_doc17_s3_3": true,
+      "no_body_field": true
+    },
+    "CaseFolder": {
+      "direction": "协作台内归集",
+      "fields": ["case_folder_id", "owner_user_id", "team_id", "visibility", "search_profile_summary", "candidate_refs", "draft_descriptors", "created_at", "updated_at"],
+      "matches_doc17_s3_4": true,
+      "default_visibility_private": true,
+      "no_body_field": true
+    },
+    "sanitize_pure_function": true,
+    "sanitize_drops_non_whitelist_keys": true,
+    "sanitize_rejects_body_type_keys_fail_closed": true,
+    "module_imports_no_retrieval_rerank_runtime": true,
+    "module_not_wired_to_any_endpoint": true
+  },
+  "frozen_product_flags": {
+    "backend_config_py": {
+      "ENABLE_ECOSYSTEM": false,
+      "ENABLE_INTAKE": false,
+      "ENABLE_STATUTE_SEARCH": false,
+      "ENABLE_DRAFTING": false,
+      "ENABLE_CASEBOOK": false
+    },
+    "frontend_vite_mirror_env_example": {
+      "VITE_ENABLE_ECOSYSTEM": false,
+      "VITE_ENABLE_INTAKE": false,
+      "VITE_ENABLE_STATUTE_SEARCH": false,
+      "VITE_ENABLE_DRAFTING": false,
+      "VITE_ENABLE_CASEBOOK": false
+    },
+    "config_py_and_env_example_consistent": true,
+    "all_ten_flags_default_false": true,
+    "no_on_path_implemented": true,
+    "no_endpoint_registered": true,
+    "no_frontend_entry_wired": true,
+    "featureFlags_ts_has_no_e_series_entry": true
+  },
+  "frozen_ecosystem_privacy_redlines": {
+    "intake_raw_case_zero_upload_to_server_persistence": "user_raw_case_persisted_on_server=false（沿用 M4-1）；原始口语化案情仅浏览器本地",
+    "cross_product_only_via_contract_objects": "产品间不直接共享内存对象或数据库表，只通过 4 个契约对象传递，每个过白名单 sanitize",
+    "feedback_aggregation_no_body": "反哺数据 100% 聚合/规则；bodyHits 必须为空、rawQueryLeak 必须为 false",
+    "checkable_assertions": true
+  },
+  "test_results": {
+    "backend": {
+      "m5_10_same_regression_set": 60,
+      "regression_set_files": ["test_m1_3_candidate_comparison.py", "test_m1_3_legal_candidate_robustness.py", "test_feature_flag_rollback.py", "test_health.py", "test_search_api_fallback_smoke.py", "test_summary_service.py", "test_performance_smoke.py"],
+      "regression_matches_m5_10_count": true,
+      "e1_focused_contract_tests": 24,
+      "e1_focused_file": "tests/test_e1_contracts.py",
+      "total_passed": 84,
+      "total_failed": 0,
+      "command": "DATABASE_URL=sqlite:///./e1_tmp.db python3 -B -m pytest <M5-10指定集 + test_e1_contracts.py>"
+    },
+    "frontend": {
+      "build_modules": 118,
+      "build_status": "clean",
+      "build_matches_m5_10": true,
+      "tsc_exit": 0,
+      "sampled_tests_passed": 49,
+      "sampled_files": ["SearchPage.test.tsx", "HomePage.test.tsx", "CitationCopyAcceptance.test.tsx", "caseFavorite.test.ts"],
+      "note": "E-1 零前端源码改动（仅 .env.example 声明 VITE 镜像，不接线）；build 模块数与 M5-10 逐位一致即零变化铁证；npm test 全量 >44s VM 超时，按记忆 recipe 分批抽样验证逐批 exit=0"
+    }
+  },
+  "hard_gates": {
+    "m5_10_three_conclusions_all_go": true,
+    "five_product_flags_default_false_config_py": true,
+    "five_vite_mirror_flags_default_false_env_example": true,
+    "config_py_env_example_consistent": true,
+    "weighted_rerank_still_default_false": true,
+    "six_m4_flags_still_default_false": true,
+    "seven_m5_flags_still_default_false": true,
+    "env_example_no_flag_defaulted_true": true,
+    "no_new_product_package_created": true,
+    "no_shared_kernel_extracted": true,
+    "no_retrieval_service_interface_exposed": true,
+    "no_new_api_endpoint_registered": true,
+    "no_frontend_product_entry_wired": true,
+    "four_contract_field_sets_match_doc17_s3": true,
+    "sanitize_rejects_body_type_keys": true,
+    "contracts_module_not_imported_by_any_endpoint": true,
+    "contracts_module_no_kernel_runtime_import": true,
+    "main_sorting_unchanged": true,
+    "source_selection_unchanged": true,
+    "rerank_default_switch_unchanged": true,
+    "qrels_label_relevance_not_in_runtime": true,
+    "query_id_case_id_not_used_for_runtime_special_casing": true
+  },
+  "scans": {
+    "body_leakage_hits_in_new_code_and_artifacts": 0,
+    "body_keys_only_in_forbidden_blacklist_not_in_any_whitelist": true,
+    "plaintext_credential_or_token_hits": 0,
+    "forbidden_absolute_phrasing_hits": 0
+  },
+  "no_go_triggers": {
+    "m5_10_not_all_three_go": false,
+    "any_new_flag_default_true": false,
+    "body_field_in_any_contract_whitelist": false,
+    "body_or_credential_leak_in_artifact_code_or_log": false,
+    "out_of_scope_product_package_or_kernel_or_service_or_endpoint_or_frontend_entry": false,
+    "main_sorting_source_selection_or_rerank_default_changed": false,
+    "qrels_label_relevance_entered_runtime_or_id_special_casing": false,
+    "m5_10_regression_new_failure": false
+  },
+  "rollback": {
+    "e1_is_additive_only": true,
+    "remove_new_flags_and_contracts_module_returns_to_m5_10_end_state": true
+  },
+  "conclusions": {
+    "basic_search_continues_available": "GO",
+    "ecosystem_entry_contract_frozen": "GO",
+    "e1_zero_behavior_change_vs_m5_10": "GO"
+  },
+  "overall": "GO",
+  "next_step": {
+    "step": "E-2",
+    "title": "共享内核抽取",
+    "scope": "把 RAG 核心/身份租户/护栏从检索助手抽为内核层，检索助手改为内核消费方，要求行为与 E-1 末态逐位一致回归",
+    "baseline": "本 e1-release-gate 即 E-2 行为零变化回归的比对基线"
+  }
+}

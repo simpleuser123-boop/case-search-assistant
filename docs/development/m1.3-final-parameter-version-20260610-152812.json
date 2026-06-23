@@ -1,0 +1,94 @@
+{
+  "versionName": "m1_2_6_guarded_rerank_v1",
+  "runId": "m1_2_regression_20260610_153040",
+  "generatedAt": "2026-06-10T15:30:40",
+  "sourceStep": "M1.2-6 bad case regression and parameter freeze",
+  "basedOn": [
+    "M1.2-3 query understanding m1_2_query_understanding_v1",
+    "M1.2-4 recall repair 20260609",
+    "M1.2-5 guarded rerank fusion repair 20260609"
+  ],
+  "configItems": {
+    "ENABLE_WEIGHTED_RERANK_global_default": false,
+    "evalWeightedRerankOnly": true,
+    "comparisonMode": "product_chain",
+    "rerankWeights": {
+      "vector_similarity": 0.55,
+      "legal_element_overlap": 0.2,
+      "case_cause_match": 0.1,
+      "key_paragraph_match": 0.1,
+      "authority_signal": 0.05
+    },
+    "fusionGuards": {
+      "noFactSupportUsesBaseRetrieval": true,
+      "factSignalEpsilon": 1e-06,
+      "caseCauseLowVectorFloor": 0.7,
+      "caseCauseOnlyCap": 0.25
+    },
+    "embeddingTimeoutSeconds": 6.0,
+    "embeddingWarmupTimeoutSeconds": 6.0
+  },
+  "metrics": {
+    "baseline": {
+      "Precision@5": 0.032,
+      "NDCG@10": 0.134,
+      "Top10 hit rate": 0.48,
+      "evaluatedQueryCount": 25
+    },
+    "currentBefore": {
+      "Precision@5": 0.048,
+      "NDCG@10": 0.1487,
+      "Top10 hit rate": 0.6,
+      "evaluatedQueryCount": 25
+    },
+    "currentAfter": {
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1539,
+      "Top10 hit rate": 0.64,
+      "evaluatedQueryCount": 25
+    }
+  },
+  "labelDistribution": {
+    "IMPROVED": 4,
+    "REGRESSED": 4,
+    "STABLE": 17
+  },
+  "afterVsBaselineLabelDistribution": {
+    "IMPROVED": 8,
+    "REGRESSED": 9,
+    "STABLE": 8
+  },
+  "m13RegressionGate": {
+    "version": "m1_3_regression_gate_v1",
+    "top10HitRateThreshold": 0.6,
+    "top10HitRate": 0.64,
+    "evaluatedQueryCount": 25,
+    "beforeVsAfterRegressedCount": 4,
+    "afterVsBaselineRegressedCount": 9,
+    "top10MissCount": 9,
+    "metricRegressionCount": 9,
+    "recallMissCount": 8,
+    "grayCandidateHardGatePassed": false,
+    "weightedRerankGrayCandidate": false,
+    "hardGateDataComplete": true,
+    "missingInputs": [],
+    "blockedItems": [],
+    "hardGateFailedReasons": [
+      "BEFORE_VS_AFTER_REGRESSED_GT_0",
+      "AFTER_VS_BASELINE_REGRESSED_GT_0",
+      "METRIC_REGRESSION_GT_0"
+    ],
+    "hardGateFormula": "top10HitRate >= 0.60 AND beforeVsAfterRegressedCount == 0 AND afterVsBaselineRegressedCount == 0 AND metricRegressionCount == 0"
+  },
+  "weightedRerankGrayCandidate": false,
+  "scope": [
+    "product_local_eval",
+    "offline weighted rerank evaluation only",
+    "does not enable public/default weighted rerank path"
+  ],
+  "rollback": [
+    "Keep ENABLE_WEIGHTED_RERANK=false to stay on default base retrieval behavior.",
+    "For code rollback, revert M1.2-5 guarded fusion changes in app/rerank/service.py and eval-only field additions.",
+    "For evaluation rollback, use baseline BM25 product case-dedup rows from app.eval.product_eval."
+  ]
+}

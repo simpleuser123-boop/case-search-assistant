@@ -1,0 +1,2805 @@
+{
+  "version": "m1_3_candidate_comparison_v1",
+  "run_id": "m1_3_candidate_comparison_20260610_190121",
+  "generated_at": "2026-06-10T19:01:21",
+  "unified_result_version": "m1_2_eval_result_v1",
+  "selected_status": "NO_GO",
+  "selected_candidate_id": null,
+  "selected_candidate_name": null,
+  "no_go_reason": "No candidate satisfies all M1.3 hard gates and success criteria.",
+  "inputs": {
+    "regressionSet": "data\\eval\\m1_2_regression_set_20260609.json",
+    "queries": "data\\eval\\product_eval_queries.jsonl",
+    "qrels": "data\\eval\\product_eval_qrels.jsonl",
+    "cases": "data\\processed\\cases.jsonl",
+    "chunks": "data\\processed\\chunks.jsonl",
+    "topK": 100
+  },
+  "source_artifacts": [
+    "落地设计文档/10-M1.3回归修复版分步骤文档.md",
+    "docs/development/m1.3-regression-triage-20260609-205353.md",
+    "docs/development/m1.3-regression-triage-20260609-205353.json",
+    "docs/development/m1.3-regression-gate-20260610-100636.md",
+    "docs/development/m1.3-regression-gate-20260610-100636.json",
+    "docs/development/m1.3-recall-repair-20260610-113200.md",
+    "docs/development/m1.3-recall-repair-20260610-113200.json",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.md",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.json",
+    "docs/development/m1.2-parameter-version-final-20260609-195835.json",
+    "docs/development/m1.2-product-eval-product-chain-final-20260609-195835.json",
+    "docs/development/m1.2-regression-run-final-20260609-195835.json"
+  ],
+  "candidate_matrix": [
+    {
+      "candidate_id": "m1_2_baseline",
+      "candidate_name": "M1.2 baseline",
+      "rank_mode": "baseline",
+      "targeted_recall_repairs": null,
+      "parameters": {},
+      "Precision@5": 0.032,
+      "NDCG@10": 0.134,
+      "Top10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 13,
+      "top10MissCount": 13,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "STABLE": 25
+      },
+      "afterVsBaselineLabelDistribution": {
+        "STABLE": 25
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {},
+        "baselineProtectedRegressionCount": 0
+      },
+      "hardGateFailedReasons": [
+        "TOP10_HIT_RATE_BELOW_0_60"
+      ],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.032,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": false,
+          "actual": 0.134,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": false,
+          "actual": 0.48
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "metricRegressionZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": false,
+          "actual": 13,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": false,
+          "actual": null
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": null,
+          "degradedReasonCounts": {}
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": false,
+          "actual": {
+            "evidence": null,
+            "status": null,
+            "recoveryWithin60Seconds": null,
+            "maxRollbackElapsedMs": null,
+            "weightedRerankReturnsBaseRetrieval": false,
+            "weightedRerankElapsedMs": null,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "ndcgAt10CurrentGtBaseline",
+        "top10HitRateGte060",
+        "recallMissSignificantlyReducedAndExplained",
+        "warmP95Under3s",
+        "weightedRerankRollbackReturnsBaseRetrieval"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": null,
+        "warmP95Ms": null,
+        "warmP95Under3s": false,
+        "errorRate": null,
+        "degradedReasonCounts": {},
+        "statusCounts": {}
+      },
+      "rollbackMethod": "Use BM25 product case-dedup baseline rows from product eval.",
+      "rollbackVerification": {
+        "evidence": null,
+        "status": null,
+        "recoveryWithin60Seconds": null,
+        "maxRollbackElapsedMs": null,
+        "weightedRerankReturnsBaseRetrieval": false,
+        "weightedRerankElapsedMs": null,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Below Top10 gray threshold; not a weighted rerank gray candidate."
+    },
+    {
+      "candidate_id": "m1_2_guarded_rerank_v1",
+      "candidate_name": "M1.2 guarded rerank v1",
+      "rank_mode": "m1_2_guarded",
+      "targeted_recall_repairs": false,
+      "parameters": {},
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1371,
+      "Top10 hit rate": 0.52,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 4,
+      "afterVsBaselineRegressedCount": 9,
+      "METRIC_REGRESSION count": 9,
+      "RECALL_MISS count": 11,
+      "top10MissCount": 12,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 3,
+        "REGRESSED": 4,
+        "STABLE": 18
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 5,
+        "REGRESSED": 9,
+        "STABLE": 11
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 3,
+          "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN": 1,
+          "BASELINE_TOP10_RELEVANT_DROPPED": 1,
+          "NDCG_AT_10_DOWN": 4
+        },
+        "baselineProtectedRegressionCount": 9
+      },
+      "hardGateFailedReasons": [
+        "TOP10_HIT_RATE_BELOW_0_60",
+        "BEFORE_VS_AFTER_REGRESSED_GT_0",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.04,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1371,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": false,
+          "actual": 0.52
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": false,
+          "actual": 4
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 9
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 9
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": false,
+          "actual": 11,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": false,
+          "actual": null
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": null,
+          "degradedReasonCounts": {}
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": false,
+          "actual": {
+            "evidence": null,
+            "status": null,
+            "recoveryWithin60Seconds": null,
+            "maxRollbackElapsedMs": null,
+            "weightedRerankReturnsBaseRetrieval": false,
+            "weightedRerankElapsedMs": null,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "top10HitRateGte060",
+        "fixedRegressionBeforeAfterRegressedZero",
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero",
+        "recallMissSignificantlyReducedAndExplained",
+        "warmP95Under3s",
+        "weightedRerankRollbackReturnsBaseRetrieval"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": null,
+        "warmP95Ms": null,
+        "warmP95Under3s": false,
+        "errorRate": null,
+        "degradedReasonCounts": {},
+        "statusCounts": {}
+      },
+      "rollbackMethod": "Keep ENABLE_WEIGHTED_RERANK=false to return API scoring to score_mode=base_retrieval.",
+      "rollbackVerification": {
+        "evidence": null,
+        "status": null,
+        "recoveryWithin60Seconds": null,
+        "maxRollbackElapsedMs": null,
+        "weightedRerankReturnsBaseRetrieval": false,
+        "weightedRerankElapsedMs": null,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Known M1.2 Top10 and fixed-regression blockers remain."
+    },
+    {
+      "candidate_id": "m1_3_recall_only_candidate",
+      "candidate_name": "M1.3 recall-only candidate",
+      "rank_mode": "m1_2_guarded",
+      "targeted_recall_repairs": true,
+      "parameters": {},
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1539,
+      "Top10 hit rate": 0.64,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 4,
+      "afterVsBaselineRegressedCount": 9,
+      "METRIC_REGRESSION count": 9,
+      "RECALL_MISS count": 8,
+      "top10MissCount": 9,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 4,
+        "REGRESSED": 4,
+        "STABLE": 17
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 8,
+        "REGRESSED": 9,
+        "STABLE": 8
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 3,
+          "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN": 1,
+          "BASELINE_TOP10_RELEVANT_DROPPED": 1,
+          "NDCG_AT_10_DOWN": 4
+        },
+        "baselineProtectedRegressionCount": 9
+      },
+      "hardGateFailedReasons": [
+        "BEFORE_VS_AFTER_REGRESSED_GT_0",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.04,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1539,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": true,
+          "actual": 0.64
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": false,
+          "actual": 4
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 9
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 9
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 8,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": false,
+          "actual": null
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": null,
+          "degradedReasonCounts": {}
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": false,
+          "actual": {
+            "evidence": null,
+            "status": null,
+            "recoveryWithin60Seconds": null,
+            "maxRollbackElapsedMs": null,
+            "weightedRerankReturnsBaseRetrieval": false,
+            "weightedRerankElapsedMs": null,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "fixedRegressionBeforeAfterRegressedZero",
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero",
+        "warmP95Under3s",
+        "weightedRerankRollbackReturnsBaseRetrieval"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": null,
+        "warmP95Ms": null,
+        "warmP95Under3s": false,
+        "errorRate": null,
+        "degradedReasonCounts": {},
+        "statusCounts": {}
+      },
+      "rollbackMethod": "Disable targeted recall repair code path and keep ENABLE_WEIGHTED_RERANK=false.",
+      "rollbackVerification": {
+        "evidence": null,
+        "status": null,
+        "recoveryWithin60Seconds": null,
+        "maxRollbackElapsedMs": null,
+        "weightedRerankReturnsBaseRetrieval": false,
+        "weightedRerankElapsedMs": null,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Top10 improves, but fixed rerank regressions are still present."
+    },
+    {
+      "candidate_id": "m1_3_rerank_guard_candidate",
+      "candidate_name": "M1.3 rerank-guard candidate",
+      "rank_mode": "m1_3_guarded",
+      "targeted_recall_repairs": false,
+      "parameters": {},
+      "Precision@5": 0.048,
+      "NDCG@10": 0.1542,
+      "Top10 hit rate": 0.56,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 7,
+      "METRIC_REGRESSION count": 7,
+      "RECALL_MISS count": 10,
+      "top10MissCount": 11,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 4,
+        "STABLE": 21
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 8,
+        "REGRESSED": 7,
+        "STABLE": 10
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 3,
+          "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN": 1,
+          "BASELINE_TOP10_RELEVANT_DROPPED": 1,
+          "NDCG_AT_10_DOWN": 2
+        },
+        "baselineProtectedRegressionCount": 7
+      },
+      "hardGateFailedReasons": [
+        "TOP10_HIT_RATE_BELOW_0_60",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.048,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1542,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": false,
+          "actual": 0.56
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 7
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 7
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 10,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": false,
+          "actual": null
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": null,
+          "degradedReasonCounts": {}
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": false,
+          "actual": {
+            "evidence": null,
+            "status": null,
+            "recoveryWithin60Seconds": null,
+            "maxRollbackElapsedMs": null,
+            "weightedRerankReturnsBaseRetrieval": false,
+            "weightedRerankElapsedMs": null,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "top10HitRateGte060",
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero",
+        "warmP95Under3s",
+        "weightedRerankRollbackReturnsBaseRetrieval"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": null,
+        "warmP95Ms": null,
+        "warmP95Under3s": false,
+        "errorRate": null,
+        "degradedReasonCounts": {},
+        "statusCounts": {}
+      },
+      "rollbackMethod": "Revert the M1.3 rerank guard candidate and keep ENABLE_WEIGHTED_RERANK=false.",
+      "rollbackVerification": {
+        "evidence": null,
+        "status": null,
+        "recoveryWithin60Seconds": null,
+        "maxRollbackElapsedMs": null,
+        "weightedRerankReturnsBaseRetrieval": false,
+        "weightedRerankElapsedMs": null,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Rerank guard is isolated from recall repair; recall misses may remain."
+    },
+    {
+      "candidate_id": "m1_3_combined_candidate",
+      "candidate_name": "M1.3 combined candidate",
+      "rank_mode": "m1_3_guarded",
+      "targeted_recall_repairs": true,
+      "parameters": {},
+      "Precision@5": 0.048,
+      "NDCG@10": 0.171,
+      "Top10 hit rate": 0.68,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 7,
+      "METRIC_REGRESSION count": 7,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 8,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 5,
+        "STABLE": 20
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 11,
+        "REGRESSED": 7,
+        "STABLE": 7
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 3,
+          "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN": 1,
+          "BASELINE_TOP10_RELEVANT_DROPPED": 1,
+          "NDCG_AT_10_DOWN": 2
+        },
+        "baselineProtectedRegressionCount": 7
+      },
+      "hardGateFailedReasons": [
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.048,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.171,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": true,
+          "actual": 0.68
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": true,
+          "actual": 0
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 7
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 7
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 7,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": false,
+          "actual": null
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": null,
+          "degradedReasonCounts": {}
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": false,
+          "actual": {
+            "evidence": null,
+            "status": null,
+            "recoveryWithin60Seconds": null,
+            "maxRollbackElapsedMs": null,
+            "weightedRerankReturnsBaseRetrieval": false,
+            "weightedRerankElapsedMs": null,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero",
+        "warmP95Under3s",
+        "weightedRerankRollbackReturnsBaseRetrieval"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": null,
+        "warmP95Ms": null,
+        "warmP95Under3s": false,
+        "errorRate": null,
+        "degradedReasonCounts": {},
+        "statusCounts": {}
+      },
+      "rollbackMethod": "Revert M1.3 recall/rerank candidate code and keep ENABLE_WEIGHTED_RERANK=false.",
+      "rollbackVerification": {
+        "evidence": null,
+        "status": null,
+        "recoveryWithin60Seconds": null,
+        "maxRollbackElapsedMs": null,
+        "weightedRerankReturnsBaseRetrieval": false,
+        "weightedRerankElapsedMs": null,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Best aggregate candidate still must clear after-vs-baseline regression gates."
+    },
+    {
+      "candidate_id": "m1_3x_guard_v2_candidate",
+      "candidate_name": "M1.3x guard v2 candidate",
+      "rank_mode": "m1_3x_guard_v2",
+      "targeted_recall_repairs": true,
+      "parameters": {
+        "baselineAnchorTopN": 10,
+        "scoreBucketSize": 0.05,
+        "baselineAnchorStep": 0.001,
+        "targetedRecallRepairs": true,
+        "usesQrelsForRanking": false,
+        "expandsRecallPool": false,
+        "protectFactSupportedCandidatesWithinBucket": true,
+        "anchorLimitedToCurrentCandidateSet": true,
+        "defaultPathChanged": false
+      },
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1657,
+      "Top10 hit rate": 0.64,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 5,
+      "afterVsBaselineRegressedCount": 3,
+      "METRIC_REGRESSION count": 3,
+      "RECALL_MISS count": 9,
+      "top10MissCount": 9,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "labelDistribution": {
+        "IMPROVED": 8,
+        "REGRESSED": 5,
+        "STABLE": 12
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 8,
+        "REGRESSED": 3,
+        "STABLE": 14
+      },
+      "baselineProtection": {
+        "metricRegressionReasonDistribution": {
+          "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 2,
+          "NDCG_AT_10_DOWN": 1
+        },
+        "baselineProtectedRegressionCount": 3
+      },
+      "hardGateFailedReasons": [
+        "BEFORE_VS_AFTER_REGRESSED_GT_0",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "successCriteriaChecklist": {
+        "productLocalEvalRepeatableNoBlockedItem": {
+          "passed": true,
+          "actual": []
+        },
+        "precisionAt5CurrentGteBaseline": {
+          "passed": true,
+          "actual": 0.04,
+          "baseline": 0.032
+        },
+        "ndcgAt10CurrentGtBaseline": {
+          "passed": true,
+          "actual": 0.1657,
+          "baseline": 0.134
+        },
+        "top10HitRateGte060": {
+          "passed": true,
+          "actual": 0.64
+        },
+        "fixedRegressionBeforeAfterRegressedZero": {
+          "passed": false,
+          "actual": 5
+        },
+        "fixedRegressionAfterBaselineRegressedZero": {
+          "passed": false,
+          "actual": 3
+        },
+        "metricRegressionZero": {
+          "passed": false,
+          "actual": 3
+        },
+        "recallMissSignificantlyReducedAndExplained": {
+          "passed": true,
+          "actual": 9,
+          "reference": 11,
+          "remainingIssueExplanation": "Remaining misses are inherited from M1.3-3/M1.3-4 sanitized artifacts."
+        },
+        "warmP95Under3s": {
+          "passed": false,
+          "actual": null
+        },
+        "errorRateZeroOrNonBlocking": {
+          "passed": true,
+          "actual": null,
+          "degradedReasonCounts": {}
+        },
+        "weightedRerankRollbackReturnsBaseRetrieval": {
+          "passed": false,
+          "actual": {
+            "evidence": null,
+            "status": null,
+            "recoveryWithin60Seconds": null,
+            "maxRollbackElapsedMs": null,
+            "weightedRerankReturnsBaseRetrieval": false,
+            "weightedRerankElapsedMs": null,
+            "globalEnableWeightedRerankDefault": false
+          }
+        },
+        "globalWeightedRerankDefaultFalse": {
+          "passed": true,
+          "actual": false
+        }
+      },
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "fixedRegressionBeforeAfterRegressedZero",
+        "fixedRegressionAfterBaselineRegressedZero",
+        "metricRegressionZero",
+        "warmP95Under3s",
+        "weightedRerankRollbackReturnsBaseRetrieval"
+      ],
+      "performanceSmokeSummary": {
+        "evidence": null,
+        "warmP95Ms": null,
+        "warmP95Under3s": false,
+        "errorRate": null,
+        "degradedReasonCounts": {},
+        "statusCounts": {}
+      },
+      "rollbackMethod": "NO_GO/offline only: keep ENABLE_WEIGHTED_RERANK=false; do not replace the default M1.3 guarded path with guard v2.",
+      "rollbackVerification": {
+        "evidence": null,
+        "status": null,
+        "recoveryWithin60Seconds": null,
+        "maxRollbackElapsedMs": null,
+        "weightedRerankReturnsBaseRetrieval": false,
+        "weightedRerankElapsedMs": null,
+        "globalEnableWeightedRerankDefault": false
+      },
+      "remainingRisk": "Guard v2 only reorders existing M1.3 combined candidates; residual fixed/baseline regressions force NO_GO."
+    }
+  ],
+  "gate_summary": {
+    "selectedStatus": "NO_GO",
+    "selectedCandidateId": null,
+    "candidateCount": 6,
+    "passedCandidateCount": 0,
+    "hardGatePassedCandidateIds": [],
+    "noGoReason": "No candidate satisfies all M1.3 hard gates and success criteria."
+  },
+  "performance_smoke_summary": {
+    "evidence": null,
+    "warmP95Ms": null,
+    "warmP95Under3s": false,
+    "errorRate": null,
+    "degradedReasonCounts": {},
+    "statusCounts": {}
+  },
+  "rollback_summary": {
+    "evidence": null,
+    "status": null,
+    "recoveryWithin60Seconds": null,
+    "maxRollbackElapsedMs": null,
+    "weightedRerankReturnsBaseRetrieval": false,
+    "weightedRerankElapsedMs": null,
+    "globalEnableWeightedRerankDefault": false
+  },
+  "default_feature_flag_state": {
+    "settings_ENABLE_WEIGHTED_RERANK": false,
+    "env_ENABLE_WEIGHTED_RERANK": null,
+    "env_example_ENABLE_WEIGHTED_RERANK": "false",
+    "config_default": "False",
+    "featureFlagChanged": false
+  },
+  "repeatability_summary": {
+    "required": false,
+    "status": "not_run",
+    "reason": "No candidate passed the primary hard gate, so there was no apparently passing candidate to repeat."
+  },
+  "per_query_regression_labels": [
+    {
+      "queryId": "product_q001",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": 38,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q002",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q003",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": 38,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": 15,
+            "rank_delta_vs_baseline": -23,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": 15,
+            "rank_delta_vs_baseline": -23,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": 15,
+            "rank_delta_vs_baseline": -23,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": 15,
+            "rank_delta_vs_baseline": -23,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 38,
+            "candidate_best_relevant_rank": 19,
+            "rank_delta_vs_baseline": -19,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q004",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": 47,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": 47,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": 23,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": 23,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": null,
+            "candidate_best_relevant_rank": 26,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q005",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 45,
+            "candidate_best_relevant_rank": 45,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 45,
+            "candidate_best_relevant_rank": 22,
+            "rank_delta_vs_baseline": -23,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 45,
+            "candidate_best_relevant_rank": 22,
+            "rank_delta_vs_baseline": -23,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 45,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -39,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 45,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -39,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 45,
+            "candidate_best_relevant_rank": 12,
+            "rank_delta_vs_baseline": -33,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q006",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 17,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 20,
+            "rank_delta_vs_baseline": 3,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 20,
+            "rank_delta_vs_baseline": 3,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 20,
+            "rank_delta_vs_baseline": 3,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 20,
+            "rank_delta_vs_baseline": 3,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 20,
+            "rank_delta_vs_baseline": 3,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q007",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 9,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 3,
+            "rank_delta_vs_baseline": -6,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 3,
+            "rank_delta_vs_baseline": -6,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q008",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 9,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 13,
+            "rank_delta_vs_baseline": 4,
+            "metric_regression_reason": "BASELINE_TOP10_RELEVANT_DROPPED"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 13,
+            "rank_delta_vs_baseline": 4,
+            "metric_regression_reason": "BASELINE_TOP10_RELEVANT_DROPPED"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 12,
+            "rank_delta_vs_baseline": 3,
+            "metric_regression_reason": "BASELINE_TOP10_RELEVANT_DROPPED"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 12,
+            "rank_delta_vs_baseline": 3,
+            "metric_regression_reason": "BASELINE_TOP10_RELEVANT_DROPPED"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 9,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q009",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 33,
+            "candidate_best_relevant_rank": 33,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 33,
+            "candidate_best_relevant_rank": 27,
+            "rank_delta_vs_baseline": -6,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 33,
+            "candidate_best_relevant_rank": 27,
+            "rank_delta_vs_baseline": -6,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 33,
+            "candidate_best_relevant_rank": 27,
+            "rank_delta_vs_baseline": -6,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 33,
+            "candidate_best_relevant_rank": 27,
+            "rank_delta_vs_baseline": -6,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 33,
+            "candidate_best_relevant_rank": 30,
+            "rank_delta_vs_baseline": -3,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q010",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 26,
+            "candidate_best_relevant_rank": 26,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 26,
+            "candidate_best_relevant_rank": 20,
+            "rank_delta_vs_baseline": -6,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 26,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": -19,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 26,
+            "candidate_best_relevant_rank": 22,
+            "rank_delta_vs_baseline": -4,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 26,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": -19,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 26,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": -19,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q011",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 12,
+            "candidate_best_relevant_rank": 12,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 12,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 12,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": -5,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 12,
+            "candidate_best_relevant_rank": null,
+            "rank_delta_vs_baseline": null,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 12,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": -5,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 12,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": -4,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q012",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 18,
+            "candidate_best_relevant_rank": 18,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 18,
+            "candidate_best_relevant_rank": 24,
+            "rank_delta_vs_baseline": 6,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 18,
+            "candidate_best_relevant_rank": 9,
+            "rank_delta_vs_baseline": -9,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 18,
+            "candidate_best_relevant_rank": 43,
+            "rank_delta_vs_baseline": 25,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 18,
+            "candidate_best_relevant_rank": 9,
+            "rank_delta_vs_baseline": -9,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 18,
+            "candidate_best_relevant_rank": 9,
+            "rank_delta_vs_baseline": -9,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q013",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 14,
+            "candidate_best_relevant_rank": 14,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 14,
+            "candidate_best_relevant_rank": 14,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 14,
+            "candidate_best_relevant_rank": 14,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 14,
+            "candidate_best_relevant_rank": 19,
+            "rank_delta_vs_baseline": 5,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 14,
+            "candidate_best_relevant_rank": 19,
+            "rank_delta_vs_baseline": 5,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 14,
+            "candidate_best_relevant_rank": 20,
+            "rank_delta_vs_baseline": 6,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q014",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 17,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 10,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 10,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 10,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 10,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 17,
+            "candidate_best_relevant_rank": 12,
+            "rank_delta_vs_baseline": -5,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q015",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": false,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 13,
+            "candidate_best_relevant_rank": 13,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 13,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 13,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 13,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 13,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 13,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -7,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q016",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 1,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 3,
+            "rank_delta_vs_baseline": 2,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 3,
+            "rank_delta_vs_baseline": 2,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 3,
+            "rank_delta_vs_baseline": 2,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 3,
+            "rank_delta_vs_baseline": 2,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 1,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q017",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 9,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 5,
+            "rank_delta_vs_baseline": -4,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 5,
+            "rank_delta_vs_baseline": -4,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 9,
+            "candidate_best_relevant_rank": 3,
+            "rank_delta_vs_baseline": -6,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q018",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 10,
+            "rank_delta_vs_baseline": 2,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 10,
+            "rank_delta_vs_baseline": 2,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 10,
+            "rank_delta_vs_baseline": 2,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 10,
+            "rank_delta_vs_baseline": 2,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q019",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 7,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 7,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 7,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 7,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 7,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 7,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q020",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 3,
+            "candidate_best_relevant_rank": 3,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 3,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": 4,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 3,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": 4,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 3,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": 4,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 3,
+            "candidate_best_relevant_rank": 7,
+            "rank_delta_vs_baseline": 4,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 3,
+            "candidate_best_relevant_rank": 4,
+            "rank_delta_vs_baseline": 1,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q021",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 4,
+            "candidate_best_relevant_rank": 4,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 4,
+            "candidate_best_relevant_rank": 3,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 4,
+            "candidate_best_relevant_rank": 3,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 4,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": -2,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 4,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": -2,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 4,
+            "candidate_best_relevant_rank": 4,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q022",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 8,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 8,
+            "candidate_best_relevant_rank": 9,
+            "rank_delta_vs_baseline": 1,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q023",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 5,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 5,
+            "rank_delta_vs_baseline": -1,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": -4,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "IMPROVED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": -4,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q024",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "IMPROVED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 6,
+            "candidate_best_relevant_rank": 6,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NDCG_AT_10_DOWN"
+          }
+        }
+      }
+    },
+    {
+      "queryId": "product_q025",
+      "candidates": {
+        "m1_2_baseline": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "STABLE",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 1,
+            "rank_delta_vs_baseline": 0,
+            "metric_regression_reason": "NONE"
+          }
+        },
+        "m1_2_guarded_rerank_v1": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": 1,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3_recall_only_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": 1,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3_rerank_guard_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": 1,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3_combined_candidate": {
+          "beforeVsAfterLabel": "STABLE",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": 1,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        },
+        "m1_3x_guard_v2_candidate": {
+          "beforeVsAfterLabel": "REGRESSED",
+          "afterVsBaselineLabel": "REGRESSED",
+          "candidateTop10Hit": true,
+          "baselineProtection": {
+            "baseline_best_relevant_rank": 1,
+            "candidate_best_relevant_rank": 2,
+            "rank_delta_vs_baseline": 1,
+            "metric_regression_reason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+          }
+        }
+      }
+    }
+  ],
+  "unified_results": [
+    {
+      "runId": "m1_3_candidate_comparison_20260610_190121",
+      "generatedAt": "2026-06-10T19:01:21",
+      "evalLine": "product_local_m1_3_candidate_comparison",
+      "dataset": {
+        "name": "product_local_eval_and_m1_2_fixed_regression_set",
+        "queries": "data\\eval\\product_eval_queries.jsonl",
+        "qrels": "data\\eval\\product_eval_qrels.jsonl",
+        "regressionSet": "data\\eval\\m1_2_regression_set_20260609.json"
+      },
+      "candidateCorpus": {
+        "type": "product_local_cases_chunks",
+        "cases": "data\\processed\\cases.jsonl",
+        "chunks": "data\\processed\\chunks.jsonl"
+      },
+      "mode": "m1_2_baseline",
+      "Precision@5": 0.032,
+      "NDCG@10": 0.134,
+      "Top10 hit rate": 0.48,
+      "blockedItems": [],
+      "notes": [
+        "M1.2 baseline"
+      ]
+    },
+    {
+      "runId": "m1_3_candidate_comparison_20260610_190121",
+      "generatedAt": "2026-06-10T19:01:21",
+      "evalLine": "product_local_m1_3_candidate_comparison",
+      "dataset": {
+        "name": "product_local_eval_and_m1_2_fixed_regression_set",
+        "queries": "data\\eval\\product_eval_queries.jsonl",
+        "qrels": "data\\eval\\product_eval_qrels.jsonl",
+        "regressionSet": "data\\eval\\m1_2_regression_set_20260609.json"
+      },
+      "candidateCorpus": {
+        "type": "product_local_cases_chunks",
+        "cases": "data\\processed\\cases.jsonl",
+        "chunks": "data\\processed\\chunks.jsonl"
+      },
+      "mode": "m1_2_guarded_rerank_v1",
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1371,
+      "Top10 hit rate": 0.52,
+      "blockedItems": [],
+      "notes": [
+        "M1.2 guarded rerank v1"
+      ]
+    },
+    {
+      "runId": "m1_3_candidate_comparison_20260610_190121",
+      "generatedAt": "2026-06-10T19:01:21",
+      "evalLine": "product_local_m1_3_candidate_comparison",
+      "dataset": {
+        "name": "product_local_eval_and_m1_2_fixed_regression_set",
+        "queries": "data\\eval\\product_eval_queries.jsonl",
+        "qrels": "data\\eval\\product_eval_qrels.jsonl",
+        "regressionSet": "data\\eval\\m1_2_regression_set_20260609.json"
+      },
+      "candidateCorpus": {
+        "type": "product_local_cases_chunks",
+        "cases": "data\\processed\\cases.jsonl",
+        "chunks": "data\\processed\\chunks.jsonl"
+      },
+      "mode": "m1_3_recall_only_candidate",
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1539,
+      "Top10 hit rate": 0.64,
+      "blockedItems": [],
+      "notes": [
+        "M1.3 recall-only candidate"
+      ]
+    },
+    {
+      "runId": "m1_3_candidate_comparison_20260610_190121",
+      "generatedAt": "2026-06-10T19:01:21",
+      "evalLine": "product_local_m1_3_candidate_comparison",
+      "dataset": {
+        "name": "product_local_eval_and_m1_2_fixed_regression_set",
+        "queries": "data\\eval\\product_eval_queries.jsonl",
+        "qrels": "data\\eval\\product_eval_qrels.jsonl",
+        "regressionSet": "data\\eval\\m1_2_regression_set_20260609.json"
+      },
+      "candidateCorpus": {
+        "type": "product_local_cases_chunks",
+        "cases": "data\\processed\\cases.jsonl",
+        "chunks": "data\\processed\\chunks.jsonl"
+      },
+      "mode": "m1_3_rerank_guard_candidate",
+      "Precision@5": 0.048,
+      "NDCG@10": 0.1542,
+      "Top10 hit rate": 0.56,
+      "blockedItems": [],
+      "notes": [
+        "M1.3 rerank-guard candidate"
+      ]
+    },
+    {
+      "runId": "m1_3_candidate_comparison_20260610_190121",
+      "generatedAt": "2026-06-10T19:01:21",
+      "evalLine": "product_local_m1_3_candidate_comparison",
+      "dataset": {
+        "name": "product_local_eval_and_m1_2_fixed_regression_set",
+        "queries": "data\\eval\\product_eval_queries.jsonl",
+        "qrels": "data\\eval\\product_eval_qrels.jsonl",
+        "regressionSet": "data\\eval\\m1_2_regression_set_20260609.json"
+      },
+      "candidateCorpus": {
+        "type": "product_local_cases_chunks",
+        "cases": "data\\processed\\cases.jsonl",
+        "chunks": "data\\processed\\chunks.jsonl"
+      },
+      "mode": "m1_3_combined_candidate",
+      "Precision@5": 0.048,
+      "NDCG@10": 0.171,
+      "Top10 hit rate": 0.68,
+      "blockedItems": [],
+      "notes": [
+        "M1.3 combined candidate"
+      ]
+    },
+    {
+      "runId": "m1_3_candidate_comparison_20260610_190121",
+      "generatedAt": "2026-06-10T19:01:21",
+      "evalLine": "product_local_m1_3_candidate_comparison",
+      "dataset": {
+        "name": "product_local_eval_and_m1_2_fixed_regression_set",
+        "queries": "data\\eval\\product_eval_queries.jsonl",
+        "qrels": "data\\eval\\product_eval_qrels.jsonl",
+        "regressionSet": "data\\eval\\m1_2_regression_set_20260609.json"
+      },
+      "candidateCorpus": {
+        "type": "product_local_cases_chunks",
+        "cases": "data\\processed\\cases.jsonl",
+        "chunks": "data\\processed\\chunks.jsonl"
+      },
+      "mode": "m1_3x_guard_v2_candidate",
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1657,
+      "Top10 hit rate": 0.64,
+      "blockedItems": [],
+      "notes": [
+        "M1.3x guard v2 candidate"
+      ]
+    }
+  ],
+  "scope_confirmation": {
+    "recallStrategyModified": false,
+    "candidateMergeModified": false,
+    "bm25Modified": false,
+    "queryMappingModified": false,
+    "rerankGuardModified": false,
+    "rerankWeightsModified": false,
+    "qrelsModified": false,
+    "evalSamplesModified": false,
+    "featureFlagDefaultModified": false,
+    "offlineGuardV2CandidateAdded": true,
+    "onlineRerankLogicChanged": false,
+    "onlineRecallLogicChanged": false,
+    "enteredM13_6": false
+  },
+  "privacy_check": {
+    "passed": true,
+    "rawQueryTextPresent": false,
+    "forbiddenTextFieldsPresent": false,
+    "candidateFullTextWritten": false,
+    "chunkTextWritten": false,
+    "newDataContainsRawFacts": false
+  }
+}

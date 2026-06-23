@@ -1,0 +1,95 @@
+{
+  "step": "E6-5",
+  "title": "文书工作台 drafting 消费边界与护栏守门",
+  "date": "2026-06-18",
+  "timestamp": "20260618-111250",
+  "overall": "CONDITIONAL_GO",
+  "allow_enter_e6_6": true,
+  "condition": "运行时契约 / TestClient 守门以 host .venv311 (Py3.11.9) 复跑为权威；E6-6 验收步统一上移 E4/E5 陈旧 router-count/inventory 快照基线（14->15 + 追加 drafting）。",
+  "baseline": {
+    "e6_1_contract": "docs/development/e6-drafting-contract-20260618-045409",
+    "e6_2_api": "docs/development/e6-drafting-api-20260618-053316",
+    "e6_3_web": "docs/development/e6-drafting-web-20260618-070017",
+    "e6_4_export": "docs/development/e6-drafting-export-20260618-090123"
+  },
+  "scope": "only_guard_tests_and_append_only_rules_zero_business_change",
+  "files": {
+    "added": [
+      "apps/api/tests/test_e6_drafting_boundaries.py",
+      "docs/development/e6-drafting-gate-20260618-111250.md",
+      "docs/development/e6-drafting-gate-20260618-111250.json"
+    ],
+    "modified_append_only": [
+      "apps/api/tests/test_e2a_kernel_boundary.py"
+    ],
+    "modified_docs": [
+      "落地设计文档/21-E6文书工作台分步骤系统提示词文档.md"
+    ]
+  },
+  "guard_coverage": {
+    "1_assemble_not_draft": "PASS",
+    "2_refs_require_anchors": "PASS (runtime host-authoritative)",
+    "3_persistence_zero_body": "PASS",
+    "4_export_disclaimer_no_body": "PASS",
+    "5_no_direct_retrieval": "PASS",
+    "6_product_packages_no_cross_import": "PASS",
+    "7_candidate_statute_ref_zero_body": "PASS (runtime host-authoritative)",
+    "8_casebook_absent_flags_false": "PASS",
+    "9_multitenant_authz_private": "PASS"
+  },
+  "append_only_rules_e6": [
+    "test_e6_drafting_does_not_import_other_product_packages",
+    "test_e6_drafting_not_imported_by_other_product_packages",
+    "test_e6_kernel_does_not_import_drafting",
+    "test_e6_drafting_consumes_only_kernel_public_surface",
+    "test_e6_drafting_does_not_deep_import_retrieval_runtime",
+    "test_e6_casebook_still_forbidden_drafting_allowed"
+  ],
+  "did_not_relax_existing_rules": ["E2", "E2a", "E3", "E4", "E5"],
+  "forbidden_product_packages_after_e6": ["casebook"],
+  "allowed_product_packages_after_e6": ["intake", "statute", "drafting"],
+  "include_router": 15,
+  "casebook_package_exists": false,
+  "flags_default_false": {
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false,
+    "ENABLE_WEIGHTED_RERANK": false
+  },
+  "stale_assertions_for_e6_6_host_reconcile": [
+    {"file": "tests/test_e4_intake_boundaries.py", "line": 583, "stale": "count == 14", "actual": 15, "cause": "E6-2 include_router 14->15", "fix_at": "E6-6", "is_vm_artifact": false},
+    {"file": "tests/test_e4_intake_boundaries.py", "line": 40, "stale": "ALLOWED_PRODUCT_PACKAGES={intake,statute}", "actual": "drafting exists", "cause": "E6-2 new drafting package", "fix_at": "E6-6", "is_vm_artifact": false},
+    {"file": "tests/test_e5_statute_boundaries.py", "line": 676, "stale": "count == 14", "actual": 15, "cause": "E6-2 include_router 14->15", "fix_at": "E6-6", "is_vm_artifact": false},
+    {"file": "tests/test_e5_statute_boundaries.py", "line": 46, "stale": "ALLOWED_PRODUCT_PACKAGES={intake,statute}", "actual": "drafting exists", "cause": "E6-2 new drafting package", "fix_at": "E6-6", "is_vm_artifact": false}
+  ],
+  "privacy_scan": {
+    "drafting_body_tokens": 0,
+    "drafting_judgment_tokens": 0,
+    "drafting_outcome_tokens": 0,
+    "drafting_pii_tokens": 0,
+    "drafting_credential_tokens": 0,
+    "export_body_tokens": 0,
+    "export_article_text_reads": 0,
+    "export_disclaimer_injections": ">=3",
+    "max_contiguous_cjk_new_tests": 21,
+    "max_contiguous_cjk_e6_docs": "<40",
+    "hits": 0
+  },
+  "verification_env": {
+    "vm": "Py3.10, no pydantic_core/sqlmodel/fastapi/pytest -> static AST guards run via standalone harness (25 static PASS, runtime importorskip)",
+    "host_authoritative": ".venv311 Py3.11.9 -> full pytest of test_e6_drafting_boundaries + test_e2a + e6 api/contracts/export + e4/e5 regression"
+  },
+  "no_go_triggers_checked": {
+    "real_boundary_violation_drafting": false,
+    "relaxed_e2_to_e5_rules": false,
+    "new_casebook_package": false,
+    "changed_include_router_business": false,
+    "changed_business_impl": false,
+    "any_flag_default_true": false,
+    "privacy_body_outcome_credential_hit": false
+  },
+  "next_step": "类案检索助手 E6-6 E6 验收与下一步门禁"
+}

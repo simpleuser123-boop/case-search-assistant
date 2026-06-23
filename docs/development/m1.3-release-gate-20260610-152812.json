@@ -1,0 +1,427 @@
+{
+  "generated_at": "2026-06-10T15:36:23+08:00",
+  "version": "m1_3_release_gate_v1",
+  "source_artifacts": [
+    "落地设计文档/10-M1.3回归修复版分步骤文档.md",
+    "docs/development/m1.2-final-verification-20260609-195835.md",
+    "docs/development/m1.2-release-gate-20260609-195835.json",
+    "docs/development/m1.3-regression-triage-20260609-205353.md",
+    "docs/development/m1.3-regression-triage-20260609-205353.json",
+    "docs/development/m1.3-regression-gate-20260610-100636.md",
+    "docs/development/m1.3-regression-gate-20260610-100636.json",
+    "docs/development/m1.3-recall-repair-20260610-113200.md",
+    "docs/development/m1.3-recall-repair-20260610-113200.json",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.md",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.json",
+    "docs/development/m1.3-candidate-comparison-20260610-141700.md",
+    "docs/development/m1.3-candidate-comparison-20260610-141700.json",
+    "docs/development/m1.3-parameter-version-20260610-141700.json",
+    "docs/development/m1.3-gray-candidate-readiness-20260610-150256.md",
+    "docs/development/m1.3-gray-candidate-readiness-20260610-150256.json",
+    "docs/development/m1.3-final-product-eval-product-chain-20260610-152812.json",
+    "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+    "docs/development/m1.3-final-regression-run-20260610-152812.json",
+    "docs/development/m1.3-final-parameter-version-20260610-152812.json",
+    "docs/development/m1.3-final-performance-smoke-20260610-152812.json",
+    "docs/development/m1.3-final-rollback-drill-20260610-152812.json",
+    "docs/development/m1.3-final-candidate-comparison-20260610-152812.md",
+    "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+    "docs/development/m1.3-final-candidate-parameter-version-20260610-152812.json",
+    "apps/api/app/core/config.py",
+    "apps/api/app/api/search.py",
+    "apps/api/app/api/health.py",
+    "apps/api/scripts/day3_7_3_performance_smoke.py",
+    "apps/api/scripts/day3_7_5_rollback_drill.py",
+    "apps/api/scripts/m1_2_regression.py",
+    "apps/api/scripts/m1_3_candidate_comparison.py",
+    "apps/web/package.json"
+  ],
+  "base_search_status": "GO",
+  "weighted_rerank_gray_candidate_status": "NO_GO",
+  "m2_readiness_status": "NO_GO",
+  "default_feature_flags": {
+    "ENABLE_WEIGHTED_RERANK_current_default": false,
+    "settings_default_ENABLE_WEIGHTED_RERANK": false,
+    "runtime_health_feature_flags": {
+      "ENABLE_QUERY_REWRITE": false,
+      "ENABLE_WEIGHTED_RERANK": false,
+      "ENABLE_SUMMARY": false,
+      "ENABLE_EXPANDED_SEARCH": false
+    },
+    ".env_ENABLE_WEIGHTED_RERANK": null,
+    ".env_example_ENABLE_WEIGHTED_RERANK": "false",
+    "settings_default_modified_in_this_step": false,
+    ".env_modified_in_this_step": false,
+    ".env_example_modified_in_this_step": false,
+    "only_offline_eval_candidate": true,
+    "default_enable_allowed_this_stage": false
+  },
+  "m1_3_definition_of_done": {
+    "overall_status": "GO",
+    "items": [
+      {
+        "name": "有冻结后的 M1.3 regression triage",
+        "status": "GO",
+        "evidence": "docs/development/m1.3-regression-triage-20260609-205353.md"
+      },
+      {
+        "name": "有硬门禁版 regression/gate 输出",
+        "status": "GO",
+        "evidence": "docs/development/m1.3-regression-gate-20260610-100636.md"
+      },
+      {
+        "name": "RECALL_MISS、METRIC_REGRESSION 和 fixed regression 明确下降或有不可修复解释",
+        "status": "GO",
+        "evidence": [
+          "M1.3 recall repair: RECALL_MISS 11 -> 8",
+          "M1.3 final candidate comparison best combined: RECALL_MISS 7, METRIC_REGRESSION 7, before->after REGRESSED 0, after-vs-baseline REGRESSED 7",
+          "remaining regressions are explicitly kept as blockers"
+        ]
+      },
+      {
+        "name": "至少一个候选参数版本通过全部硬门禁，或明确全部候选 NO_GO",
+        "status": "GO",
+        "evidence": "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+        "detail": "5 candidates, 0 passed candidates, selected_candidate_id=null"
+      },
+      {
+        "name": "新 weighted rerank 是否允许成为灰度候选有正式门禁",
+        "status": "GO",
+        "evidence": "docs/development/m1.3-gray-candidate-readiness-20260610-150256.json",
+        "result": "NO_GO"
+      },
+      {
+        "name": "是否进入 M2 readiness 有正式 Go/No-Go",
+        "status": "GO",
+        "evidence": "docs/development/m1.3-release-gate-20260610-152812.json",
+        "result": "NO_GO"
+      },
+      {
+        "name": "默认 feature flags 没有被悄悄打开",
+        "status": "GO",
+        "evidence": "config default, .env, .env.example, /health"
+      },
+      {
+        "name": "没有把 M2、M3、M4 功能提前混进来",
+        "status": "GO",
+        "evidence": "this step created only verification/gate artifacts"
+      },
+      {
+        "name": "没有把原始案情文本写进日志、报告正文或新增 JSON 明文字段",
+        "status": "GO",
+        "evidence": "privacy field scan and prior privacy checks"
+      }
+    ]
+  },
+  "m2_entry_checklist": {
+    "overall_status": "NO_GO",
+    "items": [
+      {
+        "name": "基础搜索 GO",
+        "status": "GO",
+        "evidence": "backend/frontend tests, performance smoke, rollback drill"
+      },
+      {
+        "name": "weighted rerank 灰度候选 GO，或明确 M2 不依赖该排序且 baseline 精准度已达标",
+        "status": "NO_GO",
+        "evidence": "weighted rerank gray candidate NO_GO; baseline Top10 hit rate 0.48"
+      },
+      {
+        "name": "product-local Top10 hit rate >= 0.60",
+        "status": "GO",
+        "evidence": "product eval current 0.68; final candidate comparison combined 0.68; M1.2 runner currentAfter 0.64"
+      },
+      {
+        "name": "fixed regression REGRESSED=0",
+        "status": "NO_GO",
+        "evidence": "final candidate comparison after-vs-baseline REGRESSED=7; M1.2 compatibility runner before->after REGRESSED=4 and after-vs-baseline REGRESSED=9"
+      },
+      {
+        "name": "METRIC_REGRESSION=0",
+        "status": "NO_GO",
+        "evidence": "final candidate comparison METRIC_REGRESSION=7; M1.2 compatibility runner METRIC_REGRESSION=9"
+      },
+      {
+        "name": "剩余 RECALL_MISS 有解释和止损",
+        "status": "GO",
+        "evidence": "M1.3 triage, recall repair, rerank repair, and candidate comparison retain remaining misses as blockers"
+      },
+      {
+        "name": "warm P95 < 3s",
+        "status": "GO",
+        "evidence": "warm P95 551ms"
+      },
+      {
+        "name": "回滚 < 60s，且无需重建索引",
+        "status": "GO",
+        "evidence": "rollback max 16ms, vector_index_rebuild_required=false"
+      },
+      {
+        "name": "无原始案情、候选正文或 chunk 正文写入",
+        "status": "GO",
+        "evidence": "privacy field scan and report privacy checks"
+      },
+      {
+        "name": "ENABLE_WEIGHTED_RERANK=false，除非另有明确批准的灰度开关策略",
+        "status": "GO",
+        "evidence": "config/default/env/health all false or unset"
+      }
+    ]
+  },
+  "product_eval_summary": {
+    "command": "python -m app.eval.product_eval --comparison-mode product_chain --out docs/development/m1.3-final-product-eval-product-chain-20260610-152812.json --bad-cases-out docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+    "status": "passed",
+    "run_id": "product_eval_20260610_153036",
+    "baseline": {
+      "precision_at_5": 0.032,
+      "ndcg_at_10": 0.134,
+      "top10_hit_rate": 0.48,
+      "evaluated_query_count": 25
+    },
+    "current": {
+      "precision_at_5": 0.048,
+      "ndcg_at_10": 0.171,
+      "top10_hit_rate": 0.68,
+      "evaluated_query_count": 25
+    },
+    "metric_delta": {
+      "precision_at_5": 0.016,
+      "ndcg_at_10": 0.037,
+      "top10_hit_rate": 0.2
+    },
+    "bad_case_distribution": {
+      "METRIC_REGRESSION": 7,
+      "RECALL_MISS": 7
+    },
+    "gray_candidate_hard_gate_passed": false,
+    "weighted_rerank_gray_candidate": false,
+    "feature_flag_changed": false
+  },
+  "regression_summary": {
+    "m1_3_candidate_comparison": {
+      "command": "python scripts/m1_3_candidate_comparison.py --performance-smoke docs/development/m1.3-final-performance-smoke-20260610-152812.json --rollback-drill docs/development/m1.3-final-rollback-drill-20260610-152812.json --out-json docs/development/m1.3-final-candidate-comparison-20260610-152812.json --out-md docs/development/m1.3-final-candidate-comparison-20260610-152812.md --parameter-version-out docs/development/m1.3-final-candidate-parameter-version-20260610-152812.json",
+      "status": "NO_GO",
+      "run_id": "m1_3_candidate_comparison_20260610_153507",
+      "selected_candidate_id": null,
+      "passed_candidate_count": 0,
+      "candidate_matrix": [
+        {
+          "candidate_id": "m1_2_baseline",
+          "precision_at_5": 0.032,
+          "ndcg_at_10": 0.134,
+          "top10_hit_rate": 0.48,
+          "before_vs_after_regressed_count": 0,
+          "after_vs_baseline_regressed_count": 0,
+          "metric_regression_count": 0,
+          "recall_miss_count": 13,
+          "decision": "NO_GO"
+        },
+        {
+          "candidate_id": "m1_2_guarded_rerank_v1",
+          "precision_at_5": 0.04,
+          "ndcg_at_10": 0.1371,
+          "top10_hit_rate": 0.52,
+          "before_vs_after_regressed_count": 4,
+          "after_vs_baseline_regressed_count": 9,
+          "metric_regression_count": 9,
+          "recall_miss_count": 11,
+          "decision": "NO_GO"
+        },
+        {
+          "candidate_id": "m1_3_recall_only_candidate",
+          "precision_at_5": 0.04,
+          "ndcg_at_10": 0.1539,
+          "top10_hit_rate": 0.64,
+          "before_vs_after_regressed_count": 4,
+          "after_vs_baseline_regressed_count": 9,
+          "metric_regression_count": 9,
+          "recall_miss_count": 8,
+          "decision": "NO_GO"
+        },
+        {
+          "candidate_id": "m1_3_rerank_guard_candidate",
+          "precision_at_5": 0.048,
+          "ndcg_at_10": 0.1542,
+          "top10_hit_rate": 0.56,
+          "before_vs_after_regressed_count": 0,
+          "after_vs_baseline_regressed_count": 7,
+          "metric_regression_count": 7,
+          "recall_miss_count": 10,
+          "decision": "NO_GO"
+        },
+        {
+          "candidate_id": "m1_3_combined_candidate",
+          "precision_at_5": 0.048,
+          "ndcg_at_10": 0.171,
+          "top10_hit_rate": 0.68,
+          "before_vs_after_regressed_count": 0,
+          "after_vs_baseline_regressed_count": 7,
+          "metric_regression_count": 7,
+          "recall_miss_count": 7,
+          "decision": "NO_GO"
+        }
+      ]
+    },
+    "m1_2_runner_compatibility": {
+      "command": "python scripts/m1_2_regression.py --comparison-mode product_chain --out docs/development/m1.3-final-regression-run-20260610-152812.json --parameter-version-out docs/development/m1.3-final-parameter-version-20260610-152812.json",
+      "status": "passed",
+      "run_id": "m1_2_regression_20260610_153040",
+      "current_after_top10_hit_rate": 0.64,
+      "before_vs_after_regressed_count": 4,
+      "after_vs_baseline_regressed_count": 9,
+      "metric_regression_count": 9,
+      "recall_miss_count": 8,
+      "weighted_rerank_gray_candidate": false,
+      "hard_gate_failed_reasons": [
+        "BEFORE_VS_AFTER_REGRESSED_GT_0",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ]
+    }
+  },
+  "bad_case_summary": {
+    "m1_2_final": {
+      "METRIC_REGRESSION": 9,
+      "RECALL_MISS": 11
+    },
+    "m1_3_recall_repair": {
+      "RECALL_MISS_before": 11,
+      "RECALL_MISS_after": 8,
+      "new_fixed_regressions": 0
+    },
+    "m1_3_final_product_eval": {
+      "bad_case_count": 14,
+      "METRIC_REGRESSION": 7,
+      "RECALL_MISS": 7
+    },
+    "remaining_blocking_interpretation": "bad cases decreased, but METRIC_REGRESSION remains greater than 0 and cannot be treated as observation-only"
+  },
+  "performance_summary": {
+    "command": "python scripts/day3_7_3_performance_smoke.py --out docs/development/m1.3-final-performance-smoke-20260610-152812.json",
+    "status": "passed",
+    "sample_count": 5,
+    "status_counts": {
+      "200": 5
+    },
+    "error_rate": 0.0,
+    "warm_p95_ms": 551,
+    "warm_p95_under_3s": true,
+    "vector_error_rate": 0.0,
+    "llm_timeout_rate": 0.0,
+    "slowest_warm_stage_by_p95": "embedding_duration_ms"
+  },
+  "rollback_summary": {
+    "command": "python scripts/day3_7_5_rollback_drill.py --out docs/development/m1.3-final-rollback-drill-20260610-152812.json",
+    "status": "passed",
+    "recovery_within_60_seconds": true,
+    "max_rollback_elapsed_ms": 16,
+    "weighted_rerank_rollback_elapsed_ms": 8,
+    "weighted_rerank_score_mode_after_rollback": "base_retrieval",
+    "vector_index_rebuild_required": false,
+    "raw_query_written": false
+  },
+  "frontend_summary": {
+    "npm_test": {
+      "command": "npm test",
+      "status": "passed",
+      "test_files": 4,
+      "tests": 40
+    },
+    "npm_run_build": {
+      "command": "npm run build",
+      "status": "passed"
+    }
+  },
+  "backend_summary": {
+    "pytest": {
+      "command": "pytest",
+      "status": "passed",
+      "tests": 176,
+      "warning": "pytest_asyncio default fixture loop scope deprecation warning"
+    }
+  },
+  "api_schema_summary": {
+    "status": "GO",
+    "source": "apps/api/app/api/search.py and M1.3-6 API schema check",
+    "stable_top_level_fields": [
+      "query_session_id",
+      "candidates",
+      "results",
+      "degraded",
+      "degraded_reasons",
+      "retrieval_duration_ms",
+      "timings"
+    ],
+    "stable_result_fields": [
+      "case_id",
+      "final_score",
+      "similarity_score",
+      "score_breakdown"
+    ],
+    "baseline_rollback_behavior": "ENABLE_WEIGHTED_RERANK=false returns score_mode=base_retrieval and final_score==retrieval_score",
+    "search_logging_privacy": "search logs use query_session_id and input_hash, not raw query text"
+  },
+  "privacy_check": {
+    "status": "GO",
+    "final_markdown_contains_raw_query_or_case_text": false,
+    "final_json_contains_raw_query_or_case_text": false,
+    "forbidden_json_field_scan": {
+      "patterns": [
+        "query",
+        "query_text",
+        "raw_query",
+        "case_fact",
+        "fact_text",
+        "candidate_text",
+        "chunk_text",
+        "matched_text",
+        "content",
+        "text"
+      ],
+      "matches_in_m1_3_final_json": 0
+    },
+    "prior_artifacts_privacy": {
+      "m1_3_candidate_comparison_privacy_passed": true,
+      "m1_3_gray_readiness_privacy_passed": true
+    },
+    "logs_summary": "validation logs observed in this step used hashes, ids, counts, status, and timings"
+  },
+  "unresolved_issues": [
+    {
+      "issue": "No M1.3 candidate satisfies all hard gates",
+      "blocking": true,
+      "evidence": "m1.3-final-candidate-comparison selected_candidate_id=null"
+    },
+    {
+      "issue": "M1.3 combined candidate still has after-vs-baseline REGRESSED=7",
+      "blocking": true,
+      "evidence": "m1.3-final-candidate-comparison"
+    },
+    {
+      "issue": "M1.3 combined candidate still has METRIC_REGRESSION=7",
+      "blocking": true,
+      "evidence": "m1.3-final-candidate-comparison and product eval bad cases"
+    },
+    {
+      "issue": "M1.2 compatibility fixed regression runner still reports before->after REGRESSED=4 and after-vs-baseline REGRESSED=9",
+      "blocking": true,
+      "evidence": "m1.3-final-regression-run"
+    },
+    {
+      "issue": "Baseline-only Top10 hit rate is 0.48, so M2 cannot claim baseline precision already meets the entrance threshold",
+      "blocking": true,
+      "evidence": "product eval baseline and candidate comparison baseline"
+    }
+  ],
+  "next_recommended_stage": {
+    "status": "NO_GO_FOR_M2",
+    "stage": "M1.3.x regression repair",
+    "required_work": [
+      "Continue fixing remaining METRIC_REGRESSION without removing bad cases or changing qrels.",
+      "Reduce after-vs-baseline fixed regression to REGRESSED=0 before reconsidering gray candidate status.",
+      "Keep ENABLE_WEIGHTED_RERANK=false and rerun M1.3 candidate comparison after any authorized repair.",
+      "Preserve product-local evaluation, fixed regression, performance smoke, rollback drill, API schema, frontend test/build, and privacy gates as mandatory evidence."
+    ]
+  },
+  "final_decision_text": "基础搜索继续可用：GO。新 weighted rerank 允许成为灰度候选：NO_GO。进入 M2 可信检索准备：NO_GO。ENABLE_WEIGHTED_RERANK 保持默认 false；未默认开启新排序，未对外放量，未实施 M2。"
+}

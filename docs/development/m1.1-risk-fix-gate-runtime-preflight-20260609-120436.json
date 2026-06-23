@@ -1,0 +1,15 @@
+{
+  "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\runtime_preflight.py\"",
+  "cwd": "C:\\Users\\yyl\\Desktop\\类案检索助手",
+  "exit_code": 1,
+  "duration_ms": 13837,
+  "timed_out": false,
+  "stdout_line_count": 12,
+  "stderr_line_count": 2,
+  "stdout_sha256": "2589adbd0398e08370d572f081b7b4eca2d164f1ee4c9f2fe3fcda1291028bb2",
+  "stderr_sha256": "07036c5fe942a09f303d505f2aca04a91867022710f5ef3196928ed0aae13c96",
+  "stdout_bytes": 580,
+  "stderr_bytes": 273,
+  "output_policy": "stdout/stderr are hashed only to avoid writing raw query or case facts.",
+  "dry_run_summary": null
+}

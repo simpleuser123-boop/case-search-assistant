@@ -1,0 +1,77 @@
+{
+  "step": "E3-1",
+  "title": "类案检索助手 E3-1 内部服务契约冻结",
+  "timestamp": "2026-06-15T16:22:02",
+  "baseline": "docs/development/e2b-release-gate-20260615-113552.json",
+  "entry_gate": {
+    "source": "docs/development/e3-entry-check-20260615-153349.json",
+    "overall": "GO"
+  },
+  "overall": "GO",
+  "nature": "只冻结 E3 内部服务契约（纯 Python 模型 + 纯函数 + 测试）；不接线检索链路、不改 /api/search、不注册任何 HTTP 端点。",
+  "added_files": [
+    "apps/api/app/kernel/rag/internal_search_contracts.py",
+    "apps/api/tests/test_e3_internal_search_contracts.py",
+    "docs/development/e3-service-contract-20260615-162202.md",
+    "docs/development/e3-service-contract-20260615-162202.json"
+  ],
+  "modified_files": [
+    "apps/api/app/kernel/rag/__init__.py"
+  ],
+  "contract_gate": {
+    "search_profile_fields": ["case_cause", "region", "trial_level_preference", "dispute_focus_keywords", "query_text"],
+    "search_profile_matches_e1_whitelist": true,
+    "candidate_ref_fields": ["case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchors"],
+    "candidate_ref_matches_e1_whitelist": true,
+    "case_no_to_case_number_mapping": true,
+    "sanitize_drops_non_whitelist_keys": true,
+    "sanitize_rejects_e1_body_keys": true,
+    "sanitize_rejects_e3_display_keys": ["summary", "highlights", "matched_text", "highlight_text", "summary_text", "holding_summary"],
+    "candidate_ref_forbidden_keys_absent": ["summary", "highlights", "matched_text", "chunk_text", "full_text", "raw_query", "raw_case", "content", "body", "metadata"],
+    "source_anchors_required_non_empty": true,
+    "source_anchor_min_fields": ["case_id", "source_chunk_id"],
+    "fail_closed_on_missing_or_incomplete_anchor": true
+  },
+  "surface_gate": {
+    "importable_from_app_kernel_rag": true,
+    "importable_from_app_kernel": true,
+    "identity_preserved_across_surfaces": true,
+    "exported_symbols": [
+      "SearchProfile", "SearchProfileInput", "CandidateRef", "SourceAnchorRef",
+      "InternalSearchMode", "InternalSearchRequest", "InternalSearchResult",
+      "sanitize_search_profile", "sanitize_candidate_ref", "search_result_item_to_candidate_ref"
+    ]
+  },
+  "boundary_gate": {
+    "product_packages_present": [],
+    "new_http_endpoints": 0,
+    "include_router_count": 12,
+    "search_py_modified": false,
+    "search_py_mtime": "2026-06-15T09:46",
+    "contract_module_imports_search_runtime": false,
+    "contract_module_registers_router": false
+  },
+  "flag_gate": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_ECOSYSTEM": false,
+    "any_flag_default_changed": false
+  },
+  "regression_gate": {
+    "command": "pytest tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e3_internal_search_contracts.py",
+    "test_e1_contracts": 24,
+    "test_e2a_kernel_boundary": 7,
+    "test_e3_internal_search_contracts": 39,
+    "total_passed": 70,
+    "failed": 0
+  },
+  "privacy_scan": {
+    "raw_query_raw_case_full_text_chunk_text_content_body_as_data_field": "none",
+    "real_long_fact_or_judgment_text_in_fixtures": "none",
+    "secret_printed": "none",
+    "forbidden_marketing_phrases": "none"
+  },
+  "next_step": {
+    "allowed_to_enter_e3_2": true,
+    "title": "类案检索助手 E3-2 检索执行服务适配层"
+  }
+}

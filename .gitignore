@@ -1,0 +1,46 @@
+# --- secrets ---
+.env
+*.local
+
+# --- python ---
+__pycache__/
+*.py[cod]
+.venv/
+.venv311/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+*.whl
+
+# --- node / vite ---
+node_modules/
+dist/
+.vite/
+coverage/
+apps/web/.codex-run/
+apps/web/acceptance-screenshots/
+apps/web/test-artifacts/
+apps/web/dist_*/
+apps/web/vite.config.ts.timestamp-*.mjs
+*.tsbuildinfo
+
+# --- data (持久化产物，不入库) ---
+data/chroma/
+data/chroma_path_test/
+data/raw/*
+data/processed/*
+!data/**/.gitkeep
+data/logs/
+
+# --- os / editor ---
+.DS_Store
+.idea/
+.vscode/
+.codegraph/
+
+# --- local runtime files ---
+*.log
+*.db
+*.db-*
+apps/api/C*/

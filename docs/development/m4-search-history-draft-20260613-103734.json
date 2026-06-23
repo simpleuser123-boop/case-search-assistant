@@ -1,0 +1,151 @@
+{
+  "version": "m4_search_history_draft_v1",
+  "artifact": "m4-search-history-draft",
+  "step": "M4-2",
+  "title": "检索历史与草稿恢复",
+  "generated_at": "2026-06-13T10:37:34+08:00",
+  "feature": "F16 检索历史草稿",
+  "scope": {
+    "summary": "本地/会话级检索历史与草稿恢复；草稿与历史正文只存在于浏览器本地、可清除，绝不上送后端持久层；纯前端零后端改动",
+    "frontend_only": true,
+    "backend_changes": false,
+    "server_persistence_added": false,
+    "new_analytics_event_added": false,
+    "changes_online_sorting": false,
+    "changes_source_selection": false,
+    "changes_rerank_defaults": false,
+    "user_raw_case_persisted_on_server": false,
+    "draft_body_persisted_on_server": false
+  },
+  "entry_evidence": {
+    "m4_1_contract": "docs/development/m4-workflow-entry-contract-20260613-090354.json",
+    "m4_1_go": true,
+    "search_history_feature_flag": "ENABLE_SEARCH_HISTORY",
+    "flag_default_false": true,
+    "server_persistable_fields_declared_optional": true,
+    "decision": "server-side sanitized telemetry NOT added in M4-2 (existing analytics already covers result_count/degraded); history+draft fully local"
+  },
+  "feature_flag": {
+    "frontend_flag": "VITE_ENABLE_SEARCH_HISTORY",
+    "frontend_reader": "apps/web/src/config/featureFlags.ts:isSearchHistoryEnabled",
+    "default": false,
+    "disabled_behavior": "no local storage read/write, no history/draft UI rendered, page returns to M3 end-state; standard search behavior unchanged",
+    "backend_flag": "ENABLE_SEARCH_HISTORY",
+    "backend_flag_default_false_unchanged": true
+  },
+  "data_structures": {
+    "search_draft": {
+      "storage_location": "browser_localStorage_only_clearable",
+      "storage_key": "case-search:m4:search-draft:v1",
+      "local_only_fields": ["draft_text", "updated_at"],
+      "server_persistable_fields": [],
+      "forbidden_persistable_fields": ["raw_query", "case_fact_body", "draft_body_on_server", "user_free_long_text"]
+    },
+    "search_history_entry": {
+      "storage_location": "browser_localStorage_only_clearable",
+      "storage_key": "case-search:m4:search-history:v1",
+      "local_only_fields": ["id", "query_text", "query_preview", "input_length", "result_count", "degraded", "created_at", "title"],
+      "server_persistable_fields_if_needed": ["query_session_id", "input_hash", "result_count", "degraded_status", "created_at", "history_status", "reason_code"],
+      "server_persistable_fields_used_in_m4_2": [],
+      "forbidden_persistable_fields": ["raw_query", "case_fact_body", "user_free_long_text"],
+      "max_entries": 10,
+      "dedupe_by_query_text": true,
+      "newest_first": true
+    }
+  },
+  "rules": {
+    "draft": {
+      "body_local_only": true,
+      "restore_on_refresh": true,
+      "user_can_clear": true,
+      "autosave_gated_by_flag": true,
+      "cleared_after_successful_search": true
+    },
+    "history": {
+      "shows_identifiable_metadata": ["created_at", "result_count", "degraded", "optional_title", "query_preview"],
+      "raw_case_not_sent_to_server": true,
+      "user_can_clear_all": true,
+      "user_can_remove_single": true
+    },
+    "research": {
+      "refills_query_then_runs_runSearch": true,
+      "bypasses_query_cleaning": false,
+      "bypasses_rewrite_degrade": false,
+      "bypasses_main_sort_default": false,
+      "uses_query_id_or_case_id_special_case": false
+    },
+    "privacy": {
+      "backend_logs_and_telemetry_metadata_only": true,
+      "history_or_draft_body_in_server_logs": false,
+      "history_or_draft_body_in_reports_or_test_snapshots": false,
+      "analytics_field_reused": "has_draft_restored (already whitelisted, boolean)",
+      "no_new_body_carrying_fields": true
+    }
+  },
+  "files_changed": {
+    "added": [
+      "apps/web/src/lib/searchHistory.ts",
+      "apps/web/src/lib/searchHistory.test.ts",
+      "apps/web/src/components/search/SearchHistoryPanel.tsx",
+      "apps/web/src/pages/SearchHistoryDraftAcceptance.test.tsx"
+    ],
+    "modified": [
+      "apps/web/src/config/featureFlags.ts",
+      "apps/web/src/vite-env.d.ts",
+      "apps/web/src/pages/SearchPage.tsx"
+    ],
+    "backend_files_changed": []
+  },
+  "verification": {
+    "web_tsc": "pass (tsc -b exit 0)",
+    "web_build": "pass (vite build, 109 modules)",
+    "web_tests_total_passed": 121,
+    "web_tests_note": "full suite green across 2 batches: batch1 (SearchPage 33 + HomePage 9 + CitationCopy 7 = 49) + batch2 (caseCompare/citationCopy/sourceHighlights/CaseCompareAcceptance/analytics/feedbackApi/searchApi = 52) + new M4-2 (searchHistory lib 13 + acceptance 7 = 20)",
+    "new_focused_tests": {
+      "searchHistory.test.ts": "13 passed",
+      "SearchHistoryDraftAcceptance.test.tsx": "7 passed"
+    },
+    "backend_pytest": {
+      "files": ["tests/test_health.py", "tests/test_search_api_fallback_smoke.py", "tests/test_feature_flag_rollback.py"],
+      "result": "18 passed",
+      "database_url": "sqlite:///./m42_test.db (temp, deleted after run)"
+    },
+    "regression_default_off_assertions": {
+      "SearchPage.test.tsx_no_setItem_called": "pass",
+      "SearchPage.test.tsx_no_console_log_error": "pass",
+      "CitationCopyAcceptance.test.tsx_no_history_favorite_button": "pass",
+      "HomePage.test.tsx_no_raw_query_in_storage": "pass"
+    }
+  },
+  "acceptance": {
+    "draft_local_restore_and_clear": "PASS",
+    "history_display_research_clear": "PASS",
+    "raw_case_not_uploaded_to_server_persistence": "PASS",
+    "history_draft_do_not_change_main_sort": "PASS",
+    "no_body_leakage": "PASS"
+  },
+  "browser_acceptance_note": "host<->VM browser bridge unreachable (per prior steps); visible acceptance points covered via vitest+jsdom real component tree on the mock path in SearchHistoryDraftAcceptance.test.tsx: draft restore, history display, re-search, clear history/draft, no raw body in /api/events bodies, zero console errors",
+  "stop_loss_checks": {
+    "raw_case_uploaded_to_server_persistence": false,
+    "history_or_draft_body_in_server_logs_or_reports": false,
+    "history_affects_main_sort": false,
+    "triggered_no_go": false
+  },
+  "go_no_go": {
+    "status": "GO",
+    "allows_entering_m4_3": true,
+    "failed_gates": [],
+    "reason_codes": [
+      "M4_1_CONTRACT_GO_INHERITED",
+      "ENABLE_SEARCH_HISTORY_DEFAULT_FALSE_CONFIRMED",
+      "DRAFT_AND_HISTORY_BODY_LOCAL_ONLY_CLEARABLE",
+      "NO_RAW_CASE_TO_SERVER_PERSISTENCE",
+      "NO_BODY_IN_SERVER_LOGS_OR_REPORTS",
+      "HISTORY_DOES_NOT_AFFECT_MAIN_SORT",
+      "RESEARCH_GOES_THROUGH_STANDARD_PIPELINE",
+      "BACKEND_ZERO_CHANGE_REGRESSION_18_PASSED",
+      "WEB_SUITE_GREEN_TSC_BUILD_CLEAN"
+    ],
+    "next_allowed_title": "类案检索助手 M4-3 案例收藏能力"
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "version": "m1_3x_baseline_protection_gate_v1",
+  "generatedAt": "2026-06-10T17:23:39+08:00",
+  "scope": {
+    "step": "M1.3x-3",
+    "name": "baseline protection gate and focused tests",
+    "gateAndTestOnly": true,
+    "onlineRerankLogicChanged": false,
+    "onlineRecallLogicChanged": false,
+    "qrelsChanged": false,
+    "historicalResultsChanged": false,
+    "enableWeightedRerankChanged": false
+  },
+  "privacy": {
+    "rawQueryTextWritten": false,
+    "caseFactTextWritten": false,
+    "candidateFullTextWritten": false,
+    "chunkTextWritten": false,
+    "allowedFieldClasses": [
+      "query id",
+      "case id",
+      "rank",
+      "score",
+      "bucket",
+      "label",
+      "count",
+      "status",
+      "reason code",
+      "runner/gate name"
+    ]
+  },
+  "newGateFields": [
+    {
+      "field": "baselineProtection.baseline_best_relevant_rank",
+      "definition": "Minimum candidate rank whose qrels relevance is >= 2 in the baseline rows for that query.",
+      "source": "m1_3_candidate_comparison rows_by_mode['baseline'] plus product qrels"
+    },
+    {
+      "field": "baselineProtection.candidate_best_relevant_rank",
+      "definition": "Minimum candidate rank whose qrels relevance is >= 2 in the evaluated candidate rows for that query.",
+      "source": "m1_3_candidate_comparison candidate mode rows plus product qrels"
+    },
+    {
+      "field": "baselineProtection.rank_delta_vs_baseline",
+      "definition": "candidate_best_relevant_rank minus baseline_best_relevant_rank when both ranks are known; null means rank is not comparable within the evaluated rows.",
+      "source": "Derived in m1_3_candidate_comparison"
+    },
+    {
+      "field": "baselineProtection.metric_regression_reason",
+      "definition": "Sanitized reason code for after-vs-baseline metric regression; NONE means no metric regression for that query/candidate.",
+      "source": "Derived from afterVsBaselineLabel, afterVsBaselineTags, and best relevant ranks"
+    }
+  ],
+  "primaryGate": {
+    "runner": "m1_3_candidate_comparison",
+    "role": "Primary candidate comparison and hard gate for M1.3x candidate selection.",
+    "artifactJson": "docs/development/m1.3x-baseline-protection-candidate-comparison-20260610-171726.json",
+    "artifactMd": "docs/development/m1.3x-baseline-protection-candidate-comparison-20260610-171726.md",
+    "parameterVersion": "docs/development/m1.3x-baseline-protection-candidate-parameter-version-20260610-171726.json",
+    "selectedStatus": "NO_GO",
+    "selectedCandidateId": null,
+    "passedCandidateCount": 0,
+    "exactlyOneSelectedCandidateRequired": true,
+    "exactlyOneSelectedCandidateObserved": false,
+    "combinedCandidate": {
+      "candidateId": "m1_3_combined_candidate",
+      "top10HitRate": 0.68,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 7,
+      "metricRegressionCount": 7,
+      "recallMissCount": 7,
+      "goNoGo": "NO_GO"
+    },
+    "baselineProtection": {
+      "baselineProtectedRegressionCount": 7,
+      "metricRegressionReasonDistribution": {
+        "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN": 3,
+        "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN": 1,
+        "BASELINE_TOP10_RELEVANT_DROPPED": 1,
+        "NDCG_AT_10_DOWN": 2
+      }
+    }
+  },
+  "baselineProtectionRows": [
+    {
+      "queryId": "product_q008",
+      "baselineBestRelevantRank": 9,
+      "candidateBestRelevantRank": 12,
+      "rankDeltaVsBaseline": 3,
+      "metricRegressionReason": "BASELINE_TOP10_RELEVANT_DROPPED"
+    },
+    {
+      "queryId": "product_q016",
+      "baselineBestRelevantRank": 1,
+      "candidateBestRelevantRank": 3,
+      "rankDeltaVsBaseline": 2,
+      "metricRegressionReason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+    },
+    {
+      "queryId": "product_q018",
+      "baselineBestRelevantRank": 8,
+      "candidateBestRelevantRank": 10,
+      "rankDeltaVsBaseline": 2,
+      "metricRegressionReason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+    },
+    {
+      "queryId": "product_q020",
+      "baselineBestRelevantRank": 3,
+      "candidateBestRelevantRank": 7,
+      "rankDeltaVsBaseline": 4,
+      "metricRegressionReason": "BASELINE_RELEVANT_RANK_WORSENED_PRECISION_DOWN"
+    },
+    {
+      "queryId": "product_q021",
+      "baselineBestRelevantRank": 4,
+      "candidateBestRelevantRank": 2,
+      "rankDeltaVsBaseline": -2,
+      "metricRegressionReason": "NDCG_AT_10_DOWN"
+    },
+    {
+      "queryId": "product_q024",
+      "baselineBestRelevantRank": 6,
+      "candidateBestRelevantRank": 6,
+      "rankDeltaVsBaseline": 0,
+      "metricRegressionReason": "NDCG_AT_10_DOWN"
+    },
+    {
+      "queryId": "product_q025",
+      "baselineBestRelevantRank": 1,
+      "candidateBestRelevantRank": 2,
+      "rankDeltaVsBaseline": 1,
+      "metricRegressionReason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+    }
+  ],
+  "hardGateRules": {
+    "aggregateTop10CannotCoverPerQueryRegression": true,
+    "afterVsBaselineRegressedGt0ForcesNoGo": true,
+    "metricRegressionGt0ForcesNoGo": true,
+    "selectedCandidateMustBeExactlyOne": true,
+    "oldM13FinalArtifactCompatible": true
+  },
+  "compatibilityRunner": {
+    "runner": "m1_2_regression",
+    "role": "Compatibility reference only; it is not used to replace M1.3 candidate comparison.",
+    "artifactJson": "docs/development/m1.3x-baseline-protection-m1.2-regression-20260610-171726.json",
+    "parameterVersion": "docs/development/m1.3x-baseline-protection-m1.2-parameter-version-20260610-171726.json",
+    "status": "ok",
+    "top10HitRate": 0.64,
+    "beforeVsAfterRegressedCount": 4,
+    "afterVsBaselineRegressedCount": 9,
+    "metricRegressionCount": 9,
+    "recallMissCount": 8,
+    "weightedRerankGrayCandidate": false,
+    "differenceFromPrimary": "M1.2 preserves the legacy guarded rerank compatibility line; M1.3 candidate comparison remains the primary gate and still selects no candidate."
+  },
+  "focusedTests": [
+    {
+      "test": "test_candidate_gate_blocks_after_baseline_regression_despite_top10_gain",
+      "covers": "aggregate Top10 gain cannot cover after-vs-baseline REGRESSED > 0"
+    },
+    {
+      "test": "test_candidate_gate_blocks_metric_regression_despite_top10_gain",
+      "covers": "METRIC_REGRESSION > 0 forces NO_GO"
+    },
+    {
+      "test": "test_select_candidate_requires_exactly_one_go_candidate",
+      "covers": "selected candidate must be exactly one"
+    },
+    {
+      "test": "test_old_m1_3_final_candidate_artifact_reads_without_new_fields",
+      "covers": "old M1.3 final candidate artifact remains readable without new fields"
+    },
+    {
+      "test": "test_baseline_protection_fields_record_rank_delta_and_reason",
+      "covers": "baseline protection rank fields and metric regression reason are emitted"
+    }
+  ],
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_m1_3_candidate_comparison.py tests/test_m1_2_regression.py",
+      "status": "passed",
+      "summary": "23 passed in 0.22s"
+    },
+    {
+      "command": "cd apps/api; python scripts/m1_3_candidate_comparison.py --out-json docs/development/m1.3x-baseline-protection-candidate-comparison-20260610-171726.json --out-md docs/development/m1.3x-baseline-protection-candidate-comparison-20260610-171726.md --parameter-version-out docs/development/m1.3x-baseline-protection-candidate-parameter-version-20260610-171726.json",
+      "status": "passed",
+      "summary": "selected_status=NO_GO; selected_candidate_id=null; m1_3_combined_candidate Top10=0.68, afterVsBaselineRegressed=7, metricRegression=7"
+    },
+    {
+      "command": "cd apps/api; python scripts/m1_2_regression.py --comparison-mode product_chain --out docs/development/m1.3x-baseline-protection-m1.2-regression-20260610-171726.json --parameter-version-out docs/development/m1.3x-baseline-protection-m1.2-parameter-version-20260610-171726.json",
+      "status": "passed",
+      "summary": "status=ok; beforeVsAfterRegressed=4; afterVsBaselineRegressed=9; metricRegression=9"
+    },
+    {
+      "command": "cd apps/api; pytest",
+      "status": "passed",
+      "summary": "181 passed in 21.88s"
+    },
+    {
+      "command": "cd apps/web; npm test",
+      "status": "passed",
+      "summary": "40 passed"
+    },
+    {
+      "command": "cd apps/web; npm run build",
+      "status": "passed",
+      "summary": "vite build completed"
+    }
+  ],
+  "featureFlagState": {
+    "settings_ENABLE_WEIGHTED_RERANK": false,
+    "env_ENABLE_WEIGHTED_RERANK": null,
+    "env_example_ENABLE_WEIGHTED_RERANK": "false",
+    "defaultKeptFalse": true
+  },
+  "stepConclusion": "GO",
+  "weightedRerankGrayCandidateStatus": "NO_GO",
+  "nextConversationTitle": "类案检索助手 M1.3x-4 rerank guard v2 定点修复"
+}

@@ -1,0 +1,224 @@
+{
+  "artifact": "e5-release-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E5 法条法规检索）",
+  "step": "E5-7",
+  "title": "E5 验收与下一步门禁",
+  "generated_at": "2026-06-18T02:22:00+08:00",
+  "nature": "收官验证、产物生成和 GO/NO_GO 判定；除调和 E5-1 期遗留的 3 条陈旧测试断言外，未改业务代码。",
+  "baseline": {
+    "file": "docs/development/e4-release-gate-20260617-112542.json",
+    "overall": "GO",
+    "allow_enter_e5": true,
+    "reason": "E5 行为零变化比对基线"
+  },
+  "entry_gate": {
+    "source": "docs/development/e5-release-gate-20260617-083758.json",
+    "step": "E5-1",
+    "verdict": "GO",
+    "statute_ref_frozen_as_5th_contract": true,
+    "registered_in": [
+      "落地设计文档/16-多产品生态全链路闭环设计文档.md §4.1.1",
+      "落地设计文档/17-E系列分步骤文档.md §3.5"
+    ],
+    "statute_ref_whitelist": [
+      "statute_id", "law_name", "article_no", "statute_anchors",
+      "article_text", "source_corpus", "effective_status", "related_case_refs"
+    ],
+    "statute_anchor_whitelist": ["text_id", "law_name", "article_no", "anchor_type"],
+    "extra_policy": "forbid",
+    "candidate_ref_unchanged": true
+  },
+  "corpus_gate": {
+    "source": "docs/development/e5-statute-corpus-20260617-101358.json",
+    "step": "E5-2",
+    "verdict": "GO",
+    "coverage": "刑事（中华人民共和国刑法，182 distinct articles）；民事/行政为已知缺口，与 M5-7 路线 B 扩语料同一依赖，本期不强求",
+    "statutes_count": 182,
+    "statute_chunks_count": 182,
+    "anchor_completeness_rate_pct": 100.0,
+    "article_text_present_rate_pct": 0.0,
+    "model_generated_article_text": 0,
+    "catalog_mode_reason": "工作区未放置 JuDGE law_corpus.jsonl 种子；catalog 模式从 cases.jsonl law_articles 派生目录，带 text_id 锚点但 article_text=null，绝不杜撰；seed 模式已实现待种子到位补齐",
+    "case_statute_links": {"linked_cases": 2505, "coverage_pct": 100.0, "total_refs": 10792},
+    "index_isolated_from_case_index": true,
+    "case_products_unchanged": true,
+    "this_session_reverify": {
+      "case_products_hash_match": true,
+      "cases_jsonl_sha256": "8fcb2ec40ee3c8c9df12041fa414033c3dfd78e5f42d355cd3c747ca2d4a27b1",
+      "chunks_jsonl_sha256": "8f391e681d5c9be697cbc5cc99307869e089a4ce0fd0480c59671374ee42ceee",
+      "statute_chunks_text_id_rate_pct": 100.0,
+      "statutes_with_article_text": 0,
+      "links_linked_cases": 2505,
+      "links_total_refs": 10792
+    }
+  },
+  "service_gate": {
+    "source": "docs/development/e5-statute-service-20260617-105137.json",
+    "step": "E5-3",
+    "verdict": "CONDITIONAL_GO",
+    "conditional_reason": "功能/边界/隐私在 VM importlib smoke 已充分验证；后端 pytest 需 host .venv311 实跑确认（VM 缺 sqlalchemy/sqlmodel/pydantic-settings 且无网络）",
+    "service_entries": ["search_statutes", "statutes_by_case", "cases_by_statute"],
+    "statute_ref_anchored_or_dropped": true,
+    "drop_reason_codes": ["STATUTE_REF_DROPPED_NO_ANCHOR", "STATUTE_CASE_REF_DROPPED_NO_ANCHOR"],
+    "cross_jump_contract_only_no_opposite_body": true,
+    "candidate_ref_strict_whitelist_7_fields": true,
+    "candidate_ref_100pct_source_anchors": true,
+    "behavior_zero_impact": true,
+    "public_face_identity_preserved": true,
+    "this_session_reverify": {
+      "service_consumes_kernel_rag_StatuteSearchService": true,
+      "no_deep_retrieval_rerank_summary_import": true,
+      "no_cross_product_import": true
+    }
+  },
+  "statute_api_gate": {
+    "source": "docs/development/e5-statute-api-20260617-122654.json",
+    "step": "E5-4",
+    "verdict": "CONDITIONAL_GO",
+    "conditional_reason": "host .venv311 为权威 runner；VM 编译大文件存在字符截断坑，已逐项以独立逻辑执行证伪",
+    "product_package": "apps/api/app/statute (E 系列第 2 个产品包)",
+    "endpoints": [
+      "POST /api/statute/search",
+      "POST /api/statute/by-case",
+      "POST /api/statute/cases-by-statute"
+    ],
+    "gated_by": "ENABLE_STATUTE_SEARCH",
+    "default_disabled_behavior": "403 STATUTE_SEARCH_DISABLED 安全降级；不检索/不落库/不回显查询",
+    "consumes_e5_3_service_only": true,
+    "no_deep_retrieval_import": true,
+    "imports_other_product_packages": false,
+    "include_router_count": 14,
+    "this_session_reverify": {
+      "include_router_count": 14,
+      "statute_router_endpoints": 3,
+      "drafting_casebook_package_absent": true,
+      "no_out_of_bound_endpoint": true
+    }
+  },
+  "frontend_gate": {
+    "source": "docs/development/e5-statute-frontend-20260617-133220.json",
+    "step": "E5-5",
+    "verdict": "GO",
+    "gated_by": "VITE_ENABLE_STATUTE_SEARCH",
+    "default": false,
+    "double_gate": "router 不注册 /statute + StatutePage 内 isStatuteSearchEnabled() 返回 null + HomePage/SearchPage 入口条件渲染",
+    "article_text_only_from_backend": true,
+    "frontend_never_generates_statute_text": true,
+    "anchorless_hits_dropped_clientside": true,
+    "crosslink_candidateref_zero_body": true,
+    "no_browser_storage": true,
+    "no_pii_in_url": true,
+    "this_session_reverify": {
+      "vite_build": "123 modules transformed (E4 末态 121 + 2 gated statute)",
+      "vitest_touched": "64 passed (statuteApi 8 + StatutePage 5 + featureFlags 9 + HomePage 9 回归 + SearchPage 33 回归)"
+    }
+  },
+  "boundary_gate": {
+    "source": "docs/development/e5-boundary-guard-20260618-014340.json",
+    "step": "E5-6",
+    "verdict": "CONDITIONAL_GO",
+    "conditional_reason": "新增 E5-6 守门 + group3 契约 VM 全绿；test_e2a E5 append host 已确认并逻辑校验(6/6 replica)；条件=host .venv311 全量复跑清 VM-mount 截断噪声并调和 test_e5_statute_contracts.py 两条陈旧 E5-1 断言",
+    "no_drafting_or_casebook": true,
+    "no_out_of_bound_endpoint": true,
+    "no_deep_retrieval_import": true,
+    "statute_ref_anchored": true,
+    "cross_jump_no_opposite_body": true,
+    "product_packages_no_mutual_import": true,
+    "resolved_in_e5_7": {
+      "stale_assertion_1": "test_e5_statute_contracts.py::test_no_statute_drafting_casebook_product_package → 改名 test_no_drafting_casebook_product_package，FORBIDDEN_PRODUCT_PACKAGES=(drafting,casebook)，statute 合法放行",
+      "stale_assertion_2": "test_e5_statute_contracts.py::test_include_router_count_still_13 → 改名 test_include_router_count_is_14，断言 14",
+      "stale_assertion_3": "test_e5_statute_contracts.py::test_no_statute_endpoint_registered → 改名 test_statute_router_wired_post_e5_4，断言 statute_router 已接线(语义由 E5-1 不接线翻转为 E5-4 已接线)",
+      "module_docstring_and_section_header": "同步更新为 E5-4 后口径",
+      "scope": "纯测试文件调和，零业务代码改动；E2/E3/E4 守门规则未放宽"
+    }
+  },
+  "regression_gate": {
+    "verdict": "GO",
+    "authoritative_environment": {
+      "venv": ".venv311",
+      "python": "3.11.9",
+      "runner": "codex host 复跑",
+      "note": "后端 pytest 以 host .venv311 实跑为权威口径（沿用 E3-5/E4-1/E5-3/E5-4/E5-6 纪律）；本步由 codex 在 host 复跑确认"
+    },
+    "vm_backend_dep_status": "VM 无 fastapi/sqlalchemy/sqlmodel/pydantic/pydantic_settings/pytest（本会话已取证），后端 pytest 无法在 VM 跑，已由 codex host .venv311 实跑闭合",
+    "host_rerun_results": {
+      "three_known_nameerror_units": "3 passed（截断残片已补回）",
+      "e5_backend_full_suite": "227 passed",
+      "e1_e3_regression": "178 passed",
+      "e4_regression": "126 passed",
+      "historical_core_smoke": "60 passed",
+      "test_e5_statute_api_run_extra": "25 passed",
+      "include_router_count": 14,
+      "intake_and_statute_router_wired": true,
+      "frontend_build": "PASS, 123 modules transformed",
+      "statute_flags_default_false": true,
+      "only_warning": "Starlette PendingDeprecationWarning（非阻塞，不影响验收）"
+    },
+    "codex_test_only_fixups": {
+      "scope": "仅补回 host 上已被 VM-mount 截断写回的测试残片，零业务代码改动",
+      "files": [
+        "tests/test_e5_statute_api.py:454 (ass→assert，补回 router 源码断言)",
+        "tests/test_e5_statute_api_run.py:454 (同步修复)",
+        "tests/test_e3_internal_search_boundaries.py:375 (补完整 E3 docs 长正文扫描)",
+        "tests/test_e4_intake_boundaries.py:640 (补完整 E4 docs 长正文扫描)"
+      ]
+    },
+    "host_rerun_confirmed": [
+      "E5-7 调和后的 test_e5_statute_contracts.py 全通过（含改名后的 3 个断言）：纳入 E5 全套 227 passed",
+      "3 个 VM-mount 截断 NameError 在 host 全量源上消失（codex 补回残片后 3 passed）",
+      "include_router 仍 14、E1~E4 同款回归零新增失败"
+    ]
+  },
+  "frontend_parity_gate": {
+    "verdict": "GO",
+    "vite_build": "PASS, 123 modules transformed (dist EPERM 经 --outDir /tmp 旁路)",
+    "vitest_touched": "64 passed",
+    "default_flag_off_no_entry": true
+  },
+  "static_scans": {
+    "judgment_body_field_in_statute_code": 0,
+    "model_generated_statute_keys_in_statute_code": 0,
+    "credential_prints": 0,
+    "banned_marketing_copy": 0,
+    "drafting_casebook_package": 0,
+    "include_router_count": 14,
+    "statute_endpoints": 3,
+    "out_of_bound_endpoints": 0,
+    "enable_statute_search_default": false,
+    "env_example_statute_flags_false": true,
+    "statute_imports_other_product_packages": 0,
+    "statute_deep_imports_retrieval_rerank_summary": 0,
+    "statute_consumes_kernel_StatuteSearchService": true,
+    "statute_chunks_text_id_rate_pct": 100.0,
+    "index_isolated_statute_vs_case_collection": true,
+    "statute_pipeline_writes_case_collection": 0,
+    "case_products_hash_unchanged_vs_e5_2": true,
+    "statutes_with_article_text_catalog_mode": 0
+  },
+  "hard_gates": {
+    "e5_1_to_e5_6_all_go_or_conditional_resolved": true,
+    "statute_text_anchored_not_generated": true,
+    "no_anchorless_statute_displayed": true,
+    "statute_ref_100pct_anchored": true,
+    "cross_jump_candidate_ref_100pct_whitelist_and_source_anchors_zero_body": true,
+    "statute_consumes_kernel_public_face_no_deep_import": true,
+    "no_import_other_product_package": true,
+    "only_intake_and_statute_product_packages": true,
+    "include_router_14": true,
+    "no_frontend_default_entry": true,
+    "enable_statute_search_default_false": true,
+    "no_new_default_true_business_flag": true,
+    "statute_index_isolated_from_case_index": true,
+    "case_products_and_eval_baseline_unchanged": true,
+    "api_search_e3_intake_behavior_zero_change": true,
+    "frontend_build_pass": true,
+    "backend_pytest_host_rerun_confirmed": true
+  },
+  "overall": "GO",
+  "overall_explanation": "E5-1~E5-6 全部 GO（前序 CONDITIONAL 唯一条件项——后端 pytest 须 host .venv311 实跑——已由 codex 在 host 复跑闭合）。E5 已达成法条法规检索：statute 产品包 + 3 个 gated 端点（ENABLE_STATUTE_SEARCH 默认 false，403 降级），查询/CandidateRef 入、带 text_id 锚点的 StatuteRef[] 出；法条条文 100% 锚定语料（catalog 模式 article_text=null，零杜撰、无锚点不展示）；法条↔类案双向互跳只走契约对象（StatuteRef / CandidateRef 白名单七字段 + 100% source_anchors + 0 裁判正文）；statute 经 app.kernel.rag.StatuteSearchService 消费、不深引检索底层、不 import 其它产品包；复用既有向量库 + law_articles 标注，法条索引(statute_chunks_bge_m3_v1)与案件索引(case_chunks_bge_m3_v1)物理隔离，案件产物 hash 与 E5-2 基线逐字节一致、评测基线未改；include_router=14（仅 intake + statute）、无前端默认入口、无新增默认 true 业务 flag。本会话 19 项静态扫描全 0/全过；前端 build 123 modules + 触碰用例 64 passed。host .venv311 codex 复跑：3 个已知 NameError 单点 3 passed、E5 后端全套 227 passed、E1~E3 回归 178 passed、E4 回归 126 passed、历史核心烟测 60 passed、test_e5_statute_api_run 额外 25 passed、include_router=14、前端 build 通过、statute flags 默认 false，唯一 Starlette PendingDeprecationWarning 非阻塞。E5-7 调和了 test_e5_statute_contracts.py 3 条 E5-1 期陈旧断言（router 13→14、statute 包合法放行、端点接线语义翻转）；codex 仅补回 4 个测试文件被 VM-mount 截断的残片，二者均纯测试改动、零业务代码、未放宽 E2/E3/E4 守门。未出现任何 NO_GO/BLOCKED 项，CONDITIONAL_GO 正式升 GO。",
+  "next_step": {
+    "allow_enter_e6": true,
+    "allow_enter_e6_condition": "无剩余前置阻塞；host .venv311 后端复跑已全绿、include_router=14、前端 build 通过，CONDITIONAL_GO 已升 GO，允许正式进入 E6。",
+    "title": "类案检索助手 E6-1 文书工作台入口合同"
+  }
+}

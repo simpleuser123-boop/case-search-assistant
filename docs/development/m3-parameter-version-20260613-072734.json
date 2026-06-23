@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "artifact": "m3-parameter-version",
+  "parameter_version_id": "m3-final-20260613-072734",
+  "generated_at": "2026-06-13T07:27:34+08:00",
+  "scope": "M3-8 parameter and feature-flag snapshot (no business behavior change)",
+  "inherits_from": "m2-final-20260612-191945",
+  "rerank_candidate": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "note": "unchanged from M2-8; weighted rerank remains gated-off by default"
+  },
+  "feature_flags_default": {
+    "ENABLE_QUERY_REWRITE": false,
+    "ENABLE_SUMMARY": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "VITE_ENABLE_EXPANDED_SEARCH": false
+  },
+  "rerank_weights_reference_only": {
+    "RERANK_WEIGHT_VECTOR_SIMILARITY": 0.55,
+    "RERANK_WEIGHT_LEGAL_ELEMENT_OVERLAP": 0.20,
+    "RERANK_WEIGHT_CASE_CAUSE_MATCH": 0.10,
+    "RERANK_WEIGHT_KEY_PARAGRAPH_MATCH": 0.10,
+    "RERANK_WEIGHT_AUTHORITY_SIGNAL": 0.05,
+    "note": "values inert while ENABLE_WEIGHTED_RERANK=false; listed for traceability only"
+  },
+  "m3_capability_parameters": {
+    "backend_changes": "none",
+    "case_compare_max_cases": "2-3",
+    "case_compare_dimensions": ["metadata", "holding_summary", "issue_focus", "fact_dimension", "risk_hints"],
+    "selection_state": "react_state_only_not_persisted",
+    "anchor_min_fields": ["case_id", "source_chunk_id"],
+    "metadata_anchor_type": "case_record",
+    "non_metadata_anchor_type": "detail_chunk",
+    "affects_runtime_sorting": false,
+    "affects_source_selection": false
+  },
+  "config_source_of_truth": {
+    "config_py": "apps/api/app/core/config.py:42 ENABLE_WEIGHTED_RERANK: bool = False",
+    "env_example": ".env.example:23 ENABLE_WEIGHTED_RERANK=false"
+  }
+}

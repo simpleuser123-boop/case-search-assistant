@@ -1,0 +1,107 @@
+{
+  "version": "m5_team_workspace_isolation_v1",
+  "artifact": "m5-team-workspace-isolation",
+  "step": "M5-3",
+  "title": "团队空间与数据隔离",
+  "generated_at": "2026-06-14T05:59:55+08:00",
+  "decision": "GO",
+  "depends_on": {
+    "m5_1_commercial_entry_contract": "GO",
+    "m5_2_account_system": "GO",
+    "m4_7_team_workspace_isolation_slot": "not_ready -> implemented_in_m5_3"
+  },
+  "scope": {
+    "summary": "落地 M4-7 评估中 team_workspace_isolation: not_ready：引入 team_id/workspace_id，新增服务端沉淀对象持久层并按团队/owner 行级强隔离；查询层强制租户过滤，跨团队/跨用户默认不可见；team_id 为空等同单用户私有；ENABLE_TEAM_WORKSPACE 默认 false，关闭回 M5-2/M4 末态。",
+    "introduces_server_side_sedimentation_persistence": true,
+    "isolation_default": "single_tenant_private",
+    "empty_team_id_equals_single_user_private": true,
+    "changes_online_sorting": false,
+    "changes_source_selection": false,
+    "changes_rerank_defaults": false,
+    "changes_m2_m3_m4_defaults": false,
+    "writes_body_to_team_persistence": false,
+    "cross_tenant_default_visible": false,
+    "enable_team_workspace_default": false
+  },
+  "data_model": {
+    "tables": [
+      {"name": "m5_team", "columns": ["team_id", "team_name", "status", "created_at", "updated_at", "reason_code"]},
+      {"name": "m5_workspace", "columns": ["workspace_id", "team_id", "workspace_name", "status", "created_at", "reason_code"]},
+      {"name": "m5_team_membership", "columns": ["membership_id", "team_id", "workspace_id", "member_user_id", "status", "created_at", "reason_code"]},
+      {"name": "m5_sedimentation_object", "columns": ["object_id", "object_type", "owner_user_id", "team_id", "workspace_id", "visibility", "case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchors", "note", "tag", "label", "list_id", "list_title", "report_id", "status", "reason_code", "created_at", "updated_at"]}
+    ],
+    "tenant_isolation_fields": ["owner_user_id", "team_id", "workspace_id", "visibility"],
+    "visibility_vocab": ["private", "team"],
+    "no_body_columns": true,
+    "source_anchors_stored_as": "json_string_reference_only"
+  },
+  "isolation_rules": {
+    "enforcement_point": "app.team.isolation.tenant_visibility_clause",
+    "every_read_forced_filter": true,
+    "no_unfiltered_read_path": true,
+    "single_user_private_clause": "owner_user_id == ctx.owner_user_id AND team_id IS NULL",
+    "team_clause": "(own private rows) OR (team_id == ctx.team_id AND visibility == 'team')",
+    "cross_team_read": "NO (excluded at SQL where-clause level)",
+    "cross_user_private_read": "NO",
+    "non_member_team_id": "downgraded to single-user private (reason_code=not_a_member), never reads other team data",
+    "write_tenant_consistency": "assert_write_within_tenant: write team_id must equal context team_id; team visibility requires active team context"
+  },
+  "compat_and_fallback": {
+    "flag": "ENABLE_TEAM_WORKSPACE",
+    "default": false,
+    "disabled_behavior": "all /api/team/* return 403 TEAM_WORKSPACE_DISABLED; lazy init zero side-effect; no tables created; back to M5-2/M4 single-user private end state",
+    "frontend_disabled": "TeamWorkspacePanel renders null; no team API calls",
+    "team_endpoints_require_login": true,
+    "requires_account_system_enabled_for_session": true
+  },
+  "privacy_rules": {
+    "persistence_stores_metadata_reference_structured_only": true,
+    "logs_record_only": ["user_id_hash", "team_id_hash", "count", "status", "reason_code"],
+    "no_login_name_body_credential_in_logs": true,
+    "team_id_exposed_as_hash_in_views": true
+  },
+  "allowed_changes": {
+    "backend_new_files": [
+      "apps/api/app/team/__init__.py",
+      "apps/api/app/team/models.py",
+      "apps/api/app/team/isolation.py",
+      "apps/api/app/team/store.py",
+      "apps/api/app/team/service.py",
+      "apps/api/app/team/schemas.py",
+      "apps/api/app/api/team.py"
+    ],
+    "backend_edited_files": ["apps/api/app/main.py (include team_router only)"],
+    "frontend_new_files": [
+      "apps/web/src/services/teamApi.ts",
+      "apps/web/src/components/team/TeamWorkspacePanel.tsx",
+      "apps/web/src/services/teamApi.test.ts",
+      "apps/web/src/components/team/TeamWorkspacePanel.test.tsx"
+    ],
+    "frontend_edited_files": ["apps/web/src/config/featureFlags.ts (add isTeamWorkspaceEnabled)", ".env.example (add VITE_ENABLE_TEAM_WORKSPACE)"],
+    "tests": ["apps/api/tests/test_m5_team_isolation.py (16 tests)"]
+  },
+  "verification": {
+    "api_focused_plus_gate": {"command": "pytest test_m5_team_isolation + test_health + test_search_api_fallback_smoke + test_feature_flag_rollback + test_performance_smoke", "result": "36 passed"},
+    "api_regression": {"command": "pytest test_m5_account_system + test_m5_commercial_entry_contract + test_m4_workflow_entry_contract + test_m4_team_reuse + test_release_gate", "result": "62 passed"},
+    "web_tests": {"result": "242 passed (235 M5-2 baseline + 7 new M5-3), all files pass when isolated; the 55 failures only appeared under --singleFork (cross-file localStorage/module state bleed), not under default isolated pool"},
+    "web_typecheck": {"command": "tsc --noEmit", "result": "RC=0"},
+    "web_build": {"command": "tsc -b && vite build", "result": "118 modules transformed, RC=0 (mounted dist EPERM on delete only; verified via fresh outDir)"},
+    "privacy_grep": {"result": "no body/credential persistence; forbidden keys appear only in denylist guard; both read paths enforce tenant_visibility_clause; all flags default false"}
+  },
+  "stop_loss_checks": {
+    "cross_team_or_cross_user_data_leak": false,
+    "isolation_bypassable": false,
+    "body_in_team_persistence": false,
+    "enable_team_workspace_default_on": false,
+    "isolation_changed_existing_defaults": false,
+    "triggered": false
+  },
+  "acceptance": {
+    "server_sediment_strongly_isolated_by_team_or_user": true,
+    "empty_team_id_equals_single_user_private": true,
+    "disabled_flag_returns_to_m4_end_state": true,
+    "isolation_does_not_change_main_sorting": true,
+    "no_body_leak_no_cross_tenant_read": true
+  },
+  "next_step": "M5-4 权限分级与对象级访问控制 (permission_tiering)"
+}

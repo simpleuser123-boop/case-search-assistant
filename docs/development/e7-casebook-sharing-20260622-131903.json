@@ -1,0 +1,68 @@
+{
+  "step": "E7-4",
+  "title": "CaseFolder 共享与协作权限",
+  "timestamp": "20260622-131903",
+  "overall": "CONDITIONAL_GO",
+  "allow_enter_e7_5": true,
+  "conditional_reason": "VM 沙箱无 pydantic/sqlmodel/fastapi 且无网络，后端 pytest 须 host .venv311 权威复跑收口；VM bind-mount page-cache 本会话硬钉前端 4 文件旧 inode（casebookApi.ts/CasebookPage.tsx + 两测试），vitest/build 须 host 复跑。两者均为环境取证限制，host Read 已逐文件确认实盘完整正确。",
+  "reuse_m5": {
+    "tenant_clause": "复用 store._tenant_clause（与 M5 tenant_visibility_clause 同构：own_private OR team_shared）；未另建权限模型",
+    "membership": "复用 M5 TeamService.resolve_tenant（成员关系校验，非成员降级私有）；经 app.api.team._get_service() 取同一实例 + 同一成员账本",
+    "owner_only_write": "复用 store owner_user_id 取行校验（非 owner -> None -> 404）",
+    "default_private": "create 恒 private；team 仅经显式 /share 动作切换"
+  },
+  "share_semantics": {
+    "endpoint": "POST /api/casebook/folders/{id}/share（挂 casebook_router 下，不单独 include）",
+    "private_to_team": "owner + 该 team 活跃成员 -> 原子写 team_id=team_id + visibility=team",
+    "team_to_private": "owner -> 原子写 team_id=None + visibility=private",
+    "read_team_context": "GET list/{id} 接受 X-Team-Id 头，经 resolve_tenant 进团队态；非成员降级私有",
+    "visibility_levels": ["private", "team"],
+    "public_rejected": "schema Literal['private','team'] -> public/非法值 422"
+  },
+  "authz_matrix": {
+    "private_folder": "仅 owner 可读写；他人(含同 team) 404",
+    "team_folder": "owner 读写；同 team 成员(带 X-Team-Id)只读；非 owner 写 404；非成员 404",
+    "cross_tenant": "伪造 X-Team-Id 非成员 -> resolve_tenant 降级私有 -> 404，不泄露存在性"
+  },
+  "body_not_opened": "共享只改 visibility/team_id 两列元数据；set_sharing 不触碰 summary/refs；出库经 sanitize_case_folder 双保险；读取仍零正文、引用 100% 带锚点",
+  "include_router": 16,
+  "new_flags": [],
+  "ai_capability_added": false,
+  "files": {
+    "backend": [
+      "apps/api/app/casebook/schemas.py (新增 CaseFolderShareRequest)",
+      "apps/api/app/casebook/store.py (新增 set_sharing)",
+      "apps/api/app/casebook/service.py (新增 share_case_folder)",
+      "apps/api/app/casebook/router.py (新增 /share 端点 + _resolve_team_service/_resolve_read_ctx + list/get 加 X-Team-Id + update ValueError 护栏)",
+      "apps/api/app/casebook/__init__.py (导出 CaseFolderShareRequest)",
+      "apps/api/tests/test_e7_casebook_sharing.py (新增)"
+    ],
+    "frontend": [
+      "apps/web/src/services/casebookApi.ts (新增 shareCaseFolder/toCaseFolderShareBody/CaseFolderShareInput/CaseFolderVisibility + list/get teamId + X-Team-Id 头)",
+      "apps/web/src/pages/CasebookPage.tsx (新增 owner-only ShareControl + TeamContextBar + 团队态列出)",
+      "apps/web/src/services/casebookApi.test.ts (新增 share 测试)",
+      "apps/web/src/pages/CasebookPage.test.tsx (改 E7-4 留->owner 共享切换 + 非 owner 只读)"
+    ],
+    "docs": [
+      "docs/development/e7-casebook-sharing-20260622-131903.md",
+      "docs/development/e7-casebook-sharing-20260622-131903.json"
+    ]
+  },
+  "privacy_scan": {
+    "judgment_body": 0,
+    "draft_body": 0,
+    "raw_case": 0,
+    "outcome_verdict": 0,
+    "credential": 0,
+    "disabled_copy": 0,
+    "note": "share 路径结构性零正文：schema extra=forbid + visibility/team_id 两键；store 只写两列；日志只记 user_id_hash/case_folder_id_hash/visibility/has_team"
+  },
+  "host_reverify_commands": [
+    "cd apps/api && export DATABASE_URL=sqlite:///./test_e7.db && pytest tests/test_e7_casebook_sharing.py tests/test_e7_casebook_api.py tests/test_e7_casebook_contracts.py",
+    "pytest tests/test_e6_drafting_api.py tests/test_e5_statute_api.py tests/test_e4_intake_api.py",
+    "pytest tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py tests/test_health.py",
+    "grep -cE 'app\\.include_router' apps/api/app/main.py  # 16",
+    "cd ../web && npx vitest run src/pages/CasebookPage.test.tsx src/services/casebookApi.test.ts && npx vite build"
+  ],
+  "next_step": "类案检索助手 E7-5 消费边界与护栏守门"
+}

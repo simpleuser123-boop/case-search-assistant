@@ -1,0 +1,15 @@
+{
+  "command": "python -m app.eval.product_eval --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-product-eval-20260609-123148.json\" --bad-cases-out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-product-bad-cases-20260609-123148.json\"",
+  "cwd": "C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api",
+  "exit_code": 0,
+  "duration_ms": 67596,
+  "timed_out": false,
+  "stdout_line_count": 55,
+  "stderr_line_count": 25,
+  "stdout_sha256": "d1424c4671f16cdabb222730c6abc0c25adc512437b56f9985136d3ad12add4d",
+  "stderr_sha256": "655d527e862e42270d4ea418d22591c9f6e05c8240abdff3e0e3735cacf2aade",
+  "stdout_bytes": 1612,
+  "stderr_bytes": 6851,
+  "output_policy": "stdout/stderr are hashed only to avoid writing raw query or case facts.",
+  "dry_run_summary": null
+}

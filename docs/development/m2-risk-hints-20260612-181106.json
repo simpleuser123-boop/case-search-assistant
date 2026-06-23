@@ -1,0 +1,129 @@
+{
+  "artifact": "m2-risk-hints",
+  "generated_at": "2026-06-12T18:11:06+08:00",
+  "step": "M2-7",
+  "entry_gates": {
+    "required_count": 6,
+    "existing_count": 6,
+    "go_count": 6,
+    "no_go_count": 0
+  },
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "VITE_ENABLE_EXPANDED_SEARCH": false
+  },
+  "schema_fields": [
+    "risk_hints",
+    "risk_type",
+    "source_anchors",
+    "case_id",
+    "source_chunk_id",
+    "chunk_type",
+    "anchor_type",
+    "source_url",
+    "source_ref",
+    "confidence_level",
+    "confidence_reasons",
+    "reason_code",
+    "review_note"
+  ],
+  "risk_types": [
+    "fact_difference",
+    "key_element_missing",
+    "low_confidence_candidate",
+    "adverse_tendency_source",
+    "degraded_or_uncertain"
+  ],
+  "reason_codes": [
+    "SOURCE_RISK_SIGNAL_REVIEW",
+    "KEY_ELEMENT_MISSING_REVIEW",
+    "FACT_DIFFERENCE_REVIEW",
+    "DEGRADED_SEARCH_REVIEW",
+    "DEGRADED_OR_UNCERTAIN_REVIEW",
+    "LOW_CONFIDENCE_CANDIDATE_REVIEW"
+  ],
+  "counts": {
+    "max_risk_hints": 5,
+    "max_source_anchors_per_hint": 2,
+    "required_anchor_field_count": 2
+  },
+  "source_anchor_requirements": {
+    "source_anchors_required": true,
+    "case_id_required": true,
+    "source_chunk_id_required": true,
+    "unanchored_filtered": true,
+    "fake_anchor_allowed": false
+  },
+  "runtime_boundaries": {
+    "affects_results_sorting": false,
+    "affects_low_confidence_candidates": false,
+    "affects_rerank": false,
+    "affects_source_selection": false,
+    "uses_qrels": false,
+    "uses_label": false,
+    "uses_relevance": false,
+    "uses_query_id_special_case": false,
+    "uses_case_id_special_case": false,
+    "changes_historical_eval": false
+  },
+  "frontend_display": {
+    "independent_panel": true,
+    "review_only_copy": true,
+    "source_entry_clickable": true,
+    "unanchored_hidden": true,
+    "main_results_preserved": true
+  },
+  "privacy_checks": {
+    "raw_query_body_saved": false,
+    "case_fact_body_saved": false,
+    "candidate_body_saved": false,
+    "chunk_body_saved": false,
+    "log_body_saved": false,
+    "json_body_saved": false
+  },
+  "test_results": [
+    {
+      "command": "cd apps/api; pytest tests/test_summary_service.py tests/test_health.py tests/test_m2_risk_hints.py",
+      "status": "passed",
+      "passed_count": 25,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; npm run test",
+      "status": "passed",
+      "passed_count": 48,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; npm run build",
+      "status": "passed",
+      "failed_count": 0
+    }
+  ],
+  "browser_acceptance": {
+    "status": "passed",
+    "risk_panel_visible": true,
+    "review_only_copy_visible": true,
+    "source_anchor_visible": true,
+    "source_entry_clickable": true,
+    "main_results_preserved": true,
+    "temporary_artifacts_removed": true
+  },
+  "go_no_go": {
+    "status": "GO",
+    "failed_gates": [],
+    "reason_codes": [
+      "M2_1_TO_M2_6_GO_CONFIRMED",
+      "SOURCE_ANCHORED_RISK_HINTS_ONLY",
+      "UNANCHORED_RISK_HINTS_FILTERED",
+      "REVIEW_ONLY_COPY",
+      "RISK_HINTS_DO_NOT_AFFECT_SORTING",
+      "FORBIDDEN_RUNTIME_INPUTS_NOT_USED",
+      "ENABLE_WEIGHTED_RERANK_FALSE",
+      "VALIDATION_PASSED",
+      "BODY_LEAKAGE_CHECK_PASSED"
+    ],
+    "next_allowed_step": "M2-8"
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "version": "day3_7_5_rollback_drill_v1",
+  "scope": "in_process_mocked_dependencies_no_index_rebuild",
+  "query_hash": "365c31dd38a0d1f8",
+  "input_length": 14,
+  "raw_query_written": false,
+  "external_dependencies_used": false,
+  "vector_index_rebuild_required": false,
+  "recovery_within_60_seconds": true,
+  "max_rollback_elapsed_ms": 20,
+  "status": "passed",
+  "scenarios": [
+    {
+      "flag": "ENABLE_QUERY_REWRITE",
+      "current_state_before_drill": true,
+      "rollback_state": false,
+      "reload_method": "in_process_service_reload",
+      "endpoint": "/api/search",
+      "http_status": 200,
+      "rollback_elapsed_ms": 20,
+      "restore_method": "module_globals_restored",
+      "vector_index_rebuild_required": false,
+      "rollback_event_logged": true,
+      "raw_query_logged": false,
+      "status": "passed",
+      "failure": "",
+      "observed": {
+        "result_count": 2,
+        "degraded_reasons": [
+          "QUERY_REWRITE_DISABLED"
+        ],
+        "error_code": null,
+        "retrieval_call_count": 1,
+        "summary_llm_call_count": 2,
+        "score_mode": "weighted_rerank",
+        "summary_method": "llm_deepseek"
+      }
+    },
+    {
+      "flag": "ENABLE_WEIGHTED_RERANK",
+      "current_state_before_drill": true,
+      "rollback_state": false,
+      "reload_method": "in_process_service_reload",
+      "endpoint": "/api/search",
+      "http_status": 200,
+      "rollback_elapsed_ms": 11,
+      "restore_method": "module_globals_restored",
+      "vector_index_rebuild_required": false,
+      "rollback_event_logged": true,
+      "raw_query_logged": false,
+      "status": "passed",
+      "failure": "",
+      "observed": {
+        "result_count": 2,
+        "degraded_reasons": [],
+        "error_code": null,
+        "retrieval_call_count": 1,
+        "summary_llm_call_count": 2,
+        "score_mode": "base_retrieval",
+        "summary_method": "llm_deepseek"
+      }
+    },
+    {
+      "flag": "ENABLE_SUMMARY",
+      "current_state_before_drill": true,
+      "rollback_state": false,
+      "reload_method": "in_process_service_reload",
+      "endpoint": "/api/search",
+      "http_status": 200,
+      "rollback_elapsed_ms": 11,
+      "restore_method": "module_globals_restored",
+      "vector_index_rebuild_required": false,
+      "rollback_event_logged": true,
+      "raw_query_logged": false,
+      "status": "passed",
+      "failure": "",
+      "observed": {
+        "result_count": 2,
+        "degraded_reasons": [
+          "SUMMARY_DISABLED"
+        ],
+        "error_code": null,
+        "retrieval_call_count": 1,
+        "summary_llm_call_count": 0,
+        "score_mode": "weighted_rerank",
+        "summary_method": "source_snippet"
+      }
+    },
+    {
+      "flag": "ENABLE_EXPANDED_SEARCH",
+      "current_state_before_drill": true,
+      "rollback_state": false,
+      "reload_method": "in_process_service_reload",
+      "endpoint": "/api/search/expand",
+      "http_status": 403,
+      "rollback_elapsed_ms": 7,
+      "restore_method": "module_globals_restored",
+      "vector_index_rebuild_required": false,
+      "rollback_event_logged": true,
+      "raw_query_logged": false,
+      "status": "passed",
+      "failure": "",
+      "observed": {
+        "result_count": 0,
+        "degraded_reasons": [],
+        "error_code": "EXPANDED_SEARCH_DISABLED",
+        "retrieval_call_count": 0,
+        "summary_llm_call_count": 0,
+        "score_mode": null,
+        "summary_method": null
+      }
+    }
+  ]
+}

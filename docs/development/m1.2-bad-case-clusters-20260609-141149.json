@@ -1,0 +1,536 @@
+{
+  "generatedAt": "2026-06-09T14:11:49+08:00",
+  "scope": "M1.2-1 baseline freeze and bad case clustering",
+  "privacy": {
+    "rawQueryTextIncluded": false,
+    "rawCaseTextIncluded": false,
+    "candidateFullTextIncluded": false,
+    "chunkTextIncluded": false,
+    "allowedIdentifiersOnly": true,
+    "note": "Bad cases are referenced only by eval query id, case id, metrics, labels, and short sanitized notes."
+  },
+  "sourceFiles": [
+    {
+      "path": "落地设计文档/09-M1.2精准度修复版分步骤文档.md",
+      "role": "step scope"
+    },
+    {
+      "path": "docs/development/m1.1-final-verification-20260609-123523.md",
+      "role": "final verification narrative"
+    },
+    {
+      "path": "docs/development/m1.1-final-verification-20260609-123523.json",
+      "role": "final verification structured evidence"
+    },
+    {
+      "path": "落地设计文档/08-风险补漏版本修复架构.md",
+      "role": "M1.1 risk architecture"
+    },
+    {
+      "path": "docs/development/m1.1-risk-fix-gate-20260609-123148.json",
+      "role": "latest release gate"
+    },
+    {
+      "path": "docs/development/m1.1-risk-fix-gate-product-eval-20260609-123148.json",
+      "role": "latest product eval"
+    },
+    {
+      "path": "docs/development/m1.1-risk-fix-gate-product-bad-cases-20260609-123148.json",
+      "role": "latest product bad cases"
+    },
+    {
+      "path": "docs/development/m1.1-risk-fix-gate-rerank-eval-20260609-123148.json",
+      "role": "latest rerank eval status"
+    },
+    {
+      "path": "docs/development/m1.1-risk-fix-gate-eval-preflight-20260609-123148.json",
+      "role": "eval corpus preflight"
+    },
+    {
+      "path": "docs/development/m1.1-risk-fix-gate-performance-smoke-20260609-123148.json",
+      "role": "performance and dependency signal"
+    },
+    {
+      "path": "docs/development/m1.1-risk-fix-gate-db-smoke-20260609-123148.json",
+      "role": "DB blocked item"
+    },
+    {
+      "path": "data/eval/product_eval_report_20260609_1130_script.json",
+      "role": "superseded product eval comparison"
+    },
+    {
+      "path": "data/eval/bad_cases_product_eval_20260609_1130_script.json",
+      "role": "superseded bad case comparison"
+    },
+    {
+      "path": "data/eval/day3_rerank_eval_20260608.json",
+      "role": "prior rerank eval status"
+    },
+    {
+      "path": "data/eval/lecardv2_eval_report.json",
+      "role": "LeCaRDv2 corpus historical report"
+    },
+    {
+      "path": ".env.example",
+      "role": "feature flag example defaults"
+    },
+    {
+      "path": "apps/api/app/core/config.py",
+      "role": "feature flag settings defaults"
+    }
+  ],
+  "metricSnapshot": {
+    "basis": "latest final verification and release gate timestamp 20260609-123148",
+    "productLocalEval": {
+      "source": "docs/development/m1.1-risk-fix-gate-product-eval-20260609-123148.json",
+      "evaluatedQueryCount": 25,
+      "baseline": {
+        "mode": "bm25_product_case_dedup",
+        "precisionAt5": 0.032,
+        "ndcgAt10": 0.134,
+        "top10HitRate": 0.48
+      },
+      "current": {
+        "mode": "current_product_retrieval_plus_weighted_rerank_candidate",
+        "precisionAt5": 0.048,
+        "ndcgAt10": 0.1248,
+        "top10HitRate": 0.44,
+        "weightedRerankEvalOnly": true
+      },
+      "delta": {
+        "precisionAt5": 0.016,
+        "ndcgAt10": -0.0092,
+        "top10HitRate": -0.04
+      },
+      "grayCandidate": {
+        "eligible": false,
+        "reason": "NDCG@10 did not improve versus the BM25 product baseline.",
+        "thresholds": {
+          "precisionAt5": "current >= baseline",
+          "ndcgAt10": "current > baseline",
+          "top10HitRate": "current >= 0.6"
+        }
+      }
+    },
+    "supersededProductEvalRuns": [
+      {
+        "source": "docs/development/m1.1-risk-fix-gate-product-eval-20260609-122102.json",
+        "generatedAt": "2026-06-09T12:22:40",
+        "current": {
+          "precisionAt5": 0.048,
+          "ndcgAt10": 0.1378,
+          "top10HitRate": 0.52
+        },
+        "note": "Superseded by final verification source gate 20260609-123148."
+      },
+      {
+        "source": "data/eval/product_eval_report_20260609_1130_script.json",
+        "generatedAt": "2026-06-09T11:32:02",
+        "current": {
+          "precisionAt5": 0.048,
+          "ndcgAt10": 0.1378,
+          "top10HitRate": 0.52
+        },
+        "note": "Superseded by final verification source gate 20260609-123148."
+      }
+    ],
+    "standardRerankEval": {
+      "source": "docs/development/m1.1-risk-fix-gate-rerank-eval-20260609-123148.json",
+      "baseline": {
+        "method": "bm25_char_bigram_baseline",
+        "queryCount": 160,
+        "evaluatedQueryCount": 160,
+        "corpusDocCount": 55192,
+        "indexedDocCount": 55192,
+        "precisionAt5": 0.4987,
+        "ndcgAt10": 0.4442,
+        "top10HitRate": null
+      },
+      "current": {
+        "status": "blocked_missing_candidate_corpus",
+        "precisionAt5": null,
+        "ndcgAt10": null,
+        "top10HitRate": null,
+        "reason": "LeCaRDv2 candidate case texts were not found; current rerank cannot be evaluated against qrels."
+      },
+      "releaseDecision": {
+        "decision": "PARTIAL_BLOCKED",
+        "enableNewRerank": false
+      }
+    },
+    "featureFlags": {
+      "env": {},
+      "envExample": {
+        "ENABLE_QUERY_REWRITE": false,
+        "ENABLE_WEIGHTED_RERANK": false,
+        "ENABLE_SUMMARY": false,
+        "ENABLE_EXPANDED_SEARCH": false,
+        "VITE_ENABLE_EXPANDED_SEARCH": false
+      },
+      "settingsDefaults": {
+        "ENABLE_QUERY_REWRITE": false,
+        "ENABLE_WEIGHTED_RERANK": false,
+        "ENABLE_SUMMARY": false,
+        "ENABLE_EXPANDED_SEARCH": false
+      },
+      "productEval": {
+        "global_ENABLE_WEIGHTED_RERANK": false,
+        "eval_current_weighted_rerank": true,
+        "feature_flag_changed": false
+      }
+    },
+    "performanceAndDependency": {
+      "source": "docs/development/m1.1-risk-fix-gate-performance-smoke-20260609-123148.json",
+      "warmP95Ms": 2553,
+      "warmP95Under3s": true,
+      "vectorErrorRate": 1.0,
+      "embeddingTimeoutCount": 5,
+      "bm25FallbackUsedCount": 5,
+      "degradedQueryCount": 5
+    }
+  },
+  "blockedItems": [
+    {
+      "id": "rerank_eval_not_comparable",
+      "status": "blocked",
+      "reason": "blocked_missing_candidate_corpus",
+      "evidence": "Current rerank cannot be evaluated against LeCaRDv2 qrels."
+    },
+    {
+      "id": "lecardv2_candidate_corpus_missing",
+      "status": "blocked",
+      "reason": "candidate_corpus_path_missing",
+      "evidence": "Preflight found no readable docs at the configured LeCaRDv2 candidate path."
+    },
+    {
+      "id": "product_eval_threshold_not_met",
+      "status": "blocked_for_new_rerank",
+      "reason": "current NDCG@10 and Top10 hit rate are below baseline or threshold",
+      "evidence": "current NDCG@10=0.1248 < baseline 0.134; current Top10 hit rate=0.44 < threshold 0.60 and baseline 0.48."
+    },
+    {
+      "id": "latest_dependency_degradation",
+      "status": "blocks_clean_attribution",
+      "reason": "latest product bad cases all include DEPENDENCY_UNAVAILABLE",
+      "evidence": "25/25 product bad cases include DEPENDENCY_UNAVAILABLE; performance smoke saw 5/5 embedding timeouts and BM25 fallback."
+    },
+    {
+      "id": "db_smoke_degraded",
+      "status": "degraded",
+      "reason": "connection_failed",
+      "evidence": "DB reachable=false; blocks future durable features but not internal basic search."
+    },
+    {
+      "id": "external_gray_scope",
+      "status": "no_go",
+      "reason": "version_scope_internal_only and db_degraded_for_future_non_search_features",
+      "evidence": "Final verification allows internal basic search only."
+    }
+  ],
+  "clusters": [
+    {
+      "label": "RECALL_MISS",
+      "supported": true,
+      "scope": "latest product bad cases",
+      "sourceLabels": [
+        "RECALL_MISS"
+      ],
+      "count": 13,
+      "denominator": 25,
+      "share": 0.52,
+      "evidenceQuality": "direct_label_with_dependency_caveat",
+      "queryIds": [
+        "product_q001",
+        "product_q002",
+        "product_q003",
+        "product_q004",
+        "product_q005",
+        "product_q006",
+        "product_q009",
+        "product_q010",
+        "product_q011",
+        "product_q012",
+        "product_q013",
+        "product_q014",
+        "product_q015"
+      ],
+      "sanitizedNote": "Relevant case ids did not appear in current top10 for these bad cases, but latest run also had dependency degradation."
+    },
+    {
+      "label": "QUERY_UNDERSTANDING_GAP",
+      "supported": true,
+      "scope": "latest product bad cases",
+      "sourceLabels": [],
+      "count": 0,
+      "denominator": 25,
+      "share": 0.0,
+      "evidenceQuality": "not_observed_in_existing_labels",
+      "queryIds": [],
+      "sanitizedNote": "Existing reports do not contain a direct query-understanding label. Future annotation should distinguish user wording loss from recall or rerank errors."
+    },
+    {
+      "label": "RERANK_OVERWEIGHT",
+      "supported": true,
+      "scope": "latest product bad cases",
+      "sourceLabels": [
+        "KEY_PARAGRAPH_MISMATCH"
+      ],
+      "count": 0,
+      "potentialSignalCount": 25,
+      "denominator": 25,
+      "share": null,
+      "evidenceQuality": "inferred_only_do_not_tune_yet",
+      "queryIds": [],
+      "sanitizedNote": "All latest bad cases had key-paragraph mismatch labels, but no direct RERANK_OVERWEIGHT label exists. Treat as a ranking hypothesis, not as a tuning instruction."
+    },
+    {
+      "label": "CAUSE_BIAS",
+      "supported": true,
+      "scope": "latest product bad cases",
+      "sourceLabels": [
+        "CASE_CAUSE_OVERWEIGHT"
+      ],
+      "count": 0,
+      "denominator": 25,
+      "share": 0.0,
+      "evidenceQuality": "not_observed_in_existing_labels",
+      "queryIds": [],
+      "sanitizedNote": "No existing latest bad case is labeled as case-cause overweight or cause bias."
+    },
+    {
+      "label": "KEY_PARAGRAPH_MISS",
+      "supported": true,
+      "scope": "latest product bad cases",
+      "sourceLabels": [
+        "KEY_PARAGRAPH_MISMATCH"
+      ],
+      "count": 25,
+      "denominator": 25,
+      "share": 1.0,
+      "evidenceQuality": "direct_mapped_label_with_dependency_caveat",
+      "queryIds": [
+        "product_q001",
+        "product_q002",
+        "product_q003",
+        "product_q004",
+        "product_q005",
+        "product_q006",
+        "product_q007",
+        "product_q008",
+        "product_q009",
+        "product_q010",
+        "product_q011",
+        "product_q012",
+        "product_q013",
+        "product_q014",
+        "product_q015",
+        "product_q016",
+        "product_q017",
+        "product_q018",
+        "product_q019",
+        "product_q020",
+        "product_q021",
+        "product_q022",
+        "product_q023",
+        "product_q024",
+        "product_q025"
+      ],
+      "sanitizedNote": "Existing note says non-relevant current top results received key-paragraph feature score; no raw case text included."
+    },
+    {
+      "label": "DATASET_MISMATCH",
+      "supported": true,
+      "scope": "rerank product smoke and standard eval comparability",
+      "sourceLabels": [
+        "DATASET_MISMATCH"
+      ],
+      "count": 5,
+      "denominator": 5,
+      "share": 1.0,
+      "evidenceQuality": "direct_label_in_rerank_product_smoke",
+      "queryIds": [],
+      "sanitizedNote": "Product retrieval returns JuDGE/Chroma/BM25 product case ids, while LeCaRDv2 qrels use candidate ids and no verified mapping exists."
+    },
+    {
+      "label": "DEPENDENCY_UNAVAILABLE",
+      "supported": true,
+      "scope": "latest product bad cases and rerank eval",
+      "sourceLabels": [
+        "DEPENDENCY_UNAVAILABLE"
+      ],
+      "count": 25,
+      "denominator": 25,
+      "share": 1.0,
+      "evidenceQuality": "direct_label",
+      "queryIds": [
+        "product_q001",
+        "product_q002",
+        "product_q003",
+        "product_q004",
+        "product_q005",
+        "product_q006",
+        "product_q007",
+        "product_q008",
+        "product_q009",
+        "product_q010",
+        "product_q011",
+        "product_q012",
+        "product_q013",
+        "product_q014",
+        "product_q015",
+        "product_q016",
+        "product_q017",
+        "product_q018",
+        "product_q019",
+        "product_q020",
+        "product_q021",
+        "product_q022",
+        "product_q023",
+        "product_q024",
+        "product_q025"
+      ],
+      "sanitizedNote": "Latest product eval bad cases all indicate dependency degradation; this blocks clean recall-vs-ranking attribution."
+    },
+    {
+      "label": "METRIC_REGRESSION",
+      "supported": true,
+      "scope": "latest product bad cases",
+      "sourceLabels": [
+        "METRIC_REGRESSION"
+      ],
+      "count": 2,
+      "denominator": 25,
+      "share": 0.08,
+      "evidenceQuality": "direct_label_with_dependency_caveat",
+      "queryIds": [
+        "product_q017",
+        "product_q024"
+      ],
+      "sanitizedNote": "Only two latest bad cases have direct metric regression labels, but aggregate NDCG@10 and Top10 hit rate regressed."
+    }
+  ],
+  "topProblemDistribution": [
+    {
+      "rank": 1,
+      "label": "DEPENDENCY_UNAVAILABLE",
+      "count": 25,
+      "denominator": 25,
+      "share": 1.0,
+      "interpretation": "Primary blocker for clean attribution in the frozen latest current run."
+    },
+    {
+      "rank": 2,
+      "label": "KEY_PARAGRAPH_MISS",
+      "count": 25,
+      "denominator": 25,
+      "share": 1.0,
+      "interpretation": "Strong product bad-case family, but latest run needs clean rerun before weight tuning."
+    },
+    {
+      "rank": 3,
+      "label": "RECALL_MISS",
+      "count": 13,
+      "denominator": 25,
+      "share": 0.52,
+      "interpretation": "Likely contributes to Top10 hit loss."
+    },
+    {
+      "rank": 4,
+      "label": "DATASET_MISMATCH",
+      "count": 5,
+      "denominator": 5,
+      "share": 1.0,
+      "interpretation": "Standard rerank/product qrels comparison remains non-comparable; scope is rerank product smoke, not product bad-case count."
+    },
+    {
+      "rank": 5,
+      "label": "METRIC_REGRESSION",
+      "count": 2,
+      "denominator": 25,
+      "share": 0.08,
+      "interpretation": "Direct latest per-query regression labels are fewer than aggregate metric regression, likely due to dependency overlay and label granularity."
+    },
+    {
+      "rank": 6,
+      "label": "QUERY_UNDERSTANDING_GAP",
+      "count": 0,
+      "denominator": 25,
+      "share": 0.0,
+      "interpretation": "Not supported by existing labels; requires future annotation fields."
+    },
+    {
+      "rank": 7,
+      "label": "CAUSE_BIAS",
+      "count": 0,
+      "denominator": 25,
+      "share": 0.0,
+      "interpretation": "Not supported by existing labels; requires future annotation fields."
+    }
+  ],
+  "annotationGaps": [
+    {
+      "field": "primaryFailureLayer",
+      "neededValues": [
+        "recall",
+        "ranking",
+        "query_understanding",
+        "evaluation_scope",
+        "runtime_dependency"
+      ],
+      "reason": "Existing labels are multi-label and latest run overlays dependency issues on every bad case."
+    },
+    {
+      "field": "candidatePresenceBeforeRerank",
+      "neededValues": [
+        "relevant_in_candidate_pool",
+        "relevant_missing_from_candidate_pool",
+        "unknown"
+      ],
+      "reason": "Needed to distinguish RECALL_MISS from ranking suppression."
+    },
+    {
+      "field": "rankBeforeWeightedRerank",
+      "neededValues": [
+        "integer_or_null"
+      ],
+      "reason": "Needed before concluding RERANK_OVERWEIGHT."
+    },
+    {
+      "field": "rankAfterWeightedRerank",
+      "neededValues": [
+        "integer_or_null"
+      ],
+      "reason": "Needed before concluding RERANK_OVERWEIGHT."
+    },
+    {
+      "field": "matchedFeatureSignals",
+      "neededValues": [
+        "case_cause",
+        "key_paragraph",
+        "legal_element",
+        "authority",
+        "vector",
+        "bm25"
+      ],
+      "reason": "Needed to separate CAUSE_BIAS from KEY_PARAGRAPH_MISS and other ranking issues."
+    }
+  ],
+  "conclusion": {
+    "primaryRegressionSource": "evaluation_scope_or_runtime_dependency",
+    "answer": "The observed frozen current regression is primarily from evaluation comparability/runtime dependency contamination, not cleanly attributable to recall or rerank weight changes.",
+    "recallVsRankingVsEval": {
+      "recall": "Secondary evidence: 13/25 latest product bad cases are labeled RECALL_MISS.",
+      "ranking": "Secondary hypothesis: 25/25 latest and prior product bad cases are labeled KEY_PARAGRAPH_MISMATCH, but direct RERANK_OVERWEIGHT evidence is missing.",
+      "evaluationScope": "Primary current issue: standard rerank eval is blocked and latest product current run is dependency-degraded."
+    },
+    "enableWeightedRerankAllowed": false,
+    "enableWeightedRerankReason": "Product current NDCG@10 and Top10 hit rate are below baseline or threshold; standard rerank eval is blocked; latest bad cases all include dependency degradation.",
+    "allowEnterM1_2_2": true,
+    "allowEnterM1_2_2Reason": "M1.2-2 is the appropriate next step because the evidence points to fixing comparable eval lines and clean reruns before algorithm changes.",
+    "doNotProceedTo": [
+      "M1.2-3 query understanding changes",
+      "M1.2-4 recall strategy changes",
+      "M1.2-5 rerank weighting changes"
+    ]
+  }
+}

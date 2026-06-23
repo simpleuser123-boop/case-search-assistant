@@ -1,0 +1,178 @@
+{
+  "version": "1.0",
+  "artifact": "m3-source-highlights",
+  "step": "M3-5",
+  "title": "相似片段高亮与关键段落定位",
+  "generated_at": "2026-06-13T03:54:36+08:00",
+  "entry_gates": {
+    "m3_1_reading_entry_contract": "GO",
+    "m3_2_holding_summary_closure": "GO",
+    "m3_3_issue_focus_elements": "GO",
+    "m3_4_fact_alignment": "GO",
+    "m2_2_source_anchor_closure": "GO",
+    "all_prerequisites_go": true,
+    "blocked": false
+  },
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": {
+      "required_default": false,
+      "changed": false,
+      "status": "unchanged_false"
+    },
+    "source_selection_changed": false,
+    "candidate_recall_changed": false,
+    "rerank_default_changed": false,
+    "m2_expanded_search_default_changed": false,
+    "online_sorting_changed": false
+  },
+  "implemented_contract": {
+    "structure": "similarity_highlights",
+    "api_fields": [
+      "highlight_id",
+      "case_id",
+      "source_chunk_id",
+      "anchor_type",
+      "related_module",
+      "display_status",
+      "degrade_reason"
+    ],
+    "required_anchor_fields": ["case_id", "source_chunk_id"],
+    "related_modules": ["holding_summary", "issue_focus", "key_elements"],
+    "anchor_source": "case_detail_source_chunks",
+    "anchor_type_default": "detail_chunk",
+    "fabricates_source_chunk_id": false,
+    "fake_anchor_binding": false,
+    "case_side_ai_content": false,
+    "ui_display_rule": "source_location_only_no_body_rewrite",
+    "derives_only_from_generated_anchored_sections": true,
+    "max_highlights_cap": 12,
+    "dedupe_within_module": true,
+    "cross_case_anchor_filtered": true
+  },
+  "runtime_boundaries": {
+    "affects_main_result_sorting": false,
+    "affects_source_selection": false,
+    "affects_candidate_recall": false,
+    "uses_qrels_label_relevance_queryid_caseid_special_case": false,
+    "case_id_special_case_in_highlight": false,
+    "highlight_status_influences_ranking": false,
+    "implements_m3_6_or_later": false
+  },
+  "degrade_policy": {
+    "missing_source_anchor": "degraded_safe_state",
+    "source_chunk_unavailable": "degraded_safe_state",
+    "highlight_target_missing": "degraded_safe_state",
+    "navigation_failed": "degraded_safe_state",
+    "reason_codes": [
+      "missing_source_anchor",
+      "source_chunk_unavailable",
+      "highlight_target_missing",
+      "navigation_failed"
+    ],
+    "highlight_failure_breaks_detail_page": false,
+    "highlight_failure_breaks_main_results": false,
+    "lazy_or_local_refresh_allowed": true
+  },
+  "logging_policy": {
+    "logs_source_text": false,
+    "log_report_json_fields": ["count", "anchor_type", "related_module", "status", "reason_code", "by_module", "by_status", "by_reason"],
+    "frontend_nav_log_fields": ["event", "related_module", "anchor_type", "status", "reason_code", "count"],
+    "frontend_nav_log_excludes_case_id": true,
+    "frontend_nav_log_excludes_body": true
+  },
+  "frontend_navigation": {
+    "holding_summary_to_source_chunk": true,
+    "issue_focus_to_source_chunk": true,
+    "key_elements_to_source_chunk": true,
+    "fact_alignment_to_source_chunk": true,
+    "source_chunk_anchor_element_id_scheme": "source-chunk-<encoded_chunk_id>",
+    "navigation_never_throws_to_caller": true,
+    "safe_degrade_on_missing_target": true
+  },
+  "modified_files": {
+    "m3_5_feature_code_pre_existing_from_prior_session": [
+      "apps/api/app/summary/highlights.py",
+      "apps/api/app/api/cases.py",
+      "apps/api/app/schemas.py",
+      "apps/web/src/lib/sourceHighlights.ts",
+      "apps/web/src/components/details/CaseDetailDrawer.tsx",
+      "apps/api/tests/test_m3_source_highlights.py",
+      "apps/web/src/lib/sourceHighlights.test.ts"
+    ],
+    "restored_truncated_on_disk_this_session": [
+      "apps/web/src/components/details/CaseDetailDrawer.tsx",
+      "apps/web/src/types/search.ts"
+    ],
+    "restore_note": "Two files were truncated mid-token on the disk mount (CaseDetailDrawer.tsx at L1311, search.ts at L236), blocking esbuild transform and tsc. Restored to intended complete content; no M3-5 logic altered.",
+    "reports": [
+      "docs/development/m3-source-highlights-20260613-035436.md",
+      "docs/development/m3-source-highlights-20260613-035436.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_summary_service.py tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py tests/test_m3_source_highlights.py",
+      "status": "passed",
+      "passed_count": 29,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; npm run test (vitest run)",
+      "status": "passed",
+      "passed_count": 63,
+      "failed_count": 0,
+      "test_files": 6
+    },
+    {
+      "command": "cd apps/web; tsc -b (via npm run build)",
+      "status": "passed",
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; vite build",
+      "status": "passed",
+      "note": "103 modules transformed; default-outDir npm run build hit EPERM unlinking a Windows-created dist on the Linux mount (environment artifact, unrelated to code). Verified by building to a clean outDir: production bundle built successfully.",
+      "failed_count": 0
+    }
+  ],
+  "browser_acceptance": {
+    "live_browser_available": false,
+    "reason_code": "PLAYWRIGHT_BROWSER_NOT_INSTALLED",
+    "status": "blocked_non_required_substituted_by_jsdom",
+    "jsdom_acceptance_coverage": {
+      "detail_drawer_opens": true,
+      "source_chunk_id_and_open_original_link_render": true,
+      "holding_summary_visible_with_source_entry": true,
+      "issue_focus_and_key_elements_visible_with_source_entry": true,
+      "view_source_chunk_buttons_present": true,
+      "unanchored_content_hidden": true,
+      "detail_failure_keeps_results_visible_and_retries": true,
+      "escape_closes_drawer": true,
+      "highlight_navigation_unit_covers_all_four_reason_codes": true
+    }
+  },
+  "body_leakage_check": {
+    "highlight_payload_contains_body_text": false,
+    "report_json_contains_body_text": false,
+    "logs_contain_body_text": false,
+    "test_snapshot_contains_body_text": false,
+    "dedicated_no_leak_test_present": true,
+    "this_artifact_contains_body_content": false
+  },
+  "acceptance": {
+    "highlight_anchor_min_case_id_and_source_chunk_id": true,
+    "module_to_source_chunk_navigation_usable": true,
+    "safe_degrade_when_highlight_unavailable": true,
+    "no_body_leak_in_report_json_logs_snapshots": true,
+    "does_not_affect_base_search_or_detail_base_render": true
+  },
+  "stop_loss_triggers": {
+    "highlight_anchor_unstable": false,
+    "body_text_leak": false,
+    "highlight_failure_breaks_detail_or_main_results": false
+  },
+  "go_no_go": {
+    "status": "GO",
+    "next_session_title": "类案检索助手 M3-6 案例对比视图受控入口"
+  }
+}

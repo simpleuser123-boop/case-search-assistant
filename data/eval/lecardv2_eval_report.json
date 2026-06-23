@@ -1,0 +1,29 @@
+{
+  "version": "lecardv2_day0_v1",
+  "source_root": "C:\\Users\\yyl\\Downloads\\LeCaRDv2-main",
+  "split": "test",
+  "query_count": 160,
+  "qrels_count": 4795,
+  "queries_with_relevant_labels": 159,
+  "label_distribution": {
+    "0": 251,
+    "1": 648,
+    "2": 3230,
+    "3": 666
+  },
+  "term_mapping_count": 20,
+  "candidate_corpus": {
+    "found": true,
+    "path": "C:\\Users\\yyl\\Downloads\\LeCaRDv2-main\\candidate",
+    "file_count": 1,
+    "formats": [
+      ".tar"
+    ]
+  },
+  "day0_45_gate": {
+    "has_at_least_20_queries": true,
+    "has_at_least_10_labeled_queries": true,
+    "has_at_least_15_term_mappings": true,
+    "can_run_retrieval_baseline": true
+  }
+}

@@ -1,0 +1,5 @@
+
+# E3-3 transient test sqlite scratch (VM-locked, harmless)
+test_e3.db
+test_e3.db-*
+*.db

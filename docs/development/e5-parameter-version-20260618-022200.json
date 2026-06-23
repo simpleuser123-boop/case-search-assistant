@@ -1,0 +1,128 @@
+{
+  "artifact": "e5-parameter-version",
+  "step": "E5-7",
+  "generated_at": "2026-06-18T02:22:00+08:00",
+  "milestone": "E 系列多产品生态全链路闭环（E5 法条法规检索）收官",
+  "feature_flags_defaults": {
+    "ENABLE_STATUTE_SEARCH": false,
+    "VITE_ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false,
+    "VITE_ENABLE_INTAKE": false,
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false,
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "new_default_true_business_flag_added": false,
+    "new_external_business_flag_added": false
+  },
+  "contract_objects": {
+    "count": 5,
+    "list": ["CandidateRef", "SearchProfile", "AnchorRef", "ShareGrant", "StatuteRef"],
+    "statute_ref_whitelist": [
+      "statute_id", "law_name", "article_no", "statute_anchors",
+      "article_text", "source_corpus", "effective_status", "related_case_refs"
+    ],
+    "statute_anchor_whitelist": ["text_id", "law_name", "article_no", "anchor_type"],
+    "candidate_ref_whitelist_7_fields_unchanged_by_e5": true,
+    "extra_policy": "forbid"
+  },
+  "product_packages": {
+    "count": 2,
+    "list": ["intake", "statute"],
+    "forbidden_not_present": ["drafting", "casebook"]
+  },
+  "routers": {
+    "include_router_count": 14,
+    "statute_endpoints": [
+      "POST /api/statute/search",
+      "POST /api/statute/by-case",
+      "POST /api/statute/cases-by-statute"
+    ],
+    "statute_disabled_status_code": 403,
+    "statute_disabled_code": "STATUTE_SEARCH_DISABLED"
+  },
+  "kernel_service": {
+    "module": "app/kernel/rag/statute_search_service.py",
+    "entries": ["search_statutes", "statutes_by_case", "cases_by_statute"],
+    "drop_reason_codes": ["STATUTE_REF_DROPPED_NO_ANCHOR", "STATUTE_CASE_REF_DROPPED_NO_ANCHOR"],
+    "default_corpus_impl": "JsonlStatuteCorpus (read-only)",
+    "corpus_dir_env": "STATUTE_CORPUS_DIR (内部数据目录，非对外业务 flag)"
+  },
+  "statute_corpus_and_index": {
+    "statutes_count": 182,
+    "statute_chunks_count": 182,
+    "anchor_completeness_rate_pct": 100.0,
+    "article_text_present_rate_pct": 0.0,
+    "mode": "catalog (article_text=null，绝不杜撰；seed 模式已实现待种子)",
+    "source_corpus_tag": "case_law_articles_catalog",
+    "law_name": "中华人民共和国刑法",
+    "coverage": {"criminal": "covered (182 articles)", "civil": "GAP", "administrative": "GAP"},
+    "statute_collection": "statute_chunks_bge_m3_v1",
+    "case_collection": "case_chunks_bge_m3_v1",
+    "isolated": true,
+    "persist_dir_default": "<CHROMA_PERSIST_DIR>_statute 或 CHROMA_STATUTE_PERSIST_DIR",
+    "case_statute_links": {
+      "linked_cases": 2505,
+      "coverage_pct": 100.0,
+      "total_refs": 10792,
+      "distinct_statutes": 182,
+      "source": "data/processed/cases.jsonl law_articles (read-only)",
+      "qrels_used_in_runtime": false
+    }
+  },
+  "case_products_integrity": {
+    "cases_jsonl_sha256": "8fcb2ec40ee3c8c9df12041fa414033c3dfd78e5f42d355cd3c747ca2d4a27b1",
+    "chunks_jsonl_sha256": "8f391e681d5c9be697cbc5cc99307869e089a4ce0fd0480c59671374ee42ceee",
+    "unchanged_vs_e5_2_baseline": true,
+    "case_chroma_rebuilt": false,
+    "eval_baseline_changed": false
+  },
+  "behavior_zero_change": {
+    "api_search": "未改",
+    "api_search_expand": "未改",
+    "e3_internal_search_service": "未改",
+    "intake_endpoint": "未改",
+    "ranking_recall_source_selection_rerank_defaults": "未改"
+  },
+  "verification_environment": {
+    "authoritative_backend": {"venv": ".venv311", "python": "3.11.9", "pytest": "8.2.0"},
+    "vm_smoke": {"python": "3.10.12", "backend_deps_present": false, "note": "VM 仅前端 build/test 与静态扫描权威；后端 pytest 须 host"},
+    "frontend": {"vite": "5.2.11", "vitest": "1.6.0", "build_modules": 123}
+  },
+  "e5_7_test_reconciliation": {
+    "file": "apps/api/tests/test_e5_statute_contracts.py",
+    "scope": "纯测试调和，零业务代码改动",
+    "changes": [
+      "PRODUCT_PACKAGES=(statute,drafting,casebook) → FORBIDDEN_PRODUCT_PACKAGES=(drafting,casebook)",
+      "test_no_statute_drafting_casebook_product_package → test_no_drafting_casebook_product_package (statute 合法放行)",
+      "test_include_router_count_still_13 (断言 13) → test_include_router_count_is_14 (断言 14)",
+      "test_no_statute_endpoint_registered (断言不接线) → test_statute_router_wired_post_e5_4 (断言已接线)",
+      "模块 docstring 第 15 行 + §8 section header 同步更新为 E5-4 后口径"
+    ],
+    "host_rerun_required": false,
+    "host_rerun_confirmed_by": "codex host .venv311"
+  },
+  "codex_host_rerun_results": {
+    "runner": "codex host .venv311 (Py3.11.9)",
+    "three_known_nameerror_units": "3 passed",
+    "e5_backend_full_suite": "227 passed",
+    "e1_e3_regression": "178 passed",
+    "e4_regression": "126 passed",
+    "historical_core_smoke": "60 passed",
+    "test_e5_statute_api_run_extra": "25 passed",
+    "include_router_count": 14,
+    "frontend_build": "PASS, 123 modules transformed",
+    "statute_flags_default_false": true,
+    "only_warning": "Starlette PendingDeprecationWarning (非阻塞)",
+    "codex_test_only_fixups": [
+      "tests/test_e5_statute_api.py:454",
+      "tests/test_e5_statute_api_run.py:454",
+      "tests/test_e3_internal_search_boundaries.py:375",
+      "tests/test_e4_intake_boundaries.py:640"
+    ]
+  },
+  "overall": "GO",
+  "allow_enter_e6": true,
+  "next_step_title": "类案检索助手 E6-1 文书工作台入口合同"
+}

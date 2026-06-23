@@ -1,0 +1,130 @@
+{
+  "artifact": "m5-release-gate",
+  "milestone": "M5 商业化扩展收官（M5-10 验收）",
+  "step": "M5-10",
+  "generated_at": "2026-06-15T06:33:29",
+  "based_on": {
+    "design_doc": "落地设计文档/15-M5商业化扩展分步骤文档.md",
+    "m4_8_final_verification": "docs/development/m4-final-verification-20260614-102758.md",
+    "m4_8_release_gate": "docs/development/m4-release-gate-20260614-102758.json"
+  },
+  "m4_8_entry_evidence": {
+    "basic_search_go": true,
+    "m4_workflow_sedimentation_go": true,
+    "m5_entry_go": true,
+    "enable_weighted_rerank_default": false,
+    "six_m4_flags_default_off": true,
+    "rollback_required": false,
+    "all_m4_steps_go": true
+  },
+  "m5_steps": [
+    {"step": "M5-1", "title": "商业化扩展入口合同", "artifact": "m5-commercial-entry-contract-20260614-030248.json", "status": "GO"},
+    {"step": "M5-2", "title": "账号体系与认证骨架", "artifact": "m5-account-system-20260614-044809.json", "status": "GO"},
+    {"step": "M5-3", "title": "团队空间与数据隔离", "artifact": "m5-team-workspace-isolation-20260614-055955.json", "status": "GO"},
+    {"step": "M5-4", "title": "权限分级", "artifact": "m5-permission-tiering-20260614-065238.json", "status": "GO"},
+    {"step": "M5-5", "title": "沉淀同步与团队共享", "artifact": "m5-sync-and-sharing-20260614-080403.json", "status": "GO"},
+    {"step": "M5-6", "title": "批量导入", "artifact": "m5-bulk-import-20260614-093728.json", "status": "GO"},
+    {"step": "M5-7", "title": "F19 倾向分析数据门禁(v2, PASS)", "artifact": "m5-tendency-data-gate-20260614-134042.json", "status": "GO", "gate_overall_status": "pass", "f19_can_go_live": true},
+    {"step": "M5-8", "title": "F19 展示与边界", "artifact": "m5-tendency-analysis-20260615-024038.json", "status": "GO"},
+    {"step": "M5-9", "title": "商业化闭环(套餐/试用/计费/续费意愿)", "artifact": "m5-billing-20260615-042028.json", "status": "GO"}
+  ],
+  "all_m5_steps_go": true,
+  "test_results": {
+    "backend": {
+      "candidate_comparison_robustness_rollback_health": 41,
+      "fallback_summary_performance_smoke": 19,
+      "entry_account_isolation_permission": 66,
+      "sharing_bulk_team_reuse": 54,
+      "tendency_gate_analysis_billing": 66,
+      "total_passed": 246,
+      "total_failed": 0,
+      "command": "DATABASE_URL=sqlite python3 -m pytest <指定集+M5 focused> -q"
+    },
+    "frontend": {
+      "components": 24,
+      "lib": 130,
+      "services": 32,
+      "pages": 89,
+      "total_passed": 275,
+      "total_failed": 0,
+      "build_modules": 118,
+      "build_status": "clean",
+      "note": "npm run test 全量 >44s VM 超时，按记忆 recipe 分批运行(≤5文件/批)，逐批 exit=0"
+    }
+  },
+  "hard_gates": {
+    "server_persistence_whitelist_only": true,
+    "m5_table_count": 16,
+    "no_body_columns_in_persistence": true,
+    "no_credential_columns_in_persistence": true,
+    "password_one_way_hash_only": true,
+    "session_token_hash_only_raw_never_persisted": true,
+    "payment_receipt_ref_hash_only_no_card_or_account": true,
+    "multi_tenant_isolation_enforced_at_sql_layer": true,
+    "single_filter_point_tenant_visibility_clause": true,
+    "cross_team_cross_user_read_excluded": true,
+    "object_level_access_control_enforced": true,
+    "write_validated_against_tenant_context": true,
+    "over_privilege_read_write_rejected_and_audited": true,
+    "audit_uses_hashed_actor_and_object_ids": true,
+    "sharing_default_private_explicit_grant_only": true,
+    "no_tool_credential_autofill_or_storage": true,
+    "user_raw_fact_not_uploaded_to_server_persistence": true,
+    "f19_refs_case_id_only_no_body": true,
+    "f19_double_gate_flag_and_data_gate": true,
+    "f19_runtime_fail_closed_clean_assert": true,
+    "f19_no_individual_prediction_probability_or_definitive_conclusion": true,
+    "m5_packages_do_not_import_rerank_retrieval_search": true,
+    "main_sorting_unchanged": true,
+    "source_selection_unchanged": true,
+    "rerank_default_switch_unchanged": true,
+    "qrels_label_relevance_not_in_account_team_sharing_import_tendency_or_sorting": true,
+    "query_id_case_id_not_used_for_runtime_special_casing": true,
+    "weighted_rerank_default_false": true,
+    "six_m4_flags_default_false": true,
+    "seven_m5_flags_default_false": true,
+    "env_example_no_flag_defaulted_true": true
+  },
+  "scans": {
+    "body_leakage_hits": 0,
+    "plaintext_credential_or_token_hits": 0,
+    "credential_scan_false_positive_resolved": "region_missing_rate 浮点小数位被卡号正则误命中，已确认非凭据",
+    "forbidden_absolute_phrasing_hits": 0,
+    "win_loss_probability_or_definitive_legal_conclusion_hits": 0
+  },
+  "performance_and_rollback": {
+    "warm_p95_ms": 820,
+    "warm_p95_under_3s": true,
+    "main_chain_whiteout_on_m5_capability": false,
+    "each_m5_flag_closeable": true,
+    "m5_flag_off_returns_403_and_prior_milestone_state": true,
+    "m4_flag_rollback_tested_with_event_logging": true,
+    "weighted_rerank_and_m4_flags_not_default_enabled": true
+  },
+  "no_go_triggers": {
+    "body_leak_in_any_artifact_log_export_or_snapshot": false,
+    "plaintext_credential_token_card_account_cvv_or_gov_id_persisted_or_logged": false,
+    "tool_proxy_fill_or_store_payment_or_login_credential": false,
+    "cross_tenant_data_read": false,
+    "object_level_over_privilege_unblocked": false,
+    "default_cross_user_visibility_or_non_private_sharing": false,
+    "user_raw_fact_uploaded_to_server_persistence": false,
+    "share_import_report_f19_reference_without_source": false,
+    "f19_live_when_gate_failed_or_emits_prediction": false,
+    "absolute_coverage_phrasing": false,
+    "qrels_label_relevance_entered_runtime": false,
+    "query_id_case_id_special_casing": false,
+    "any_m5_flag_or_weighted_rerank_or_m4_flag_default_on": false,
+    "m4_8_core_gate_regression": false,
+    "m5_capability_unrollbackable_or_main_chain_down": false
+  },
+  "conclusions": {
+    "basic_search_continues_available": "GO",
+    "m5_commercial_expansion_complete": "GO",
+    "commercial_readiness": "GO"
+  },
+  "next_milestone": {
+    "title": "类案检索助手 M6-1 运营与规模化入口合同",
+    "scope": "数据规模化迁移 Milvus、F19 持续扩样、商业化指标跟踪与迭代"
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "step": "E7-2",
+  "title": "casebook 后端产品包、gated 端点与 CaseFolder 持久化",
+  "timestamp": "20260622-082927",
+  "baseline": "e7-casebook-contract-20260622-035431.json (E7-1 GO, allow_enter_e7_2=true)",
+  "overall": "GO",
+  "conditional_reason": null,
+  "host_closure": "VM 阶段因无 pydantic/sqlmodel/fastapi 且无网络只给出 CONDITIONAL_GO；本次已在 host .venv311 完成 E7-2 后端 focused、E1/E2、E3、E4/E5、E6、smoke 与前端 drafting export 替代验收，全部通过，收口为 GO。",
+  "allow_enter_e7_3": true,
+  "scope": {
+    "builds_product_package": true,
+    "package": "app/casebook/ (E 系列第 4 个产品能力包)",
+    "adds_gated_endpoints": true,
+    "adds_persistence": true,
+    "no_frontend": true,
+    "no_sharing_toggle_interaction": "E7-4 细化；本步持久层已预留 visibility 字段且 PUT 可写",
+    "include_router": "15 -> 16 (仅新增 casebook_router)"
+  },
+  "files": {
+    "added": [
+      "apps/api/app/casebook/__init__.py",
+      "apps/api/app/casebook/models.py",
+      "apps/api/app/casebook/store.py",
+      "apps/api/app/casebook/schemas.py",
+      "apps/api/app/casebook/service.py",
+      "apps/api/app/casebook/router.py",
+      "apps/api/tests/test_e7_casebook_api.py",
+      "docs/development/e7-casebook-api-20260622-082927.md",
+      "docs/development/e7-casebook-api-20260622-082927.json"
+    ],
+    "modified": [
+      "apps/api/app/main.py (新增 casebook_router 接线; drafting 改为从 app.drafting.router 直接导入，避免包级 router 遮蔽子模块)",
+      "apps/api/app/drafting/__init__.py (router re-export 改为 drafting_router，避免 import app.drafting.router 得到 APIRouter 对象)",
+      "apps/api/app/drafting/service.py (创建/更新组装阶段补服务端占位 draft_id，落库仍由 store 生成真实 ID)",
+      "apps/api/app/drafting/router.py (拒绝响应文案改为结构性提示，避免回显敏感类别词)",
+      "apps/api/tests/test_e6_drafting_api.py (文本生成扫描剔除 docstring/注释后检查可执行代码)",
+      "apps/api/tests/test_e6_drafting_boundaries.py (E7-2 基线：casebook 已合法存在，include_router=16)",
+      "apps/api/tests/test_e6_drafting_contracts.py (E7-2 基线：casebook 已合法存在，include_router=16)",
+      "apps/api/tests/test_e2a_kernel_boundary.py (E7-2 产品包基线上移，产品包互不 import 规则不放宽)",
+      "apps/api/tests/test_e5_statute_contracts.py (E7-2 产品包/include_router 基线上移)",
+      "docs/development/e7-casebook-api-20260622-082927.md (host GO 收口)",
+      "docs/development/e7-casebook-api-20260622-082927.json (host GO 收口)",
+      "落地设计文档/22-E7案件协作工作台分步骤系统提示词文档.md (E7-2 执行结论小节，Claude 阶段已修改)"
+    ],
+    "config_note": "ENABLE_CASEBOOK 早在 config.py 已定义(默认 false),本步未新增任何 flag"
+  },
+  "endpoints": {
+    "prefix": "/api/casebook",
+    "all_gated_by": "ENABLE_CASEBOOK (默认 false -> 403 CASEBOOK_DISABLED 安全降级)",
+    "all_require_login": true,
+    "list": [
+      {"method": "POST", "path": "/folders", "desc": "创建 CaseFolder(默认 visibility=private),出已收敛对象零正文"},
+      {"method": "GET", "path": "/folders", "desc": "列出当前用户/团队可见 CaseFolder(对象级鉴权+租户隔离+visibility 过滤)"},
+      {"method": "GET", "path": "/folders/{case_folder_id}", "desc": "读取单个(越权 404)"},
+      {"method": "PUT", "path": "/folders/{case_folder_id}", "desc": "更新归集引用/短字段(仍只存元数据,经 sanitize;非 owner 404;本步可写 visibility)"}
+    ],
+    "request_schema": "extra=forbid 第一道闸 + service sanitize_case_folder 第二道闸",
+    "error_codes": ["CASEBOOK_DISABLED", "CASE_FOLDER_REJECTED", "CASEBOOK_REQUIRES_LOGIN", "CASE_FOLDER_NOT_FOUND"]
+  },
+  "persistence_columns": {
+    "table": "case_folder",
+    "columns": [
+      "case_folder_id (PK)", "owner_user_id (index)", "team_id (index,nullable)",
+      "visibility (default private)", "search_profile_summary (JSON,脱敏白名单子集,nullable)",
+      "candidate_refs (JSON,带锚点引用)", "draft_descriptors (JSON,带锚点引用)",
+      "title (短字段)", "note (短字段)", "tag (短字段)",
+      "status (枚举)", "reason_code (短)", "created_at", "updated_at"
+    ],
+    "no_body_columns": true,
+    "no_raw_case_columns": true,
+    "no_credential_columns": true,
+    "proof": "models.py grep: 14 列全为元数据/多租户/引用(JSON)/短字段;NO_BODY_COLUMNS;无 password/token/secret/credential 列"
+  },
+  "assemble_not_draft": {
+    "service_text_generation": "ZERO — service 无任何 LLM/模型/检索客户端 import;assemble_case_folder 只调 sanitize_case_folder 做白名单清洗 + 锚点收敛",
+    "no_case_summary": true,
+    "no_conclusion": true,
+    "no_win_loss_prediction": true,
+    "anchor_discipline": "candidate_refs/draft_descriptors 逐项收敛,缺锚点 fail-closed 丢弃;search_profile_summary 收敛为 SearchProfile 脱敏白名单子集",
+    "double_guard": "出库再经 sanitize_case_folder(双保险,即便库内被异常写入也 fail-closed 零正文)"
+  },
+  "import_boundary_proof": {
+    "ast_scan": "app/casebook/*.py 全部 import 扫描",
+    "forbidden_product_imports": [],
+    "forbidden_retrieval_imports": [],
+    "deep_kernel_imports": [],
+    "kernel_imports_actual": ["app.kernel.guardrails", "app.kernel.identity"],
+    "all_app_imports": ["app.api.errors", "app.casebook.*", "app.core.config", "app.core.db", "app.core.logging", "app.kernel.guardrails", "app.kernel.identity", "app.schemas"],
+    "conclusion": "casebook 只消费 app.kernel 顶层公开面(guardrails+identity)+既有基础设施(core.db/config/logging/api.errors/schemas);不 import intake/statute/drafting;不直连 retrieval/rerank/summary/query_processing;契约类型(CaseFolder/sanitize_case_folder)经内核 guardrails 公开面取,绝不 from app.intake/app.drafting import"
+  },
+  "auth_tenant_isolation": {
+    "tenant_clause": "_tenant_clause 行级隔离(单用户私有态 + 团队态 team+visibility=team),与 DraftDescriptorRow 同口径",
+    "object_level_authz": "update_owned 按 owner_user_id 取行,非 owner 取不到 -> None -> 404;get_visible/list_visible 强制租户过滤,无无过滤读取路径",
+    "default_visibility": "private (创建恒 private;PUT 可写 visibility 但须满足租户一致性,team 可见性要求团队上下文)",
+    "cross_user": "跨用户列表为空 / 读取 404 / 更新 404,不泄露他人 folder 存在性"
+  },
+  "degrade_behavior": {
+    "disabled": "ENABLE_CASEBOOK=false -> 所有端点 403 CASEBOOK_DISABLED,不泄露内部信息",
+    "login_required": "flag 开启但未登录 -> 401 CASEBOOK_REQUIRES_LOGIN"
+  },
+  "logging_privacy": {
+    "logged": ["user_id_hash", "case_folder_id_hash", "candidate_count", "draft_count", "has_summary(bool)", "note_meta(len+hash)", "reason_code"],
+    "never_logged": ["裁判正文", "起草正文", "原始案情", "note 全文"]
+  },
+  "privacy_scan": {
+    "judgment_body_data_literals": 0,
+    "draft_body_data_literals": 0,
+    "raw_case_data_literals": 0,
+    "outcome_verdict_data_literals": 0,
+    "pii_columns": 0,
+    "credential_columns": 0,
+    "note": "store.py 含 CASE_FOLDER_FORBIDDEN_PERSIST_KEYS 拒绝键字面量(denylist,非数据列/非数据键),同 E6 drafting 范式;schemas/router/models 无任何正文型数据键"
+  },
+  "flags_default_false": ["ENABLE_CASEBOOK", "ENABLE_INTAKE", "ENABLE_STATUTE_SEARCH", "ENABLE_DRAFTING", "ENABLE_ECOSYSTEM", "ENABLE_INTAKE_AI_EXTRACTION", "ENABLE_WEIGHTED_RERANK"],
+  "include_router": 16,
+  "include_router_proof": "host Read 确认 main.py 117-132 行共 16 个 include_router,新增第 132 行 app.include_router(casebook_router);VM grep 因 stale-mount 计数不可信,以 host Read 为准",
+  "verification": {
+    "vm_py_compile": "models/store/schemas/router/__init__ 编译通过;service.py VM 挂载 stale 截断(162 行),host Read 实盘 164 行完整,/tmp heredoc 结构校验 __all__ 闭合无语法错",
+    "vm_ast_boundary": "PASS — 无禁止产品包/检索底层 import,无深引内核私有",
+    "vm_textgen_marker_scan": "PASS — service/store/router 无 rerank/llm/openai/deepseek/completion/internalsearchservice/statutesearchservice/draftingservice 标记(原 docstring 含 rerank/LLM 已改中文等价词)",
+    "vm_privacy_scan": "PASS — 全 0 正文/原始案情/胜负/凭据数据键或列",
+    "host_authoritative": {
+      "environment": "host .venv311 (Python 3.11.9 / pydantic 2.7.1 / pytest)",
+      "database_url": "sqlite:///./test_e7.db",
+      "results": [
+        {
+          "command": "python -m py_compile apps/api/app/drafting/service.py apps/api/app/drafting/router.py apps/api/app/drafting/__init__.py apps/api/app/main.py apps/api/tests/test_e6_drafting_api.py apps/api/tests/test_e6_drafting_boundaries.py apps/api/tests/test_e6_drafting_contracts.py apps/api/tests/test_e2a_kernel_boundary.py apps/api/tests/test_e5_statute_contracts.py",
+          "result": "PASS"
+        },
+        {
+          "command": "pytest tests/test_e7_casebook_api.py tests/test_e7_casebook_contracts.py",
+          "result": "81 passed, 1 warning"
+        },
+        {
+          "command": "pytest tests/test_e3_internal_search_contracts.py tests/test_e3_internal_search_service.py tests/test_e3_search_api_parity.py tests/test_e3_internal_search_boundaries.py",
+          "result": "86 passed, 1 warning"
+        },
+        {
+          "command": "pytest tests/test_e4_intake_api.py tests/test_e4_intake_boundaries.py tests/test_e5_statute_api.py tests/test_e5_statute_boundaries.py",
+          "result": "203 passed, 1 warning"
+        },
+        {
+          "command": "pytest tests/test_e6_drafting_api.py tests/test_e6_drafting_boundaries.py tests/test_e6_drafting_contracts.py",
+          "result": "140 passed, 1 warning"
+        },
+        {
+          "command": "pytest tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e2b_shim_equivalence.py",
+          "result": "98 passed"
+        },
+        {
+          "command": "pytest tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py tests/test_health.py tests/test_performance_smoke.py",
+          "result": "20 passed, 1 warning"
+        },
+        {
+          "command": "pytest tests/test_e5_statute_contracts.py",
+          "result": "54 passed"
+        },
+        {
+          "command": "Select-String count app.include_router in apps/api/app/main.py",
+          "result": "16"
+        },
+        {
+          "command": "npm test -- draftingExport.test.ts",
+          "result": "15 passed"
+        }
+      ]
+    },
+    "e6_export_note": {
+      "backend_pytest_file": "apps/api/tests/test_e6_drafting_export.py",
+      "backend_pytest_file_exists": false,
+      "frontend_substitute": "apps/web/src/lib/draftingExport.test.ts",
+      "frontend_substitute_result": "15 passed"
+    }
+  },
+  "acceptance": {
+    "package_built_kernel_only": true,
+    "endpoints_gated_default_degrade": true,
+    "aggregates_dehydrated_summary_anchored_refs_short_fields": true,
+    "zero_judgment_draft_body": true,
+    "persistence_metadata_refs_short_only": true,
+    "multi_tenant_object_authz_default_private": true,
+    "no_behavior_change_search_e3_intake_statute_drafting": true,
+    "include_router_16": true
+  },
+  "next_step": "类案检索助手 E7-3 前端案件协作工作台页"
+}

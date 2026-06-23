@@ -1,0 +1,100 @@
+{
+  "step": "E7-3",
+  "title": "前端案件协作工作台页",
+  "timestamp": "20260622-111536",
+  "baseline": "e7-casebook-api-20260622-082927 (E7-2 GO, allow_enter_e7_3=true)",
+  "overall": "GO",
+  "allow_enter_e7_4": true,
+  "next_step": "类案检索助手 E7-4 共享与协作权限",
+  "scope": {
+    "frontend_only": true,
+    "no_backend_contract_change": true,
+    "no_search_or_ranking_change": true,
+    "sharing_toggle_interaction": "E7-4 (本步只只读展示 visibility)",
+    "collect_not_draft": true
+  },
+  "files": {
+    "added": [
+      "apps/web/src/services/casebookApi.ts",
+      "apps/web/src/pages/CasebookPage.tsx",
+      "apps/web/src/services/casebookApi.test.ts",
+      "apps/web/src/pages/CasebookPage.test.tsx",
+      "docs/development/e7-casebook-web-20260622-111536.md",
+      "docs/development/e7-casebook-web-20260622-111536.json"
+    ],
+    "modified": [
+      "apps/web/src/config/featureFlags.ts (新增 isCasebookEnabled, 直读 VITE_ENABLE_CASEBOOK 默认 false, 不走 readM1M5UiFlag)",
+      "apps/web/src/config/featureFlags.test.ts (E7 casebook flag 默认 false + 正交性 4 用例)",
+      "apps/web/src/app/router.tsx (gated 注册 /casebook 路由)",
+      "apps/web/src/pages/HomePage.tsx (gated 渲染协作工作台入口)",
+      "apps/web/src/pages/SearchPage.tsx (类案结果页 gated 渲染协作工作台入口)"
+    ]
+  },
+  "flag_gating": {
+    "flag": "VITE_ENABLE_CASEBOOK",
+    "default": false,
+    "triple_gate": [
+      "路由不注册 (router.tsx isCasebookEnabled() 才 push /casebook)",
+      "入口不渲染 (HomePage/SearchPage 仅 casebookEnabled 时渲染 Link)",
+      "组件返回 null (CasebookPage 首行 if (!isCasebookEnabled()) return null)"
+    ],
+    "orthogonal_to": [
+      "VITE_ENABLE_M1_M5_ACCEPTANCE",
+      "VITE_ENABLE_INTAKE",
+      "VITE_ENABLE_STATUTE_SEARCH",
+      "VITE_ENABLE_DRAFTING"
+    ],
+    "reads_m1m5_ui_flag": false
+  },
+  "collect_not_draft": {
+    "input_regions": [
+      "案情摘要区(5 个脱敏白名单子集输入框)",
+      "归集区(带锚点 CandidateRef + 段落标题骨架 DraftDescriptor, 无锚点/无标题前端拦截)",
+      "短字段区(title<=80/note<=200/tag<=40)",
+      "保存栏+已保存列表(只读 visibility 标识, 无共享切换控件)"
+    ],
+    "no_generation_ui": true,
+    "no_ai_summary_conclusion_prediction_entry": true,
+    "assert": "无 /生成|起草|综述|归纳|预测/ 按钮与 placeholder; 无 role=switch; 无 切换为团队/设为团队可见 控件"
+  },
+  "zero_body_proof": {
+    "create_body_keys": ["search_profile_summary", "candidate_refs", "draft_descriptors", "title", "note", "tag"],
+    "create_never_sends_visibility": true,
+    "update_body_keys": "create 同集 + 可选 visibility(仅调用方显式给出)",
+    "search_profile_summary_subset": ["case_cause", "region", "trial_level_preference", "dispute_focus_keywords", "query_text"],
+    "candidate_ref_keys": ["case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchors"],
+    "field_by_field_no_spread": true,
+    "anchorless_refs_dropped": true,
+    "render_only_metadata_and_anchors": true,
+    "body_key_hits_in_page": "3 (均为免责/否定文案, 非实际渲染)"
+  },
+  "scans": {
+    "storage_calls": 0,
+    "storage_comment_only_hit": "casebookApi.ts 顶部注释描述红线",
+    "url_query_leak": 0,
+    "win_probability_or_overview_render": 0,
+    "disabled_copy_render": 0
+  },
+  "verification": {
+    "CasebookPage_test": "7 passed",
+    "casebookApi_test": "17 passed",
+    "featureFlags_test": "17 passed",
+    "HomePage_test": "9 passed",
+    "SearchPage_test": "33 passed",
+    "StatutePage_IntakePage_test": "11 passed",
+    "DraftingPage_test": "8 passed",
+    "touched_total_passed": 102,
+    "regression": "既有页面零回归",
+    "build": "128 modules transformed (baseline 126 +CasebookPage +casebookApi), built ok"
+  },
+  "acceptance": {
+    "triple_gated_default_false_orthogonal": true,
+    "collect_only_no_generation": true,
+    "refs_anchors_only_no_body_frontend": true,
+    "whitelist_no_spread_anchorless_blocked_summary_subset": true,
+    "regression_pass_build_pass": true,
+    "body0_storage0_drafting_entry0_disabled_copy0_flags_default_false": true,
+    "no_backend_contract_search_statute_intake_drafting_ranking_change": true
+  },
+  "vm_stale_mount_note": "多文件 host Edit/heredoc 写入后 VM 挂载尾部 stale 截断(esbuild Unexpected end of file/vitest 收集失败), 涉及 CasebookPage.test/featureFlags.test/featureFlags.ts/HomePage.tsx/SearchPage.tsx/router.tsx; 处理: host Read 权威 -> VM heredoc 整文件重写(小文件) 或 anchor 外科截断补全(SearchPage 1350 行); featureFlags.ts 因 VM 读 stale 误判缺失 append 造成重复 export 已 host Edit 删重; 最终 host 唯一/VM 编译测试 build 全绿"
+}

@@ -1,0 +1,135 @@
+{
+  "artifact": "e5-parameter-version",
+  "step": "E5-1",
+  "generated_at": "2026-06-17T08:37:58+08:00",
+  "baseline": "docs/development/e4-release-gate-20260617-112542.json",
+  "release_gate": "docs/development/e5-release-gate-20260617-083758.json",
+  "purpose": "E5-1 入口合同参数快照；只记录新增契约、flag、边界与验证口径，不改变运行时参数。",
+  "flags": {
+    "ENABLE_STATUTE_SEARCH": false,
+    "VITE_ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false,
+    "VITE_ENABLE_INTAKE": false,
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false,
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "new_product_level_flag_added": false,
+    "new_default_true_business_flag_added": false,
+    "m4_m5_e1_flags_unchanged": true
+  },
+  "statute_contract": {
+    "contract_object": "StatuteRef",
+    "statute_ref_whitelist": [
+      "statute_id",
+      "law_name",
+      "article_no",
+      "statute_anchors",
+      "article_text",
+      "source_corpus",
+      "effective_status",
+      "related_case_refs"
+    ],
+    "required_fields": ["statute_id", "law_name", "statute_anchors"],
+    "statute_anchor_whitelist": ["text_id", "law_name", "article_no", "anchor_type"],
+    "statute_anchor_required_fields": ["text_id"],
+    "extra_policy": "forbid",
+    "anchor_redline": "statute_anchors 必填非空，每条至少 text_id（无锚点不展示）",
+    "article_text_policy": "只来自法条语料、带 text_id 锚点，不得由模型生成/改写/续写",
+    "forbidden_body_keys": [
+      "full_text",
+      "content",
+      "chunk_text",
+      "raw_case",
+      "raw_query",
+      "judgment_text",
+      "body"
+    ],
+    "forbidden_display_keys": [
+      "summary",
+      "summary_text",
+      "highlights",
+      "highlight",
+      "highlight_text",
+      "matched_text",
+      "holding_summary"
+    ],
+    "forbidden_generated_statute_keys": [
+      "generated_article",
+      "generated_text",
+      "generated_statute",
+      "llm_text",
+      "llm_article",
+      "ai_text",
+      "ai_article",
+      "ai_generated_article",
+      "model_generated_text",
+      "paraphrased_article",
+      "paraphrase",
+      "article_paraphrase",
+      "rewritten_article",
+      "synthesized_article",
+      "synthesized_text",
+      "drafted_article",
+      "hallucinated_text"
+    ],
+    "pure_functions": [
+      "sanitize_statute_ref",
+      "assert_statute_anchored",
+      "is_valid_statute_anchor",
+      "is_statute_rejected_key",
+      "is_forbidden_generated_statute_key"
+    ]
+  },
+  "cross_jump": {
+    "statute_ref_related_case_refs": "CandidateRef[]（白名单七字段、必有 source_anchors、零裁判正文）",
+    "candidate_ref_whitelist_unchanged": [
+      "case_id",
+      "case_number",
+      "court",
+      "trial_level",
+      "case_cause",
+      "judgment_date",
+      "source_anchors"
+    ],
+    "contract_embeds_opposite_body": false
+  },
+  "routing": {
+    "include_router_count": 13,
+    "statute_endpoint_registered": false,
+    "forbidden_new_product_packages": {
+      "statute": false,
+      "drafting": false,
+      "casebook": false
+    }
+  },
+  "boundary": {
+    "statute_contract_imports_retrieval_rerank_summary_query_processing": false,
+    "statute_contract_imports_kernel_rag_service": false,
+    "statute_contract_imports_fastapi": false,
+    "statute_contract_depends_only_on": ["whitelist", "intake_contract", "pydantic"],
+    "kernel_statute_service_wired": false,
+    "statute_corpus_pipeline_built": false,
+    "case_index_rebuilt": false
+  },
+  "verification_snapshot": {
+    "authoritative_environment": {
+      "venv": ".venv311",
+      "python": "3.11.9",
+      "note": "host 实跑为权威口径；VM 仅 smoke"
+    },
+    "vm_smoke": {
+      "python": "3.10.12",
+      "pydantic": "2.13.4",
+      "database_url": "sqlite:///./test_e5.db",
+      "e5_focused": "54 passed",
+      "e4_regression_plus_e5": "349 passed, 0 failed"
+    }
+  },
+  "overall": "GO",
+  "next_step": {
+    "allow_enter_e5_2": true,
+    "title": "类案检索助手 E5-2 法条语料与标注管道"
+  }
+}

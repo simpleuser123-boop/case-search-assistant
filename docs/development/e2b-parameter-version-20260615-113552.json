@@ -1,0 +1,59 @@
+{
+  "artifact": "e2b-parameter-version",
+  "step": "E-2b",
+  "generated_at": "2026-06-15T11:35:52",
+  "baseline": "docs/development/e2a-parameter-version-20260615-095700.json",
+  "nature": "E-2b 为结构重整（共享内核物理迁移），不引入任何新运行时参数、不改任何既有参数默认值；本文件用于与 E-2a 逐位比对，证明参数面零变化。",
+  "feature_flags_default_false": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_QUERY_REWRITE": false,
+    "ENABLE_SUMMARY": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "ENABLE_ACCOUNT_SYSTEM": false,
+    "ENABLE_TEAM_WORKSPACE": false,
+    "ENABLE_PERMISSION_TIERING": false,
+    "ENABLE_TEAM_SHARING": false,
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false,
+    "VITE_ENABLE_ECOSYSTEM": false,
+    "VITE_ENABLE_INTAKE": false,
+    "VITE_ENABLE_STATUTE_SEARCH": false,
+    "VITE_ENABLE_DRAFTING": false,
+    "VITE_ENABLE_CASEBOOK": false
+  },
+  "flag_count_vs_e2a": {
+    "backend_flags": "与 E-2a 一致，无新增（13 后端业务 flag 默认 false，已逐一核验 app/core/config.py）",
+    "vite_mirror_flags": "与 E-2a 一致，无新增（VITE 镜像 flag 未触碰；前端源文件 E-2b 零改动）",
+    "any_new_flag_introduced": false,
+    "any_default_changed": false
+  },
+  "runtime_params_unchanged": {
+    "main_sorting": "unchanged",
+    "source_selection": "unchanged",
+    "rerank_default_switch": "unchanged",
+    "retrieval_top_k_and_recall_params": "unchanged",
+    "confidence_split_thresholds": "unchanged",
+    "no_new_runtime_param": true,
+    "proof": "56 个迁入文件归一化 import 路径后与预迁移原件 0 行漂移；被调函数签名/逻辑/常量逐字未改。"
+  },
+  "kernel_migration_is_structural_only": {
+    "physical_move_only": true,
+    "reexported_symbols": 145,
+    "introduces_runtime_param": false,
+    "changes_called_function_signature": false,
+    "old_path_shim_same_object": true
+  },
+  "verification": {
+    "e2a_same_regression_set_passed": 91,
+    "shim_equivalence_passed": 49,
+    "boundary_guard_passed": 7,
+    "content_drift_lines_excluding_import_paths": 0,
+    "frontend_build_modules": 118,
+    "frontend_build_matches_e2a": true,
+    "frontend_vitest_all_passed": true,
+    "body_credential_phrasing_hits": 0
+  }
+}

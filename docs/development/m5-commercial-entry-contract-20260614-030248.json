@@ -1,0 +1,814 @@
+{
+  "version": "m5_commercial_entry_contract_v1",
+  "artifact": "m5-commercial-entry-contract",
+  "step": "M5-1",
+  "title": "商业化扩展入口合同",
+  "generated_at": "2026-06-14T03:02:48+08:00",
+  "scope": {
+    "summary": "冻结 M4-8 三类 GO 入场证据；定义 M5 多租户数据边界、鉴权边界、凭据安全边界、共享/导入/倾向分析/计费合同字段、服务端多用户持久化字段白名单与凭据红线；仅声明，不实现 M5-2 之后任何业务行为。",
+    "is_contract_and_scaffold_only": true,
+    "implements_m5_2_to_m5_10": false,
+    "implements_account_system": false,
+    "implements_team_workspace_isolation": false,
+    "implements_permission_tiering": false,
+    "implements_team_sharing": false,
+    "implements_bulk_import": false,
+    "implements_tendency_analysis": false,
+    "implements_billing": false,
+    "introduces_server_multiuser_state": false,
+    "changes_online_sorting": false,
+    "changes_source_selection": false,
+    "changes_rerank_defaults": false,
+    "changes_qrels_or_labels": false,
+    "changes_historical_eval_artifacts": false,
+    "writes_business_persistence_behavior": false,
+    "manages_or_autofills_credentials": false,
+    "backend_business_files_changed": 0,
+    "frontend_business_files_changed": 0,
+    "config_changes": "config.py + .env.example 仅新增 7 个默认 false 的 M5 flag 开关位，无业务行为"
+  },
+  "entry_register": {
+    "m4_8_artifacts": [
+      "docs/development/m4-final-verification-20260614-102758.md",
+      "docs/development/m4-release-gate-20260614-102758.json",
+      "docs/development/m4-parameter-version-20260614-102758.json"
+    ],
+    "m4_8_conclusions": {
+      "base_search_available": "GO",
+      "m4_workflow_sedimentation_complete": "GO",
+      "m5_entry": "GO",
+      "rollback_required": false
+    },
+    "all_m4_8_artifacts_exist": true,
+    "m4_steps": [
+      {
+        "step": "M4-1",
+        "capability": "workflow_entry_contract",
+        "artifact_prefix": "m4-workflow-entry-contract-20260613-090354",
+        "status": "GO"
+      },
+      {
+        "step": "M4-2",
+        "capability": "search_history_and_draft_recovery",
+        "artifact_prefix": "m4-search-history-draft-20260613-103734",
+        "status": "GO"
+      },
+      {
+        "step": "M4-3",
+        "capability": "case_favorite",
+        "artifact_prefix": "m4-case-favorite-20260613-113516",
+        "status": "GO"
+      },
+      {
+        "step": "M4-4",
+        "capability": "case_list_assembly",
+        "artifact_prefix": "m4-case-list-20260613-211225",
+        "status": "GO"
+      },
+      {
+        "step": "M4-5",
+        "capability": "case_list_export",
+        "artifact_prefix": "m4-list-export-20260614-004136",
+        "status": "GO"
+      },
+      {
+        "step": "M4-6",
+        "capability": "lightweight_report_template",
+        "artifact_prefix": "m4-report-template-20260614-014251",
+        "status": "GO"
+      },
+      {
+        "step": "M4-7",
+        "capability": "team_reuse_assessment",
+        "artifact_prefix": "m4-team-reuse-assessment-20260614-015309",
+        "status": "GO"
+      }
+    ],
+    "all_m4_steps_go": true,
+    "m4_7_not_ready_capabilities": [
+      {
+        "capability": "account_system",
+        "readiness": "not_ready",
+        "reserved_field_slots": [
+          "owner_user_id"
+        ],
+        "data_structure_reserved": false
+      },
+      {
+        "capability": "list_sharing",
+        "readiness": "not_ready",
+        "reserved_field_slots": [
+          "owner",
+          "visibility",
+          "shared_with_team_id"
+        ],
+        "data_structure_reserved": true
+      },
+      {
+        "capability": "permission_tiering",
+        "readiness": "not_ready",
+        "reserved_field_slots": [
+          "role",
+          "permission_level"
+        ],
+        "data_structure_reserved": false
+      },
+      {
+        "capability": "team_workspace_isolation",
+        "readiness": "not_ready",
+        "reserved_field_slots": [
+          "team_id",
+          "workspace_id"
+        ],
+        "data_structure_reserved": true
+      },
+      {
+        "capability": "bulk_import",
+        "readiness": "not_ready",
+        "reserved_field_slots": [
+          "import_batch_id",
+          "import_source"
+        ],
+        "data_structure_reserved": false
+      }
+    ],
+    "m4_7_reserved_field_slots": [
+      "owner",
+      "visibility",
+      "shared_with_team_id",
+      "team_id",
+      "workspace_id",
+      "owner_user_id",
+      "role",
+      "permission_level"
+    ],
+    "m4_7_reserved_defaults": {
+      "owner": "private",
+      "visibility": "private",
+      "sharing": "disabled",
+      "team_id": null,
+      "owner_user_id": null
+    },
+    "inherited_gates_from_m2_m3_m4": {
+      "source_anchor_minimum_fields": [
+        "case_id",
+        "source_chunk_id"
+      ],
+      "case_side_ai_content_requires_source_anchors": true,
+      "unanchored_content_hidden_or_safe_degraded": true,
+      "user_side_raw_text_not_persisted_on_server": true,
+      "persistence_layer_only_metadata_anchor_user_short_fields": true,
+      "no_exhaustive_coverage_wording": true,
+      "no_win_loss_probability_or_certain_legal_conclusion": true,
+      "main_sorting_unchanged": true,
+      "source_selection_unchanged": true,
+      "rerank_default_unchanged": true,
+      "qrels_label_relevance_offline_only": true,
+      "no_query_id_or_case_id_runtime_special_case": true,
+      "warm_p95_under_3s": true,
+      "warm_p95_ms": 820,
+      "new_capability_must_be_disableable_or_safe_degrade": true,
+      "no_body_leak_in_persistence_export_report_log_snapshot": true
+    },
+    "weighted_rerank_evidence": {
+      "config_field_default": false,
+      "config_path": "apps/api/app/core/config.py:42",
+      "env_example_value": "false",
+      "env_example_path": ".env.example:23",
+      "m5_1_decision": "KEEP_FALSE"
+    },
+    "m4_flag_evidence": {
+      "config_path": "apps/api/app/core/config.py:52-57",
+      "env_example_path": ".env.example:33-38 (backend) / 60-70 (VITE frontend)",
+      "flags_default_false": [
+        "ENABLE_SEARCH_HISTORY",
+        "ENABLE_CASE_FAVORITE",
+        "ENABLE_CASE_LIST",
+        "ENABLE_LIST_EXPORT",
+        "ENABLE_REPORT_TEMPLATE",
+        "ENABLE_TEAM_REUSE"
+      ],
+      "m5_1_decision": "KEEP_FALSE"
+    }
+  },
+  "commercial_contract_fields": {
+    "account": {
+      "purpose": "服务端用户身份与认证状态；把当前匿名单用户态映射到具名 user_id",
+      "feature_flag": "ENABLE_ACCOUNT_SYSTEM",
+      "server_persistable_fields": [
+        "user_id",
+        "display_name",
+        "account_status",
+        "auth_provider",
+        "auth_subject_ref",
+        "password_hash",
+        "created_at",
+        "updated_at",
+        "reason_code"
+      ],
+      "user_filled_short_fields": [
+        "display_name"
+      ],
+      "credential_handling": {
+        "password_storage": "one_way_hash_with_salt_only",
+        "stores_plaintext_password": false,
+        "stores_sso_oauth_token": false,
+        "stores_token_in_business_table_log_report": false,
+        "tool_autofills_or_manages_credentials": false
+      },
+      "forbidden_persistable_fields": [
+        "plaintext_password",
+        "sso_oauth_token",
+        "session_token",
+        "raw_query",
+        "case_fact_body",
+        "user_free_long_text"
+      ],
+      "implemented_in_m5_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "team": {
+      "purpose": "团队/组织实体与工作空间；成员关系，存储与查询按团队强隔离",
+      "feature_flag": "ENABLE_TEAM_WORKSPACE",
+      "server_persistable_fields": [
+        "team_id",
+        "workspace_id",
+        "team_name",
+        "member_user_id",
+        "created_at",
+        "updated_at",
+        "status",
+        "reason_code"
+      ],
+      "membership_relation_fields": [
+        "team_id",
+        "workspace_id",
+        "member_user_id"
+      ],
+      "user_filled_short_fields": [
+        "team_name"
+      ],
+      "isolation_default": "single_tenant_private",
+      "empty_team_id_equals_single_user_private": true,
+      "forbidden_persistable_fields": [
+        "raw_query",
+        "case_fact_body",
+        "user_free_long_text"
+      ],
+      "implemented_in_m5_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "membership_role": {
+      "purpose": "角色与对象级访问控制：owner/editor/viewer",
+      "feature_flag": "ENABLE_PERMISSION_TIERING",
+      "role_vocab": [
+        "owner",
+        "editor",
+        "viewer"
+      ],
+      "server_persistable_fields": [
+        "role",
+        "permission_level",
+        "owner_user_id",
+        "object_id_ref",
+        "object_visibility",
+        "created_at",
+        "reason_code"
+      ],
+      "default_minimum_privilege": "owner_only_until_explicit_grant",
+      "default_object_visibility": "private",
+      "forbidden_persistable_fields": [
+        "raw_query",
+        "case_fact_body",
+        "user_free_long_text"
+      ],
+      "implemented_in_m5_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "shared_object": {
+      "purpose": "被共享的收藏/清单/报告引用 + 可见性 + 共享团队，默认私有显式授权",
+      "feature_flag": "ENABLE_TEAM_SHARING",
+      "server_persistable_fields": [
+        "shared_object_id",
+        "object_type",
+        "object_ref_id",
+        "owner_user_id",
+        "visibility",
+        "shared_with_team_id",
+        "source_anchors",
+        "created_at",
+        "updated_at",
+        "share_status",
+        "reason_code"
+      ],
+      "object_type_vocab": [
+        "case_favorite",
+        "case_list",
+        "report_template"
+      ],
+      "visibility_vocab": [
+        "private",
+        "team"
+      ],
+      "default_visibility": "private",
+      "default_cross_user_visibility": false,
+      "sharing_requires_explicit_action": true,
+      "anchored_ai_content_requires_case_id_and_source_chunk_id": true,
+      "syncs_body_or_raw_case_to_server": false,
+      "forbidden_persistable_fields": [
+        "raw_query",
+        "case_fact_body",
+        "candidate_body",
+        "chunk_body",
+        "judgment_long_text",
+        "summary_holding_compare_body",
+        "user_free_long_text"
+      ],
+      "implemented_in_m5_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "bulk_import_job": {
+      "purpose": "既有清单/案例批量进入团队空间；导入即元数据/引用 only，绝不引入正文",
+      "feature_flag": "ENABLE_BULK_IMPORT",
+      "server_persistable_fields": [
+        "import_job_id",
+        "source_type",
+        "item_count",
+        "import_status",
+        "anchor_validation_status",
+        "degrade_reason",
+        "owner_user_id",
+        "team_id",
+        "created_at",
+        "reason_code"
+      ],
+      "source_type_vocab": [
+        "existing_case_list",
+        "csv",
+        "list_file"
+      ],
+      "import_status_vocab": [
+        "pending",
+        "validated",
+        "imported",
+        "rejected",
+        "degraded"
+      ],
+      "anchor_validation_status_vocab": [
+        "passed",
+        "missing_anchor",
+        "rejected"
+      ],
+      "imported_item_field_whitelist": [
+        "case_id",
+        "case_number",
+        "court",
+        "trial_level",
+        "case_cause",
+        "judgment_date",
+        "source_anchors",
+        "note",
+        "tag"
+      ],
+      "rejects_or_degrades_items_missing_anchor": true,
+      "fabricates_source_chunk_id": false,
+      "imports_body_content": false,
+      "imported_object_default_visibility": "private",
+      "forbidden_persistable_fields": [
+        "raw_query",
+        "case_fact_body",
+        "candidate_body",
+        "chunk_body",
+        "judgment_long_text",
+        "summary_holding_compare_body",
+        "user_free_long_text"
+      ],
+      "implemented_in_m5_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "tendency_analysis": {
+      "purpose": "F19 法院/法官倾向分析的统计口径、样本量、覆盖范围、数据门禁状态",
+      "feature_flag": "ENABLE_TENDENCY_ANALYSIS",
+      "server_persistable_fields": [
+        "dimension",
+        "sample_size",
+        "coverage_range",
+        "data_source",
+        "data_gate_status",
+        "threshold",
+        "actual",
+        "confidence_note",
+        "contributing_case_ids",
+        "created_at",
+        "reason_code"
+      ],
+      "data_gate_status_vocab": [
+        "pass",
+        "fail",
+        "not_evaluated"
+      ],
+      "requires_data_quality_gate_pass_before_display": true,
+      "predicts_individual_case_outcome": false,
+      "outputs_win_loss_probability": false,
+      "outputs_certain_legal_conclusion": false,
+      "aggregations_traceable_to_case_ids": true,
+      "displays_case_body": false,
+      "forbidden_persistable_fields": [
+        "raw_query",
+        "case_fact_body",
+        "candidate_body",
+        "chunk_body",
+        "judgment_long_text",
+        "named_judge_outcome_prediction",
+        "user_free_long_text"
+      ],
+      "implemented_in_m5_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "billing_plan_subscription": {
+      "purpose": "套餐、试用、计费状态、续费意愿采集；不含任何支付凭据",
+      "feature_flag": "ENABLE_BILLING",
+      "server_persistable_fields": [
+        "billing_plan_id",
+        "plan_name",
+        "plan_quota_display",
+        "price_display",
+        "trial_status",
+        "subscription_status",
+        "renewal_intent",
+        "payment_ref_hash",
+        "team_id",
+        "owner_user_id",
+        "created_at",
+        "updated_at",
+        "reason_code"
+      ],
+      "subscription_status_vocab": [
+        "none",
+        "trial",
+        "active",
+        "expired",
+        "canceled"
+      ],
+      "user_filled_short_fields": [
+        "renewal_intent"
+      ],
+      "payment_handling": {
+        "payment_done_on_platform_or_third_party": true,
+        "tool_autofills_payment_form": false,
+        "tool_manages_or_stores_plaintext_credentials": false,
+        "stores_only_masked_receipt_ref": true
+      },
+      "forbidden_persistable_fields": [
+        "card_number",
+        "bank_account",
+        "cvv",
+        "payment_token_plaintext",
+        "government_id_number",
+        "raw_query",
+        "case_fact_body",
+        "user_free_long_text"
+      ],
+      "implemented_in_m5_1": false,
+      "affects_ranking": false,
+      "logs_events_reports_may_store_body": false
+    }
+  },
+  "server_multiuser_persistable_field_whitelist": {
+    "description": "M5 最关键产物：M5-2 至 M5-9 只能向服务端多用户持久层写入本白名单内字段；M4 白名单全量继承，仅新增结构化关系字段，不放宽正文禁令。未声明字段一律不落库。",
+    "inherits_m4_whitelist": true,
+    "m4_allowed_fields": [
+      "case_id",
+      "case_number",
+      "court",
+      "trial_level",
+      "case_cause",
+      "judgment_date",
+      "source_anchors",
+      "note",
+      "tag",
+      "label",
+      "list_id",
+      "list_title",
+      "report_id",
+      "export_id",
+      "structured_relation",
+      "created_at",
+      "updated_at",
+      "timestamp",
+      "status",
+      "reason_code",
+      "feature_flag_state"
+    ],
+    "m5_new_structured_relation_fields": [
+      "owner_user_id",
+      "team_id",
+      "workspace_id",
+      "visibility",
+      "role",
+      "permission_level",
+      "shared_with_team_id",
+      "bulk_import_job_id",
+      "billing_plan_id",
+      "subscription_status"
+    ],
+    "allowed_persistable_fields": [
+      "case_id",
+      "case_number",
+      "court",
+      "trial_level",
+      "case_cause",
+      "judgment_date",
+      "source_anchors",
+      "note",
+      "tag",
+      "label",
+      "list_id",
+      "list_title",
+      "report_id",
+      "export_id",
+      "structured_relation",
+      "created_at",
+      "updated_at",
+      "timestamp",
+      "status",
+      "reason_code",
+      "feature_flag_state",
+      "owner_user_id",
+      "team_id",
+      "workspace_id",
+      "visibility",
+      "role",
+      "permission_level",
+      "shared_with_team_id",
+      "bulk_import_job_id",
+      "billing_plan_id",
+      "subscription_status"
+    ],
+    "forbidden_persistable_fields": [
+      "raw_query",
+      "case_fact_body",
+      "free_text_long_fragment",
+      "candidate_body",
+      "chunk_body",
+      "judgment_long_text",
+      "summary_body_content",
+      "holding_body_content",
+      "compare_body_content",
+      "user_free_long_text",
+      "unmasked_personal_data"
+    ],
+    "user_raw_case_persisted_on_server": false,
+    "draft_body_persisted_on_server": false,
+    "m4_body_forbidden_rules_fully_in_force": true,
+    "whitelist_only_metadata_reference_structured_relation": true
+  },
+  "credential_security_redlines": {
+    "description": "M5 凭据安全红线：凭据类绝不在工具内代填/代管/代存明文，不写入服务端业务表、日志、JSON、报告或测试快照。",
+    "password_stored_as_one_way_hash_only": true,
+    "password_plaintext_storage_forbidden": true,
+    "credentials_never_persisted_anywhere": [
+      "plaintext_password",
+      "sso_oauth_token",
+      "session_token",
+      "payment_card_number",
+      "bank_account_number",
+      "cvv",
+      "third_party_payment_token_plaintext",
+      "government_id_number"
+    ],
+    "redline_targets": [
+      "server_business_table",
+      "log",
+      "json_artifact",
+      "report",
+      "test_snapshot",
+      "export_file",
+      "analytics_event"
+    ],
+    "tool_autofills_credentials": false,
+    "tool_manages_plaintext_credentials": false,
+    "tool_stores_plaintext_credentials": false,
+    "sensitive_input_done_by_user_or_platform_side": true,
+    "payment_done_on_platform_or_third_party": true,
+    "only_masked_or_hashed_reference_allowed": [
+      "payment_ref_hash",
+      "auth_subject_ref",
+      "user_id_hash"
+    ]
+  },
+  "anchor_inheritance_rules": {
+    "description": "继承 M4：共享、导入、报告引用的案例侧 AI 内容必须可追溯 case_id + source_chunk_id；无锚点内容不进入交付物。",
+    "case_side_ai_content_must_be_traceable": true,
+    "required_anchor_fields": [
+      "case_id",
+      "source_chunk_id"
+    ],
+    "no_anchor_no_delivery": true,
+    "applies_to": [
+      "shared_object",
+      "bulk_import_job",
+      "report_template",
+      "tendency_analysis"
+    ],
+    "unanchored_content_enters_deliverable": false,
+    "fabricates_source_chunk_id": false
+  },
+  "feature_flag_strategy": {
+    "ENABLE_WEIGHTED_RERANK": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "KEEP_FALSE"
+    },
+    "ENABLE_SEARCH_HISTORY": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "KEEP_FALSE"
+    },
+    "ENABLE_CASE_FAVORITE": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "KEEP_FALSE"
+    },
+    "ENABLE_CASE_LIST": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "KEEP_FALSE"
+    },
+    "ENABLE_LIST_EXPORT": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "KEEP_FALSE"
+    },
+    "ENABLE_REPORT_TEMPLATE": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "KEEP_FALSE"
+    },
+    "ENABLE_TEAM_REUSE": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "KEEP_FALSE"
+    },
+    "ENABLE_ACCOUNT_SYSTEM": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_TEAM_WORKSPACE": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_PERMISSION_TIERING": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_TEAM_SHARING": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_BULK_IMPORT": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_TENDENCY_ANALYSIS": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "ENABLE_BILLING": {
+      "config_default": false,
+      "env_example_default": false,
+      "m5_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
+    },
+    "m5_flags_change_standard_search_default": false,
+    "disabled_returns_to_m4_end_state": true,
+    "new_m5_capabilities": {
+      "default_must_be_disableable": true,
+      "must_have_rollback_or_safe_degrade_path": true,
+      "must_not_mutate_current_ranking": true,
+      "must_not_default_enable_cross_user_visibility": true,
+      "must_not_manage_plaintext_credentials": true
+    }
+  },
+  "body_boundary_and_forbidden_fields": {
+    "description": "开发报告、JSON、导出文件只允许字段名/count/状态/reason code/feature flag 状态/元数据/来源锚点/用户自填短字段/结构化关系字段/指标摘要/测试结果和结论。",
+    "allowed_report_json_fields": [
+      "field_name",
+      "count",
+      "status",
+      "reason_code",
+      "feature_flag_state",
+      "metadata",
+      "source_anchor",
+      "user_filled_short_field",
+      "structured_relation_field",
+      "metric_summary",
+      "test_result",
+      "conclusion",
+      "sanitized_id",
+      "hash",
+      "timestamp"
+    ],
+    "forbidden_body_content_types": [
+      "original_query_body",
+      "case_fact_body",
+      "candidate_body",
+      "chunk_body",
+      "judgment_text_body",
+      "user_free_long_text",
+      "summary_or_holding_or_compare_body"
+    ],
+    "forbidden_credential_types": [
+      "plaintext_password",
+      "sso_oauth_token",
+      "session_token",
+      "card_number",
+      "bank_account",
+      "cvv",
+      "payment_token_plaintext",
+      "government_id_number"
+    ],
+    "api_can_return_necessary_display_snippets": true,
+    "logs_events_reports_exports_can_store_body": false,
+    "logs_events_reports_exports_can_store_credentials": false,
+    "development_artifacts_can_store_body": false,
+    "development_artifacts_can_store_credentials": false,
+    "this_artifact_contains_body_text": false,
+    "this_artifact_contains_plaintext_credentials": false
+  },
+  "forbidden_behaviors": [
+    "IMPLEMENT_M5_2_TO_M5_10_CAPABILITY_IN_M5_1",
+    "INTRODUCE_SERVER_MULTIUSER_BUSINESS_BEHAVIOR_IN_M5_1",
+    "PERSIST_RAW_QUERY_OR_CASE_BODY_TO_SERVER",
+    "PERSIST_CHUNK_OR_JUDGMENT_OR_SUMMARY_BODY",
+    "PERSIST_FIELD_NOT_IN_WHITELIST",
+    "STORE_PLAINTEXT_PASSWORD",
+    "STORE_SSO_OAUTH_OR_SESSION_TOKEN_IN_TABLE_LOG_REPORT",
+    "STORE_PAYMENT_CARD_BANK_CVV_OR_GOVERNMENT_ID",
+    "TOOL_AUTOFILL_OR_MANAGE_PLAINTEXT_CREDENTIALS",
+    "DEFAULT_ENABLE_CROSS_USER_VISIBILITY",
+    "DEFAULT_NON_PRIVATE_SHARING",
+    "ENABLE_WEIGHTED_RERANK_BY_DEFAULT",
+    "ENABLE_ANY_M4_FLAG_BY_DEFAULT",
+    "ENABLE_ANY_M5_FLAG_BY_DEFAULT",
+    "CHANGE_ONLINE_RANKING_OR_SOURCE_SELECTION",
+    "USE_QRELS_LABELS_RELEVANCE_IN_RUNTIME",
+    "USE_QUERY_ID_OR_CASE_ID_SPECIAL_CASE",
+    "MODIFY_HISTORICAL_EVAL_ARTIFACTS",
+    "PUT_UNANCHORED_AI_CONTENT_INTO_SHARE_IMPORT_REPORT_TENDENCY",
+    "IMPORT_BODY_CONTENT_OR_FABRICATE_ANCHOR",
+    "PROMISE_EXHAUSTIVE_SEARCH",
+    "OUTPUT_WIN_LOSS_PROBABILITY_OR_CERTAIN_LEGAL_CONCLUSION",
+    "PREDICT_INDIVIDUAL_CASE_OUTCOME_IN_TENDENCY_ANALYSIS",
+    "DISPLAY_TENDENCY_ANALYSIS_BEFORE_DATA_GATE_PASS"
+  ],
+  "go_no_go": {
+    "status": "GO",
+    "allows_entering_m5_2": true,
+    "allows_weighted_rerank_default_enablement": false,
+    "allows_any_m4_flag_default_enablement": false,
+    "allows_any_m5_flag_default_enablement": false,
+    "m4_8_entry_evidence_complete": true,
+    "commercial_contract_fields_defined": true,
+    "server_multiuser_persistence_whitelist_defined": true,
+    "credential_security_redlines_defined": true,
+    "anchor_inheritance_defined": true,
+    "body_boundary_and_forbidden_fields_defined": true,
+    "changes_basic_search_default_behavior": false,
+    "body_leakage_in_artifact": false,
+    "plaintext_credential_in_artifact": false,
+    "failed_gates": [],
+    "reason_codes": [
+      "M4_8_M5_ENTRY_GO_CONFIRMED",
+      "ALL_M4_STEPS_GO_CONFIRMED",
+      "WEIGHTED_RERANK_DEFAULT_FALSE_CONFIRMED",
+      "M4_FLAGS_DEFAULT_FALSE_CONFIRMED",
+      "M5_FLAGS_DECLARED_FALSE_SAFE_DEFAULT",
+      "SERVER_MULTIUSER_PERSISTENCE_WHITELIST_FROZEN",
+      "CREDENTIAL_SECURITY_REDLINES_FROZEN",
+      "ANCHOR_INHERITANCE_RULES_FROZEN",
+      "BODY_BOUNDARY_POLICY_FROZEN",
+      "NO_M5_BUSINESS_IMPLEMENTED"
+    ],
+    "next_allowed_title": "类案检索助手 M5-2 账号体系与认证骨架"
+  },
+  "stop_loss_checks": {
+    "m4_8_artifacts_missing": false,
+    "m4_conclusion_no_longer_go": false,
+    "any_default_flag_enabled": false,
+    "whitelist_cannot_guarantee_metadata_reference_relation_only": false,
+    "credential_redline_cannot_guarantee_no_plaintext_management": false,
+    "any_triggered": false
+  }
+}

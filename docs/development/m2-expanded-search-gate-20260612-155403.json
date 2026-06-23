@@ -1,0 +1,203 @@
+{
+  "artifact": "m2-expanded-search-gate",
+  "generated_at": "2026-06-12T15:54:03+08:00",
+  "step": "M2-5",
+  "entry_artifacts": [
+    {
+      "step": "M2-1",
+      "markdown": "docs/development/m2-entry-contract-20260612-100850.md",
+      "json": "docs/development/m2-entry-contract-20260612-100850.json",
+      "conclusion": "GO"
+    },
+    {
+      "step": "M2-2",
+      "markdown": "docs/development/m2-source-anchor-closure-20260612-104120.md",
+      "json": "docs/development/m2-source-anchor-closure-20260612-104120.json",
+      "conclusion": "GO"
+    },
+    {
+      "step": "M2-3",
+      "markdown": "docs/development/m2-coverage-privacy-20260612-140115.md",
+      "json": "docs/development/m2-coverage-privacy-20260612-140115.json",
+      "conclusion": "GO"
+    },
+    {
+      "step": "M2-4",
+      "markdown": "docs/development/m2-low-confidence-candidates-20260612-151624.md",
+      "json": "docs/development/m2-low-confidence-candidates-20260612-151624.json",
+      "conclusion": "GO"
+    }
+  ],
+  "feature_flags": {
+    "ENABLE_EXPANDED_SEARCH": {
+      "config_default": false,
+      "env_example_default": false,
+      "rollback_state": "disabled_without_retrieval"
+    },
+    "VITE_ENABLE_EXPANDED_SEARCH": {
+      "env_example_default": false,
+      "rollback_state": "entry_hidden"
+    },
+    "ENABLE_WEIGHTED_RERANK": {
+      "config_default": false,
+      "env_example_default": false,
+      "unchanged": true
+    }
+  },
+  "trigger_conditions": {
+    "user_click": true,
+    "show_when_main_results_less_than": 5,
+    "show_on_zero_results": true,
+    "zero_result_refine_suggestion": true,
+    "hidden_when_frontend_flag_disabled": true,
+    "backend_disabled_reason_code": "EXPANDED_SEARCH_DISABLED"
+  },
+  "backend_contract": {
+    "standard_endpoint": {
+      "path": "/api/search",
+      "mode": "standard",
+      "include_relaxed_recall": false
+    },
+    "expanded_endpoint": {
+      "path": "/api/search/expand",
+      "mode": "expanded",
+      "mode_field": "coverage.search_mode",
+      "include_relaxed_recall": true,
+      "requires_feature_flag": true
+    },
+    "disabled_status_code": 403,
+    "does_not_execute_retrieval_when_disabled": true,
+    "results_semantics_changed": false,
+    "low_confidence_candidates_separate": true
+  },
+  "strategy": {
+    "relaxed_recall_allowed": true,
+    "case_cause_relaxation_allowed": true,
+    "low_confidence_candidates_allowed": true,
+    "standard_main_results_not_overwritten": true,
+    "source_anchor_boundary_preserved": true,
+    "privacy_boundary_preserved": true
+  },
+  "frontend_contract": {
+    "flag_off_entry_hidden": true,
+    "low_result_entry_visible_when_enabled": true,
+    "zero_result_entry_visible_when_enabled": true,
+    "loading_state_visible": true,
+    "failure_state_preserves_main_results": true,
+    "copy_reason_codes": [
+      "EXPAND_REVIEW_SCOPE",
+      "SUPPLEMENTAL_CANDIDATES",
+      "REVIEW_ONLY"
+    ],
+    "absolute_recall_copy_present": false
+  },
+  "standard_search_evidence": {
+    "call_sequence": [
+      {
+        "path": "/api/search",
+        "mode": "standard",
+        "include_relaxed_recall": false
+      },
+      {
+        "path": "/api/search/expand",
+        "mode": "expanded",
+        "include_relaxed_recall": true
+      },
+      {
+        "path": "/api/search",
+        "mode": "standard",
+        "include_relaxed_recall": false
+      }
+    ],
+    "primary_result_count_preserved": true,
+    "expanded_candidates_do_not_occupy_results": true
+  },
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_m2_expanded_search_gate.py tests/test_feature_flag_rollback.py",
+      "result": "passed",
+      "passed_count": 8
+    },
+    {
+      "command": "cd apps/web; npm run test -- SearchPage.test.tsx",
+      "result": "passed",
+      "passed_count": 27
+    },
+    {
+      "command": "cd apps/api; pytest tests/test_feature_flag_rollback.py tests/test_search_api_fallback_smoke.py tests/test_performance_smoke.py tests/test_health.py tests/test_m2_expanded_search_gate.py",
+      "result": "passed",
+      "passed_count": 24
+    },
+    {
+      "command": "cd apps/web; npm run test",
+      "result": "passed",
+      "passed_count": 42
+    },
+    {
+      "command": "cd apps/web; npm run build",
+      "result": "passed"
+    }
+  ],
+  "browser_acceptance": {
+    "status": "passed_with_non_blocking_environment_errors",
+    "flag_off_entry_hidden": true,
+    "flag_on_low_result_entry_visible": true,
+    "expanded_candidate_panel_visible": true,
+    "main_results_preserved": true,
+    "non_blocking_reason_codes": [
+      "FAVICON_404",
+      "EVENTS_API_UNAVAILABLE_IN_FRONTEND_ONLY_DEV_SERVER"
+    ],
+    "temporary_artifacts_removed": true,
+    "temporary_server_stopped": true
+  },
+  "performance": {
+    "performance_smoke_included": true,
+    "performance_smoke_result": "passed",
+    "main_chain_p95_gate_ms": 3000,
+    "standard_path_extra_expanded_request": false
+  },
+  "privacy_checks": {
+    "raw_query_saved_to_logs": false,
+    "case_fact_body_saved_to_report": false,
+    "candidate_body_saved_to_report": false,
+    "chunk_body_saved_to_report": false,
+    "json_contains_body_content": false,
+    "temporary_browser_artifacts_removed": true
+  },
+  "forbidden_scope_modified": {
+    "qrels": false,
+    "labels": false,
+    "historical_eval_results": false,
+    "weighted_rerank_default": false,
+    "standard_main_sorting": false,
+    "query_id_special_case": false,
+    "case_id_special_case": false,
+    "m2_6_to_m2_8": false
+  },
+  "modified_files": [
+    "apps/api/tests/test_m2_expanded_search_gate.py",
+    "apps/web/src/components/results/LowConfidencePanel.tsx",
+    "apps/web/src/components/feedback/EmptyResults.tsx",
+    "apps/web/src/components/results/ResultOverview.tsx",
+    "apps/web/src/services/searchApi.ts",
+    "apps/web/src/pages/SearchPage.test.tsx",
+    "docs/development/m2-expanded-search-gate-20260612-155403.md",
+    "docs/development/m2-expanded-search-gate-20260612-155403.json"
+  ],
+  "go_no_go": {
+    "status": "GO",
+    "failed_gates": [],
+    "reason_codes": [
+      "M2_1_TO_M2_4_GO_CONFIRMED",
+      "DEFAULT_FLAGS_REMAIN_CLOSED",
+      "EXPANDED_SEARCH_GATED",
+      "STANDARD_SEARCH_UNCHANGED",
+      "FRONTEND_ENTRY_GATED",
+      "ABSOLUTE_RECALL_COPY_SCAN_PASSED",
+      "PERFORMANCE_SMOKE_PASSED",
+      "BODY_LEAKAGE_CHECK_PASSED"
+    ],
+    "next_allowed_title": "类案检索助手 M2-6 相关不相关反馈闭环"
+  }
+}

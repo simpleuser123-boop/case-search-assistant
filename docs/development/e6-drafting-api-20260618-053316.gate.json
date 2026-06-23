@@ -1,0 +1,106 @@
+{
+  "milestone": "E6",
+  "step": "E6-2",
+  "title": "drafting 后端产品包、gated 端点与 DraftDescriptor 持久化",
+  "generated_at": "2026-06-18T13:33:16+08:00",
+  "overall": "CONDITIONAL_GO",
+  "nature": "E 系列第三个产品包 + 受 ENABLE_DRAFTING 门控的 4 端点 + DraftDescriptor 持久层（只存元数据/引用/短字段）；组装而非起草；默认 false 降级；include_router 14->15",
+  "conditional_reason": "VM 缺 sqlmodel/sqlalchemy/pydantic_core 且无网络；VM 内仅能 py_compile + AST 边界 + 隐私扫描 + flag/结构核验（全过）。完整 pytest（TestClient 端点/持久层/鉴权/隔离）须以 host .venv311 复跑为权威，同 E5-3/E5-4/E6-1 纪律。",
+  "entry_gate": {
+    "e6_1_contract_gate": "e6-drafting-contract-20260618-045409.gate.json",
+    "e6_1_overall": "GO",
+    "allow_enter_e6_2": true
+  },
+  "added_files": [
+    "apps/api/app/drafting/__init__.py",
+    "apps/api/app/drafting/models.py",
+    "apps/api/app/drafting/store.py",
+    "apps/api/app/drafting/schemas.py",
+    "apps/api/app/drafting/service.py",
+    "apps/api/app/drafting/router.py",
+    "apps/api/tests/test_e6_drafting_api.py",
+    "docs/development/e6-drafting-api-20260618-053316.md",
+    "docs/development/e6-drafting-api-20260618-053316.gate.json",
+    "docs/development/e6-drafting-api-20260618-053316.parameter.json"
+  ],
+  "modified_files": [
+    "apps/api/app/main.py",
+    "apps/api/tests/test_e6_drafting_contracts.py",
+    "落地设计文档/21-E6文书工作台分步骤系统提示词文档.md"
+  ],
+  "endpoints": [
+    {"method": "POST", "path": "/api/drafting/drafts", "auth": "login_required", "gated": "ENABLE_DRAFTING", "disabled_code": "DRAFTING_DISABLED(403)", "returns": "DraftDescriptorView(零正文)"},
+    {"method": "GET", "path": "/api/drafting/drafts", "auth": "login_required", "gated": "ENABLE_DRAFTING", "returns": "DraftListResponse(租户可见, 零正文)"},
+    {"method": "GET", "path": "/api/drafting/drafts/{draft_id}", "auth": "login_required", "gated": "ENABLE_DRAFTING", "cross_tenant": "404 DRAFT_NOT_FOUND"},
+    {"method": "PUT", "path": "/api/drafting/drafts/{draft_id}", "auth": "login_required", "gated": "ENABLE_DRAFTING", "non_owner": "404 DRAFT_NOT_FOUND"}
+  ],
+  "error_codes": {
+    "DRAFTING_DISABLED": "403 flag 关闭安全降级",
+    "DRAFTING_REQUIRES_LOGIN": "401 未登录",
+    "DRAFT_REJECTED": "400 sanitize fail-closed（引用内正文/裁判正文/PII/胜负键 或 标题超长/缺锚点）",
+    "DRAFT_NOT_FOUND": "404 越权/不存在（不泄露存在性差异）",
+    "VALIDATION_ERROR": "422 pydantic extra=forbid（顶层非白名单/正文/PII/胜负键）"
+  },
+  "persistence_columns": [
+    "draft_id", "owner_user_id", "team_id", "visibility",
+    "structure_skeleton(JSON,标题清单)", "candidate_refs(JSON,带锚点)", "statute_refs(JSON,带锚点)",
+    "note", "tag", "status", "reason_code", "created_at", "updated_at"
+  ],
+  "persistence_no_body_columns_proof": "draft_descriptor 表共 13 列，全部为元数据/引用/结构骨架(标题)/短字段/结构化关系；无 draft_body/draft_text/generated_text/paragraph_body/conclusion/full_text/chunk_text/judgment_text/summary_text/raw_case/raw_query/win_probability/verdict/password/token 等正文/胜负/凭据列（test_persisted_row_has_no_body_columns 精确断言列集相等）。",
+  "assemble_not_draft": "service.assemble_draft = sanitize_draft_descriptor（E6-1 纯函数）：标题校验(≤60字, 超长=疑似正文 fail-closed)、引用逐项收敛缺锚点丢弃、四类禁止键 fail-closed；service 内零 LLM/模型/检索/文本生成调用（AST + 标记扫描双证）。",
+  "authz_tenant_isolation": {
+    "default_visibility": "private",
+    "tenant_clause": "_tenant_clause(ctx)：单用户私有态只见自己私有行；团队态见自己私有行+本团队 team 可见行；跨用户/跨团队 SQL 层即排除",
+    "read_paths": "仅 list_visible / get_visible 两入口，均强制 _tenant_clause；无无过滤读取对外路径",
+    "write_guard": "create/update 经 _assert_write_within_tenant + owner 校验；update_owned 非 owner 取不到 -> None -> 404",
+    "e6_2_team_scope": "默认单用户私有态 team_id=None（团队放权留待后续步骤；本步不放权 visibility/team_id 客户端可写）"
+  },
+  "log_redaction": "日志只写 user_id_hash / draft_id_hash / skeleton_count / candidate_count / statute_count / note_meta(len+hash) / reason_code；绝不写起草正文/裁判正文/原始案情/note 全文（test_note_not_logged_in_full 守门）。",
+  "boundary": {
+    "drafting_imports_app_star": ["app.api.errors", "app.core.config", "app.core.db", "app.core.logging", "app.kernel.guardrails", "app.kernel.identity", "app.schemas", "app.drafting.*"],
+    "no_retrieval_rerank_summary_direct": true,
+    "no_other_product_package_import": "不 import intake/statute/casebook",
+    "kernel_public_surface_only": "内核依赖仅 app.kernel.guardrails / app.kernel.identity 顶层公开面"
+  },
+  "privacy_scan": {
+    "draft_body": 0,
+    "judgment_body": 0,
+    "pii": 0,
+    "outcome_or_verdict": 0,
+    "credentials": 0,
+    "forbidden_phrases": 0,
+    "note": "store.py 中正文/胜负/凭据键仅作 DRAFT_FORBIDDEN_PERSIST_KEYS 黑名单（防御），models/schemas/service/router 零正文字段；router token 仅 bearer 会话解析（同 sharing.py）"
+  },
+  "tests": {
+    "vm_static": {
+      "py_compile": "PASS (drafting/*.py + test_e6_drafting_api.py + main.py)",
+      "ast_boundary": "PASS (forbidden_import_hits=[], kernel_deepref_hits=[])",
+      "privacy_scan": "PASS (0 命中)",
+      "flags_default_false": "ENABLE_DRAFTING=False / ENABLE_CASEBOOK=False",
+      "no_casebook_package": true,
+      "include_router": 15
+    },
+    "host_required": "pytest tests/test_e6_drafting_api.py tests/test_e6_drafting_contracts.py + E3/E4/E5/E1/E2 同款回归 + smoke（host .venv311 权威，VM 缺 sqlmodel/pydantic_core 无网络无法跑 TestClient）",
+    "vm_stale_mount_note": "test_e6_drafting_contracts.py VM 挂载读出 14041 字节截断（mid-中文行），host 文件 Read 验证完整至 447 行（两个改写测试函数齐全）；遵守『绝不 VM 读全量写回』纪律，host 文件为权威"
+  },
+  "hard_gates": {
+    "drafting_package_built_kernel_public_only": true,
+    "endpoints_gated_default_403": true,
+    "assemble_not_draft_zero_text_gen": true,
+    "refs_missing_anchor_dropped": true,
+    "persistence_no_body_columns": true,
+    "multitenant_isolation_object_authz_default_private": true,
+    "cross_tenant_read_write_denied": true,
+    "no_change_to_search_e3_intake_statute": true,
+    "include_router_15_only_drafting_added": true,
+    "no_casebook_package": true,
+    "enable_drafting_default_false": true,
+    "no_new_external_business_flag": true,
+    "no_ai_drafting_flag": true
+  },
+  "next_step": {
+    "allow_enter_e6_3": true,
+    "allow_enter_e6_3_condition": "host .venv311 全量回归全绿后无条件 GO",
+    "title": "类案检索助手 E6-3 前端文书工作台页"
+  }
+}

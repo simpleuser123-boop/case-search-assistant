@@ -1,0 +1,181 @@
+{
+  "version": "m2_source_anchor_closure_v1",
+  "generated_at": "2026-06-12T10:41:20+08:00",
+  "step": "M2-2",
+  "m2_1_entry_contract": {
+    "markdown": "docs/development/m2-entry-contract-20260612-100850.md",
+    "json": "docs/development/m2-entry-contract-20260612-100850.json",
+    "status": "GO"
+  },
+  "scope": {
+    "implemented_m2_step": "M2-2",
+    "implements_m2_3_to_m2_8": false,
+    "changes_online_sorting": false,
+    "changes_source_selection": false,
+    "changes_rerank_defaults": false,
+    "changes_qrels_or_labels": false,
+    "changes_historical_eval_artifacts": false
+  },
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": {
+      "required_default": false,
+      "changed": false,
+      "status": "GO"
+    }
+  },
+  "source_field_inventory": {
+    "retrieval_chunk_fields": [
+      "case_id",
+      "chunk_id",
+      "metadata",
+      "source",
+      "retrieval_source"
+    ],
+    "candidate_fields": [
+      "case_id",
+      "top_chunk_id",
+      "source_chunk_ids",
+      "hit_chunk_ids",
+      "metadata",
+      "source"
+    ],
+    "summary_fields": [
+      "source_chunk_id",
+      "source_case_id",
+      "method",
+      "source_anchors"
+    ],
+    "highlight_fields": [
+      "source_chunk_id",
+      "source_anchors",
+      "start_offset",
+      "end_offset",
+      "matched_terms",
+      "reason"
+    ],
+    "detail_chunk_fields": [
+      "chunk_id",
+      "chunk_type",
+      "source_anchors",
+      "start_offset",
+      "end_offset"
+    ]
+  },
+  "source_anchor_contract": {
+    "required_trace_fields": [
+      "case_id",
+      "source_chunk_id"
+    ],
+    "fields": [
+      "case_id",
+      "source_chunk_id",
+      "chunk_type",
+      "anchor_type",
+      "source_url",
+      "source_ref"
+    ],
+    "allowed_anchor_types": [
+      "result",
+      "summary",
+      "highlight",
+      "detail_chunk"
+    ],
+    "fabricates_source_chunk_id": false
+  },
+  "processing_rules": {
+    "result_card_source_entry_requires_anchor": true,
+    "summary_requires_anchor": true,
+    "highlight_requires_anchor": true,
+    "detail_summary_requires_matching_detail_anchor": true,
+    "detail_chunk_excerpt_requires_anchor": true,
+    "unanchored_generated_content_hidden": true,
+    "unanchored_matched_text_fallback_hidden": true
+  },
+  "downgrade_strategy": {
+    "summary_missing_anchor": "SAFE_EMPTY_STATE",
+    "highlight_missing_anchor": "HIDE_ITEM",
+    "result_missing_anchor": "SAFE_EMPTY_STATE",
+    "detail_chunk_missing_anchor": "HIDE_EXCERPT",
+    "source_url_missing": "USE_SOURCE_REF_OR_LOCAL_STORE_MARKER"
+  },
+  "modified_files": {
+    "backend": [
+      "apps/api/app/schemas.py",
+      "apps/api/app/api/search.py",
+      "apps/api/app/case_store/jsonl_store.py",
+      "apps/api/tests/test_search_api_fallback_smoke.py",
+      "apps/api/tests/test_m2_source_anchor_closure.py"
+    ],
+    "frontend": [
+      "apps/web/src/types/search.ts",
+      "apps/web/src/components/results/ResultCard.tsx",
+      "apps/web/src/components/results/HighlightText.tsx",
+      "apps/web/src/components/details/CaseDetailDrawer.tsx",
+      "apps/web/src/mocks/searchMockFixture.ts",
+      "apps/web/src/mocks/caseDetailMockFixture.ts",
+      "apps/web/src/pages/SearchPage.test.tsx"
+    ],
+    "reports": [
+      "docs/development/m2-source-anchor-closure-20260612-104120.md",
+      "docs/development/m2-source-anchor-closure-20260612-104120.json"
+    ]
+  },
+  "test_results": [
+    {
+      "command": "cd apps/api; pytest tests/test_summary_service.py tests/test_search_api_fallback_smoke.py tests/test_m2_source_anchor_closure.py tests/test_health.py",
+      "status": "passed",
+      "passed_count": 26,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; npm run test",
+      "status": "passed",
+      "passed_count": 40,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; npm run build",
+      "status": "passed",
+      "failed_count": 0
+    }
+  ],
+  "browser_acceptance": {
+    "vite_localhost_started": true,
+    "playwright_cli_available": true,
+    "browser_available": false,
+    "status": "blocked_non_required",
+    "reason_code": "PLAYWRIGHT_BROWSER_NOT_INSTALLED",
+    "temporary_server_stopped": true
+  },
+  "focused_test_coverage": {
+    "unanchored_generated_content_filtered": "passed",
+    "search_processed_fields_have_source_anchors": "passed",
+    "detail_chunks_have_traceable_anchors": "passed",
+    "frontend_anchor_entry_visible": "passed",
+    "frontend_unanchored_content_hidden": "passed",
+    "logs_exclude_body_sentinels": "passed"
+  },
+  "body_leakage_check": {
+    "raw_query_body_in_report": false,
+    "case_fact_body_in_report": false,
+    "candidate_body_in_report": false,
+    "chunk_body_in_report": false,
+    "json_contains_body_text": false,
+    "focused_log_sentinel_check": "passed"
+  },
+  "go_no_go": {
+    "status": "GO",
+    "allows_entering_m2_3": true,
+    "allows_entering_m2_4_to_m2_8": false,
+    "failed_gates": [],
+    "reason_codes": [
+      "M2_1_ENTRY_GO_CONFIRMED",
+      "SOURCE_ANCHOR_CONTRACT_ADDED",
+      "UNANCHORED_GENERATED_CONTENT_FILTERED",
+      "FRONTEND_ANCHOR_DISPLAY_ENFORCED",
+      "BODY_LEAKAGE_CHECK_PASSED",
+      "ENABLE_WEIGHTED_RERANK_REMAINS_FALSE"
+    ],
+    "next_allowed_title": "类案检索助手 M2-3 数据覆盖声明与隐私展示"
+  }
+}

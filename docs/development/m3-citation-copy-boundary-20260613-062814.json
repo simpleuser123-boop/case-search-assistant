@@ -1,0 +1,127 @@
+{
+  "step": "M3-7",
+  "title": "复制案号与引用格式边界",
+  "timestamp": "2026-06-13 06:28:14",
+  "conclusion": "GO",
+  "scope": "frontend_only",
+  "backend_python_changed_files": 0,
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": "false_default_unchanged",
+    "VITE_ENABLE_EXPANDED_SEARCH": "unchanged"
+  },
+  "entry_gates": {
+    "m2_8_basic_search": "GO",
+    "m2_trusted_retrieval": "GO",
+    "m3_entry": "GO",
+    "m3_1_reading_entry_contract": "GO",
+    "m3_2_holding_summary": "GO",
+    "m3_3_issue_focus_elements": "GO",
+    "m3_4_fact_alignment": "GO",
+    "m3_5_source_highlights": "GO",
+    "m3_6_case_compare": "GO"
+  },
+  "citation_copy_structure_fields": [
+    "case_id",
+    "case_number",
+    "court",
+    "trial_level",
+    "judgment_date",
+    "citation_format",
+    "copy_status"
+  ],
+  "copy_kinds": ["case_number", "citation"],
+  "copy_surfaces": ["result_card", "detail", "compare"],
+  "copy_status_values": ["idle", "copied", "unavailable", "failed"],
+  "reason_codes": [
+    "missing_case_number",
+    "missing_metadata",
+    "clipboard_unavailable",
+    "clipboard_write_failed"
+  ],
+  "telemetry_event": {
+    "name": "citation_copy_action",
+    "fields": ["event", "surface", "kind", "status", "reason_code", "count"],
+    "records_body_text": false,
+    "records_case_number_or_citation_text": false,
+    "records_user_input": false
+  },
+  "boundary_checks": {
+    "metadata_and_basic_citation_only": true,
+    "no_export_file": true,
+    "no_copy_history": true,
+    "no_favorite": true,
+    "no_case_list": true,
+    "no_report": true,
+    "no_analysis_conclusion": true,
+    "no_win_lose_probability": true,
+    "no_persistence": true,
+    "affects_ranking": false,
+    "affects_recommendation": false,
+    "affects_compare_selection": false
+  },
+  "failure_handling": {
+    "clipboard_unavailable": "safe_hint_shown_main_flow_intact",
+    "clipboard_write_failed": "safe_hint_shown_main_flow_intact",
+    "missing_metadata": "no_write_unavailable_status"
+  },
+  "verification": {
+    "tsc_noEmit": "pass",
+    "tsc_exit": 0,
+    "vitest_citationCopy_lib": "15 passed",
+    "vitest_citationCopy_acceptance": "7 passed",
+    "vitest_full_suite": {
+      "test_files": 10,
+      "tests_total": 101,
+      "tests_passed": 101,
+      "regressions": 0,
+      "new_tests_m3_7": 22
+    },
+    "vite_build": "pass",
+    "vite_build_modules": 107,
+    "api_pytest_smoke": {
+      "status": "passed",
+      "tests_passed": 18,
+      "note": "formal confirmation run post-report; deps installed incrementally (pydantic/sqlalchemy/sqlmodel/starlette/fastapi via --no-deps), DATABASE_URL=sqlite to avoid psycopg2 (chromadb not needed: imported lazily). Backend unchanged by M3-7.",
+      "targets": [
+        "tests/test_health.py",
+        "tests/test_search_api_fallback_smoke.py",
+        "tests/test_feature_flag_rollback.py"
+      ]
+    },
+    "browser_acceptance_method": "jsdom_real_component_tree_mock_path",
+    "browser_acceptance": {
+      "result_card_copy_case_number_metadata_only": "pass",
+      "detail_copy_citation_format": "pass",
+      "compare_copy_single_case_citation": "pass",
+      "copied_status_shown": "pass",
+      "clipboard_unavailable_safe_hint_main_intact": "pass",
+      "sanitized_telemetry_no_body_keys": "pass",
+      "no_export_history_favorite_report_list_controls": "pass",
+      "console_error_count": 0
+    }
+  },
+  "body_leak_check": {
+    "report_and_json_contain_body_text": false,
+    "fields_only": true
+  },
+  "acceptance": {
+    "metadata_and_basic_citation_only": "PASS",
+    "no_persisted_copy_body_or_user_input": "PASS",
+    "no_m4_workflow_capability": "PASS",
+    "does_not_affect_search_detail_compare": "PASS"
+  },
+  "stop_loss_triggers": {
+    "disguised_export_history_favorite_list_report": false,
+    "logs_store_body_content": false
+  },
+  "changed_files": [
+    "apps/web/src/lib/citationCopy.ts",
+    "apps/web/src/lib/citationCopy.test.ts",
+    "apps/web/src/components/results/CopyCitationButton.tsx",
+    "apps/web/src/components/results/ResultCard.tsx",
+    "apps/web/src/components/results/CaseCompareView.tsx",
+    "apps/web/src/components/details/CaseDetailDrawer.tsx",
+    "apps/web/src/pages/CitationCopyAcceptance.test.tsx"
+  ],
+  "next_step": "M3-8"
+}

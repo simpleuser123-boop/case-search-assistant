@@ -1,0 +1,157 @@
+{
+  "artifact": "e4-release-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E4 案情智能录入端）",
+  "step": "E4-6",
+  "title": "E4 验收与下一步门禁",
+  "generated_at": "2026-06-17T11:25:42+08:00",
+  "nature": "收官验证、产物生成和 GO/NO_GO 判定；未改业务代码。",
+  "baseline": {
+    "file": "docs/development/e3-release-gate-20260616-175509.json",
+    "overall": "GO",
+    "allow_enter_e4": true,
+    "reason": "E4 行为零变化基线"
+  },
+  "entry_gate": {
+    "source": "docs/development/e4-entry-contract-20260616-065516.md",
+    "historical_verdict": "CONDITIONAL_GO",
+    "conditional_reason": "host .venv311 后端 pytest 当时未完全闭合",
+    "resolved_by": "本次 host .venv311 E4 全套复跑，test_e4_intake_contracts.py 已纳入 126 passed",
+    "verdict": "GO"
+  },
+  "sanitize_gate": {
+    "source": "docs/development/e4-intake-sanitize-20260616-235519.json",
+    "historical_verdict": "CONDITIONAL_GO",
+    "conditional_reason": "host .venv311 后端 pytest 当时待复跑",
+    "resolved_by": "本次 host .venv311 E4 全套复跑，test_e4_intake_sanitize.py 已纳入 126 passed",
+    "raw_case_zero_upload": true,
+    "pii_zero_upload": true,
+    "verdict": "GO"
+  },
+  "intake_api_gate": {
+    "source": "docs/development/e4-intake-api-20260617-001000.json",
+    "verdict": "GO",
+    "endpoint": "POST /api/intake/search",
+    "gated_by": "ENABLE_INTAKE",
+    "default_disabled": true,
+    "consumes_e3_via": "app.kernel.rag.InternalSearchService.search_candidate_refs",
+    "deep_retrieval_import": false,
+    "candidate_ref_zero_body": true,
+    "candidate_ref_requires_source_anchors": true
+  },
+  "frontend_gate": {
+    "source": "docs/development/e4-intake-frontend-20260617-020738.json",
+    "verdict": "GO",
+    "local_only_flow": "raw case in React state only -> local sanitize preview -> user confirm -> SearchProfile whitelist POST",
+    "raw_case_browser_storage": false,
+    "raw_case_request_body": false,
+    "default_flag_off_no_entry": true,
+    "frontend_tests": "npm run test => 38 files / 307 tests passed",
+    "frontend_warning": "React act(...) warnings in IntakePage.test.tsx; exit 0, non-blocking"
+  },
+  "boundary_gate": {
+    "source": "docs/development/e4-boundary-guard-20260617-025525.json",
+    "verdict": "GO",
+    "host_venv311_rerun_completed": true,
+    "include_router_count": 13,
+    "intake_routes": ["POST /api/intake/search"],
+    "forbidden_product_packages": {
+      "statute": false,
+      "drafting": false,
+      "casebook": false
+    },
+    "no_out_of_bound_endpoint": true,
+    "no_persistence_in_intake": true,
+    "no_ai_extraction_on_path": true,
+    "flag_defaults": {
+      "ENABLE_INTAKE": false,
+      "ENABLE_INTAKE_AI_EXTRACTION": false,
+      "VITE_ENABLE_INTAKE": false,
+      "VITE_ENABLE_INTAKE_AI_EXTRACTION": false
+    }
+  },
+  "regression_gate": {
+    "verdict": "GO",
+    "backend_pytest_reexecuted_this_session": true,
+    "database_url": "sqlite:///./test_e4.db",
+    "commands": [
+      {
+        "cwd": "apps/api",
+        "command": "..\\\\..\\\\.venv311\\\\Scripts\\\\python.exe -m pytest tests/test_e4_intake_contracts.py tests/test_e4_intake_sanitize.py tests/test_e4_intake_api.py tests/test_e4_intake_boundaries.py",
+        "result": "126 passed, 1 warning in 3.35s",
+        "exit_code": 0
+      },
+      {
+        "cwd": "apps/api",
+        "command": "..\\\\..\\\\.venv311\\\\Scripts\\\\python.exe -m pytest tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e2b_shim_equivalence.py tests/test_e3_internal_search_contracts.py tests/test_e3_internal_search_service.py tests/test_e3_search_api_parity.py tests/test_e3_internal_search_boundaries.py",
+        "result": "172 passed, 1 warning in 2.85s",
+        "exit_code": 0,
+        "count_note": "当前 test_e2a_kernel_boundary.py 为 13 passed；比 E4-5 旧口径多 3 条 E4 边界规则，因此本次以 172 passed 为准。"
+      },
+      {
+        "cwd": "apps/api",
+        "command": "..\\\\..\\\\.venv311\\\\Scripts\\\\python.exe -m pytest tests/test_m1_3_candidate_comparison.py tests/test_m1_3_legal_candidate_robustness.py tests/test_feature_flag_rollback.py tests/test_health.py tests/test_search_api_fallback_smoke.py tests/test_summary_service.py tests/test_performance_smoke.py",
+        "result": "60 passed, 1 warning in 7.36s",
+        "exit_code": 0
+      }
+    ],
+    "warning": "starlette.formparsers PendingDeprecationWarning for python_multipart import; non-blocking."
+  },
+  "frontend_parity_gate": {
+    "verdict": "GO",
+    "commands": [
+      {
+        "cwd": "apps/web",
+        "command": "npm run test",
+        "result": "38 files / 307 tests passed",
+        "exit_code": 0,
+        "warning": "React act(...) warnings in IntakePage.test.tsx; non-blocking."
+      },
+      {
+        "cwd": "apps/web",
+        "command": "npm run build",
+        "result": "PASS, 121 modules transformed, dist emitted",
+        "exit_code": 0
+      }
+    ]
+  },
+  "verification_environment": {
+    "python": "3.11.9",
+    "venv": ".venv311",
+    "pytest": "8.2.0",
+    "pydantic": "2.7.1",
+    "pydantic_core": "2.18.2"
+  },
+  "static_scans": {
+    "include_router_count": 13,
+    "product_packages": {
+      "intake": true,
+      "statute": false,
+      "drafting": false,
+      "casebook": false
+    },
+    "banned_copy_or_secret_patterns": "no real hit; only E4-4 report line describing banned_copy=0",
+    "raw_case_tokens": "present only in comments, docs, and negative guardrail contexts; executable/static guard tests passed",
+    "deep_import_tokens": "present only in prohibitive comments; executable/static guard tests passed"
+  },
+  "hard_gates": {
+    "e4_1_to_e4_5_all_go_or_resolved": true,
+    "raw_case_zero_upload": true,
+    "candidate_ref_100pct_whitelist": true,
+    "candidate_ref_100pct_has_source_anchors": true,
+    "candidate_ref_zero_body": true,
+    "intake_consumes_e3_internal_service_only": true,
+    "no_other_product_package": true,
+    "include_router_13": true,
+    "no_frontend_default_entry": true,
+    "flag_defaults_false": true,
+    "api_search_and_e3_behavior_zero_regression": true,
+    "frontend_build_pass": true
+  },
+  "overall": "GO",
+  "overall_explanation": "E4-5 建议的 host .venv311 复跑已完成。E4 全套、E1~E3 同款回归、M1/feature/health/summary/performance smoke、前端测试与构建均 exit 0；未出现 NO_GO/BLOCKED 项。",
+  "next_step": {
+    "allow_enter_e5": true,
+    "condition": "无剩余前置阻塞；E5 仍需遵守 SearchProfile/CandidateRef 合同和原始案情零上送红线。",
+    "title": "类案检索助手 E5-1 法条法规检索入口合同"
+  }
+}

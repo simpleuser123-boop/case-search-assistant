@@ -1,0 +1,106 @@
+{
+  "milestone_step": "M5-4",
+  "capability": "permission_tiering",
+  "timestamp": "20260614-065238",
+  "landing_tone": "contract+skeleton, sensitive items cautious; least-privilege, explicit-grant, full-audit",
+  "prerequisites": {
+    "m5_1_commercial_entry_contract": "GO",
+    "m5_2_account_system": "GO",
+    "m5_3_team_workspace_isolation": "GO"
+  },
+  "go_no_go": {
+    "status": "GO",
+    "next_step": "M5-5 list_sharing (沉淀同步与团队共享)"
+  },
+  "role_model": {
+    "roles": ["owner", "editor", "viewer"],
+    "level_map": {"none": 0, "viewer": 1, "editor": 2, "owner": 3},
+    "action_required_level": {
+      "read": "viewer",
+      "write": "editor",
+      "delete": "owner",
+      "grant": "owner",
+      "revoke": "owner",
+      "assign_role": "owner"
+    },
+    "effective_level_resolution": "max(owner_ownership, active_object_grant, team_role_if_object_visibility_team); private objects never elevated by team membership",
+    "owner_not_directly_grantable": true
+  },
+  "object_level_acl": {
+    "grant_carrier": "ObjectGrant (m5_object_grant)",
+    "grant_levels_allowed": ["viewer", "editor"],
+    "only_owner_can_grant_revoke": true,
+    "private_object_read_via_grant": "TeamStore.get_object_for_authorization assembles facts; content returned only after authorize() passes",
+    "default_min_permission": "non-owner without explicit grant has level=none on private objects"
+  },
+  "audit": {
+    "table": "m5_permission_audit",
+    "columns": ["audit_id", "actor_user_id_hash", "object_id_hash", "action", "result", "reason_code", "permission_level", "created_at"],
+    "desensitized_only": true,
+    "actor_hash_prefix": "uidh_",
+    "object_hash_prefix": "oidh_",
+    "records": ["grant", "revoke", "assign_role", "read allow/deny", "object_not_found deny"],
+    "no_body_no_credentials_no_raw_object_id": true
+  },
+  "feature_flag": {
+    "backend": "ENABLE_PERMISSION_TIERING",
+    "backend_default": false,
+    "frontend": "VITE_ENABLE_PERMISSION_TIERING",
+    "frontend_default": false,
+    "disabled_behavior": "all /api/permission/* return 403 PERMISSION_TIERING_DISABLED; lazy init no side effects (no tables); PermissionPanel renders null; back to M5-3/M4 end state (owner private, no roles)"
+  },
+  "files": {
+    "backend_new": [
+      "apps/api/app/permission/__init__.py",
+      "apps/api/app/permission/models.py",
+      "apps/api/app/permission/access.py",
+      "apps/api/app/permission/store.py",
+      "apps/api/app/permission/service.py",
+      "apps/api/app/permission/schemas.py",
+      "apps/api/app/api/permission.py",
+      "apps/api/tests/test_m5_permission.py"
+    ],
+    "backend_modified": [
+      "apps/api/app/main.py (include permission_router only)",
+      "apps/api/app/team/store.py (add get_object_for_authorization, controlled)"
+    ],
+    "frontend_new": [
+      "apps/web/src/services/permissionApi.ts",
+      "apps/web/src/services/permissionApi.test.ts",
+      "apps/web/src/components/permission/PermissionPanel.tsx",
+      "apps/web/src/components/permission/PermissionPanel.test.tsx"
+    ],
+    "frontend_modified": [
+      "apps/web/src/config/featureFlags.ts (isPermissionTieringEnabled)",
+      ".env.example (VITE_ENABLE_PERMISSION_TIERING=false)"
+    ]
+  },
+  "verification": {
+    "backend_gate_plus_focused_passed": 35,
+    "m5_4_focused_passed": 17,
+    "backend_regression_passed": 68,
+    "frontend_tests_passed": 246,
+    "frontend_new_tests": 8,
+    "tsc_noemit_rc": 0,
+    "vite_build_modules": 118,
+    "security_scan": {
+      "permission_pkg_stores_body_or_credentials": false,
+      "forbidden_in_audit_columns": "NONE",
+      "permission_tiering_default": false
+    },
+    "over_privilege_rejection_assertions": [
+      "non-owner private no grant: read/write/delete all denied",
+      "cross-user read denied + deny audit with object_id_hash",
+      "grantee(editor) cannot grant to others (no privilege escalation)",
+      "private object not readable via team editor role",
+      "revoke then read denied again"
+    ]
+  },
+  "no_go_checks_all_clear": {
+    "unblocked_over_privilege_read_or_write": false,
+    "default_over_wide_permission": false,
+    "audit_contains_body_or_credentials": false,
+    "permission_tiering_default_enabled": false,
+    "changed_existing_default_behavior_or_sorting": false
+  }
+}

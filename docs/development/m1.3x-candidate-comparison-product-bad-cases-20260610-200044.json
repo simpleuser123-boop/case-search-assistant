@@ -1,0 +1,682 @@
+{
+  "version": "m1_1_r4_product_eval_v1",
+  "generated_at": "2026-06-10T20:02:43",
+  "privacy": {
+    "raw_query_text_written": false,
+    "candidate_full_text_written": false,
+    "chunk_text_written": false
+  },
+  "reason_taxonomy": [
+    "RECALL_MISS",
+    "QUERY_REWRITE_ERROR",
+    "CASE_CAUSE_OVERWEIGHT",
+    "KEY_PARAGRAPH_MISMATCH",
+    "ID_MISMATCH",
+    "DEPENDENCY_UNAVAILABLE",
+    "QUERY_VALIDATION_ERROR",
+    "NO_QRELS",
+    "METRIC_REGRESSION"
+  ],
+  "reason_labels_zh": {
+    "RECALL_MISS": "召回缺失",
+    "QUERY_REWRITE_ERROR": "改写错误",
+    "CASE_CAUSE_OVERWEIGHT": "案由误加权",
+    "KEY_PARAGRAPH_MISMATCH": "段落匹配错误",
+    "ID_MISMATCH": "ID 不匹配",
+    "DEPENDENCY_UNAVAILABLE": "依赖不可用",
+    "QUERY_VALIDATION_ERROR": "query 校验失败",
+    "NO_QRELS": "缺少人工相关性标注",
+    "METRIC_REGRESSION": "指标回退"
+  },
+  "bad_case_count": 14,
+  "reason_distribution": {
+    "METRIC_REGRESSION": 7,
+    "RECALL_MISS": 7
+  },
+  "bad_cases": [
+    {
+      "eval_query_id": "product_q001",
+      "input_hash": "d8f657543e361a13147bc18d7065604ff0e8dd0bcbfe234142ffa454bbe72fd5",
+      "input_length": 24,
+      "reason_labels": [
+        "RECALL_MISS"
+      ],
+      "reason_zh": [
+        "召回缺失"
+      ],
+      "baseline_precision_at_5": 0.0,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.0,
+      "current_ndcg_at_10": 0.0,
+      "current_top10_has_hit": false,
+      "relevant_case_ids": [
+        "561314d5-2ad3-48fa-b514-1cd8b982100a",
+        "d34eda6a-a5c6-4152-8fca-9084f4f90934",
+        "f6300f37-2b14-4aca-8c43-75f25f80a0d1"
+      ],
+      "baseline_top10_case_ids": [
+        "61f728b0-8128-48ee-bfab-8bda00696046",
+        "c65bad09-28e1-4ee5-afb9-2a0e082af553",
+        "a6ba193c-d145-4f90-8f63-6f266a136925",
+        "43af8af9-fc2f-4025-846e-a6d3df89cdf2",
+        "67edd392-38f0-4162-b329-f622e950e636",
+        "4b786367-9e54-41a3-bc64-4a406985b2f0",
+        "062a8837-1061-4dd0-a89b-519190a4e825",
+        "480715a1-8eca-4452-936f-5d3da70f6954",
+        "4f6e83f7-a241-4aa2-bb08-5a34cf6f1d82",
+        "6545ed14-6406-4f76-a3de-bd7ae70cbb13"
+      ],
+      "current_top10_case_ids": [
+        "392f638f-5e49-4acb-9c67-466c567004e7",
+        "a81ed63c-776c-4d3c-a0e9-ac11c12868ee",
+        "349f7f0d-3e2d-4ba8-abc2-a3ceedb4857d",
+        "ce5537fc-f109-4b45-b194-72394f04a964",
+        "a0b768f5-1382-45cb-b38e-d801b4eb0dba",
+        "2ba6f4b2-cb8c-43a7-8acb-28351dba6261",
+        "e3d427d4-6911-4ecd-b828-27d33b6287ef",
+        "d7a1813e-10a5-49f7-a1bf-586cd9dc155c",
+        "3307cb00-3f95-439b-8a49-e46434cec519",
+        "523be76a-8d9b-4d1e-95f6-7de8146fea33"
+      ],
+      "short_note": "Relevant product qrels are missing from top10 results."
+    },
+    {
+      "eval_query_id": "product_q002",
+      "input_hash": "5dab98d4307322b93efcad2c4a15da60692f9769138780776ad86ce8a9e0d433",
+      "input_length": 21,
+      "reason_labels": [
+        "RECALL_MISS"
+      ],
+      "reason_zh": [
+        "召回缺失"
+      ],
+      "baseline_precision_at_5": 0.0,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.0,
+      "current_ndcg_at_10": 0.0,
+      "current_top10_has_hit": false,
+      "relevant_case_ids": [
+        "101305d2-00d3-443e-8f36-3843cbeb3379",
+        "6475c2e9-90a0-4744-a0d1-37808f0ce3a7",
+        "bae4f3fd-158e-467b-85bf-3128679b68f5"
+      ],
+      "baseline_top10_case_ids": [
+        "b5383d9c-ead3-4a72-9dfa-9339312aebb4",
+        "3ef68cd9-bee6-4932-8e20-af2dbbe9302b",
+        "6fa36920-9fc8-41c8-8093-850a45c0ab3a",
+        "9fff9a14-0c5e-4644-b2c2-f4b3e3987240",
+        "dbe133d5-e384-45c6-8e6d-d069c435d156",
+        "5cb5378a-98ac-4f89-9c7e-5edeb75eaf9f",
+        "2f627192-bc50-4cb8-880a-42da2055073f",
+        "1bb9c37b-4427-444d-afc7-c94b2b9da9f1",
+        "7ee4a4bf-0186-40f4-97e3-e112a5c5bc39",
+        "f7c31759-5818-4fb8-95aa-d0ed7ff78bcd"
+      ],
+      "current_top10_case_ids": [
+        "2f0e0e25-9895-45e4-ba61-b4d7fe4013f3",
+        "f7c31759-5818-4fb8-95aa-d0ed7ff78bcd",
+        "3fa69a30-6c97-4ba9-a810-48fe1e78ca64",
+        "2f627192-bc50-4cb8-880a-42da2055073f",
+        "49895244-e3a4-4367-9974-0bb46bb03799",
+        "52b627b8-1d89-4e4b-a89d-2f60cae4d10c",
+        "84961ec8-f6a2-4459-8016-787d8f8aa129",
+        "5c0b325c-a3d1-4b17-8d88-1b715b56899e",
+        "57f44070-8fa2-4880-ba17-5de83a8571c3",
+        "89df18dd-c040-4cd5-b911-860b2669647b"
+      ],
+      "short_note": "Relevant product qrels are missing from top10 results."
+    },
+    {
+      "eval_query_id": "product_q003",
+      "input_hash": "97b8daa410b0a8840de7cb2acbe1b4f931a762c9e0f5a882b45b585b609eb3b8",
+      "input_length": 15,
+      "reason_labels": [
+        "RECALL_MISS"
+      ],
+      "reason_zh": [
+        "召回缺失"
+      ],
+      "baseline_precision_at_5": 0.0,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.0,
+      "current_ndcg_at_10": 0.0,
+      "current_top10_has_hit": false,
+      "relevant_case_ids": [
+        "211091c2-6eb0-4de2-b8d7-c55529053ea0",
+        "94517b43-ac1f-4694-b627-f312ce99bc3e",
+        "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+      ],
+      "baseline_top10_case_ids": [
+        "d1c3ebf2-2690-4f3f-b3fa-d8b0d02af33b",
+        "3f05578f-b5da-4104-b51a-16661b248778",
+        "d793ffb1-e40b-4ea6-9247-f2dfb2c8a774",
+        "2c4ac3f1-e29d-4768-a59c-d525129ff0d5",
+        "f7ddc016-aeb3-4c12-bb85-a9057f3a0c54",
+        "42f81796-c636-42d0-92b3-104c46dd8401",
+        "dba22ef4-84a3-45ca-a775-a2c1e7b15b07",
+        "c423bd83-14d5-45a4-855c-06cbf5d7774f",
+        "1124958d-b014-419f-9314-468cf7683d20",
+        "ae67afcf-c10f-4bbb-afd1-81a253bc97b9"
+      ],
+      "current_top10_case_ids": [
+        "25ea05c5-c4cb-4d7d-bfcf-7b706fe2936b",
+        "ba13c8ef-2382-4150-b245-6d478df35c90",
+        "e01737ec-87dd-4b5e-b1ba-032465290f6d",
+        "2082dc69-64de-461d-8d23-6cd9445e8954",
+        "5080275a-fc89-4c99-ad71-d2920910f465",
+        "586ea3d7-d4d6-4845-96d6-131e6e4f60c7",
+        "5d2c9a88-6207-4b8c-845a-9d787c855e74",
+        "db39f161-8909-4138-84cd-ec16aaeec76e",
+        "4ee4195d-aaac-4dcc-b39f-d832c16e56ba",
+        "00b684dd-da1d-4c78-b680-df11af6ce88c"
+      ],
+      "short_note": "Relevant product qrels are missing from top10 results."
+    },
+    {
+      "eval_query_id": "product_q004",
+      "input_hash": "b217f8adf49cc01c513c0134923b6081895e2ac6f4cfb5e7d5bc9ff8723ee953",
+      "input_length": 16,
+      "reason_labels": [
+        "RECALL_MISS"
+      ],
+      "reason_zh": [
+        "召回缺失"
+      ],
+      "baseline_precision_at_5": 0.0,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.0,
+      "current_ndcg_at_10": 0.0,
+      "current_top10_has_hit": false,
+      "relevant_case_ids": [
+        "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+        "886d5b3e-863e-4106-9ac7-1afe4cc9583e",
+        "e9760ce5-799d-4a8d-8dc1-8409a795bb76"
+      ],
+      "baseline_top10_case_ids": [
+        "1b66d07c-9a95-440c-b333-9f00ae324bbd",
+        "af41db7d-c22c-4388-be80-425ee639ebeb",
+        "9d131f37-9aca-4cc1-9197-ca58b8a9374f",
+        "4781b164-a491-407f-8b0e-c3c5b16f60ca",
+        "57c7f142-c0fd-4b65-b4b2-493de66bfe36",
+        "ebcf7e49-5bcc-4e76-9914-c2920e5b6f27",
+        "1386cf93-6d6d-478d-ba76-08c604fa4b3f",
+        "fcc6283b-1c73-4c63-8ca1-da1b0811b53f",
+        "a6bba401-ab68-40b6-9583-c46939ae962c",
+        "1b40ee27-112e-4523-8019-b11a3a2649df"
+      ],
+      "current_top10_case_ids": [
+        "1b66d07c-9a95-440c-b333-9f00ae324bbd",
+        "fad80e6e-048f-4e1f-b0bb-1dee2896635e",
+        "50e8c6c4-88dc-47b8-a1d6-95a078c3cf9e",
+        "47aada65-c87d-4f89-a9b4-dab71e62a624",
+        "ce0123b8-2e2c-44b4-97f0-63535f3cf41b",
+        "7a53053e-5bbb-489f-abd0-193a047ec0da",
+        "1386cf93-6d6d-478d-ba76-08c604fa4b3f",
+        "614d01c5-814f-4878-9b62-d4f5f25bf47d",
+        "1789c972-e818-4cdd-8b6c-32c04b6e26b2",
+        "bbec22e9-4361-48b9-a2a8-73358dfee76e"
+      ],
+      "short_note": "Relevant product qrels are missing from top10 results."
+    },
+    {
+      "eval_query_id": "product_q006",
+      "input_hash": "37acf51f8670366ab76835a459e45c00a7f4b43ae9cd70ccdaa9c72caee2107c",
+      "input_length": 13,
+      "reason_labels": [
+        "RECALL_MISS"
+      ],
+      "reason_zh": [
+        "召回缺失"
+      ],
+      "baseline_precision_at_5": 0.0,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.0,
+      "current_ndcg_at_10": 0.0,
+      "current_top10_has_hit": false,
+      "relevant_case_ids": [
+        "49654efe-c3c1-4fd5-9717-f6c295dc3f80",
+        "6051e90c-c739-4eef-a3db-673ff6a66301",
+        "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+      ],
+      "baseline_top10_case_ids": [
+        "6dc34ae6-f719-45fb-b448-73d3b4f5c861",
+        "e5590559-bd2b-43ba-b6f2-b1c113072c85",
+        "ab0b6cf3-4d83-4fd3-8854-b6b849808244",
+        "6b67f784-dc88-4213-9d2e-c1202160b512",
+        "5b51180e-f7dd-4384-9a4a-007352784f52",
+        "4c6b3805-3cff-45d8-b754-dd3b577d376a",
+        "aba4916c-9e7e-4375-9ad9-bd3c58240002",
+        "8fad94cb-9035-4530-a1b2-08d6c9d7c991",
+        "170bfb35-a5b3-40cd-8566-c9cd3ea3e62f",
+        "23f2ae52-fa92-4b7f-9d2e-c3d791e3a272"
+      ],
+      "current_top10_case_ids": [
+        "1dc32019-f584-49d2-b55c-e1dfe9d13789",
+        "e86d0285-1e22-486e-aa1c-46923e0c3f09",
+        "c5eefbac-ca61-46f1-ab4b-075d27c2a71a",
+        "6b67f784-dc88-4213-9d2e-c1202160b512",
+        "d7923ae1-8eec-4728-9f95-b894afebca30",
+        "4c6b3805-3cff-45d8-b754-dd3b577d376a",
+        "cff70ceb-9747-47c8-8be5-b44ef135ec6c",
+        "fdadab7f-89cc-4aab-8287-5b8858b30b71",
+        "932b6603-a906-4106-ad5b-7268a60f9881",
+        "d2a1e6d5-1ac6-4274-8e46-7f6adf88deca"
+      ],
+      "short_note": "Relevant product qrels are missing from top10 results."
+    },
+    {
+      "eval_query_id": "product_q008",
+      "input_hash": "3ebb5ebb350399a48c2c245b17931e29fcfffbdce760cc69290a81d544465bc3",
+      "input_length": 16,
+      "reason_labels": [
+        "METRIC_REGRESSION"
+      ],
+      "reason_zh": [
+        "指标回退"
+      ],
+      "baseline_precision_at_5": 0.0,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.1631,
+      "current_ndcg_at_10": 0.0,
+      "current_top10_has_hit": false,
+      "relevant_case_ids": [
+        "5489d0c1-6517-4d59-99ff-be09aec07f56",
+        "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+        "6b92ca2b-5680-4ced-8a97-3cf6704b427c"
+      ],
+      "baseline_top10_case_ids": [
+        "cdf6816b-618a-4bd8-aa0f-8f7cd3bbd422",
+        "6dd1ebe5-ab2e-4008-b2e7-3b9819a273cb",
+        "3f029ca8-7c94-4143-8fae-b385cd79954c",
+        "e07cde82-6ca7-4eea-805b-04bd72babd93",
+        "83bd3502-a584-4601-b89a-47c1171281a1",
+        "64c61954-dbfe-43a9-8a76-f33b8197b99b",
+        "e17b93e5-20f5-44c8-82af-f2dbb57fb301",
+        "533baf53-a8ec-47d0-aefb-1226d2a013d1",
+        "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+        "6ca375e8-11b6-49e3-a567-a911dfb41f02"
+      ],
+      "current_top10_case_ids": [
+        "6dd1ebe5-ab2e-4008-b2e7-3b9819a273cb",
+        "3f029ca8-7c94-4143-8fae-b385cd79954c",
+        "e17b93e5-20f5-44c8-82af-f2dbb57fb301",
+        "64c61954-dbfe-43a9-8a76-f33b8197b99b",
+        "e07cde82-6ca7-4eea-805b-04bd72babd93",
+        "cdf6816b-618a-4bd8-aa0f-8f7cd3bbd422",
+        "02cd8cb0-2327-4264-bcfa-bdcbada9b1be",
+        "26023a03-54ef-4eff-9a37-92c02003f296",
+        "33f5f873-7cc4-4b24-b648-aeb3f502af0d",
+        "68081542-4b8c-4232-a18c-0f942a85e2d8"
+      ],
+      "short_note": "Current metrics are below the BM25 product baseline."
+    },
+    {
+      "eval_query_id": "product_q009",
+      "input_hash": "0aaef9ba4caf56ed5060285da032eab7c8829adfa584b024edb30e0a30c2418a",
+      "input_length": 15,
+      "reason_labels": [
+        "RECALL_MISS"
+      ],
+      "reason_zh": [
+        "召回缺失"
+      ],
+      "baseline_precision_at_5": 0.0,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.0,
+      "current_ndcg_at_10": 0.0,
+      "current_top10_has_hit": false,
+      "relevant_case_ids": [
+        "36df2795-f259-40ac-b08e-16e42c471885",
+        "37c160b5-4c96-44bf-a7a6-f7ba96fe346e",
+        "68058dc3-da5d-45c2-883a-e143e546bf61"
+      ],
+      "baseline_top10_case_ids": [
+        "63de3893-3f36-42c0-bb5a-ba404c36a1d9",
+        "06ad1cf0-220b-4c29-81f8-d7f29769eb40",
+        "06827d89-0645-44b5-a2b5-bfc91f453048",
+        "83778563-0ce5-40b5-84a3-f37f0b115442",
+        "b9ea1f5c-4d6b-42d4-8d79-7a2af35440b4",
+        "8018b5b3-cdd2-4ad1-a8df-5ca6f11837df",
+        "c719cebe-33a4-467d-ae19-179f2f694e9e",
+        "c8a68211-252a-4db5-a9f0-9b2dfca9abcd",
+        "e585c027-795b-4d9d-8810-172bf0232fa0",
+        "63d7f5b9-c6a6-4bfd-8068-5d31f942e4f2"
+      ],
+      "current_top10_case_ids": [
+        "83778563-0ce5-40b5-84a3-f37f0b115442",
+        "63d7f5b9-c6a6-4bfd-8068-5d31f942e4f2",
+        "b9ea1f5c-4d6b-42d4-8d79-7a2af35440b4",
+        "9e021f1b-a5fe-4310-b8fe-8285bc9e465d",
+        "e585c027-795b-4d9d-8810-172bf0232fa0",
+        "b352471b-10db-4359-8d54-d8fd1a7ba689",
+        "5c595e7c-2720-47aa-a325-763b1969f324",
+        "e6f5fbb5-6eed-4b80-ace7-99c544479dfc",
+        "cc640dfd-fe10-4095-9567-da06832b1f8f",
+        "8018b5b3-cdd2-4ad1-a8df-5ca6f11837df"
+      ],
+      "short_note": "Relevant product qrels are missing from top10 results."
+    },
+    {
+      "eval_query_id": "product_q013",
+      "input_hash": "8f48e4351b58886f12042cf09f1d9a8b45f9561314d8823667192341220563bc",
+      "input_length": 14,
+      "reason_labels": [
+        "RECALL_MISS"
+      ],
+      "reason_zh": [
+        "召回缺失"
+      ],
+      "baseline_precision_at_5": 0.0,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.0,
+      "current_ndcg_at_10": 0.0,
+      "current_top10_has_hit": false,
+      "relevant_case_ids": [
+        "443c73ff-c05f-4b35-8770-317612d26adc",
+        "a40ca8f2-7833-4609-b299-1df502420039",
+        "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+      ],
+      "baseline_top10_case_ids": [
+        "34788b87-852b-4bcf-a65c-d4c8953eba53",
+        "9586523b-6311-49b5-8f98-984ea16e230c",
+        "8c45e6fa-31e8-47fa-8793-23054deec8a4",
+        "9f9431c0-51c1-4e1b-b3bf-a9b9321b428b",
+        "e3a6353b-1e28-4c94-b873-b7ecab05add5",
+        "a492385a-e04c-48d3-b855-49f159fb2fd2",
+        "dc825274-cc3a-4c78-894b-8fbfeb2fff85",
+        "bc6e3164-dd72-4c21-9578-af78cf731997",
+        "9f4c62c9-b691-46e8-8b2e-f1e725d5e50b",
+        "fb289a10-67cf-4640-9453-941e689cb8b6"
+      ],
+      "current_top10_case_ids": [
+        "34788b87-852b-4bcf-a65c-d4c8953eba53",
+        "5bc0ba8c-2a69-446d-ba75-e70d3baec0fb",
+        "8c45e6fa-31e8-47fa-8793-23054deec8a4",
+        "8cedeb48-51ee-498f-9c42-cd8fc0a3c07f",
+        "370ba07b-6775-40b9-967e-52ea5d092cfa",
+        "2a5a79aa-550e-4c66-a823-2b21a1b61c18",
+        "9712c63d-a83b-4f15-bfa3-99ff9bb081c2",
+        "de24afc6-070a-4bc4-a5fb-b846b6b8617b",
+        "6162f494-227d-4b43-93cc-742053b72018",
+        "3b4b66af-db2e-4f0d-ae0a-58b2caa5cedc"
+      ],
+      "short_note": "Relevant product qrels are missing from top10 results."
+    },
+    {
+      "eval_query_id": "product_q016",
+      "input_hash": "a56eb5378a8f988b2bad4ffe0ec1699738424c2a4050557459b4d10fe0a0614a",
+      "input_length": 12,
+      "reason_labels": [
+        "METRIC_REGRESSION"
+      ],
+      "reason_zh": [
+        "指标回退"
+      ],
+      "baseline_precision_at_5": 0.2,
+      "current_precision_at_5": 0.2,
+      "baseline_ndcg_at_10": 0.2323,
+      "current_ndcg_at_10": 0.1161,
+      "current_top10_has_hit": true,
+      "relevant_case_ids": [
+        "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+        "babab651-7e15-4404-ae83-9f207cdf524e",
+        "fd819cc8-aa9d-4253-8645-d263600c0b26"
+      ],
+      "baseline_top10_case_ids": [
+        "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+        "822ac08a-a972-4455-b7a6-3d863f950280",
+        "7ea7692e-f29b-4ab5-a32a-9ed6c9c351d2",
+        "c956fb03-4e3e-4ae8-99aa-e58af0ef5db1",
+        "60278c7e-a271-4ce6-a60e-771c08152713",
+        "c1cef7f4-adb9-4ba9-a4a5-26c159d78dab",
+        "31aa5841-b9b0-4172-bd12-e33a5cf8c4ba",
+        "011755e9-2c39-4415-b70f-eefc474d28bb",
+        "65b9272c-f729-4f53-8303-1d5b62330e65",
+        "40f1f023-3530-4ae2-b791-156dc9a297da"
+      ],
+      "current_top10_case_ids": [
+        "822ac08a-a972-4455-b7a6-3d863f950280",
+        "7ea7692e-f29b-4ab5-a32a-9ed6c9c351d2",
+        "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+        "c1cef7f4-adb9-4ba9-a4a5-26c159d78dab",
+        "9d628de1-a3f8-4d80-96ec-ba23c9e4f60b",
+        "c5418c60-a74c-440f-a67b-de816c06cd4d",
+        "8b2c1443-a33d-4319-883a-ab8f0baf06d4",
+        "bbf209de-7947-4680-be05-4daab86feb23",
+        "31aa5841-b9b0-4172-bd12-e33a5cf8c4ba",
+        "65b9272c-f729-4f53-8303-1d5b62330e65"
+      ],
+      "short_note": "Current metrics are below the BM25 product baseline."
+    },
+    {
+      "eval_query_id": "product_q018",
+      "input_hash": "f3d7d3b2abeadd139d26e63920dd53b8c2d95dcd0458fa90ceab1a9b0d0b9493",
+      "input_length": 15,
+      "reason_labels": [
+        "METRIC_REGRESSION"
+      ],
+      "reason_zh": [
+        "指标回退"
+      ],
+      "baseline_precision_at_5": 0.0,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.171,
+      "current_ndcg_at_10": 0.1567,
+      "current_top10_has_hit": true,
+      "relevant_case_ids": [
+        "4547861c-c396-4f12-8e99-05d03e928dba",
+        "8e7a94e9-528b-4f0d-a5ca-20726e876ff2",
+        "c1d7ffef-8359-4ed8-bda5-6aa4c673e047"
+      ],
+      "baseline_top10_case_ids": [
+        "72bbeecd-73d7-4dd3-b8a0-907a9e53cee9",
+        "1734cb24-51f6-4511-acd4-086a9f2c24e2",
+        "5607d081-f94d-4658-883c-29064a81275d",
+        "d121aec3-e9e0-4367-9e2b-9539f22cc3d2",
+        "c018dd48-404b-48b7-9ee6-540343153366",
+        "53e17bcd-e727-40b4-92a2-2924d5fb9734",
+        "a18b20ff-69fd-44e4-b009-4908e40e67c1",
+        "c1d7ffef-8359-4ed8-bda5-6aa4c673e047",
+        "bb11ed63-7725-4719-9695-cfc86d6a93c5",
+        "38cbacfa-4966-4a90-b287-b6bb01fbd115"
+      ],
+      "current_top10_case_ids": [
+        "72bbeecd-73d7-4dd3-b8a0-907a9e53cee9",
+        "1734cb24-51f6-4511-acd4-086a9f2c24e2",
+        "7bdd778d-7917-49d1-a9e3-dfa8112969d8",
+        "5607d081-f94d-4658-883c-29064a81275d",
+        "d121aec3-e9e0-4367-9e2b-9539f22cc3d2",
+        "53e17bcd-e727-40b4-92a2-2924d5fb9734",
+        "f0d51e82-2b3e-4a09-8ed5-19c75b2ca7d5",
+        "38cbacfa-4966-4a90-b287-b6bb01fbd115",
+        "a18b20ff-69fd-44e4-b009-4908e40e67c1",
+        "c1d7ffef-8359-4ed8-bda5-6aa4c673e047"
+      ],
+      "short_note": "Current metrics are below the BM25 product baseline."
+    },
+    {
+      "eval_query_id": "product_q020",
+      "input_hash": "87b9e7a2d31b94f38914f2e2d2e400e5c4ef754bb5d072b66eb176ecd80fbcd4",
+      "input_length": 15,
+      "reason_labels": [
+        "METRIC_REGRESSION"
+      ],
+      "reason_zh": [
+        "指标回退"
+      ],
+      "baseline_precision_at_5": 0.2,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.3092,
+      "current_ndcg_at_10": 0.3516,
+      "current_top10_has_hit": true,
+      "relevant_case_ids": [
+        "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+        "2257114a-b61e-409a-8e85-ace02ecddbed",
+        "ba621929-822f-4603-9615-8952340fe5ce"
+      ],
+      "baseline_top10_case_ids": [
+        "719f5612-1880-4c67-b354-94292eb3ba96",
+        "819e35eb-bced-4252-9ee7-537d594b6034",
+        "ba621929-822f-4603-9615-8952340fe5ce",
+        "6219c7b0-dbf6-4f61-a7b3-1ad0f973f437",
+        "70aa619a-b29d-4840-99a7-71bad5d8cf41",
+        "2257114a-b61e-409a-8e85-ace02ecddbed",
+        "536a91a1-78a5-4b11-ba95-11f201e63c59",
+        "13ea5928-b71d-4285-9b09-cebec70d7ded",
+        "b5a2853b-03c9-4b38-94fd-180a3979cfe5",
+        "1daf80b3-3978-4aa9-9168-67503cd22a24"
+      ],
+      "current_top10_case_ids": [
+        "70aa619a-b29d-4840-99a7-71bad5d8cf41",
+        "6219c7b0-dbf6-4f61-a7b3-1ad0f973f437",
+        "719f5612-1880-4c67-b354-94292eb3ba96",
+        "b5a2853b-03c9-4b38-94fd-180a3979cfe5",
+        "53c56ea9-e43a-475f-b34a-f041773c282f",
+        "13ea5928-b71d-4285-9b09-cebec70d7ded",
+        "2257114a-b61e-409a-8e85-ace02ecddbed",
+        "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+        "ccdee0be-ced9-4c00-8ab4-7f05edced441",
+        "983c7590-583d-4afc-87b7-aa916b3edcad"
+      ],
+      "short_note": "Current metrics are below the BM25 product baseline."
+    },
+    {
+      "eval_query_id": "product_q021",
+      "input_hash": "13ac44daab45ce6c2b42d200372475b872a13fabeb4abb750a47e465a83f82c8",
+      "input_length": 14,
+      "reason_labels": [
+        "METRIC_REGRESSION"
+      ],
+      "reason_zh": [
+        "指标回退"
+      ],
+      "baseline_precision_at_5": 0.2,
+      "current_precision_at_5": 0.2,
+      "baseline_ndcg_at_10": 0.3067,
+      "current_ndcg_at_10": 0.3032,
+      "current_top10_has_hit": true,
+      "relevant_case_ids": [
+        "32f50aa8-0dba-461b-b37b-d5011cc0a313",
+        "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+        "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00"
+      ],
+      "baseline_top10_case_ids": [
+        "ecc94a31-c9e5-4cc3-ac7e-3a9b0300d11b",
+        "4f9ccafa-62a7-4529-ae0f-8db812c59924",
+        "9337d66f-64a8-4795-8b3e-3a3eb9ae3388",
+        "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00",
+        "ce3895d0-1fbe-463d-aa9f-192f2ef4141b",
+        "982dd541-2c1f-4244-8112-8d3769e96bb1",
+        "3d0ffa65-70a3-4ea6-b542-302d8d0e6889",
+        "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+        "590a3c5c-43ce-4f96-803e-c090397ef796",
+        "60cff349-9bf8-4cd8-85bf-da7dc37fc3bf"
+      ],
+      "current_top10_case_ids": [
+        "4f9ccafa-62a7-4529-ae0f-8db812c59924",
+        "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+        "ecc94a31-c9e5-4cc3-ac7e-3a9b0300d11b",
+        "982dd541-2c1f-4244-8112-8d3769e96bb1",
+        "c456f394-96a1-4161-a093-5a79b0c7679d",
+        "60cff349-9bf8-4cd8-85bf-da7dc37fc3bf",
+        "590a3c5c-43ce-4f96-803e-c090397ef796",
+        "76b867d6-1f2e-4da9-a2de-718bfcf6393d",
+        "58c40bc4-64cd-419d-884f-4dcd0a48a46c",
+        "32f50aa8-0dba-461b-b37b-d5011cc0a313"
+      ],
+      "short_note": "Current metrics are below the BM25 product baseline."
+    },
+    {
+      "eval_query_id": "product_q024",
+      "input_hash": "5d20cba523afa544f0a9520dfdf13fa046809219ddfadf0325bc8a36d171cc89",
+      "input_length": 17,
+      "reason_labels": [
+        "METRIC_REGRESSION"
+      ],
+      "reason_zh": [
+        "指标回退"
+      ],
+      "baseline_precision_at_5": 0.0,
+      "current_precision_at_5": 0.0,
+      "baseline_ndcg_at_10": 0.4336,
+      "current_ndcg_at_10": 0.2537,
+      "current_top10_has_hit": true,
+      "relevant_case_ids": [
+        "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+        "9031b615-e15e-44b1-8c23-a63d1f49db91",
+        "cefc5222-54f1-4036-8887-ee1dffdd3eeb"
+      ],
+      "baseline_top10_case_ids": [
+        "597ac8ec-d1f7-4e72-99f2-8708d4ba3cae",
+        "3adfe5a4-e360-4cf0-9ae7-d9cddfc5cd86",
+        "0f1d9e53-ab64-4714-b338-271c982dddd5",
+        "2be7e3a1-54fb-409c-bb50-58949a0d1f32",
+        "bc95ec12-b900-46a4-a72a-885a6dc5d3ad",
+        "9031b615-e15e-44b1-8c23-a63d1f49db91",
+        "cefc5222-54f1-4036-8887-ee1dffdd3eeb",
+        "974e2b3b-09d9-420c-8f59-bd9cd7b06d06",
+        "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+        "f8b263b5-aa6e-4251-b728-aaa031b80918"
+      ],
+      "current_top10_case_ids": [
+        "597ac8ec-d1f7-4e72-99f2-8708d4ba3cae",
+        "3adfe5a4-e360-4cf0-9ae7-d9cddfc5cd86",
+        "bc95ec12-b900-46a4-a72a-885a6dc5d3ad",
+        "f8b263b5-aa6e-4251-b728-aaa031b80918",
+        "2be7e3a1-54fb-409c-bb50-58949a0d1f32",
+        "cefc5222-54f1-4036-8887-ee1dffdd3eeb",
+        "974e2b3b-09d9-420c-8f59-bd9cd7b06d06",
+        "9031b615-e15e-44b1-8c23-a63d1f49db91",
+        "0f1d9e53-ab64-4714-b338-271c982dddd5",
+        "956b900d-9732-4f8a-87be-087c11e43427"
+      ],
+      "short_note": "Current metrics are below the BM25 product baseline."
+    },
+    {
+      "eval_query_id": "product_q025",
+      "input_hash": "fa14f72e3fc1e0efd6f846ea8c67b1c08ec9bbfe23f7bea6a40a594e5deae696",
+      "input_length": 14,
+      "reason_labels": [
+        "METRIC_REGRESSION"
+      ],
+      "reason_zh": [
+        "指标回退"
+      ],
+      "baseline_precision_at_5": 0.2,
+      "current_precision_at_5": 0.2,
+      "baseline_ndcg_at_10": 0.5664,
+      "current_ndcg_at_10": 0.4903,
+      "current_top10_has_hit": true,
+      "relevant_case_ids": [
+        "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+        "777a8109-12f6-48c0-a8cc-0be487c4087b",
+        "d02916ef-72b3-4e05-9ec2-456490dc0a9b"
+      ],
+      "baseline_top10_case_ids": [
+        "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+        "2f2e0335-0f43-4bdc-97f1-69d549c2fd6c",
+        "a2a31885-f198-4aa2-99b2-fd366f553f02",
+        "b24e5935-6a8a-49ac-9d04-54c28defc38a",
+        "06b667bc-c622-48e1-b47c-879dfbdbf3f8",
+        "8e898c00-2082-49b1-a8bf-f56fdf7498ac",
+        "af8c8226-ada9-4f87-92b5-bcc91b16c469",
+        "777a8109-12f6-48c0-a8cc-0be487c4087b",
+        "d02916ef-72b3-4e05-9ec2-456490dc0a9b",
+        "4881fbf2-72a9-4aad-a58c-ace75ef28ef3"
+      ],
+      "current_top10_case_ids": [
+        "a2a31885-f198-4aa2-99b2-fd366f553f02",
+        "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+        "b24e5935-6a8a-49ac-9d04-54c28defc38a",
+        "8e898c00-2082-49b1-a8bf-f56fdf7498ac",
+        "2f2e0335-0f43-4bdc-97f1-69d549c2fd6c",
+        "af8c8226-ada9-4f87-92b5-bcc91b16c469",
+        "777a8109-12f6-48c0-a8cc-0be487c4087b",
+        "06b667bc-c622-48e1-b47c-879dfbdbf3f8",
+        "d02916ef-72b3-4e05-9ec2-456490dc0a9b",
+        "4881fbf2-72a9-4aad-a58c-ace75ef28ef3"
+      ],
+      "short_note": "Current metrics are below the BM25 product baseline."
+    }
+  ]
+}

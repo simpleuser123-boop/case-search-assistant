@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "artifact": "m2-parameter-version",
+  "generated_at": "2026-06-12T19:19:45+08:00",
+  "parameter_version_id": "m2-final-20260612-191945",
+  "source_step": "M2-8",
+  "rerank_candidate": {
+    "selected_candidate_id": "m1_3x_legal_score_shape_router_v2_candidate",
+    "selected_threshold": 0.001,
+    "robust_status": "ROBUST_GO",
+    "runtime_default_enabled": false,
+    "rollout_enabled": false
+  },
+  "feature_flag_defaults": {
+    "ENABLE_QUERY_REWRITE": false,
+    "ENABLE_SUMMARY": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "VITE_ENABLE_EXPANDED_SEARCH": false
+  },
+  "m2_contract_state": {
+    "source_anchors": {
+      "status": "enforced",
+      "minimum_fields": [
+        "case_id",
+        "source_chunk_id"
+      ],
+      "unanchored_generated_content_visible": false
+    },
+    "coverage": {
+      "status": "enabled",
+      "fabrication_allowed": false
+    },
+    "low_confidence_candidates": {
+      "status": "enabled",
+      "separate_api_field": true,
+      "separate_ui_section": true,
+      "uses_offline_eval_fields": false
+    },
+    "expanded_search": {
+      "status": "gated",
+      "backend_default_enabled": false,
+      "frontend_default_enabled": false,
+      "standard_search_overridden": false,
+      "rollback_ready": true
+    },
+    "feedback_event": {
+      "status": "enabled",
+      "sanitized_only": true,
+      "affects_sorting": false
+    },
+    "risk_hints": {
+      "status": "enabled",
+      "source_anchored_only": true,
+      "review_only": true,
+      "affects_sorting": false
+    }
+  },
+  "runtime_forbidden_inputs": {
+    "qrels": false,
+    "label": false,
+    "relevance": false,
+    "query_id_special_case": false,
+    "case_id_special_case": false,
+    "historical_eval_result": false
+  },
+  "privacy_boundary": {
+    "raw_query_persistence": false,
+    "case_fact_body_persistence": false,
+    "candidate_body_persistence": false,
+    "chunk_body_persistence": false,
+    "free_text_feedback_persistence": false,
+    "report_body_leakage": false,
+    "json_body_leakage": false,
+    "log_body_leakage": false
+  },
+  "validation_summary": {
+    "api_pytest_passed": 95,
+    "web_vitest_passed": 48,
+    "web_build_status": "passed",
+    "browser_acceptance_status": "passed",
+    "performance_warm_p95_ms": 820
+  },
+  "conclusion": {
+    "base_search": "GO",
+    "m2_trusted_retrieval": "GO",
+    "m3_entry": "GO"
+  }
+}

@@ -1,0 +1,638 @@
+{
+  "version": "m1_2_query_mapping_compare_v1",
+  "generated_at": "2026-06-09T16:31:00",
+  "privacy": {
+    "raw_query_text_written": false,
+    "candidate_full_text_written": false,
+    "chunk_text_written": false
+  },
+  "inputs": {
+    "queries": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\product_eval_queries.jsonl",
+    "qrels": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\product_eval_qrels.jsonl",
+    "chunks": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\processed\\chunks.jsonl",
+    "bad_cases": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.2-product-bad-cases-bm25-pool-20260609-144147-run1.json"
+  },
+  "summary": {
+    "evaluated_query_count": 25,
+    "mapped_query_count": 15,
+    "inferred_query_understanding_gap_count": 7,
+    "mapped_improved_count": 9,
+    "mapped_regressed_count": 0,
+    "case_cause_noise_warning_count": 0
+  },
+  "rows": [
+    {
+      "eval_query_id": "product_q001",
+      "input_hash": "d8f657543e361a13147bc18d7065604ff0e8dd0bcbfe234142ffa454bbe72fd5",
+      "input_length": 24,
+      "mapping_used": false,
+      "mapping_version": null,
+      "high_confidence_mappings": [],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": 38,
+      "mapped_best_relevant_rank": 38,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "走私、贩卖、运输、制造毒品罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q002",
+      "input_hash": "5dab98d4307322b93efcad2c4a15da60692f9769138780776ad86ce8a9e0d433",
+      "input_length": 21,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "dangerous_driving_alcohol"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": true,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": null,
+      "mapped_best_relevant_rank": null,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "危险驾驶罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q003",
+      "input_hash": "97b8daa410b0a8840de7cb2acbe1b4f931a762c9e0f5a882b45b585b609eb3b8",
+      "input_length": 15,
+      "mapping_used": false,
+      "mapping_version": null,
+      "high_confidence_mappings": [],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": 38,
+      "mapped_best_relevant_rank": 38,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "强奸罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q004",
+      "input_hash": "b217f8adf49cc01c513c0134923b6081895e2ac6f4cfb5e7d5bc9ff8723ee953",
+      "input_length": 16,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "theft_household"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": true,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": null,
+      "mapped_best_relevant_rank": null,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "盗窃罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q005",
+      "input_hash": "38bc94a4f956472d42bef079b3c69c4221aebcdc5126c264d357c96c22044f67",
+      "input_length": 16,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "harbor_drug_use"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": true,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": 45,
+      "mapped_best_relevant_rank": 43,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "容留他人吸毒罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "rank_improved"
+    },
+    {
+      "eval_query_id": "product_q006",
+      "input_hash": "37acf51f8670366ab76835a459e45c00a7f4b43ae9cd70ccdaa9c72caee2107c",
+      "input_length": 13,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "intentional_injury_minor"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": true,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": 17,
+      "mapped_best_relevant_rank": 12,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "故意伤害罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "rank_improved"
+    },
+    {
+      "eval_query_id": "product_q007",
+      "input_hash": "fa905e88a19cf386aa04cdfd68e23546cbf736541c8ebf7b5202d4188864df53",
+      "input_length": 18,
+      "mapping_used": false,
+      "mapping_version": null,
+      "high_confidence_mappings": [],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 9,
+      "mapped_best_relevant_rank": 9,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0699,
+      "mapped_ndcg_at_10": 0.0699,
+      "top10_case_cause_counts": {
+        "诈骗罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q008",
+      "input_hash": "3ebb5ebb350399a48c2c245b17931e29fcfffbdce760cc69290a81d544465bc3",
+      "input_length": 16,
+      "mapping_used": false,
+      "mapping_version": null,
+      "high_confidence_mappings": [],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 9,
+      "mapped_best_relevant_rank": 9,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.1631,
+      "mapped_ndcg_at_10": 0.1631,
+      "top10_case_cause_counts": {
+        "寻衅滋事罪": 9,
+        "抢劫罪": 1
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q009",
+      "input_hash": "0aaef9ba4caf56ed5060285da032eab7c8829adfa584b024edb30e0a30c2418a",
+      "input_length": 15,
+      "mapping_used": false,
+      "mapping_version": null,
+      "high_confidence_mappings": [],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": 33,
+      "mapped_best_relevant_rank": 33,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "交通肇事罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q010",
+      "input_hash": "255c8c09149eb39a56fd7be0c8c94929b410e7f5a4637510232f82526133b5d3",
+      "input_length": 15,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "robbery_knife_money"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": true,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": 26,
+      "mapped_best_relevant_rank": 21,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "强奸罪": 2,
+        "抢劫罪": 7,
+        "抢夺罪": 1
+      },
+      "case_cause_noise_warning": false,
+      "effect": "rank_improved"
+    },
+    {
+      "eval_query_id": "product_q011",
+      "input_hash": "48a0453b415715d0b055f4ba414d7005acbe579d3fce7be4acab4a5706f5d88c",
+      "input_length": 12,
+      "mapping_used": false,
+      "mapping_version": null,
+      "high_confidence_mappings": [],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": 12,
+      "mapped_best_relevant_rank": 12,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "非法持有、私藏枪支、弹药罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q012",
+      "input_hash": "b17c3bbbd6b0e3b3d7aa45446fff74103ced67e97220b8c2772b37ce1ce2af57",
+      "input_length": 17,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "drug_possession_meth"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": true,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": 18,
+      "mapped_best_relevant_rank": 16,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "非法持有毒品罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "rank_improved"
+    },
+    {
+      "eval_query_id": "product_q013",
+      "input_hash": "8f48e4351b58886f12042cf09f1d9a8b45f9561314d8823667192341220563bc",
+      "input_length": 14,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "casino_online_profit"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": 14,
+      "mapped_best_relevant_rank": 11,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "开设赌场罪": 8,
+        "赌博罪": 1,
+        "走私、贩卖、运输、制造毒品罪": 1
+      },
+      "case_cause_noise_warning": false,
+      "effect": "rank_improved"
+    },
+    {
+      "eval_query_id": "product_q014",
+      "input_hash": "c9094b9308e30f03496c1725a5762406deb4dd02f057fd4d3ca0311ea7d9fd40",
+      "input_length": 11,
+      "mapping_used": false,
+      "mapping_version": null,
+      "high_confidence_mappings": [],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": false,
+      "original_best_relevant_rank": 17,
+      "mapped_best_relevant_rank": 17,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.0,
+      "top10_case_cause_counts": {
+        "赌博罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q015",
+      "input_hash": "bbc2d33ad0025e16d31f1e07d1128394e7466a6bfb51beb41226c645934e00d8",
+      "input_length": 18,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "job_occupation_company_funds"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": true,
+      "original_top10_has_hit": false,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 13,
+      "mapped_best_relevant_rank": 9,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.0,
+      "mapped_ndcg_at_10": 0.1631,
+      "top10_case_cause_counts": {
+        "职务侵占罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "top10_fixed"
+    },
+    {
+      "eval_query_id": "product_q016",
+      "input_hash": "a56eb5378a8f988b2bad4ffe0ec1699738424c2a4050557459b4d10fe0a0614a",
+      "input_length": 12,
+      "mapping_used": false,
+      "mapping_version": null,
+      "high_confidence_mappings": [],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 1,
+      "mapped_best_relevant_rank": 1,
+      "original_precision_at_5": 0.2,
+      "mapped_precision_at_5": 0.2,
+      "original_ndcg_at_10": 0.2323,
+      "mapped_ndcg_at_10": 0.2323,
+      "top10_case_cause_counts": {
+        "非法经营罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q017",
+      "input_hash": "1dc162b91f027a97bc4f99be262bddb8aec154ee47c63d001248b8342b3fec03",
+      "input_length": 15,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "illegal_logging_license"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 9,
+      "mapped_best_relevant_rank": 7,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.3198,
+      "mapped_ndcg_at_10": 0.3438,
+      "top10_case_cause_counts": {
+        "滥伐林木罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "rank_improved"
+    },
+    {
+      "eval_query_id": "product_q018",
+      "input_hash": "f3d7d3b2abeadd139d26e63920dd53b8c2d95dcd0458fa90ceab1a9b0d0b9493",
+      "input_length": 15,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "extortion_threat_money"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 8,
+      "mapped_best_relevant_rank": 7,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.171,
+      "mapped_ndcg_at_10": 0.1806,
+      "top10_case_cause_counts": {
+        "敲诈勒索罪": 9,
+        "绑架罪": 1
+      },
+      "case_cause_noise_warning": false,
+      "effect": "rank_improved"
+    },
+    {
+      "eval_query_id": "product_q019",
+      "input_hash": "e9998ce54776f9e9f91a4da1608ca6a9a2c16dd718636f4177c30ff7de3b2d9b",
+      "input_length": 15,
+      "mapping_used": false,
+      "mapping_version": null,
+      "high_confidence_mappings": [],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 7,
+      "mapped_best_relevant_rank": 7,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.1806,
+      "mapped_ndcg_at_10": 0.1806,
+      "top10_case_cause_counts": {
+        "侵犯著作权罪": 9,
+        "制作、复制、出版、贩卖、传播淫秽物品牟利罪": 1
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q020",
+      "input_hash": "87b9e7a2d31b94f38914f2e2d2e400e5c4ef754bb5d072b66eb176ecd80fbcd4",
+      "input_length": 15,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "obstruct_official_police"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 3,
+      "mapped_best_relevant_rank": 3,
+      "original_precision_at_5": 0.2,
+      "mapped_precision_at_5": 0.2,
+      "original_ndcg_at_10": 0.3092,
+      "mapped_ndcg_at_10": 0.1161,
+      "top10_case_cause_counts": {
+        "妨害公务罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q021",
+      "input_hash": "13ac44daab45ce6c2b42d200372475b872a13fabeb4abb750a47e465a83f82c8",
+      "input_length": 14,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "contract_fraud_signing"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 4,
+      "mapped_best_relevant_rank": 4,
+      "original_precision_at_5": 0.2,
+      "mapped_precision_at_5": 0.2,
+      "original_ndcg_at_10": 0.3067,
+      "mapped_ndcg_at_10": 0.3108,
+      "top10_case_cause_counts": {
+        "合同诈骗罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q022",
+      "input_hash": "0953e8a3dc96dd4177a3452f559d84b55b2e76ea306753971299acaeceac4e1e",
+      "input_length": 17,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "farmland_land_use_change"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 8,
+      "mapped_best_relevant_rank": 8,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.171,
+      "mapped_ndcg_at_10": 0.171,
+      "top10_case_cause_counts": {
+        "非法占用农用地罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q023",
+      "input_hash": "36fb798073013136e380d481a442e1cfe8c39e4053a811053b995a4632029d58",
+      "input_length": 18,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "public_deposit_high_interest"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 6,
+      "mapped_best_relevant_rank": 3,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.2,
+      "original_ndcg_at_10": 0.4265,
+      "mapped_ndcg_at_10": 0.3442,
+      "top10_case_cause_counts": {
+        "虚假出资、抽逃出资罪": 1,
+        "非法吸收公众存款罪": 9
+      },
+      "case_cause_noise_warning": false,
+      "effect": "rank_improved"
+    },
+    {
+      "eval_query_id": "product_q024",
+      "input_hash": "5d20cba523afa544f0a9520dfdf13fa046809219ddfadf0325bc8a36d171cc89",
+      "input_length": 17,
+      "mapping_used": true,
+      "mapping_version": "m1_2_query_understanding_v1",
+      "high_confidence_mappings": [
+        "pyramid_scheme_rebate"
+      ],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 6,
+      "mapped_best_relevant_rank": 6,
+      "original_precision_at_5": 0.0,
+      "mapped_precision_at_5": 0.0,
+      "original_ndcg_at_10": 0.4336,
+      "mapped_ndcg_at_10": 0.4104,
+      "top10_case_cause_counts": {
+        "组织、领导传销活动罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    },
+    {
+      "eval_query_id": "product_q025",
+      "input_hash": "fa14f72e3fc1e0efd6f846ea8c67b1c08ec9bbfe23f7bea6a40a594e5deae696",
+      "input_length": 14,
+      "mapping_used": false,
+      "mapping_version": null,
+      "high_confidence_mappings": [],
+      "low_confidence_mappings": [],
+      "inferred_query_understanding_gap": false,
+      "original_top10_has_hit": true,
+      "mapped_top10_has_hit": true,
+      "original_best_relevant_rank": 1,
+      "mapped_best_relevant_rank": 1,
+      "original_precision_at_5": 0.2,
+      "mapped_precision_at_5": 0.2,
+      "original_ndcg_at_10": 0.5664,
+      "mapped_ndcg_at_10": 0.5664,
+      "top10_case_cause_counts": {
+        "污染环境罪": 10
+      },
+      "case_cause_noise_warning": false,
+      "effect": "unchanged"
+    }
+  ]
+}

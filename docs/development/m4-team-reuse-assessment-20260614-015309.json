@@ -1,0 +1,232 @@
+{
+  "version": "m4_team_reuse_assessment_v1",
+  "artifact": "m4-team-reuse-assessment",
+  "step": "M4-7",
+  "title": "团队复用能力评估",
+  "generated_at": "2026-06-14T01:53:09+08:00",
+  "feature_ref": "F19 (团队复用前置评估，仅评估 + 最小字段预留)",
+  "scope": {
+    "summary": "评估把历史/收藏/清单/报告在团队内复用的前置条件(账号/共享/权限/隔离)，预留 owner/visibility 等字段位(默认私有、默认关闭共享)，ENABLE_TEAM_REUSE 默认 false；不实现真实多用户权限/共享/团队空间/批量导入。",
+    "assessment_only": true,
+    "reserves_fields_declaration_only": true,
+    "implements_real_multiuser": false,
+    "implements_team_space": false,
+    "implements_role_permission": false,
+    "implements_bulk_import": false,
+    "implements_share_link": false,
+    "default_cross_user_visibility": false,
+    "changes_online_sorting": false,
+    "changes_source_selection": false,
+    "changes_rerank_defaults": false,
+    "changes_existing_m1_m2_m3_m4_default_behavior": false,
+    "backend_files_changed": 0,
+    "frontend_business_files_changed": 0
+  },
+  "entry_evidence": {
+    "m4_1_contract": "docs/development/m4-workflow-entry-contract-20260613-090354.json",
+    "m4_1_go": true,
+    "m4_2_search_history_draft": "docs/development/m4-search-history-draft-20260613-103734.json",
+    "m4_2_go": true,
+    "m4_3_case_favorite": "docs/development/m4-case-favorite-20260613-113516.json",
+    "m4_3_go": true,
+    "m4_4_case_list": "docs/development/m4-case-list-20260613-211225.json",
+    "m4_4_go": true,
+    "m4_5_list_export": "docs/development/m4-list-export-20260614-004136.json",
+    "m4_5_go": true,
+    "m4_6_report_template": "docs/development/m4-report-template-20260614-014251.json",
+    "m4_6_go": true,
+    "all_prerequisites_go": true,
+    "team_reuse_feature_flag": "ENABLE_TEAM_REUSE",
+    "flag_default_false": true
+  },
+  "current_persistence_baseline": {
+    "summary": "M4-2 至 M4-6 全部为纯前端 localStorage、单浏览器、单用户、零后端持久层；后端 db.py 仅有引擎、无任何业务表。团队复用没有任何服务端基础可直接扩展。",
+    "search_history_draft": {"tier": "browser_localStorage_only", "scope": "single_browser_single_user", "server_persisted": false, "storage_key": "case-search:m4:search-history:v1 / search-draft:v1"},
+    "case_favorite": {"tier": "browser_localStorage_only", "scope": "single_browser_single_user", "server_persisted": false, "storage_key": "case-search:m4:case-favorite:v1"},
+    "case_list": {"tier": "browser_localStorage_only", "scope": "single_browser_single_user", "server_persisted": false, "storage_key": "case-search:m4:case-list:v1"},
+    "case_list_export": {"tier": "browser_local_blob_download", "scope": "single_browser_single_user", "server_persisted": false},
+    "report_template": {"tier": "browser_local_assembly", "scope": "single_browser_single_user", "server_persisted": false},
+    "backend_persistence_tables_exist": false,
+    "backend_account_system_exists": false,
+    "user_identity_concept_exists": false,
+    "implication": "团队复用是一次从'无服务端用户态'到'多用户协作'的体系级跃迁，属于 M5 商业化范畴；M4-7 只评估并预留字段位，不动现有单用户行为。"
+  },
+  "assessment_structure": {
+    "fields": ["capability", "readiness", "prerequisite", "data_structure_reserved", "risk_note"],
+    "readiness_vocab": ["ready", "partially_ready", "not_ready"]
+  },
+  "capabilities": [
+    {
+      "capability": "account_system",
+      "label": "账号体系（用户身份与认证）",
+      "readiness": "not_ready",
+      "prerequisite": [
+        "引入用户实体(user_id)与认证(登录/会话/令牌)",
+        "服务端身份存储与密码/SSO 凭据管理(不在 Cowork 内代填)",
+        "把当前匿名单用户态映射到具名 user_id"
+      ],
+      "data_structure_reserved": false,
+      "reserved_field_slots": ["owner_user_id"],
+      "risk_note": "当前完全无用户身份概念；账号体系涉及凭据与个人数据，属高敏感、高改造范畴，须 M5 专项设计，本步不预留具体认证字段，仅记录 owner_user_id 槽位待 M5 填充。"
+    },
+    {
+      "capability": "list_sharing",
+      "label": "清单/收藏共享（团队内复用历史、收藏、清单、报告）",
+      "readiness": "not_ready",
+      "prerequisite": [
+        "先有账号体系与服务端持久层(当前为纯前端 localStorage)",
+        "把单用户 localStorage 记录迁移/同步到服务端按 owner 归属的存储",
+        "可见性模型(private/team)与显式共享动作，默认 private"
+      ],
+      "data_structure_reserved": true,
+      "reserved_field_slots": ["owner", "visibility", "shared_with_team_id"],
+      "risk_note": "共享是跨用户数据可见性的引入点，最高隐私风险；必须默认 private、默认不共享、显式授权才可见；任何默认开启跨用户可见性即触发 NO_GO。"
+    },
+    {
+      "capability": "permission_tiering",
+      "label": "权限分级（查看/编辑/管理角色）",
+      "readiness": "not_ready",
+      "prerequisite": [
+        "账号体系 + 团队/组织实体",
+        "角色与权限模型(owner/editor/viewer)与鉴权中间件",
+        "对清单/收藏/报告的对象级访问控制"
+      ],
+      "data_structure_reserved": false,
+      "reserved_field_slots": ["role", "permission_level"],
+      "risk_note": "权限模型错误会导致越权读取他人案件工作产物；须 M5 配合鉴权与审计设计，本步不实现任何角色逻辑，仅登记槽位。"
+    },
+    {
+      "capability": "team_workspace_isolation",
+      "label": "团队空间与数据隔离",
+      "readiness": "not_ready",
+      "prerequisite": [
+        "团队/组织实体(team_id)与成员关系",
+        "存储与查询层按 team_id 强隔离(行级隔离/独立命名空间)",
+        "跨团队数据不可见的默认隔离"
+      ],
+      "data_structure_reserved": true,
+      "reserved_field_slots": ["team_id", "workspace_id"],
+      "risk_note": "隔离不彻底将造成团队间数据串读；默认必须单租户私有，team_id 为空即等同当前单用户私有行为。"
+    },
+    {
+      "capability": "bulk_import",
+      "label": "批量导入（既有清单/案例批量进入团队空间）",
+      "readiness": "not_ready",
+      "prerequisite": [
+        "账号体系 + 团队空间 + 权限模型",
+        "导入来源校验与去重、锚点完整性校验(沿用 case_id+source_chunk_id)",
+        "导入即元数据/引用 only，绝不引入正文"
+      ],
+      "data_structure_reserved": false,
+      "reserved_field_slots": ["import_batch_id", "import_source"],
+      "risk_note": "批量导入可能把正文或未脱敏数据带入服务端，与 M4 隐私边界冲突；明确本步不做，M5 须复用持久化字段白名单门禁。"
+    }
+  ],
+  "gate3_evidence_review": {
+    "description": "对照 01-演进计划总览.md Gate 3(进入 M4 / 工作流扩展前置)，团队复用属 M4→M5 之间的能力，评估其行为证据是否已就绪。",
+    "criteria": [
+      {"criterion": "检索成功率与复访率已验证", "status": "partially_ready", "note": "M1/M2 已建检索成功率与降级覆盖证据；复访率依赖真实多会话用户数据，单用户本地态尚无法直接度量，须 M5 账号体系后采集。"},
+      {"criterion": "收藏/复制案号/查看详情等行为显著存在", "status": "partially_ready", "note": "M3-7 复制案号 + M4-3 收藏 + 详情查看能力已具备且默认可关闭；行为'显著存在'需上线后脱敏埋点(case_favorite_action/citation_copy_action)累积，当前为能力就绪、证据待积累。"},
+      {"criterion": "用户明确有重复检索或复用类案清单的行为证据", "status": "partially_ready", "note": "M4-2 历史/草稿 + M4-4 清单 + M4-5 导出 + M4-6 报告模板已提供复用载体;'明确行为证据'需真实用户数据,单用户本地态只能证明能力可用,不能证明复用频次。"}
+    ],
+    "overall": "capability_ready_evidence_pending",
+    "conclusion": "工作流复用所需能力载体在 M4 已全部就绪且默认安全关闭；团队复用真正落地的前置是 M5 账号/共享/权限/隔离体系，以及上线后脱敏行为证据的积累。本步只评估，不补建。"
+  },
+  "m5_prerequisites": {
+    "description": "M5 团队空间所需的账号、共享、权限、隔离前置条件清单。",
+    "account": ["用户实体 user_id", "认证与会话(登录/SSO/令牌)", "凭据与个人数据合规存储"],
+    "sharing": ["可见性模型 private/team", "显式共享动作", "默认 private 默认不共享"],
+    "permission": ["团队/组织实体", "角色模型 owner/editor/viewer", "对象级鉴权中间件与审计"],
+    "isolation": ["team_id 强隔离", "行级/命名空间隔离", "跨团队默认不可见"],
+    "persistence": ["从纯前端 localStorage 升级到服务端按 owner 归属的持久层", "迁移即复用 M4-1 持久化字段白名单(只存元数据/引用/用户自填短字段，不存正文)"]
+  },
+  "single_user_to_team_refactor_points": {
+    "description": "现有持久层(收藏/清单/报告)从单用户扩展到团队的改造点与隐私风险。",
+    "refactor_points": [
+      {"point": "存储位置", "from": "浏览器 localStorage(单浏览器)", "to": "服务端按 owner/team 归属的持久层", "privacy_risk": "数据从本地可清除变为服务端长期保存，须复用字段白名单+脱敏+保留周期(参考 04-数据层设计 §9)。"},
+      {"point": "归属", "from": "隐式单用户(无 owner)", "to": "显式 owner_user_id + 可选 team_id", "privacy_risk": "归属错误导致越权；owner 缺省必须等同私有。"},
+      {"point": "可见性", "from": "仅本人本浏览器可见", "to": "private(默认) / team(显式开启)", "privacy_risk": "默认值必须 private；任何默认 team 可见即重大隐私事故。"},
+      {"point": "锚点与正文边界", "from": "前端 sanitize 丢弃非白名单键", "to": "服务端入库同样强制白名单+锚点校验", "privacy_risk": "团队共享放大正文泄露面，须服务端再次执行 no_anchor_no_delivery 与禁正文。"},
+      {"point": "日志/埋点", "from": "脱敏 action 事件(event/surface/status/reason_code/count)", "to": "增加 owner/team 维度但仍不带正文/案号/note/tag", "privacy_risk": "多用户维度可能反推个人，须保持脱敏聚合。"}
+    ]
+  },
+  "reserved_fields": {
+    "description": "最小预留：仅声明字段位与默认值，不在 M4-7 注入到任何在用 TS 类型或服务端表，不改变现有 sanitize/序列化行为。物理落地留待 M5。",
+    "declaration_only": true,
+    "injected_into_live_types": false,
+    "injected_into_server_schema": false,
+    "slots": {
+      "owner": {"default": "private", "meaning": "记录归属；缺省等同当前单用户私有", "default_changes_existing_behavior": false},
+      "visibility": {"default": "private", "meaning": "可见范围；默认仅本人可见", "default_changes_existing_behavior": false},
+      "sharing": {"default": "disabled", "meaning": "共享开关；默认关闭", "default_changes_existing_behavior": false},
+      "team_id": {"default": null, "meaning": "团队归属；空即单用户私有", "default_changes_existing_behavior": false},
+      "owner_user_id": {"default": null, "meaning": "用户归属；空即匿名单用户", "default_changes_existing_behavior": false}
+    },
+    "reserved_defaults_match_m4_1_contract": {"owner": "private", "visibility": "private", "sharing": "disabled"}
+  },
+  "feature_flag": {
+    "name": "ENABLE_TEAM_REUSE",
+    "config_default": false,
+    "env_example_default": false,
+    "off_behavior": "无任何团队复用入口/字段生效，与单用户行为完全一致(回到 M4-6 末态)",
+    "on_behavior_in_m4": "M4 不实现业务；即便误开也无团队空间/共享/权限逻辑可执行，仍等同单用户",
+    "decision": "KEEP_FALSE_ASSESSMENT_ONLY"
+  },
+  "not_doing": [
+    "不实现真实多用户权限",
+    "不实现共享链接",
+    "不实现团队空间",
+    "不实现批量导入",
+    "不默认开启跨用户可见性或共享",
+    "不把团队评估变成实际多用户上线",
+    "不改变 M1/M2/M3/M4 既有默认行为",
+    "不向在用 TS 类型或服务端表注入预留字段(仅声明)"
+  ],
+  "privacy_gate": {
+    "persist_layer_body_text": false,
+    "default_cross_user_visibility": false,
+    "default_sharing_enabled": false,
+    "reserved_owner_default_private": true,
+    "reserved_visibility_default_private": true,
+    "reserved_sharing_default_disabled": true,
+    "no_body_leak_in_artifact": true,
+    "this_artifact_contains_body_text": false
+  },
+  "verification": {
+    "api_pytest": {
+      "files": ["tests/test_health.py", "tests/test_feature_flag_rollback.py", "tests/test_search_api_fallback_smoke.py", "tests/test_m4_team_reuse.py"],
+      "expected": "all passed"
+    },
+    "web": {"npm_run_test": "expected pass (no business code change, regression only)", "npm_run_build": "expected pass"}
+  },
+  "acceptance": {
+    "assessment_lists_readiness_prerequisite_risk": true,
+    "fields_reserved_default_private_default_sharing_off": true,
+    "team_reuse_flag_default_false_equals_single_user": true,
+    "no_full_team_space_implemented": true,
+    "no_body_leak": true,
+    "no_existing_behavior_regression": true
+  },
+  "stop_loss_checks": {
+    "implemented_multiuser_permission_or_sharing": false,
+    "default_enabled_cross_user_visibility": false,
+    "caused_existing_behavior_regression": false,
+    "triggered_no_go": false
+  },
+  "go_no_go": {
+    "status": "GO",
+    "allows_entering_m4_8": true,
+    "failed_gates": [],
+    "reason_codes": [
+      "ALL_M4_1_TO_M4_6_GO_INHERITED",
+      "ENABLE_TEAM_REUSE_DEFAULT_FALSE_CONFIRMED",
+      "ASSESSMENT_LISTS_READINESS_PREREQUISITE_RISK",
+      "RESERVED_FIELDS_DEFAULT_PRIVATE_SHARING_DISABLED",
+      "NO_REAL_MULTIUSER_OR_TEAM_SPACE_IMPLEMENTED",
+      "NO_DEFAULT_CROSS_USER_VISIBILITY",
+      "NO_EXISTING_BEHAVIOR_REGRESSION",
+      "NO_BODY_LEAK_IN_ARTIFACT"
+    ],
+    "next_allowed_title": "类案检索助手 M4-8 验收与 M5 入口"
+  }
+}

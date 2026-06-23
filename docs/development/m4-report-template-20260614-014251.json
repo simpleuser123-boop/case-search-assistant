@@ -1,0 +1,89 @@
+{
+  "step": "M4-6",
+  "title": "轻量报告模板生成",
+  "feature_ref": "F18 (lightweight template part only)",
+  "generated_at": "2026-06-14T01:42:51+08:00",
+  "go_no_go": {
+    "m4_6_report_template": "GO",
+    "allow_enter_m4_7": true,
+    "rollback_required": false,
+    "stop_loss_triggered": false
+  },
+  "implementation": {
+    "backend_files_changed": 0,
+    "approach": "frontend-only, metadata-only, localStorage-list-derived; report download reuses M4-5 downloader",
+    "new_files": [
+      "apps/web/src/lib/reportTemplate.ts",
+      "apps/web/src/components/results/ReportPreview.tsx",
+      "apps/web/src/lib/reportTemplate.test.ts",
+      "apps/web/src/pages/ReportTemplateAcceptance.test.tsx"
+    ],
+    "modified_files": [
+      "apps/web/src/config/featureFlags.ts",
+      "apps/web/src/vite-env.d.ts",
+      ".env.example",
+      "apps/web/src/components/results/CaseListPanel.tsx",
+      "apps/web/src/pages/SearchPage.tsx"
+    ]
+  },
+  "report_template_structure": {
+    "report_id": "local id, no semantics",
+    "list_id": "source list reference",
+    "report_title": "user short field, fallback to list title",
+    "generated_at": "iso",
+    "report_status": ["generated", "degraded", "failed"],
+    "degrade_reason": ["list_not_found", "empty_list", "render_failed", "assembly_failed", "degraded_overview_only", "download_unavailable", "download_failed"],
+    "item_count": "count only",
+    "sections": ["search_background", "list_overview", "case_entries", "review_points", "disclaimer"]
+  },
+  "case_entry_field_whitelist": ["ordinal", "case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchors", "note", "tag", "anchored_fragments"],
+  "content_boundary": {
+    "contains_body_text": false,
+    "auto_drafts_legal_documents": false,
+    "outputs_win_lose_or_certainty_conclusion": false,
+    "ai_fragments_require_source_anchor": true,
+    "no_anchor_no_delivery": true,
+    "fragment_guards": ["belongs_to_list_case", "anchor_case_id_matches_fragment", "non_empty_truncated_160", "no_forbidden_phrase"],
+    "mandatory_disclaimer_lines": 4,
+    "this_artifact_contains_body_text": false
+  },
+  "feature_flag": {
+    "name": "VITE_ENABLE_REPORT_TEMPLATE",
+    "default": false,
+    "accessor": "config/featureFlags.ts:isReportTemplateEnabled",
+    "gating": "reportEnabled = isCaseListEnabled() && isReportTemplateEnabled()",
+    "off_behavior": "no report entry/preview rendered, no content assembled, page returns to M4-5 end state",
+    "env_example_backfill": ["VITE_ENABLE_CASE_LIST", "VITE_ENABLE_LIST_EXPORT", "VITE_ENABLE_REPORT_TEMPLATE"]
+  },
+  "degrade": {
+    "missing_list": "failed/list_not_found (disclaimer only, no download)",
+    "empty_list": "failed/empty_list (disclaimer only, no download)",
+    "assembly_error": "degraded/assembly_failed (overview + disclaimer only)",
+    "download_unavailable": "degraded/download_unavailable (content still returned for preview)",
+    "download_failed": "degraded/download_failed",
+    "never_throws": true,
+    "never_breaks_main_flow": true
+  },
+  "log": {
+    "event": "report_template_action",
+    "fields": ["event", "status", "reason_code", "section_count", "item_count"],
+    "carries_body_or_pii": false
+  },
+  "verification": {
+    "tsc": "exit 0",
+    "frontend_focused_tests": {"reportTemplate.test": 21, "ReportTemplateAcceptance.test": 8, "total": 29},
+    "frontend_full_suite": {"lib_components": 126, "pages": 89, "total": 215, "failed": 0},
+    "vite_build_modules": 118,
+    "backend_smoke_pytest": {"files": ["test_summary_service", "test_search_api_fallback_smoke", "test_feature_flag_rollback", "test_performance_smoke"], "passed": 23, "database_url": "sqlite (temp db removed)"},
+    "export_spot_check": {
+      "structure_present": true,
+      "metadata_present": true,
+      "source_anchor_present": true,
+      "disclaimer_lines_present": 4,
+      "body_markers_found": [],
+      "raw_query_leak": false,
+      "forbidden_phrases_found": []
+    }
+  },
+  "next_step": "M4-7 团队复用能力评估"
+}

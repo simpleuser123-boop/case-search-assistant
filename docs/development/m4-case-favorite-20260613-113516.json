@@ -1,0 +1,200 @@
+{
+  "version": "m4_case_favorite_v1",
+  "artifact": "m4-case-favorite",
+  "step": "M4-3",
+  "title": "案例收藏能力",
+  "generated_at": "2026-06-13T19:35:16+08:00",
+  "feature": "F17 案例收藏",
+  "scope": {
+    "summary": "案例收藏；只保存元数据/来源锚点/用户自填短字段，只存在于浏览器本地、可清除，绝不上送后端持久层、不参与主排序；纯前端零后端改动",
+    "frontend_only": true,
+    "backend_changes": false,
+    "server_persistence_added": false,
+    "new_analytics_event_added": false,
+    "changes_online_sorting": false,
+    "changes_source_selection": false,
+    "changes_rerank_defaults": false,
+    "favorite_stores_body_text": false,
+    "favorite_affects_ranking": false
+  },
+  "entry_evidence": {
+    "m4_1_contract": "docs/development/m4-workflow-entry-contract-20260613-090354.json",
+    "m4_1_go": true,
+    "m4_2_history_draft": "docs/development/m4-search-history-draft-20260613-103734.json",
+    "m4_2_go": true,
+    "case_favorite_feature_flag": "ENABLE_CASE_FAVORITE",
+    "flag_default_false": true,
+    "persistence_tier_decision": "frontend localStorage only (per user choice, mirrors M4-2); backend zero change"
+  },
+  "feature_flag": {
+    "frontend_flag": "VITE_ENABLE_CASE_FAVORITE",
+    "frontend_reader": "apps/web/src/config/featureFlags.ts:isCaseFavoriteEnabled",
+    "default": false,
+    "disabled_behavior": "no local storage read/write, no favorite button or list rendered, page returns to M4-2 end-state; standard search & sorting unchanged",
+    "backend_flag": "ENABLE_CASE_FAVORITE",
+    "backend_flag_default_false_unchanged": true
+  },
+  "data_structure": {
+    "case_favorite": {
+      "storage_location": "browser_localStorage_only_clearable",
+      "storage_key": "case-search:m4:case-favorite:v1",
+      "max_entries": 200,
+      "dedupe_by_case_id": true,
+      "newest_first": true,
+      "whitelisted_fields": [
+        "case_id",
+        "case_number",
+        "court",
+        "trial_level",
+        "case_cause",
+        "judgment_date",
+        "source_anchors",
+        "note",
+        "tag",
+        "created_at",
+        "favorite_status"
+      ],
+      "source_anchor_fields": ["case_id", "source_chunk_id", "anchor_type", "chunk_type"],
+      "user_short_fields": {
+        "note_max_chars": 120,
+        "tag_max_chars": 24
+      },
+      "anchor_max_per_record": 4,
+      "forbidden_persisted_fields": [
+        "raw_query",
+        "case_fact_body",
+        "candidate_body",
+        "chunk_body",
+        "judgment_long_text",
+        "summary_body",
+        "holding_body",
+        "compare_body",
+        "matched_text",
+        "user_free_long_text"
+      ],
+      "server_persistable_fields_used_in_m4_3": []
+    }
+  },
+  "boundaries": {
+    "stores_metadata_only": true,
+    "stores_source_anchors_reference_only": true,
+    "stores_user_short_fields": true,
+    "copies_case_body": false,
+    "copies_summary_body": false,
+    "copies_chunk_body": false,
+    "builder_reads_body": false,
+    "load_drops_non_whitelisted_keys": true,
+    "can_add": true,
+    "can_remove": true,
+    "can_clear": true,
+    "can_edit_short_fields": true,
+    "storage_error_safe_degrade": true
+  },
+  "display": {
+    "favorite_toggle_surfaces": ["result_card", "low_confidence_candidate", "detail_drawer", "compare_view"],
+    "favorites_list_component": "apps/web/src/components/results/FavoritesPanel.tsx",
+    "favorites_list_shows": ["case_number", "court", "trial_level", "case_cause", "judgment_date", "tag", "note", "created_at"],
+    "jump_back_to_detail": true,
+    "jump_back_seed_body_free": true
+  },
+  "privacy_and_sorting": {
+    "favorite_does_not_affect_main_sort": true,
+    "favorite_not_runtime_sort_feature": true,
+    "no_case_id_qrels_label_relevance_special_case": true,
+    "log_event": "case_favorite_action",
+    "log_fields_only": ["event", "surface", "status", "reason_code", "count"],
+    "log_contains_body_or_case_number_or_note_or_tag": false,
+    "favorite_storage_blob_body_free_asserted": true,
+    "analytics_endpoint_no_raw_case_or_case_number_asserted": true
+  },
+  "files_changed": {
+    "added": [
+      "apps/web/src/lib/caseFavorite.ts",
+      "apps/web/src/lib/caseFavorite.test.ts",
+      "apps/web/src/components/results/FavoriteButton.tsx",
+      "apps/web/src/components/results/FavoritesPanel.tsx",
+      "apps/web/src/pages/CaseFavoriteAcceptance.test.tsx"
+    ],
+    "modified": [
+      "apps/web/src/config/featureFlags.ts",
+      "apps/web/src/vite-env.d.ts",
+      ".env.example",
+      "apps/web/src/components/results/ResultCard.tsx",
+      "apps/web/src/components/results/ResultList.tsx",
+      "apps/web/src/components/results/LowConfidencePanel.tsx",
+      "apps/web/src/components/details/CaseDetailDrawer.tsx",
+      "apps/web/src/components/results/CaseCompareView.tsx",
+      "apps/web/src/pages/SearchPage.tsx"
+    ],
+    "backend_files_changed": []
+  },
+  "verification": {
+    "web_tsc": "pass (tsc -b exit 0)",
+    "web_build": "pass (vite build, 112 modules)",
+    "web_modules_delta": "109 -> 112 (+caseFavorite +FavoriteButton +FavoritesPanel)",
+    "web_tests_total_passed": 142,
+    "new_focused_tests": {
+      "caseFavorite.test.ts": "15 passed",
+      "CaseFavoriteAcceptance.test.tsx": "6 passed"
+    },
+    "web_tests_breakdown": {
+      "SearchPage.test.tsx": 33,
+      "HomePage.test.tsx": 9,
+      "CitationCopyAcceptance.test.tsx": 7,
+      "CaseCompareAcceptance.test.tsx": 5,
+      "caseCompare.test.ts": 11,
+      "citationCopy.test.ts": 15,
+      "searchHistory.test.ts": 13,
+      "sourceHighlights.test.ts": 12,
+      "analytics.test.ts": 5,
+      "feedbackApi.test.ts": 3,
+      "searchApi.test.ts": 1,
+      "SearchHistoryDraftAcceptance.test.tsx": 7,
+      "caseFavorite.test.ts": 15,
+      "CaseFavoriteAcceptance.test.tsx": 6
+    },
+    "backend_pytest": {
+      "files": ["tests/test_search_api_fallback_smoke.py", "tests/test_feature_flag_rollback.py", "tests/test_health.py"],
+      "result": "18 passed",
+      "database_url": "sqlite:///./m43_test.db (temp, deleted after run)"
+    },
+    "regression_default_off_assertions": {
+      "CitationCopyAcceptance_no_favorite_control": "pass",
+      "CaseCompareAcceptance_no_favorite_control": "pass",
+      "SearchPage_default_off_no_storage_no_console": "pass"
+    }
+  },
+  "browser_acceptance_note": "host<->VM browser bridge unreachable (per prior steps); visible acceptance points covered via vitest+jsdom real component tree on the mock path in CaseFavoriteAcceptance.test.tsx: favorite from result card, favorites list metadata, jump back to detail, unfavorite single, clear-all, favorite storage blob body-free, no raw case/case-number to /api/events, zero console errors",
+  "acceptance": {
+    "favorite_stores_metadata_reference_short_fields_only": "PASS",
+    "favorite_add_remove_clear": "PASS",
+    "favorite_does_not_change_main_sort": "PASS",
+    "no_body_leakage": "PASS",
+    "toggle_on_card_detail_compare": "PASS",
+    "favorites_list_metadata_and_jump_back": "PASS"
+  },
+  "stop_loss_checks": {
+    "favorite_storage_contains_case_body_or_chunk_body": false,
+    "favorite_participates_in_runtime_ranking": false,
+    "case_id_qrels_label_relevance_special_case": false,
+    "raw_case_or_case_number_to_server_persistence_or_logs": false,
+    "triggered_no_go": false
+  },
+  "go_no_go": {
+    "status": "GO",
+    "allows_entering_m4_4": true,
+    "failed_gates": [],
+    "reason_codes": [
+      "M4_1_CONTRACT_GO_INHERITED",
+      "M4_2_HISTORY_DRAFT_GO_INHERITED",
+      "ENABLE_CASE_FAVORITE_DEFAULT_FALSE_CONFIRMED",
+      "FAVORITE_STORES_METADATA_ANCHOR_SHORTFIELD_ONLY",
+      "NO_BODY_IN_FAVORITE_STORAGE_LOGS_OR_REPORTS",
+      "FAVORITE_DOES_NOT_AFFECT_MAIN_SORT",
+      "NO_CASE_ID_QRELS_LABEL_RELEVANCE_SPECIAL_CASE",
+      "BACKEND_ZERO_CHANGE_REGRESSION_18_PASSED",
+      "WEB_SUITE_GREEN_142_TSC_BUILD_CLEAN"
+    ],
+    "next_allowed_title": "类案检索助手 M4-4 类案清单"
+  }
+}

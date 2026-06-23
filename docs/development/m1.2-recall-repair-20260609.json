@@ -1,0 +1,426 @@
+{
+  "version": "m1_2_recall_repair_v1",
+  "generated_at": "2026-06-09T17:17:50",
+  "privacy": {
+    "raw_query_text_written": false,
+    "candidate_full_text_written": false,
+    "chunk_text_written": false
+  },
+  "inputs": {
+    "queries": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\product_eval_queries.jsonl",
+    "qrels": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\product_eval_qrels.jsonl",
+    "cases": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\processed\\cases.jsonl",
+    "chunks": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\processed\\chunks.jsonl",
+    "bad_cases": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.2-product-bad-cases-bm25-pool-step5.3.json"
+  },
+  "outputs": {
+    "report_md": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.2-recall-repair-20260609.md",
+    "report_json": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.2-recall-repair-20260609.json"
+  },
+  "sample_count": 12,
+  "loss_distribution": {
+    "bm25_cleaned_miss": 2,
+    "bm25_expanded_miss": 2,
+    "original_vector_miss": 3,
+    "rewrite_vector_miss": 8,
+    "still_missing_after_repair": 1,
+    "still_outside_top10_after_repair": 8
+  },
+  "repair_distribution": {
+    "entered_top10_after_repair": 2,
+    "vector_recovered_from_total_miss": 1
+  },
+  "rows": [
+    {
+      "eval_query_id": "product_q001",
+      "input_hash": "d8f657543e361a13147bc18d7065604ff0e8dd0bcbfe234142ffa454bbe72fd5",
+      "input_length": 24,
+      "mapping_used": false,
+      "query_variant_count": 0,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": null,
+      "rewrite_vector_best_rank": null,
+      "bm25_cleaned_best_rank": 38,
+      "bm25_expanded_best_rank": 38,
+      "merged_best_rank_after_repair": null,
+      "before_top10_hit": false,
+      "after_top10_hit": false,
+      "candidate_count_after_repair": 49,
+      "candidate_source_after_repair": "vector",
+      "recall_stage_after_repair": [
+        "original_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": false,
+      "dedup_reason_after_repair": null,
+      "repair_path": "none",
+      "relevant_case_ids": [
+        "561314d5-2ad3-48fa-b514-1cd8b982100a",
+        "d34eda6a-a5c6-4152-8fca-9084f4f90934",
+        "f6300f37-2b14-4aca-8c43-75f25f80a0d1"
+      ]
+    },
+    {
+      "eval_query_id": "product_q002",
+      "input_hash": "5dab98d4307322b93efcad2c4a15da60692f9769138780776ad86ce8a9e0d433",
+      "input_length": 21,
+      "mapping_used": true,
+      "query_variant_count": 1,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": null,
+      "rewrite_vector_best_rank": null,
+      "bm25_cleaned_best_rank": null,
+      "bm25_expanded_best_rank": null,
+      "merged_best_rank_after_repair": null,
+      "before_top10_hit": false,
+      "after_top10_hit": false,
+      "candidate_count_after_repair": 53,
+      "candidate_source_after_repair": "vector+rewrite",
+      "recall_stage_after_repair": [
+        "original_query_vector",
+        "rewrite_or_mapped_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": true,
+      "dedup_reason_after_repair": "case_id_dedup_kept_top_chunk:2f0e0e25-9895-45e4-ba61-b4d7fe4013f3_c002:source=original_vector",
+      "repair_path": "none",
+      "relevant_case_ids": [
+        "101305d2-00d3-443e-8f36-3843cbeb3379",
+        "6475c2e9-90a0-4744-a0d1-37808f0ce3a7",
+        "bae4f3fd-158e-467b-85bf-3128679b68f5"
+      ]
+    },
+    {
+      "eval_query_id": "product_q003",
+      "input_hash": "97b8daa410b0a8840de7cb2acbe1b4f931a762c9e0f5a882b45b585b609eb3b8",
+      "input_length": 15,
+      "mapping_used": false,
+      "query_variant_count": 0,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": 15,
+      "rewrite_vector_best_rank": null,
+      "bm25_cleaned_best_rank": 38,
+      "bm25_expanded_best_rank": 38,
+      "merged_best_rank_after_repair": 15,
+      "before_top10_hit": false,
+      "after_top10_hit": false,
+      "candidate_count_after_repair": 50,
+      "candidate_source_after_repair": "vector",
+      "recall_stage_after_repair": [
+        "original_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": false,
+      "dedup_reason_after_repair": null,
+      "repair_path": "vector",
+      "relevant_case_ids": [
+        "211091c2-6eb0-4de2-b8d7-c55529053ea0",
+        "94517b43-ac1f-4694-b627-f312ce99bc3e",
+        "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+      ]
+    },
+    {
+      "eval_query_id": "product_q004",
+      "input_hash": "b217f8adf49cc01c513c0134923b6081895e2ac6f4cfb5e7d5bc9ff8723ee953",
+      "input_length": 16,
+      "mapping_used": true,
+      "query_variant_count": 1,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": 47,
+      "rewrite_vector_best_rank": null,
+      "bm25_cleaned_best_rank": null,
+      "bm25_expanded_best_rank": null,
+      "merged_best_rank_after_repair": 47,
+      "before_top10_hit": false,
+      "after_top10_hit": false,
+      "candidate_count_after_repair": 50,
+      "candidate_source_after_repair": "vector+rewrite",
+      "recall_stage_after_repair": [
+        "original_query_vector",
+        "rewrite_or_mapped_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": true,
+      "dedup_reason_after_repair": "case_id_dedup_kept_top_chunk:1b66d07c-9a95-440c-b333-9f00ae324bbd_c002:source=original_vector",
+      "repair_path": "vector",
+      "relevant_case_ids": [
+        "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+        "886d5b3e-863e-4106-9ac7-1afe4cc9583e",
+        "e9760ce5-799d-4a8d-8dc1-8409a795bb76"
+      ]
+    },
+    {
+      "eval_query_id": "product_q005",
+      "input_hash": "38bc94a4f956472d42bef079b3c69c4221aebcdc5126c264d357c96c22044f67",
+      "input_length": 16,
+      "mapping_used": true,
+      "query_variant_count": 1,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": 22,
+      "rewrite_vector_best_rank": null,
+      "bm25_cleaned_best_rank": 45,
+      "bm25_expanded_best_rank": 43,
+      "merged_best_rank_after_repair": 22,
+      "before_top10_hit": false,
+      "after_top10_hit": false,
+      "candidate_count_after_repair": 49,
+      "candidate_source_after_repair": "vector+rewrite",
+      "recall_stage_after_repair": [
+        "original_query_vector",
+        "rewrite_or_mapped_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": true,
+      "dedup_reason_after_repair": "case_id_dedup_kept_top_chunk:4fcde8bd-0e24-41e4-8fa2-831895148703_c001:source=original_vector",
+      "repair_path": "vector",
+      "relevant_case_ids": [
+        "2993a8d9-85c5-4f1b-ad74-3f32ecdee158",
+        "304bf74e-edae-4d90-be20-e1df152b28ca",
+        "d0bd830b-50a3-442b-8922-014ca54331f2"
+      ]
+    },
+    {
+      "eval_query_id": "product_q006",
+      "input_hash": "37acf51f8670366ab76835a459e45c00a7f4b43ae9cd70ccdaa9c72caee2107c",
+      "input_length": 13,
+      "mapping_used": true,
+      "query_variant_count": 1,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": 33,
+      "rewrite_vector_best_rank": 19,
+      "bm25_cleaned_best_rank": 17,
+      "bm25_expanded_best_rank": 12,
+      "merged_best_rank_after_repair": 20,
+      "before_top10_hit": false,
+      "after_top10_hit": false,
+      "candidate_count_after_repair": 56,
+      "candidate_source_after_repair": "vector+rewrite",
+      "recall_stage_after_repair": [
+        "rewrite_or_mapped_query_vector",
+        "original_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": true,
+      "dedup_reason_after_repair": "case_id_dedup_kept_top_chunk:e86d0285-1e22-486e-aa1c-46923e0c3f09_c002:source=variant_vector",
+      "repair_path": "vector",
+      "relevant_case_ids": [
+        "49654efe-c3c1-4fd5-9717-f6c295dc3f80",
+        "6051e90c-c739-4eef-a3db-673ff6a66301",
+        "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+      ]
+    },
+    {
+      "eval_query_id": "product_q009",
+      "input_hash": "0aaef9ba4caf56ed5060285da032eab7c8829adfa584b024edb30e0a30c2418a",
+      "input_length": 15,
+      "mapping_used": false,
+      "query_variant_count": 0,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": 27,
+      "rewrite_vector_best_rank": null,
+      "bm25_cleaned_best_rank": 33,
+      "bm25_expanded_best_rank": 33,
+      "merged_best_rank_after_repair": 27,
+      "before_top10_hit": false,
+      "after_top10_hit": false,
+      "candidate_count_after_repair": 48,
+      "candidate_source_after_repair": "vector",
+      "recall_stage_after_repair": [
+        "original_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": false,
+      "dedup_reason_after_repair": null,
+      "repair_path": "vector",
+      "relevant_case_ids": [
+        "36df2795-f259-40ac-b08e-16e42c471885",
+        "37c160b5-4c96-44bf-a7a6-f7ba96fe346e",
+        "68058dc3-da5d-45c2-883a-e143e546bf61"
+      ]
+    },
+    {
+      "eval_query_id": "product_q010",
+      "input_hash": "255c8c09149eb39a56fd7be0c8c94929b410e7f5a4637510232f82526133b5d3",
+      "input_length": 15,
+      "mapping_used": true,
+      "query_variant_count": 1,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": 20,
+      "rewrite_vector_best_rank": 13,
+      "bm25_cleaned_best_rank": 26,
+      "bm25_expanded_best_rank": 21,
+      "merged_best_rank_after_repair": 20,
+      "before_top10_hit": false,
+      "after_top10_hit": false,
+      "candidate_count_after_repair": 35,
+      "candidate_source_after_repair": "vector+rewrite",
+      "recall_stage_after_repair": [
+        "original_query_vector",
+        "rewrite_or_mapped_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": true,
+      "dedup_reason_after_repair": "case_id_dedup_kept_top_chunk:3663219a-0404-4c6b-9ea2-b2f4cca791cc_c002:source=original_vector",
+      "repair_path": "vector",
+      "relevant_case_ids": [
+        "26627b67-8d0f-470a-84b1-2e08358fd1e8",
+        "8283a876-039c-444c-a24f-5a901980097d",
+        "df4a90b1-bf96-432a-8ec4-d61ccf817d22"
+      ]
+    },
+    {
+      "eval_query_id": "product_q011",
+      "input_hash": "48a0453b415715d0b055f4ba414d7005acbe579d3fce7be4acab4a5706f5d88c",
+      "input_length": 12,
+      "mapping_used": false,
+      "query_variant_count": 0,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": null,
+      "rewrite_vector_best_rank": null,
+      "bm25_cleaned_best_rank": 12,
+      "bm25_expanded_best_rank": 12,
+      "merged_best_rank_after_repair": null,
+      "before_top10_hit": false,
+      "after_top10_hit": false,
+      "candidate_count_after_repair": 40,
+      "candidate_source_after_repair": "vector",
+      "recall_stage_after_repair": [
+        "original_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": false,
+      "dedup_reason_after_repair": null,
+      "repair_path": "none",
+      "relevant_case_ids": [
+        "23e8e218-ac32-4670-83f7-e49ea45aa0ca",
+        "b7e49dc2-2a5d-41b2-8f4c-28e927d326a2",
+        "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+      ]
+    },
+    {
+      "eval_query_id": "product_q012",
+      "input_hash": "b17c3bbbd6b0e3b3d7aa45446fff74103ced67e97220b8c2772b37ce1ce2af57",
+      "input_length": 17,
+      "mapping_used": true,
+      "query_variant_count": 1,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": 35,
+      "rewrite_vector_best_rank": 22,
+      "bm25_cleaned_best_rank": 18,
+      "bm25_expanded_best_rank": 16,
+      "merged_best_rank_after_repair": 24,
+      "before_top10_hit": false,
+      "after_top10_hit": false,
+      "candidate_count_after_repair": 51,
+      "candidate_source_after_repair": "vector+rewrite",
+      "recall_stage_after_repair": [
+        "rewrite_or_mapped_query_vector",
+        "original_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": true,
+      "dedup_reason_after_repair": "case_id_dedup_kept_top_chunk:5c654129-08e6-4c7d-9432-59d98e618d5b_c002:source=variant_vector",
+      "repair_path": "vector",
+      "relevant_case_ids": [
+        "6f832b41-3e4d-4ae6-b2b8-634d43566efa",
+        "a7dfe426-8c8d-488e-a625-571cd533762e",
+        "de1c4200-6528-4234-bdfd-30e13b63a3bf"
+      ]
+    },
+    {
+      "eval_query_id": "product_q014",
+      "input_hash": "c9094b9308e30f03496c1725a5762406deb4dd02f057fd4d3ca0311ea7d9fd40",
+      "input_length": 11,
+      "mapping_used": false,
+      "query_variant_count": 0,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": 10,
+      "rewrite_vector_best_rank": null,
+      "bm25_cleaned_best_rank": 17,
+      "bm25_expanded_best_rank": 17,
+      "merged_best_rank_after_repair": 10,
+      "before_top10_hit": false,
+      "after_top10_hit": true,
+      "candidate_count_after_repair": 35,
+      "candidate_source_after_repair": "vector",
+      "recall_stage_after_repair": [
+        "original_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": false,
+      "dedup_reason_after_repair": null,
+      "repair_path": "vector",
+      "relevant_case_ids": [
+        "0e2f16ed-8db7-4451-b9ef-0afb3c0bb015",
+        "5e5ebb92-c6a9-441c-aefc-ea7d079aaf0b",
+        "968d929c-fe10-4b52-95fe-d88da6d76e6f"
+      ]
+    },
+    {
+      "eval_query_id": "product_q015",
+      "input_hash": "bbc2d33ad0025e16d31f1e07d1128394e7466a6bfb51beb41226c645934e00d8",
+      "input_length": 18,
+      "mapping_used": true,
+      "query_variant_count": 1,
+      "legal_element_count": 0,
+      "repaired_retrieval_degraded": false,
+      "repaired_retrieval_degraded_reasons": [],
+      "original_vector_best_rank": 6,
+      "rewrite_vector_best_rank": 6,
+      "bm25_cleaned_best_rank": 13,
+      "bm25_expanded_best_rank": 9,
+      "merged_best_rank_after_repair": 6,
+      "before_top10_hit": false,
+      "after_top10_hit": true,
+      "candidate_count_after_repair": 36,
+      "candidate_source_after_repair": "vector+rewrite",
+      "recall_stage_after_repair": [
+        "original_query_vector",
+        "rewrite_or_mapped_query_vector"
+      ],
+      "matched_by_vector_after_repair": true,
+      "matched_by_bm25_after_repair": false,
+      "matched_by_rewrite_after_repair": true,
+      "dedup_reason_after_repair": "case_id_dedup_kept_top_chunk:b2d81b2a-136e-4cb5-9b36-f6698e0ddda4_c001:source=original_vector",
+      "repair_path": "vector",
+      "relevant_case_ids": [
+        "03051f13-5be3-4f93-80eb-de7b9da0c972",
+        "c66545a2-5b82-40f8-97da-e100adc89e93",
+        "fcac6eae-3f26-4b9f-a661-a07c7de19b78"
+      ]
+    }
+  ]
+}

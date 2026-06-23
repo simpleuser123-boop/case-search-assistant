@@ -1,0 +1,89 @@
+{
+  "step": "E4-2",
+  "title": "SearchProfile 产出与脱敏契约",
+  "generated_at": "2026-06-16T23:55:19+08:00",
+  "overall": "CONDITIONAL_GO",
+  "baseline": "docs/development/e4-release-gate-20260616-065516.json (E4-1 CONDITIONAL_GO, allow_enter_e4_2=true)",
+  "summary": "本地脱敏 + 要素抽取 -> SearchProfile 纯函数实现，前后端逐规则同口径；后端防御性第二道闸 fail-closed。零接线、零端点、零页面、零持久化；所有 flag 默认仍 false。",
+  "nature": "纯函数实现（前端 TS + 后端 Py）+ 后端公开面再导出 + 双侧单测；不接任何端点/页面/产品包路由；不改 /api/search、E3 服务、排序、召回、rerank 默认。",
+  "added_files": [
+    "apps/api/app/kernel/guardrails/contracts/intake_sanitize.py",
+    "apps/api/tests/test_e4_intake_sanitize.py",
+    "apps/web/src/intake/sanitize.ts",
+    "apps/web/src/intake/sanitize.test.ts",
+    "docs/development/e4-intake-sanitize-20260616-235519.md",
+    "docs/development/e4-intake-sanitize-20260616-235519.json",
+    "docs/development/e4-parameter-version-20260616-235519.json"
+  ],
+  "modified_files": [
+    "apps/api/app/kernel/guardrails/contracts/__init__.py",
+    "apps/api/app/kernel/guardrails/__init__.py",
+    "落地设计文档/19-E4案情录入端分步骤系统提示词文档.md"
+  ],
+  "contract": {
+    "search_profile_whitelist": ["case_cause", "region", "trial_level_preference", "dispute_focus_keywords", "query_text"],
+    "whitelist_source": "E-1 SEARCH_PROFILE_FIELDS frozenset (未改动)",
+    "output_field_set_strict": true,
+    "candidate_ref_whitelist_unchanged": true
+  },
+  "sanitize_rules": {
+    "pii_placeholders": {
+      "name": "[姓名]",
+      "id_card": "[身份证]",
+      "uscc": "[统一社会信用代码]",
+      "phone": "[手机号]",
+      "bank_card": "[银行卡号]",
+      "email": "[邮箱]",
+      "plate": "[车牌]",
+      "address": "[住址]"
+    },
+    "redaction_is_replace_not_truncate": true,
+    "name_rule": "角色标签/关键词定位 + 2-3字边界规则；已识别姓名全文复述一并占位；不依赖姓氏黑名单",
+    "extraction": ["case_cause(已知表+罪名/纠纷兜底+前缀剥离)", "region(省/直辖市最早命中)", "trial_level_preference(再审>二审>一审)", "dispute_focus_keywords(词典去重+上限8)"],
+    "query_text": "仅由已脱敏文本拼成，cap=280；过短时用结构化要素兜底",
+    "double_redaction_safety": "所有字符串输出再脱敏一次"
+  },
+  "backend_defense": {
+    "function": "sanitize_intake_profile_payload",
+    "key_level": "sanitize_intake_search_profile -> assert_no_raw_case_payload (拒绝正文型+PII型键) + 键级白名单",
+    "value_level": "对保留字符串值再跑 redact_pii",
+    "fail_closed": true,
+    "exception_no_pii_echo": true,
+    "pure_function": true
+  },
+  "verification": {
+    "vm_executable": {
+      "py_compile": "PASS (intake_sanitize.py + 两个 __init__ + 测试文件)",
+      "backend_pure_logic_harness": "PASS (PROFILE_OK / NAME3_OK / GATE_OK / CHARGE_OK / PURE_LOGIC_ALL_PASS)",
+      "frontend_vitest_intake": "PASS (14/14, src/intake/sanitize.test.ts)",
+      "frontend_build": "PASS (tsc -b + vite build, 118 modules transformed，资产哈希与 E3/E4-1 末态一致)",
+      "privacy_scan": "PASS (无真实手机号/身份证/凭据；正文型键仅出现在黑名单/拒绝/docstring 上下文；白名单 0 正文/PII 字段)"
+    },
+    "host_pending": {
+      "reason": "VM 无 pydantic/pytest 且 PyPI 不可达；既有 .venv311 为 Windows 解释器，与 E3-5/E4-1 同款环境约束",
+      "commands": [
+        "cd apps/api && pytest tests/test_e4_intake_sanitize.py tests/test_e3_internal_search_contracts.py tests/test_e1_contracts.py"
+      ],
+      "expectation": "test_e4_intake_sanitize.py 全通过；E3/E1 契约回归零新增失败"
+    }
+  },
+  "flags": {
+    "ENABLE_INTAKE": "false (未改)",
+    "ENABLE_INTAKE_AI_EXTRACTION": "false (未改，无 on 路径)",
+    "VITE_ENABLE_INTAKE_AI_EXTRACTION": "false (未改)",
+    "ENABLE_WEIGHTED_RERANK + M4/M5/E1": "false (未改)"
+  },
+  "invariants": {
+    "include_router": "未触碰 (仍 12)",
+    "main_ranking_source_selection_rerank_default": "未改",
+    "candidate_ref_search_profile_whitelist": "未改",
+    "endpoints_pages_product_packages": "未新增",
+    "ai_extraction_on_path": "未实现"
+  },
+  "stoploss_triggered": false,
+  "next_step": {
+    "allow_enter_e4_3": true,
+    "condition": "host .venv311 跑 test_e4_intake_sanitize.py + E3/E1 契约回归零新增失败；SearchProfile/CandidateRef 白名单与 flag 默认值不得改动",
+    "title": "类案检索助手 E4-3 intake 后端包与消费 E3 服务"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "step": "E7-4-host-reverify",
+  "title": "CaseFolder 共享与协作权限 Host 复核收口",
+  "timestamp": "20260623-101905",
+  "overall": "GO",
+  "source_gate": "docs/development/e7-casebook-sharing-20260622-131903.json",
+  "host_environment": {
+    "python": "C:\\Users\\yyl\\Desktop\\类案检索助手\\.venv311\\Scripts\\python.exe",
+    "python_version": "3.11.9",
+    "shell": "powershell"
+  },
+  "results": {
+    "e7_backend_suite": {
+      "command": "cd apps/api && $env:DATABASE_URL='sqlite:///./test_e7.db'; ..\\..\\.venv311\\Scripts\\python.exe -m pytest tests/test_e7_casebook_sharing.py tests/test_e7_casebook_api.py tests/test_e7_casebook_contracts.py",
+      "status": "passed",
+      "summary": "100 passed, 1 warning"
+    },
+    "regression_suite": {
+      "command": "cd apps/api && $env:DATABASE_URL='sqlite:///./test_e7.db'; ..\\..\\.venv311\\Scripts\\python.exe -m pytest tests/test_e6_drafting_api.py tests/test_e5_statute_api.py tests/test_e4_intake_api.py",
+      "status": "passed",
+      "summary": "74 passed, 1 warning"
+    },
+    "smoke_flag_health_suite": {
+      "command": "cd apps/api && $env:DATABASE_URL='sqlite:///./test_e7.db'; ..\\..\\.venv311\\Scripts\\python.exe -m pytest tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py tests/test_health.py",
+      "status": "passed",
+      "summary": "18 passed, 1 warning"
+    },
+    "include_router": {
+      "command": "(Select-String -Path 'app\\main.py' -Pattern 'app\\.include_router').Count",
+      "status": "passed",
+      "value": 16
+    },
+    "frontend_vitest": {
+      "command": "cd apps/web && npx vitest run src/pages/CasebookPage.test.tsx src/services/casebookApi.test.ts",
+      "status": "passed",
+      "summary": "30 passed"
+    },
+    "frontend_build": {
+      "command": "cd apps/web && npx vite build",
+      "status": "passed",
+      "summary": "built in 4.10s"
+    }
+  },
+  "test_only_fixes": [
+    {
+      "file": "apps/api/tests/test_e7_casebook_sharing.py",
+      "reason": "caplog mixed in httpx request log lines containing path ids; narrowed assertion to case_search casebook_share audit records"
+    },
+    {
+      "file": "apps/web/src/pages/CasebookPage.test.tsx",
+      "reason": "selector /只读访问/ matched both footer and share-control hint; narrowed to the unique share-control read-only copy"
+    }
+  ],
+  "non_blocking_warnings": [
+    "starlette.formparsers PendingDeprecationWarning for python_multipart import path",
+    "React Testing Library act(...) warnings in CasebookPage.test.tsx",
+    "vite build chunk size warning over 500 kB"
+  ],
+  "gate_closure": {
+    "backend_host_reverify_closed": true,
+    "frontend_host_reverify_closed": true,
+    "ready_for_e7_5_or_e7_6": true
+  }
+}

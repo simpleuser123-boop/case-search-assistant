@@ -1,0 +1,76 @@
+{
+  "artifact": "e4-parameter-version",
+  "milestone": "E 系列多产品生态全链路闭环（E-4 案情智能录入端）",
+  "step": "E4-1",
+  "title": "案情录入端入口合同与本地 only 边界",
+  "generated_at": "2026-06-16T06:55:16+08:00",
+  "nature": "合同冻结步（对标 E-1 / E3-1）：只冻结契约、子开关与红线断言口径，零业务实现、零行为变化。",
+  "baseline": {
+    "behavior_zero_change_baseline": "docs/development/e3-release-gate-20260616-175509.json",
+    "baseline_overall": "GO",
+    "baseline_allow_enter_e4": true
+  },
+  "intake_contract_freeze": {
+    "produces": "SearchProfile",
+    "consumes": "CandidateRef",
+    "search_profile_whitelist_fields": [
+      "case_cause",
+      "region",
+      "trial_level_preference",
+      "dispute_focus_keywords",
+      "query_text"
+    ],
+    "search_profile_field_count": 5,
+    "candidate_ref_whitelist_fields": [
+      "case_id",
+      "case_number",
+      "court",
+      "trial_level",
+      "case_cause",
+      "judgment_date",
+      "source_anchors"
+    ],
+    "candidate_ref_field_count": 7,
+    "whitelist_reuse": "单点复用 E-1 SEARCH_PROFILE_FIELDS / CANDIDATE_REF_FIELDS（is 同一对象），不另写第二套白名单",
+    "raw_case_zero_upload_assertion": "assert_no_raw_case_payload：任何 intake 入参/模型出现正文型键（FORBIDDEN_BODY_KEYS）或 PII 型键（INTAKE_FORBIDDEN_PII_KEYS）即 fail-closed 抛 ContractViolationError，异常消息只暴露键名不回显键值",
+    "pii_forbidden_key_groups": ["姓名/身份", "证件号", "联系方式", "金融", "地址/车牌"],
+    "value_level_desensitization": "不在 E4-1 实现；键级白名单 + 红线校验为本步范围，值层面脱敏（移除 PII token）由 E4-2 实现"
+  },
+  "flags": {
+    "ENABLE_INTAKE": {"default": false, "changed_this_step": false, "note": "E-1 已冻结，E4-1 不实现 on 路径"},
+    "ENABLE_INTAKE_AI_EXTRACTION": {"default": false, "changed_this_step": true, "note": "E4-1 新增二级 flag，仅声明、不接线、无 on 路径，正交于 ENABLE_INTAKE"},
+    "VITE_ENABLE_INTAKE_AI_EXTRACTION": {"default": false, "changed_this_step": true, "note": "前端镜像，仅声明、不渲染、不接线"},
+    "ENABLE_WEIGHTED_RERANK": {"default": false, "changed_this_step": false},
+    "all_m4_m5_e1_flags": {"default": false, "changed_this_step": false}
+  },
+  "flag_counts": {
+    "config_enable_flags": 23,
+    "env_enable_flags": 23,
+    "env_vite_enable_flags": 19,
+    "all_default_false": true
+  },
+  "invariants_unchanged": {
+    "include_router_count": 12,
+    "main_ranking": "unchanged",
+    "source_selection": "unchanged",
+    "rerank_default": "unchanged (false)",
+    "api_search_behavior": "unchanged",
+    "e3_internal_search_service_behavior": "unchanged",
+    "chroma_index": "untouched",
+    "qrels_label_relevance_in_runtime": false,
+    "query_id_case_id_special_case": false
+  },
+  "files_added": [
+    "apps/api/app/kernel/guardrails/contracts/intake_contract.py",
+    "apps/api/tests/test_e4_intake_contracts.py",
+    "docs/development/e4-entry-contract-20260616-065516.md",
+    "docs/development/e4-release-gate-20260616-065516.json",
+    "docs/development/e4-parameter-version-20260616-065516.json"
+  ],
+  "files_modified": [
+    "apps/api/app/core/config.py",
+    "apps/api/app/kernel/guardrails/contracts/__init__.py",
+    ".env.example",
+    "落地设计文档/19-E4案情录入端分步骤系统提示词文档.md"
+  ]
+}

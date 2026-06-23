@@ -1,0 +1,151 @@
+{
+  "version": "m5_sync_and_sharing_v1",
+  "artifact": "m5-sync-and-sharing",
+  "step": "M5-5",
+  "title": "沉淀同步与团队共享",
+  "generated_at": "2026-06-14T08:04:03+08:00",
+  "feature_ref": "M4-7 list_sharing: not_ready 的落地（reserved_field_slots: owner / visibility / shared_with_team_id）",
+  "prerequisites": {
+    "m5_1_commercial_entry_contract": "docs/development/m5-commercial-entry-contract-20260614-030248.json",
+    "m5_2_account_system": "docs/development/m5-account-system-20260614-044809.json",
+    "m5_3_team_workspace_isolation": "docs/development/m5-team-workspace-isolation-20260614-055955.json",
+    "m5_4_permission_tiering": "docs/development/m5-permission-tiering-20260614-065238.json",
+    "m4_7_team_reuse_assessment": "docs/development/m4-team-reuse-assessment-20260614-015309.json",
+    "all_prerequisites_go": true
+  },
+  "scope": {
+    "summary": "把 M4 本地沉淀（历史/收藏/清单/报告）同步到服务端按 owner 归属的存储，并支持团队内显式共享。共享是跨用户数据可见性的引入点，最高隐私风险：默认 private、默认不共享、显式授权才可见。",
+    "implements_sync_local_to_server": true,
+    "implements_explicit_team_sharing": true,
+    "default_private": true,
+    "default_no_sharing": true,
+    "uploads_body_or_raw_facts": false,
+    "default_cross_user_visibility": false,
+    "shares_ai_content_without_anchor": false,
+    "changes_main_sorting": false,
+    "changes_source_selection": false,
+    "changes_m2_m3_m4_default_behavior": false,
+    "flag_default_false": true
+  },
+  "data_structures": {
+    "shared_object_table": {
+      "tablename": "m5_shared_object",
+      "purpose": "显式共享动作的账本（留痕 + 审计 + 撤销），不参与读取放权；读取放权仍由 M5-3 tenant_visibility_clause 唯一承载",
+      "whitelist_fields": [
+        "share_id", "object_id", "object_type", "owner_user_id",
+        "shared_with_team_id", "visibility", "anchor_count", "status",
+        "reason_code", "created_at", "updated_at"
+      ],
+      "no_body_columns": true,
+      "anchor_count_note": "仅整数（校验通过的锚点条数），用于审计溯源，不含锚点内容"
+    },
+    "reused_sediment_table": {
+      "tablename": "m5_sedimentation_object",
+      "note": "M5-3 已有表，复用其 owner_user_id / team_id / visibility / source_anchors 槽位承载真正的可见性；M5-5 不新增正文列",
+      "slots_used": ["owner_user_id", "team_id", "visibility", "shared_with_team_id(经 team_id 承载)"]
+    }
+  },
+  "sync_rules": {
+    "endpoint": "POST /api/sharing/sync",
+    "only_metadata_refs_anchors_short_fields": true,
+    "default_owner_private": true,
+    "accepts_team_id_or_visibility": false,
+    "body_rejection": "schema extra=forbid（422）+ M5-3 store 白名单/禁用键双重拦截（forbidden_field）",
+    "user_triggered_and_clearable": true
+  },
+  "sharing_rules": {
+    "share_endpoint": "POST /api/sharing/share",
+    "unshare_endpoint": "POST /api/sharing/unshare",
+    "explicit_action_required": true,
+    "default_visibility": "private",
+    "only_owner_and_active_member_can_share": true,
+    "ai_content_requires_anchor": true,
+    "ai_content_object_types": ["case_list", "report_template"],
+    "valid_anchor_requires": ["case_id", "source_chunk_id"],
+    "post_share_visibility_single_enforcement_point": "app.team.isolation.tenant_visibility_clause",
+    "subject_to_m5_4_permission_model": true,
+    "cross_team_isolation_preserved": true
+  },
+  "degradation_and_compat": {
+    "flag": "ENABLE_TEAM_SHARING",
+    "backend_default_false": true,
+    "frontend_flag": "VITE_ENABLE_TEAM_SHARING",
+    "frontend_default_false": true,
+    "disabled_behavior": "所有端点 403 TEAM_SHARING_DISABLED；前端面板渲染 null；回到 M4 本地沉淀末态（单用户、纯前端、不上送服务端）",
+    "sync_share_failure_safe": "失败给安全提示（reason_code），不影响主链路与本地沉淀"
+  },
+  "files_changed": {
+    "backend_new": [
+      "apps/api/app/sharing/__init__.py",
+      "apps/api/app/sharing/anchors.py",
+      "apps/api/app/sharing/models.py",
+      "apps/api/app/sharing/store.py",
+      "apps/api/app/sharing/service.py",
+      "apps/api/app/sharing/schemas.py",
+      "apps/api/app/api/sharing.py"
+    ],
+    "backend_modified": ["apps/api/app/main.py (include sharing_router)"],
+    "frontend_new": [
+      "apps/web/src/services/sharingApi.ts",
+      "apps/web/src/components/sharing/SharingPanel.tsx",
+      "apps/web/src/services/sharingApi.test.ts",
+      "apps/web/src/components/sharing/SharingPanel.test.tsx"
+    ],
+    "frontend_modified": ["apps/web/src/config/featureFlags.ts (isTeamSharingEnabled)"],
+    "config": [".env.example (VITE_ENABLE_TEAM_SHARING; ENABLE_TEAM_SHARING 已存在)"],
+    "tests_new": ["apps/api/tests/test_m5_sharing.py"]
+  },
+  "verification": {
+    "backend_required_subset_plus_focused": {
+      "cmd": "pytest tests/test_health.py tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py tests/test_summary_service.py tests/test_m5_sharing.py",
+      "result": "51 passed"
+    },
+    "backend_focused_m5_5": {
+      "file": "tests/test_m5_sharing.py",
+      "result": "22 passed",
+      "covers": [
+        "默认关闭 403 回 M4 末态",
+        "同步默认 owner 私有 / 不接受 team_id+visibility",
+        "正文/凭据/未知键被拒（schema 422 + store forbidden_field）",
+        "请求体/响应抽查无正文与原始案情（含 anchor 内容 chunk_7 不回显）",
+        "共享需显式 + owner + 活跃成员",
+        "AI 内容承载型无锚点不共享（missing_source_anchor）",
+        "锚点缺 case_id/source_chunk_id 视为非法",
+        "共享后可见性由 tenant_visibility_clause 承载 / 取消共享降回私有",
+        "跨团队隔离不被共享破坏",
+        "持久层无正文列",
+        "共享模块不 import retrieval/rerank"
+      ]
+    },
+    "backend_regression": {
+      "cmd": "pytest test_m5_permission test_m5_team_isolation test_m5_account_system test_m5_commercial_entry_contract test_m4_team_reuse",
+      "result": "80 passed"
+    },
+    "frontend_tests": {
+      "cmd": "vitest run (batched: lib + services + components + pages)",
+      "result": "253 passed (29 files), 含 M5-5 新增 8 个（sharingApi 5 + SharingPanel 3）"
+    },
+    "frontend_typecheck": {"cmd": "tsc -b", "result": "rc=0"},
+    "frontend_build": {
+      "cmd": "vite build",
+      "result": "118 modules transformed, built 3.46s (写 host dist/ 因 mount 锁定 EPERM，改写 /tmp 输出目录验证通过)"
+    }
+  },
+  "acceptance": {
+    "sync_share_only_metadata_refs_short_fields": "PASS",
+    "default_private_explicit_share_only": "PASS",
+    "shared_ai_content_100pct_has_anchor": "PASS",
+    "flag_off_returns_to_m4_local_sediment_end_state": "PASS",
+    "no_body_or_raw_facts_uploaded": "PASS",
+    "no_cross_user_default_visibility": "PASS"
+  },
+  "stop_loss_checks": {
+    "body_or_raw_facts_uploaded_to_server": false,
+    "cross_user_visibility_default_on": false,
+    "shared_ai_content_without_anchor": false,
+    "team_sharing_flag_default_on": false,
+    "sharing_changes_existing_default_behavior": false,
+    "any_triggered": false
+  },
+  "go_no_go": "GO"
+}

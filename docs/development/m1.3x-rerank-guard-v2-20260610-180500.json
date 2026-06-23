@@ -1,0 +1,399 @@
+{
+  "version": "m1_3x_rerank_guard_v2_summary_v1",
+  "generatedAt": "2026-06-10T18:20:00+08:00",
+  "artifactTimestamp": "20260610-180500",
+  "scope": "M1.3x-4 rerank guard v2 offline candidate",
+  "conclusion": "NO_GO",
+  "noGoReason": "guard_v2_reduced_after_vs_baseline_and_metric_regression_but_reintroduced_before_vs_after_regressions_and_left_metric_regressions",
+  "privacy": {
+    "allowedFieldsOnly": true,
+    "rawQueryWritten": false,
+    "caseTextWritten": false,
+    "candidateTextWritten": false,
+    "chunkTextWritten": false
+  },
+  "sourceArtifacts": [
+    "落地设计文档/11-M1.3x回归清零版分步骤文档.md",
+    "docs/development/m1.3x-blocker-register-20260610-161732.md",
+    "docs/development/m1.3x-blocker-register-20260610-161732.json",
+    "docs/development/m1.3x-metric-regression-root-cause-20260610-165416.md",
+    "docs/development/m1.3x-metric-regression-root-cause-20260610-165416.json",
+    "docs/development/m1.3x-baseline-protection-gate-20260610-171726.md",
+    "docs/development/m1.3x-baseline-protection-gate-20260610-171726.json",
+    "docs/development/m1.3x-baseline-protection-candidate-comparison-20260610-171726.md",
+    "docs/development/m1.3x-baseline-protection-candidate-comparison-20260610-171726.json",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.md",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.json",
+    "docs/development/m1.3x-rerank-guard-v2-product-eval-20260610-180500.json",
+    "docs/development/m1.3x-rerank-guard-v2-product-bad-cases-20260610-180500.json",
+    "docs/development/m1.3x-rerank-guard-v2-candidate-comparison-20260610-180500.json",
+    "docs/development/m1.3x-rerank-guard-v2-candidate-comparison-20260610-180500.md",
+    "docs/development/m1.3x-rerank-guard-v2-parameter-version-20260610-180500.json",
+    "apps/api/docs/development/m1.3x-rerank-guard-v2-performance-smoke-20260610-180500.json",
+    "apps/api/docs/development/m1.3x-rerank-guard-v2-rollback-drill-20260610-180500.json",
+    "docs/development/m1.3x-rerank-guard-v2-m1.2-regression-20260610-180500.json",
+    "docs/development/m1.3x-rerank-guard-v2-m1.2-parameter-version-20260610-180500.json"
+  ],
+  "rootCauseTarget": {
+    "source": "M1.3x-2",
+    "queryIds": [
+      "product_q008",
+      "product_q016",
+      "product_q018",
+      "product_q020",
+      "product_q021",
+      "product_q024",
+      "product_q025"
+    ],
+    "distribution": {
+      "BASELINE_PROTECTION_GAP": 4,
+      "VECTOR_BUCKET_TIE_BREAK_ERROR": 3,
+      "SORTING_LAYER": 7,
+      "RECALL_LAYER": 0,
+      "DATA_BOUNDARY": 0
+    },
+    "rows": [
+      {
+        "queryId": "product_q008",
+        "protectedCaseId": "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+        "baselineRank": 9,
+        "m13Rank": 12,
+        "vectorBucket": 0.8,
+        "primaryCause": "VECTOR_BUCKET_TIE_BREAK_ERROR"
+      },
+      {
+        "queryId": "product_q016",
+        "protectedCaseId": "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+        "baselineRank": 1,
+        "m13Rank": 3,
+        "vectorBucket": 0.7,
+        "primaryCause": "BASELINE_PROTECTION_GAP"
+      },
+      {
+        "queryId": "product_q018",
+        "protectedCaseId": "c1d7ffef-8359-4ed8-bda5-6aa4c673e047",
+        "baselineRank": 8,
+        "m13Rank": 10,
+        "vectorBucket": 0.7,
+        "primaryCause": "VECTOR_BUCKET_TIE_BREAK_ERROR"
+      },
+      {
+        "queryId": "product_q020",
+        "protectedCaseId": "ba621929-822f-4603-9615-8952340fe5ce",
+        "baselineRank": 3,
+        "m13Rank": 28,
+        "vectorBucket": 0.6,
+        "primaryCause": "BASELINE_PROTECTION_GAP"
+      },
+      {
+        "queryId": "product_q021",
+        "protectedCaseId": "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00",
+        "baselineRank": 4,
+        "m13Rank": 14,
+        "vectorBucket": 0.7,
+        "primaryCause": "BASELINE_PROTECTION_GAP"
+      },
+      {
+        "queryId": "product_q024",
+        "protectedCaseId": "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+        "baselineRank": 9,
+        "m13Rank": 11,
+        "vectorBucket": 0.6,
+        "primaryCause": "VECTOR_BUCKET_TIE_BREAK_ERROR"
+      },
+      {
+        "queryId": "product_q025",
+        "protectedCaseId": "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+        "baselineRank": 1,
+        "m13Rank": 2,
+        "vectorBucket": 0.7,
+        "primaryCause": "BASELINE_PROTECTION_GAP"
+      }
+    ]
+  },
+  "guardV2Strategy": [
+    {
+      "reasonCode": "guard_v2_score_bucket_tiebreak",
+      "rootCause": "VECTOR_BUCKET_TIE_BREAK_ERROR",
+      "description": "Use a 0.05 score bucket so weak-signal-only adjustments cannot jump across vector buckets."
+    },
+    {
+      "reasonCode": "guard_v2_weak_signal_bucket_limited",
+      "rootCause": "WEAK_SIGNAL_RESIDUAL_BOOST",
+      "description": "Key paragraph and authority weak signals are limited to bucket-level ordering."
+    },
+    {
+      "reasonCode": "guard_v2_baseline_top10_anchor",
+      "rootCause": "BASELINE_PROTECTION_GAP",
+      "description": "Apply a BM25 baseline top10 anchor only when the case already exists in the current candidate set."
+    },
+    {
+      "reasonCode": "guard_v2_multi_source_bonus_bucket_limited",
+      "rootCause": "MULTI_SOURCE_BONUS_OVERBOOST",
+      "description": "Constrain multi-source bonus so it cannot outrank a baseline anchor within the same bucket."
+    },
+    {
+      "reasonCode": "guard_v2_fact_supported_candidate_protected",
+      "rootCause": "OVER_GUARD_RISK",
+      "description": "Protect candidates with effective fact support inside the bucket before baseline anchoring."
+    }
+  ],
+  "candidateParameters": {
+    "candidateId": "m1_3x_guard_v2_candidate",
+    "rankMode": "m1_3x_guard_v2",
+    "baselineAnchorTopN": 10,
+    "scoreBucketSize": 0.05,
+    "baselineAnchorStep": 0.001,
+    "targetedRecallRepairs": true,
+    "usesQrelsForRanking": false,
+    "expandsRecallPool": false,
+    "protectFactSupportedCandidatesWithinBucket": true,
+    "anchorLimitedToCurrentCandidateSet": true,
+    "defaultPathChanged": false,
+    "offlineOnly": true
+  },
+  "candidateComparison": [
+    {
+      "candidateId": "m1_2_baseline",
+      "rankMode": "baseline",
+      "top10HitRate": 0.48,
+      "precisionAt5": 0.032,
+      "ndcgAt10": 0.134,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "metricRegressionCount": 0,
+      "recallMissCount": 13,
+      "top10MissCount": 13,
+      "status": "NO_GO"
+    },
+    {
+      "candidateId": "m1_3_combined_candidate",
+      "rankMode": "m1_3_guarded",
+      "top10HitRate": 0.68,
+      "precisionAt5": 0.048,
+      "ndcgAt10": 0.171,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 7,
+      "metricRegressionCount": 7,
+      "recallMissCount": 7,
+      "top10MissCount": 8,
+      "status": "NO_GO"
+    },
+    {
+      "candidateId": "m1_3x_guard_v2_candidate",
+      "rankMode": "m1_3x_guard_v2",
+      "top10HitRate": 0.64,
+      "precisionAt5": 0.04,
+      "ndcgAt10": 0.1657,
+      "beforeVsAfterRegressedCount": 5,
+      "afterVsBaselineRegressedCount": 3,
+      "metricRegressionCount": 3,
+      "recallMissCount": 9,
+      "top10MissCount": 9,
+      "status": "NO_GO"
+    }
+  ],
+  "deltaVsM13Combined": {
+    "beforeVsAfterRegressedCount": {
+      "before": 0,
+      "after": 5,
+      "status": "WORSE"
+    },
+    "afterVsBaselineRegressedCount": {
+      "before": 7,
+      "after": 3,
+      "status": "IMPROVED_NOT_ZERO"
+    },
+    "metricRegressionCount": {
+      "before": 7,
+      "after": 3,
+      "status": "IMPROVED_NOT_ZERO"
+    },
+    "recallMissCount": {
+      "before": 7,
+      "after": 9,
+      "status": "WORSE"
+    },
+    "top10HitRate": {
+      "before": 0.68,
+      "after": 0.64,
+      "status": "PASSED_THRESHOLD"
+    },
+    "precisionAt5": {
+      "before": 0.048,
+      "after": 0.04,
+      "status": "DOWN"
+    },
+    "ndcgAt10": {
+      "before": 0.171,
+      "after": 0.1657,
+      "status": "DOWN"
+    }
+  },
+  "residualGuardV2Regressions": [
+    {
+      "queryId": "product_q007",
+      "beforeVsAfterLabel": "REGRESSED",
+      "afterVsBaselineLabel": "IMPROVED",
+      "candidateTop10Hit": true,
+      "baselineBestRank": 9,
+      "candidateBestRank": 8,
+      "rankDelta": -1,
+      "metricReason": "NONE"
+    },
+    {
+      "queryId": "product_q014",
+      "beforeVsAfterLabel": "REGRESSED",
+      "afterVsBaselineLabel": "STABLE",
+      "candidateTop10Hit": false,
+      "baselineBestRank": 17,
+      "candidateBestRank": 12,
+      "rankDelta": -5,
+      "metricReason": "NONE"
+    },
+    {
+      "queryId": "product_q022",
+      "beforeVsAfterLabel": "REGRESSED",
+      "afterVsBaselineLabel": "REGRESSED",
+      "candidateTop10Hit": true,
+      "baselineBestRank": 8,
+      "candidateBestRank": 9,
+      "rankDelta": 1,
+      "metricReason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+    },
+    {
+      "queryId": "product_q023",
+      "beforeVsAfterLabel": "REGRESSED",
+      "afterVsBaselineLabel": "STABLE",
+      "candidateTop10Hit": true,
+      "baselineBestRank": 6,
+      "candidateBestRank": 6,
+      "rankDelta": 0,
+      "metricReason": "NONE"
+    },
+    {
+      "queryId": "product_q024",
+      "beforeVsAfterLabel": "IMPROVED",
+      "afterVsBaselineLabel": "REGRESSED",
+      "candidateTop10Hit": true,
+      "baselineBestRank": 6,
+      "candidateBestRank": 6,
+      "rankDelta": 0,
+      "metricReason": "NDCG_AT_10_DOWN"
+    },
+    {
+      "queryId": "product_q025",
+      "beforeVsAfterLabel": "REGRESSED",
+      "afterVsBaselineLabel": "REGRESSED",
+      "candidateTop10Hit": true,
+      "baselineBestRank": 1,
+      "candidateBestRank": 2,
+      "rankDelta": 1,
+      "metricReason": "BASELINE_RELEVANT_RANK_WORSENED_NDCG_DOWN"
+    }
+  ],
+  "recallMiss": {
+    "baseline": 13,
+    "m13Combined": 7,
+    "guardV2": 9,
+    "changedVsM13Combined": true,
+    "change": "7_to_9",
+    "recallStrategyModified": false,
+    "onlineRecallLogicChanged": false
+  },
+  "performance": {
+    "evidence": "apps/api/docs/development/m1.3x-rerank-guard-v2-performance-smoke-20260610-180500.json",
+    "status": "passed",
+    "warmP95Ms": 379,
+    "warmP95Under3s": true,
+    "errorRate": 0.0,
+    "statusCounts": {
+      "200": 5
+    },
+    "degradedReasonCounts": {
+      "QUERY_REWRITE_DISABLED": 5,
+      "SUMMARY_DISABLED": 5
+    },
+    "vectorErrorRate": 0.0
+  },
+  "rollback": {
+    "evidence": "apps/api/docs/development/m1.3x-rerank-guard-v2-rollback-drill-20260610-180500.json",
+    "status": "passed",
+    "recoveryWithin60Seconds": true,
+    "maxRollbackElapsedMs": 14,
+    "weightedRerankReturnsBaseRetrieval": true,
+    "weightedRerankElapsedMs": 7,
+    "vectorIndexRebuildRequired": false,
+    "rollbackMethod": "Keep ENABLE_WEIGHTED_RERANK=false; do not replace default M1.3 guarded path with guard v2."
+  },
+  "defaultFeatureFlagState": {
+    "settings_ENABLE_WEIGHTED_RERANK": false,
+    "env_ENABLE_WEIGHTED_RERANK": null,
+    "env_example_ENABLE_WEIGHTED_RERANK": "false",
+    "config_default": "False",
+    "featureFlagChanged": false
+  },
+  "scopeConfirmation": {
+    "recallStrategyModified": false,
+    "candidateMergeModified": false,
+    "bm25Modified": false,
+    "queryMappingModified": false,
+    "rerankGuardModified": false,
+    "rerankWeightsModified": false,
+    "qrelsModified": false,
+    "evalSamplesModified": false,
+    "featureFlagDefaultModified": false,
+    "offlineGuardV2CandidateAdded": true,
+    "onlineRerankLogicChanged": false,
+    "onlineRecallLogicChanged": false,
+    "enteredM13_6": false
+  },
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_rerank_service.py tests/test_m1_3_candidate_comparison.py tests/test_feature_flag_rollback.py",
+      "status": "passed",
+      "summary": "36 passed in 1.25s"
+    },
+    {
+      "command": "cd apps/api; python -m app.eval.product_eval --comparison-mode product_chain --current-weighted-rerank --out docs/development/m1.3x-rerank-guard-v2-product-eval-20260610-180500.json --bad-cases-out docs/development/m1.3x-rerank-guard-v2-product-bad-cases-20260610-180500.json",
+      "status": "passed"
+    },
+    {
+      "command": "cd apps/api; python scripts/day3_7_3_performance_smoke.py --out docs/development/m1.3x-rerank-guard-v2-performance-smoke-20260610-180500.json",
+      "status": "passed"
+    },
+    {
+      "command": "cd apps/api; python scripts/day3_7_5_rollback_drill.py --out docs/development/m1.3x-rerank-guard-v2-rollback-drill-20260610-180500.json",
+      "status": "passed"
+    },
+    {
+      "command": "cd apps/api; python scripts/m1_3_candidate_comparison.py --performance-smoke apps/api/docs/development/m1.3x-rerank-guard-v2-performance-smoke-20260610-180500.json --rollback-drill apps/api/docs/development/m1.3x-rerank-guard-v2-rollback-drill-20260610-180500.json --out-json docs/development/m1.3x-rerank-guard-v2-candidate-comparison-20260610-180500.json --out-md docs/development/m1.3x-rerank-guard-v2-candidate-comparison-20260610-180500.md --parameter-version-out docs/development/m1.3x-rerank-guard-v2-parameter-version-20260610-180500.json",
+      "status": "passed",
+      "summary": "NO_GO"
+    },
+    {
+      "command": "cd apps/api; python scripts/m1_2_regression.py --comparison-mode product_chain --out docs/development/m1.3x-rerank-guard-v2-m1.2-regression-20260610-180500.json --parameter-version-out docs/development/m1.3x-rerank-guard-v2-m1.2-parameter-version-20260610-180500.json",
+      "status": "passed"
+    },
+    {
+      "command": "cd apps/api; pytest",
+      "status": "passed",
+      "summary": "187 passed in 21.95s"
+    },
+    {
+      "command": "cd apps/web; npm test",
+      "status": "passed",
+      "summary": "40 passed"
+    },
+    {
+      "command": "cd apps/web; npm run build",
+      "status": "passed"
+    }
+  ],
+  "stopLoss": {
+    "applied": true,
+    "reason": "Top10 hit rate remains above threshold but after-vs-baseline REGRESSED and METRIC_REGRESSION are not zero, and before-vs-after REGRESSED is nonzero.",
+    "grayCandidateAllowed": false
+  },
+  "nextConversationTitle": "类案检索助手 M1.3x-5 剩余 RECALL_MISS 闭环与止损"
+}

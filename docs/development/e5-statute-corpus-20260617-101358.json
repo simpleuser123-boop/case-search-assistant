@@ -1,0 +1,134 @@
+{
+  "artifact": "e5-statute-corpus-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E5 法条法规检索）",
+  "step": "E5-2",
+  "title": "法条语料与标注管道",
+  "generated_at": "2026-06-17T10:13:58+08:00",
+  "nature": "离线数据管道步：新增法条语料规整 + 法条索引构建 + 类案→法条关联标注；不接线端点/前端/内核服务，行为对既有检索零影响。",
+  "entry_gate": {
+    "e5_1_overall_go": true,
+    "allow_enter_e5_2_true": true,
+    "source": "docs/development/e5-release-gate-20260617-083758.json",
+    "verdict": "GO"
+  },
+  "added_files": [
+    "apps/api/app/kernel/data/pipeline/build_statute_corpus.py",
+    "apps/api/app/kernel/data/pipeline/build_case_statute_links.py",
+    "apps/api/app/kernel/data/pipeline/build_statute_index.py",
+    "apps/api/tests/test_e5_statute_pipeline.py",
+    "data/processed/statutes.jsonl",
+    "data/processed/statute_chunks.jsonl",
+    "data/processed/case_statute_links.jsonl"
+  ],
+  "modified_files": [
+    "落地设计文档/20-E5法条检索分步骤系统提示词文档.md (E5-2 完成登记)"
+  ],
+  "statute_corpus": {
+    "mode_run": "catalog",
+    "reason_catalog": "工作区未放置 JuDGE law_corpus.jsonl 种子（仅文档引用）；catalog 模式从 cases.jsonl 的 law_articles 派生法条目录，带 text_id 锚点但 article_text=null，绝不杜撰条文。seed 模式已实现并单测覆盖，待种子到位即可补齐 article_text 而不破坏 statute_id 关联。",
+    "statutes_count": 182,
+    "statute_chunks_count": 182,
+    "statutes_with_article_text": 0,
+    "article_text_present_rate_pct": 0.0,
+    "anchor_completeness_rate_pct": 100.0,
+    "all_chunks_have_text_id": true,
+    "model_generated_article_text": 0,
+    "source_corpus": "case_law_articles_catalog",
+    "law_name": "中华人民共和国刑法"
+  },
+  "statute_index": {
+    "collection": "statute_chunks_bge_m3_v1",
+    "case_collection": "case_chunks_bge_m3_v1",
+    "isolated_from_case_collection": true,
+    "persist_dir_default": "<CHROMA_PERSIST_DIR>_statute（或 CHROMA_STATUTE_PERSIST_DIR）",
+    "persist_dir_never_equals_case_dir": true,
+    "build_idempotent": true,
+    "lazy_chromadb_import": true,
+    "dry_run_indexed_chunks": 182,
+    "skipped_missing_anchor": 0,
+    "no_business_flag_introduced": true
+  },
+  "case_statute_links": {
+    "source": "data/processed/cases.jsonl(law_articles, read-only)",
+    "cases_seen": 2505,
+    "cases_with_links": 2505,
+    "case_link_coverage_pct": 100.0,
+    "total_statute_refs": 10792,
+    "distinct_statutes_referenced": 182,
+    "avg_statutes_per_linked_case": 4.31,
+    "qrels_used": false,
+    "reads_case_products_only": true,
+    "modifies_case_products": false
+  },
+  "coverage": {
+    "criminal": "covered (中华人民共和国刑法, 182 distinct articles)",
+    "civil": "GAP — 未覆盖",
+    "administrative": "GAP — 未覆盖",
+    "note": "当前法条语料仅覆盖刑事；民事/行政缺口与 M5-7 路线 B 扩语料是同一依赖，合并一份语料两用，本期不强求扩充。"
+  },
+  "offline_eval": {
+    "qrels_case_to_statute_present": false,
+    "reason": "工作区无 案件→法条 qrels 文件（既有 data/eval qrels 均为 案件→案件 相关性）；本步未捏造离线评测基线。qrels 若到位仅离线评测用，不进运行时、不做 case_id 特判。",
+    "recall_at_k_baseline": null
+  },
+  "case_products_untouched": {
+    "cases.jsonl": {"sha256": "8fcb2ec40ee3c8c9df12041fa414033c3dfd78e5f42d355cd3c747ca2d4a27b1", "mtime": 1780564163, "unchanged": true},
+    "chunks.jsonl": {"sha256": "8f391e681d5c9be697cbc5cc99307869e089a4ce0fd0480c59671374ee42ceee", "mtime": 1780564163, "unchanged": true},
+    "tendency_corpus_meta.jsonl": {"sha256": "99a48523e74afa8c646690aaefcb552e8fc6909d8ea42246b3bc4b1a7ab73e18", "mtime": 1781443239, "unchanged": true},
+    "quality_report.json": {"sha256": "a40e80a18ed8c13a675d0524f05e4d3e7eca8c62cdc90f6474130ed491cd7afc", "mtime": 1780564163, "unchanged": true},
+    "case_chroma_rebuilt": false
+  },
+  "privacy_scan": {
+    "judicial_body_tokens_in_products": 0,
+    "pii_tokens_in_products": 0,
+    "model_generated_statute_keys": 0,
+    "credentials": 0,
+    "disabled_copy": 0,
+    "scanned": ["statutes.jsonl", "statute_chunks.jsonl", "case_statute_links.jsonl"]
+  },
+  "flags": {
+    "ENABLE_STATUTE_SEARCH": false,
+    "VITE_ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false,
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false,
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "new_default_true_business_flag_added": false,
+    "new_external_business_flag_added": false
+  },
+  "hard_gates": {
+    "e5_1_go_and_allow_enter_e5_2": true,
+    "statute_text_from_corpus_not_generated": true,
+    "all_statute_chunks_have_text_id": true,
+    "missing_anchor_records_dropped_not_displayed": true,
+    "statute_index_isolated_from_case_index": true,
+    "case_products_unchanged_hash_mtime": true,
+    "case_index_not_rebuilt": true,
+    "case_statute_links_read_only": true,
+    "qrels_label_not_in_runtime": true,
+    "no_query_or_case_id_special_casing": true,
+    "no_kernel_statute_service": true,
+    "no_statute_endpoint": true,
+    "no_frontend_page": true,
+    "no_new_product_package": true,
+    "include_router_13": true,
+    "no_new_external_business_flag": true,
+    "all_flags_default_false": true,
+    "no_body_or_pii_in_products_or_logs": true
+  },
+  "verification_snapshot": {
+    "e5_2_pytest": "18 passed (VM, stdlib-only via importlib file-load; pytest 9.1.0)",
+    "regression_smoke": "需 host .venv311（fastapi/pydantic）：test_m1_3_candidate_comparison / test_m1_3_legal_candidate_robustness / test_search_api_fallback_smoke —— VM 缺 fastapi/pydantic，按项目约定 host 为权威口径",
+    "scripts_help": "build_statute_corpus / build_case_statute_links / build_statute_index --help 均 OK（直接文件执行）；host `-m app.kernel.data.pipeline.*` 为权威入口",
+    "corpus_catalog_dry_run": "182 statutes / 182 chunks / 100% anchor / 0 generated text",
+    "links_run": "2505 cases / 100% link coverage / 10792 refs / qrels_used=false",
+    "index_dry_run": "collection=statute_chunks_bge_m3_v1 isolated=true indexed=182 skipped=0 persist=<case_dir>_statute"
+  },
+  "vm_mount_caveat": "VM mount 对含中文尾部的文件偶发 tail 截断（tail/grep/wc 文本工具读 stale），但 py_compile + importlib exec_module 读全量正确、产物正确；host .venv311 为权威复跑口径。",
+  "overall": "GO",
+  "overall_explanation": "E5-2 法条语料规整 + 法条索引构建（与案件索引物理隔离）+ 类案→法条关联标注（只读案件产物）三目标达成；法条条文 100% 带 text_id 锚点、catalog 模式零杜撰条文；案件产物 hash/mtime 未变、案件索引未重建；qrels 未进运行时；未接线任何端点/前端/内核服务；include_router 仍 13；无新建产品包、无新增对外业务 flag、flag 默认全 false；隐私扫描全 0。覆盖范围如实标注（刑事覆盖，民事/行政缺口）。host .venv311 回归为权威复跑口径。",
+  "allow_enter_e5_3": true,
+  "next_step": "类案检索助手 E5-3 内核法条检索服务"
+}

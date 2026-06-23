@@ -1,0 +1,15 @@
+{
+  "command": "npm test",
+  "cwd": "C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\web",
+  "exit_code": 0,
+  "duration_ms": 4249,
+  "timed_out": false,
+  "stdout_line_count": 17,
+  "stderr_line_count": 0,
+  "stdout_sha256": "1a9d4cdbc16781f7ce2a7445b526df3d00347cf1e3a0f95438e3ecf4696a54be",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 880,
+  "stderr_bytes": 0,
+  "output_policy": "stdout/stderr are hashed only to avoid writing raw query or case facts.",
+  "dry_run_summary": null
+}

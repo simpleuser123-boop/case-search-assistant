@@ -1,0 +1,71 @@
+{
+  "artifact": "e4-parameter-version",
+  "milestone": "E 系列多产品生态全链路闭环（E-4 案情智能录入端）",
+  "step": "E4-2",
+  "title": "SearchProfile 产出与脱敏契约",
+  "generated_at": "2026-06-16T23:55:19+08:00",
+  "nature": "脱敏纯函数实现步：本地脱敏 + 要素抽取 -> SearchProfile（前端可复用）+ 后端防御性第二道闸；零接线、零端点、零页面、零持久化、零行为变化。",
+  "baseline": {
+    "behavior_zero_change_baseline": "docs/development/e4-release-gate-20260616-065516.json",
+    "baseline_step": "E4-1",
+    "baseline_overall": "CONDITIONAL_GO",
+    "baseline_allow_enter_e4_2": true
+  },
+  "search_profile_output": {
+    "whitelist_fields": ["case_cause", "region", "trial_level_preference", "dispute_focus_keywords", "query_text"],
+    "field_count": 5,
+    "whitelist_reuse": "单点复用 E-1 SEARCH_PROFILE_FIELDS（is 同一对象），未改动",
+    "output_strict_whitelist": true,
+    "candidate_ref_whitelist_changed": false
+  },
+  "desensitization": {
+    "mode": "移除/占位（非截断保留）",
+    "pii_categories": ["姓名", "身份证", "统一社会信用代码", "手机号", "银行卡号", "邮箱", "车牌", "住址"],
+    "placeholders": ["[姓名]", "[身份证]", "[统一社会信用代码]", "[手机号]", "[银行卡号]", "[邮箱]", "[车牌]", "[住址]"],
+    "name_strategy": "角色标签/关键词定位 + 2-3字边界规则 + 全文复述占位；无姓氏黑名单（避免与用字冲突）",
+    "query_text_cap": 280,
+    "double_redaction": true,
+    "two_side_parity": "前端 apps/web/src/intake/sanitize.ts 与后端 intake_sanitize.py 逐规则一致（占位符、正则、词表、边界规则、前缀剥离）"
+  },
+  "structured_extraction": {
+    "case_cause": "已知案由表优先 -> 罪名(剥离涉嫌/被控等前缀) -> 通用纠纷兜底",
+    "region": "省/自治区/直辖市，文本最早出现优先",
+    "trial_level_preference": "再审 > 二审 > 一审（含别名归一）",
+    "dispute_focus_keywords": "词典命中去重保序，上限 8",
+    "best_effort_fail_closed": "宁可少抽一个要素，也不放行未脱敏内容"
+  },
+  "backend_defense_layer": {
+    "function": "sanitize_intake_profile_payload",
+    "key_level_gate": "sanitize_intake_search_profile（含 assert_no_raw_case_payload）：拒绝正文型键(FORBIDDEN_BODY_KEYS) + PII 型键(INTAKE_FORBIDDEN_PII_KEYS) + 键级白名单",
+    "value_level_gate": "对保留字符串值再跑 redact_pii（即便键名合法、值夹带 PII 也移除/占位）",
+    "fail_closed": true,
+    "exception_no_pii_echo": true,
+    "pure_function_no_io": true
+  },
+  "flags": {
+    "ENABLE_INTAKE": {"default": false, "changed_this_step": false},
+    "ENABLE_INTAKE_AI_EXTRACTION": {"default": false, "changed_this_step": false, "note": "本步仍 off、不接线、无服务端 on 路径"},
+    "VITE_ENABLE_INTAKE_AI_EXTRACTION": {"default": false, "changed_this_step": false},
+    "ENABLE_WEIGHTED_RERANK": {"default": false, "changed_this_step": false},
+    "all_m4_m5_e1_flags": {"default": false, "changed_this_step": false}
+  },
+  "invariants_unchanged": {
+    "include_router_count": 12,
+    "main_ranking": "unchanged",
+    "source_selection": "unchanged",
+    "rerank_default": "unchanged (false)",
+    "api_search_behavior": "unchanged",
+    "e3_internal_search_service_behavior": "unchanged",
+    "chroma_index": "untouched",
+    "qrels_label_relevance_in_runtime": false,
+    "query_id_case_id_special_casing": false,
+    "search_profile_candidate_ref_whitelist": "unchanged",
+    "endpoints_pages_product_packages_added": false,
+    "ai_extraction_on_path_implemented": false
+  },
+  "verification": {
+    "vm": ["py_compile PASS", "backend pure-logic harness PASS", "frontend vitest intake 14/14 PASS", "frontend build 118 modules PASS", "privacy scan PASS"],
+    "host_pending": "pytest tests/test_e4_intake_sanitize.py + E3/E1 契约回归（VM 缺 pydantic，同 E3-5/E4-1 约束）"
+  },
+  "frontend_build_modules": 118
+}

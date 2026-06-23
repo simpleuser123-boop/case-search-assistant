@@ -1,0 +1,696 @@
+{
+  "version": "day3_7_2_rerank_eval_v1",
+  "generated_date": "2026-06-09",
+  "inputs": {
+    "queries": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\lecardv2_queries.jsonl",
+    "qrels": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\lecardv2_qrels.jsonl",
+    "corpus": "C:\\Users\\yyl\\Downloads\\LeCaRDv2-main\\candidate",
+    "baseline_report": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\bm25_baseline_report.json"
+  },
+  "privacy": {
+    "raw_query_text_written": false,
+    "candidate_full_text_written": false
+  },
+  "bad_case_reason_taxonomy": [
+    "RECALL_MISS",
+    "QUERY_REWRITE_ERROR",
+    "CASE_CAUSE_OVERWEIGHT",
+    "KEY_PARAGRAPH_MISMATCH",
+    "SUMMARY_MISLEADING",
+    "DATASET_MISMATCH",
+    "DEPENDENCY_UNAVAILABLE"
+  ],
+  "baseline": {
+    "source": "read_existing_baseline_report",
+    "path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\data\\eval\\bm25_baseline_report.json",
+    "status": "ok",
+    "method": "bm25_char_bigram_baseline",
+    "query_count": 160,
+    "evaluated_query_count": 160,
+    "corpus_doc_count": 55192,
+    "indexed_doc_count": 55192,
+    "precision_at_5": 0.4987,
+    "ndcg_at_10": 0.4442
+  },
+  "current_rerank_eval": {
+    "status": "blocked_missing_candidate_corpus",
+    "reason": "LeCaRDv2 candidate case texts were not found; current rerank cannot be evaluated against qrels.",
+    "corpus_path": "C:\\Users\\yyl\\Downloads\\LeCaRDv2-main\\candidate",
+    "query_count": 160,
+    "bad_cases": [
+      {
+        "eval_query_id": "ALL",
+        "source_query_id": null,
+        "reason_labels": [
+          "DEPENDENCY_UNAVAILABLE"
+        ],
+        "short_note": "LeCaRDv2 candidate corpus is missing on this machine; rerank-vs-qrels evaluation is blocked."
+      }
+    ]
+  },
+  "current_product_smoke": {
+    "status": "ok",
+    "scope": "current_product_retrieval_chain_smoke",
+    "query_count": 5,
+    "failure_count": 0,
+    "comparable_with_lecardv2_qrels": false,
+    "metric_status": "blocked_dataset_mismatch",
+    "blocked_reason": "Current product retrieval returns JuDGE/Chroma/BM25 product case_ids; LeCaRDv2 qrels use LeCaRDv2 candidate ids and no verified mapping exists.",
+    "observed_overlap_with_lecardv2_qrels": 0,
+    "bad_case_reason_labels": [
+      "DATASET_MISMATCH",
+      "DEPENDENCY_UNAVAILABLE"
+    ],
+    "bad_cases": [
+      {
+        "eval_query_id": "lecardv2_q720",
+        "source_query_id": "720",
+        "reason_labels": [
+          "DATASET_MISMATCH",
+          "DEPENDENCY_UNAVAILABLE"
+        ],
+        "short_note": "Product smoke ran on JuDGE case_ids, which cannot be directly judged by LeCaRDv2 qrels."
+      },
+      {
+        "eval_query_id": "lecardv2_q730",
+        "source_query_id": "730",
+        "reason_labels": [
+          "DATASET_MISMATCH",
+          "DEPENDENCY_UNAVAILABLE"
+        ],
+        "short_note": "Product smoke ran on JuDGE case_ids, which cannot be directly judged by LeCaRDv2 qrels."
+      },
+      {
+        "eval_query_id": "lecardv2_q760",
+        "source_query_id": "760",
+        "reason_labels": [
+          "DATASET_MISMATCH",
+          "DEPENDENCY_UNAVAILABLE"
+        ],
+        "short_note": "Product smoke ran on JuDGE case_ids, which cannot be directly judged by LeCaRDv2 qrels."
+      },
+      {
+        "eval_query_id": "lecardv2_q765",
+        "source_query_id": "765",
+        "reason_labels": [
+          "DATASET_MISMATCH",
+          "DEPENDENCY_UNAVAILABLE"
+        ],
+        "short_note": "Product smoke ran on JuDGE case_ids, which cannot be directly judged by LeCaRDv2 qrels."
+      },
+      {
+        "eval_query_id": "lecardv2_q735",
+        "source_query_id": "735",
+        "reason_labels": [
+          "DATASET_MISMATCH",
+          "DEPENDENCY_UNAVAILABLE"
+        ],
+        "short_note": "Product smoke ran on JuDGE case_ids, which cannot be directly judged by LeCaRDv2 qrels."
+      }
+    ],
+    "queries": [
+      {
+        "eval_query_id": "lecardv2_q720",
+        "source_query_id": "720",
+        "status": "ok",
+        "result_count": 10,
+        "degraded": true,
+        "degraded_reasons": [
+          "QUERY_REWRITE_DISABLED",
+          "EMBEDDING_TIMEOUT",
+          "BM25_FALLBACK_USED"
+        ],
+        "top10": [
+          {
+            "rank": 1,
+            "case_id": "9b7e9b26-e817-4e83-a0e4-4108650513c3",
+            "final_score": 0.628736,
+            "retrieval_score": 0.942701,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 2,
+            "case_id": "52f635b9-73ce-48da-b903-76785d7bcf7e",
+            "final_score": 0.568125,
+            "retrieval_score": 1.0,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 3,
+            "case_id": "3b4b66af-db2e-4f0d-ae0a-58b2caa5cedc",
+            "final_score": 0.509697,
+            "retrieval_score": 0.746268,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 4,
+            "case_id": "2a5a79aa-550e-4c66-a823-2b21a1b61c18",
+            "final_score": 0.462659,
+            "retrieval_score": 0.808243,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 5,
+            "case_id": "ec2f585d-9e59-4f13-838a-56cf9939c3d5",
+            "final_score": 0.452128,
+            "retrieval_score": 0.631596,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 6,
+            "case_id": "f03f0889-2cd5-4403-882d-009ddc0352ec",
+            "final_score": 0.449772,
+            "retrieval_score": 0.637314,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 7,
+            "case_id": "9f9431c0-51c1-4e1b-b3bf-a9b9321b428b",
+            "final_score": 0.449537,
+            "retrieval_score": 0.626886,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 8,
+            "case_id": "b89d7fe1-7c28-4c61-ac37-bae1bf13cbfc",
+            "final_score": 0.443394,
+            "retrieval_score": 0.787534,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 9,
+            "case_id": "11982349-feec-4370-973b-350407744291",
+            "final_score": 0.424668,
+            "retrieval_score": 0.57735,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 10,
+            "case_id": "efadfd63-c67e-450f-9601-48b39941b7d5",
+            "final_score": 0.420363,
+            "retrieval_score": 0.573841,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          }
+        ]
+      },
+      {
+        "eval_query_id": "lecardv2_q730",
+        "source_query_id": "730",
+        "status": "ok",
+        "result_count": 10,
+        "degraded": true,
+        "degraded_reasons": [
+          "QUERY_REWRITE_DISABLED",
+          "EMBEDDING_TIMEOUT",
+          "BM25_FALLBACK_USED"
+        ],
+        "top10": [
+          {
+            "rank": 1,
+            "case_id": "72bbeecd-73d7-4dd3-b8a0-907a9e53cee9",
+            "final_score": 0.67125,
+            "retrieval_score": 1.0,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 2,
+            "case_id": "932b6603-a906-4106-ad5b-7268a60f9881",
+            "final_score": 0.593252,
+            "retrieval_score": 0.884533,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 3,
+            "case_id": "76503f3b-33ce-425b-9b49-6908f76c7911",
+            "final_score": 0.585391,
+            "retrieval_score": 0.873893,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 4,
+            "case_id": "01a9f715-56e4-428e-aa88-38ba1c9b64cd",
+            "final_score": 0.549189,
+            "retrieval_score": 0.81807,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 5,
+            "case_id": "5d96191c-8461-4898-8ef5-4811102507ec",
+            "final_score": 0.548812,
+            "retrieval_score": 0.807386,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 6,
+            "case_id": "34fbdfe8-7baf-465b-8012-dd47aef70dcd",
+            "final_score": 0.545868,
+            "retrieval_score": 0.802034,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 7,
+            "case_id": "e7dddfc8-8dbb-4243-8b15-943771f2cd33",
+            "final_score": 0.545046,
+            "retrieval_score": 0.800537,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 8,
+            "case_id": "85464b8f-debe-4da3-8486-270577d1491b",
+            "final_score": 0.543096,
+            "retrieval_score": 0.796992,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 9,
+            "case_id": "3d0ffa65-70a3-4ea6-b542-302d8d0e6889",
+            "final_score": 0.525766,
+            "retrieval_score": 0.771165,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 10,
+            "case_id": "9b9ed1c6-8014-4ae0-be21-e12db08d5e70",
+            "final_score": 0.518713,
+            "retrieval_score": 0.75266,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          }
+        ]
+      },
+      {
+        "eval_query_id": "lecardv2_q760",
+        "source_query_id": "760",
+        "status": "ok",
+        "result_count": 10,
+        "degraded": true,
+        "degraded_reasons": [
+          "QUERY_REWRITE_DISABLED",
+          "EMBEDDING_TIMEOUT",
+          "BM25_FALLBACK_USED"
+        ],
+        "top10": [
+          {
+            "rank": 1,
+            "case_id": "e8dcd2d0-aeab-41c2-b059-c7add4824871",
+            "final_score": 0.67125,
+            "retrieval_score": 1.0,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 2,
+            "case_id": "5187-50003",
+            "final_score": 0.544816,
+            "retrieval_score": 0.795802,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 3,
+            "case_id": "a01f5de7-3fdc-4b7b-93f5-ae366df3ba21",
+            "final_score": 0.52778,
+            "retrieval_score": 0.92301,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 4,
+            "case_id": "617679c0-b192-4574-a32e-e09054ab5c85",
+            "final_score": 0.509962,
+            "retrieval_score": 0.746749,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 5,
+            "case_id": "85fe2859-0f1f-4149-9517-d191582d2793",
+            "final_score": 0.439029,
+            "retrieval_score": 0.617779,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 6,
+            "case_id": "c8e12da6-6963-4346-945d-8cf15fd1230d",
+            "final_score": 0.426965,
+            "retrieval_score": 0.585846,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 7,
+            "case_id": "145ed650-d23f-4299-acfe-51321e7befe2",
+            "final_score": 0.416248,
+            "retrieval_score": 0.576361,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 8,
+            "case_id": "4f6e83f7-a241-4aa2-bb08-5a34cf6f1d82",
+            "final_score": 0.414358,
+            "retrieval_score": 0.562923,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 9,
+            "case_id": "01a9f715-56e4-428e-aa88-38ba1c9b64cd",
+            "final_score": 0.409215,
+            "retrieval_score": 0.553572,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 10,
+            "case_id": "9a3319d3-2a8d-4ef9-a60f-34d4eb747354",
+            "final_score": 0.397058,
+            "retrieval_score": 0.53147,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          }
+        ]
+      },
+      {
+        "eval_query_id": "lecardv2_q765",
+        "source_query_id": "765",
+        "status": "ok",
+        "result_count": 10,
+        "degraded": true,
+        "degraded_reasons": [
+          "QUERY_REWRITE_DISABLED",
+          "EMBEDDING_TIMEOUT",
+          "BM25_FALLBACK_USED"
+        ],
+        "top10": [
+          {
+            "rank": 1,
+            "case_id": "1c907be7-f954-4eae-a8f3-8fd15476864a",
+            "final_score": 0.629379,
+            "retrieval_score": 0.953871,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 2,
+            "case_id": "d2ba6045-b919-403a-9bde-2fe6a82b1d1a",
+            "final_score": 0.579961,
+            "retrieval_score": 0.864021,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 3,
+            "case_id": "341e49ef-2b93-4e8d-95d2-b54bb91daa55",
+            "final_score": 0.57125,
+            "retrieval_score": 1.0,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 4,
+            "case_id": "e49d1473-c2f4-46ff-8960-37533b8c5dc5",
+            "final_score": 0.566497,
+            "retrieval_score": 0.82954,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 5,
+            "case_id": "bf195237-02ca-4cdf-9299-0a521d6410f8",
+            "final_score": 0.554284,
+            "retrieval_score": 0.817335,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 6,
+            "case_id": "2993a8d9-85c5-4f1b-ad74-3f32ecdee158",
+            "final_score": 0.546083,
+            "retrieval_score": 0.954241,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 7,
+            "case_id": "3b4a0e87-d47c-4a6e-8429-d7b944cb0fce",
+            "final_score": 0.534498,
+            "retrieval_score": 0.933178,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 8,
+            "case_id": "588a3c40-f33d-4455-8ce6-88a798dd868e",
+            "final_score": 0.520799,
+            "retrieval_score": 0.918272,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 9,
+            "case_id": "a1093790-05e9-48ae-8cc2-251ba4c6e5f6",
+            "final_score": 0.519612,
+            "retrieval_score": 0.906112,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 10,
+            "case_id": "cc78534e-5610-4b5f-834c-8e84fc397003",
+            "final_score": 0.510835,
+            "retrieval_score": 0.728337,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          }
+        ]
+      },
+      {
+        "eval_query_id": "lecardv2_q735",
+        "source_query_id": "735",
+        "status": "ok",
+        "result_count": 10,
+        "degraded": true,
+        "degraded_reasons": [
+          "QUERY_REWRITE_DISABLED",
+          "EMBEDDING_TIMEOUT",
+          "BM25_FALLBACK_USED"
+        ],
+        "top10": [
+          {
+            "rank": 1,
+            "case_id": "3571f1f7-c530-406e-84d2-ef7c476dc245",
+            "final_score": 0.668125,
+            "retrieval_score": 1.0,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 2,
+            "case_id": "590312dc-358d-42b5-8a96-f26b4040e14c",
+            "final_score": 0.644691,
+            "retrieval_score": 0.981712,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 3,
+            "case_id": "a8821c80-df91-4350-92cd-391ffafa91e0",
+            "final_score": 0.597745,
+            "retrieval_score": 0.900577,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 4,
+            "case_id": "3f029ca8-7c94-4143-8fae-b385cd79954c",
+            "final_score": 0.592024,
+            "retrieval_score": 0.885952,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 5,
+            "case_id": "47aada65-c87d-4f89-a9b4-dab71e62a624",
+            "final_score": 0.561001,
+            "retrieval_score": 0.828131,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 6,
+            "case_id": "3794cfa5-524b-46b0-878d-500e01c27e98",
+            "final_score": 0.558196,
+            "retrieval_score": 0.83013,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 7,
+            "case_id": "b369d452-da81-40a7-b55f-97fa97069c43",
+            "final_score": 0.556117,
+            "retrieval_score": 0.82635,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 8,
+            "case_id": "16d934c3-0c3d-4b33-a618-fd7ab642a7c5",
+            "final_score": 0.552646,
+            "retrieval_score": 0.804357,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 9,
+            "case_id": "55887796-a5eb-42a7-9892-104e20993f4a",
+            "final_score": 0.544618,
+            "retrieval_score": 0.951579,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          },
+          {
+            "rank": 10,
+            "case_id": "71b9f335-7a39-408a-9ff9-8fb594a40a09",
+            "final_score": 0.54433,
+            "retrieval_score": 0.789236,
+            "retrieval_source": [
+              "bm25_fallback"
+            ],
+            "score_mode": "weighted_rerank"
+          }
+        ]
+      }
+    ]
+  },
+  "top10_subjective_hit_rate": {
+    "status": "requires_manual_review",
+    "measured": false,
+    "reason": "No human subjective Top10 labels were available in this offline run.",
+    "executable_alternative": "top10_qrels_hit_rate"
+  },
+  "release_decision": {
+    "decision": "PARTIAL_BLOCKED",
+    "enable_new_rerank": false,
+    "reason": "LeCaRDv2 candidate case texts were not found; current rerank cannot be evaluated against qrels.",
+    "can_enter_7_3": true
+  }
+}

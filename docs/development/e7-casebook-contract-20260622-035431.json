@@ -1,0 +1,134 @@
+{
+  "step": "E7-1",
+  "title": "案件协作工作台入口合同与 CaseFolder 契约确认",
+  "timestamp": "20260622-035431",
+  "baseline": "e6-release-gate-20260622-013221.json (allow_enter_e7=true)",
+  "overall": "GO",
+  "host_authoritative_result": "host .venv311 (Python 3.11.9 / pydantic 2.7.1 / pytest 8.2.0) 已完成 app.contracts 全链路导入与 pytest 权威复跑：292 passed, 1 warning in 2.44s；E7-1 由 CONDITIONAL_GO 收口为 GO。",
+  "allow_enter_e7_2": true,
+  "scope": {
+    "is_contract_confirmation_step": true,
+    "parallels": "E5-1 / E6-1",
+    "no_product_package": true,
+    "no_endpoint": true,
+    "no_frontend": true,
+    "no_db_write": true,
+    "no_router_change": true
+  },
+  "contract_conclusion": {
+    "object": "CaseFolder",
+    "is_4th_frozen_contract_object_since_E1": true,
+    "core_fields_frozen_E1_3_4": [
+      "case_folder_id", "owner_user_id", "team_id", "visibility",
+      "search_profile_summary", "candidate_refs", "draft_descriptors",
+      "created_at", "updated_at"
+    ],
+    "core_fields_unchanged": true,
+    "core_field_authority": "whitelist.CASE_FOLDER_FIELDS + test_e1_contracts (逐位一致)",
+    "e7_authoritative_whitelist": "CASE_FOLDER_E7_FIELDS = 核心九字段 + title/note/tag (用户自填短字段)",
+    "contract_change_note": "title/note/tag 是文档16 §4.1红线/文档17 §3.4红线/文档22 §1+§3.5 已列的『用户自填短字段』(同 DraftDescriptor note/tag 范式)，本步冻结为独立常量；E-1 §3.4 表未含此三键，须回文档16/17补登合同变更登记(见下方 followups)。",
+    "not_in_CONTRACT_FIELD_WHITELIST": true,
+    "independent_freeze_precedent": "STATUTE_REF_FIELDS / DRAFT_DESCRIPTOR_E6_FIELDS 同理"
+  },
+  "files": {
+    "added": [
+      "apps/api/app/kernel/guardrails/contracts/casebook_contract.py",
+      "apps/api/tests/test_e7_casebook_contracts.py",
+      "docs/development/e7-casebook-contract-20260622-035431.md",
+      "docs/development/e7-casebook-contract-20260622-035431.json"
+    ],
+    "modified": [
+      "apps/api/app/kernel/guardrails/contracts/__init__.py (仅追加 casebook re-export + __all__)",
+      "apps/api/app/kernel/guardrails/__init__.py (仅追加 casebook re-export + __all__)",
+      "apps/api/tests/test_e2a_kernel_boundary.py (host 复跑时纯测试调和：E6 后 intake/statute/drafting 合法，casebook 仍禁)",
+      "apps/api/tests/test_e5_statute_contracts.py (host 复跑时纯测试调和：drafting 合法、casebook 仍禁、include_router=15)",
+      "落地设计文档/22-E7案件协作工作台分步骤系统提示词文档.md (E7-1 小节补充收口)"
+    ],
+    "app_contracts_shim": "app/contracts/__init__.py 自动转发 (dir(_real) 遍历) — 无需改动，CaseFolder/sanitize_case_folder 经 shim 身份保持可达"
+  },
+  "sanitize_rules": {
+    "sanitize_case_folder": [
+      "fail-closed 拒四类键: ①裁判正文型(chunk_text/judgment_text/summary_text/highlight_text/matched_text/full_text/content/...) ②起草正文型(draft_body/generated_text/opinion_text/paragraph_body/conclusion_text/...) ③PII型(name/id_card/phone/address/...) ④胜负/结论型(win_probability/outcome_prediction/verdict/case_summary_text/...)",
+      "异常只回键名/reason code，绝不回显原始值",
+      "search_profile_summary 走 E4 sanitize_intake_search_profile 同口径: 正文/PII fail-closed + 只保留 SearchProfile 脱敏白名单子集键，其余丢弃",
+      "candidate_refs 逐项收敛(CaseFolderCandidateRef = CandidateRef 白名单七字段)，缺锚点项 fail-closed 丢弃，保留项 100% 有 source_anchors",
+      "draft_descriptors 逐项走 E6 sanitize_draft_descriptor，缺骨架丢弃、禁止键抛错，内层引用缺锚点亦丢弃",
+      "visibility 缺省(含空串)补 private；非空非法值(public/world/...) fail-closed 拒绝",
+      "输出只含 CASE_FOLDER_E7_FIELDS 白名单字段、零裁判正文、零起草正文、零原始案情"
+    ],
+    "assert_no_case_body": "断言无裁判正文/起草正文/原始案情(PII)/胜负结论型键，递归校验 candidate_refs/draft_descriptors(及其内层 candidate_refs/statute_refs) + search_profile_summary"
+  },
+  "public_face_export": {
+    "via": ["app.kernel.guardrails.contracts (源)", "app.kernel.guardrails (re-export)", "app.contracts (shim 自动转发)"],
+    "identity_preserving": true,
+    "no_aggregation_backref": true,
+    "exported_symbols": [
+      "CaseFolder", "CaseFolderCandidateRef", "sanitize_case_folder", "assert_no_case_body",
+      "CASE_FOLDER_E7_FIELDS", "CASE_FOLDER_CORE_FIELDS",
+      "CASEBOOK_PRODUCES_CONTRACT", "CASEBOOK_AGGREGATES_CONTRACTS",
+      "CASEBOOK_FORBIDDEN_JUDGMENT_KEYS", "CASEBOOK_FORBIDDEN_DRAFT_KEYS", "CASEBOOK_FORBIDDEN_OUTCOME_KEYS",
+      "TITLE_MAX_LEN", "VALID_VISIBILITY", "DEFAULT_VISIBILITY",
+      "is_forbidden_case_body_key", "is_forbidden_case_outcome_key", "is_case_folder_rejected_key"
+    ]
+  },
+  "enable_casebook_boundary": {
+    "default": false,
+    "on_path_semantics_only": true,
+    "default_visibility": "private",
+    "no_endpoint_implemented": true,
+    "note": "本步只写边界语义(默认私有 + on路径降级口径)，端点/多租户落库在 E7-2"
+  },
+  "verification": {
+    "vm_isolated_harness": "27/28 → 修正测试后 28/28 逻辑断言全过(纯 pydantic 隔离加载，不触发 app.kernel 重依赖)",
+    "vm_py_compile": "casebook_contract.py + contracts/__init__.py 编译通过",
+    "vm_ast_boundary": "casebook_contract 不 import retrieval/rerank/summary/kernel.rag/任何产品包/router/fastapi/sqlmodel/sqlalchemy；相对兄弟 import 仅 whitelist/intake_contract/statute_contract/drafting_contract",
+    "test_functions": 26,
+    "include_router": 15,
+    "casebook_package_exists": false,
+    "flags_default_false": ["ENABLE_CASEBOOK", "ENABLE_INTAKE_AI_EXTRACTION", "ENABLE_WEIGHTED_RERANK"],
+    "host_authoritative_passed": {
+      "environment": "host .venv311, Python 3.11.9, pydantic 2.7.1, pytest 8.2.0",
+      "database_url": "sqlite:///./test_e7.db",
+      "import_chain": "app.contracts / app.kernel.guardrails / app.kernel.guardrails.contracts 三面 CaseFolder、sanitize_case_folder、assert_no_case_body 身份保持；默认 visibility=private",
+      "pytest_command": "pytest tests/test_e7_casebook_contracts.py tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e2b_shim_equivalence.py tests/test_e4_intake_boundaries.py tests/test_e5_statute_contracts.py tests/test_e6_drafting_contracts.py --tb=short",
+      "pytest_result": "292 passed, 1 warning in 2.44s",
+      "warning": "Starlette python_multipart PendingDeprecationWarning，非业务失败"
+    },
+    "host_reconciliation": {
+      "reason": "3 条旧快照断言仍停在 E5 口径（drafting 不得存在 / include_router=14），与 E6 收官事实冲突。",
+      "scope": "纯测试基线调和，零业务代码改动；app/casebook 仍不存在，include_router 仍为 15。",
+      "changes": [
+        "tests/test_e2a_kernel_boundary.py: 产品包快照上移到 E6 收官基线（intake/statute/drafting 合法，casebook 仍禁止）",
+        "tests/test_e5_statute_contracts.py: drafting 合法放行、casebook 仍禁止、include_router 14 -> 15"
+      ]
+    },
+    "vm_stale_mount_note": "host Edit 后 guardrails/__init__.py 的 VM 挂载视图停滞在 162 行(截断于 E5 块)，host Read 确认实盘 184 行 __all__ 正常闭合；未对 VM 做任何写回(避免把截断版写回 host 破坏文件)。host .venv311 读实盘正确。"
+  },
+  "privacy_scan": {
+    "judgment_body_hits": 0,
+    "draft_body_hits": 0,
+    "raw_case_hits": 0,
+    "pii_hits": 0,
+    "outcome_conclusion_hits": 0,
+    "credential_hits": 0,
+    "forbidden_phrase_hits": 0,
+    "note": "新增源码/测试的长串 CJK 命中均为 docstring/注释/测试描述，fixture 一律用 SECRET- 占位与短假数据(case_id/source_chunk_id/hash)，无真实正文/PII"
+  },
+  "acceptance": {
+    "case_folder_contract_confirmed_documented": true,
+    "whitelist_consistent_with_docs_16_17_3_4_core": true,
+    "sanitize_fail_closed_four_classes": true,
+    "summary_dehydrated_subset": true,
+    "refs_missing_anchor_dropped": true,
+    "visibility_default_private": true,
+    "public_face_reachable_identity_preserved": true,
+    "no_wiring_no_package_no_endpoint_no_db": true,
+    "include_router_15": true,
+    "host_pytest_passed": true,
+    "test_reconciliation_business_code_unchanged": true
+  },
+  "followups": [
+    "回文档16 §4.1 / 文档17 §3.4 补登合同变更登记: CaseFolder 追加 title/note/tag 用户自填短字段(沿 E6-1 statute_refs / 持久层元数据登记范式) — 本步已在文档22 §4 E7-1 小节记录，建议下一轮同步回 16/17。"
+  ],
+  "next_step": "类案检索助手 E7-2 casebook 后端包与 gated 端点"
+}

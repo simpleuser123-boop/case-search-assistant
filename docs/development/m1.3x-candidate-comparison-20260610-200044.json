@@ -1,0 +1,340 @@
+{
+  "version": "m1_3x_candidate_comparison_v1",
+  "runId": "m1_3x_6_candidate_comparison_20260610_200044",
+  "generatedAt": "2026-06-10T20:00:44+08:00",
+  "step": "M1.3x-6",
+  "selection": {
+    "selectedCandidateExists": false,
+    "selectedCandidateId": null,
+    "selectedCandidateName": null,
+    "selectedCandidateDecision": "NO_GO",
+    "exactlyOneSelectedCandidate": false,
+    "allCandidatesNoGo": true,
+    "allowGrayReadiness": false,
+    "stepConclusion": "NO_GO",
+    "reason": "No candidate satisfies all hard gates. Relative-best selection is forbidden."
+  },
+  "mainRunner": {
+    "name": "m1_3_candidate_comparison",
+    "role": "primary gate for candidate selection and hard-gate decision",
+    "artifact": "docs/development/m1.3x-candidate-comparison-runner-20260610-200044.json",
+    "selectedStatus": "NO_GO",
+    "selectedCandidateId": null
+  },
+  "compatibilityRunner": {
+    "name": "m1_2_regression",
+    "role": "legacy compatibility runner preserving currentBefore/currentAfter checks",
+    "artifact": "docs/development/m1.3x-candidate-comparison-m1.2-regression-20260610-200044.json",
+    "currentAfter": {
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1539,
+      "Top10 hit rate": 0.64
+    },
+    "beforeToAfterREGRESSED": 4,
+    "afterVsBaselineREGRESSED": 9,
+    "METRIC_REGRESSION": 9,
+    "RECALL_MISS": 8
+  },
+  "runnerDifferenceExplanation": {
+    "status": "EXPLAINED_DIFFERENCE",
+    "summary": "The M1.2 compatibility runner preserves the legacy currentBefore/currentAfter replay. Its counts match the M1.3 recall-only candidate, while the M1.3 candidate comparison runner evaluates the primary candidate lines including the M1.3 guard path.",
+    "evidence": [
+      "docs/development/m1.3x-blocker-register-20260610-161732.md",
+      "apps/api/scripts/m1_2_regression.py",
+      "apps/api/scripts/m1_3_candidate_comparison.py"
+    ]
+  },
+  "hardGateCriteria": {
+    "Precision@5": "current >= baseline",
+    "NDCG@10": "current > baseline",
+    "Top10 hit rate": "current >= 0.60",
+    "beforeToAfterREGRESSED": "== 0",
+    "afterVsBaselineREGRESSED": "== 0",
+    "METRIC_REGRESSION": "== 0",
+    "RECALL_MISS": "zero, or each remaining item has query-id explanation and stop-loss and is not on default path",
+    "warmP95Ms": "< 3000",
+    "rollbackMs": "< 60000 and no index rebuild",
+    "featureFlagDefault": "ENABLE_WEIGHTED_RERANK=false"
+  },
+  "featureFlagDefault": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "configFile": "apps/api/app/core/config.py",
+    "envExample": ".env.example",
+    "changedInThisStep": false
+  },
+  "performanceAndRollback": {
+    "performanceSmokeArtifact": "docs/development/m1.3x-candidate-comparison-performance-smoke-20260610-200044.json",
+    "warmP95Ms": 998,
+    "errorRate": 0.0,
+    "statusCounts": {
+      "200": 5
+    },
+    "degradedReasonCounts": {
+      "QUERY_REWRITE_DISABLED": 5,
+      "SUMMARY_DISABLED": 5
+    },
+    "rollbackArtifact": "docs/development/m1.3x-candidate-comparison-rollback-drill-20260610-200044.json",
+    "rollbackStatus": "passed",
+    "recoveryWithin60Seconds": true,
+    "maxRollbackElapsedMs": 20,
+    "vectorIndexRebuildRequired": false
+  },
+  "candidateMatrix": [
+    {
+      "candidateId": "m1_2_baseline",
+      "candidateName": "M1.2 baseline",
+      "parameterVersion": "m1_2_baseline_static",
+      "parameterVersionStatus": "existing_baseline",
+      "metricSource": "docs/development/m1.3x-candidate-comparison-runner-20260610-200044.json",
+      "Precision@5": 0.032,
+      "NDCG@10": 0.134,
+      "Top10 hit rate": 0.48,
+      "beforeToAfterREGRESSED": 0,
+      "afterVsBaselineREGRESSED": 0,
+      "METRIC_REGRESSION": 0,
+      "RECALL_MISS": 13,
+      "performanceSmokeSummary": "warm P95 998ms, error rate 0.0",
+      "rollbackSummary": "20ms, no index rebuild",
+      "featureFlagDefault": false,
+      "blockerStatus": "TOP10_HIT_RATE_BELOW_0_60; NDCG_NOT_GT_BASELINE; RECALL_MISS_UNRESOLVED",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "decision": "NO_GO",
+      "notes": [
+        "Safe baseline reference only.",
+        "Does not satisfy improved-NDCG or Top10 threshold."
+      ]
+    },
+    {
+      "candidateId": "m1_3_combined_candidate",
+      "candidateName": "M1.3 final combined candidate",
+      "parameterVersion": "m1_3_combined_candidate",
+      "parameterVersionStatus": "materialized_existing_candidate",
+      "metricSource": "docs/development/m1.3x-candidate-comparison-runner-20260610-200044.json",
+      "parameterArtifacts": [
+        "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+        "docs/development/m1.3-final-candidate-parameter-version-20260610-152812.json"
+      ],
+      "Precision@5": 0.048,
+      "NDCG@10": 0.171,
+      "Top10 hit rate": 0.68,
+      "beforeToAfterREGRESSED": 0,
+      "afterVsBaselineREGRESSED": 7,
+      "METRIC_REGRESSION": 7,
+      "RECALL_MISS": 7,
+      "performanceSmokeSummary": "warm P95 998ms, error rate 0.0",
+      "rollbackSummary": "20ms, no index rebuild",
+      "featureFlagDefault": false,
+      "blockerStatus": "AFTER_VS_BASELINE_REGRESSED_GT_0; METRIC_REGRESSION_GT_0; RECALL_MISS_GT_0",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "decision": "NO_GO",
+      "notes": [
+        "Aggregate metrics beat baseline.",
+        "Per-query regressions still block release."
+      ]
+    },
+    {
+      "candidateId": "m1_3x_guard_v2_candidate",
+      "candidateName": "M1.3x guard v2 candidate",
+      "parameterVersion": "m1_3x_guard_v2_candidate",
+      "parameterVersionStatus": "materialized_existing_candidate",
+      "metricSource": "docs/development/m1.3x-candidate-comparison-runner-20260610-200044.json",
+      "parameterArtifacts": [
+        "docs/development/m1.3x-rerank-guard-v2-20260610-180500.json",
+        "docs/development/m1.3x-rerank-guard-v2-parameter-version-20260610-180500.json"
+      ],
+      "parameters": {
+        "baselineAnchorTopN": 10,
+        "scoreBucketSize": 0.05,
+        "baselineAnchorStep": 0.001,
+        "targetedRecallRepairs": true,
+        "usesQrelsForRanking": false,
+        "expandsRecallPool": false,
+        "protectFactSupportedCandidatesWithinBucket": true,
+        "anchorLimitedToCurrentCandidateSet": true,
+        "defaultPathChanged": false
+      },
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1657,
+      "Top10 hit rate": 0.64,
+      "beforeToAfterREGRESSED": 5,
+      "afterVsBaselineREGRESSED": 3,
+      "METRIC_REGRESSION": 3,
+      "RECALL_MISS": 9,
+      "performanceSmokeSummary": "warm P95 998ms, error rate 0.0",
+      "rollbackSummary": "20ms, no index rebuild",
+      "featureFlagDefault": false,
+      "blockerStatus": "BEFORE_VS_AFTER_REGRESSED_GT_0; AFTER_VS_BASELINE_REGRESSED_GT_0; METRIC_REGRESSION_GT_0; RECALL_MISS_GT_0",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "decision": "NO_GO",
+      "notes": [
+        "This line already includes targetedRecallRepairs=true.",
+        "It is not a pure guard-only candidate branch."
+      ]
+    },
+    {
+      "candidateId": "m1_3x_recall_closure_candidate",
+      "candidateName": "M1.3x recall closure candidate",
+      "parameterVersion": "m1_3x_recall_closure_explanation_only",
+      "parameterVersionStatus": "explanation_only_not_new_logic",
+      "metricSource": "docs/development/m1.3x-recall-miss-closure-20260610-184500.json plus inherited M1.3 combined metrics",
+      "parameterArtifacts": [
+        "docs/development/m1.3x-recall-miss-closure-20260610-184500.json",
+        "docs/development/m1.3x-recall-miss-closure-parameter-version-20260610-184500.json"
+      ],
+      "Precision@5": 0.048,
+      "NDCG@10": 0.171,
+      "Top10 hit rate": 0.68,
+      "beforeToAfterREGRESSED": 0,
+      "afterVsBaselineREGRESSED": 7,
+      "METRIC_REGRESSION": 7,
+      "RECALL_MISS": 7,
+      "performanceSmokeSummary": "warm P95 998ms, error rate 0.0",
+      "rollbackSummary": "20ms, no index rebuild",
+      "featureFlagDefault": false,
+      "blockerStatus": "LOGIC_CHANGE_NONE; AFTER_VS_BASELINE_REGRESSED_GT_0; METRIC_REGRESSION_GT_0; RECALL_MISS_EXPLAINED_BUT_NOT_ELIGIBLE_FOR_DEFAULT_PATH",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "decision": "NO_GO",
+      "notes": [
+        "Step 5 recorded logicChange=none.",
+        "This artifact closes explanation, not candidate logic."
+      ]
+    },
+    {
+      "candidateId": "m1_3x_combined_v2_candidate",
+      "candidateName": "M1.3x combined v2 candidate",
+      "parameterVersion": "NOT_MATERIALIZED",
+      "parameterVersionStatus": "missing_candidate_artifact",
+      "metricSource": null,
+      "Precision@5": null,
+      "NDCG@10": null,
+      "Top10 hit rate": null,
+      "beforeToAfterREGRESSED": null,
+      "afterVsBaselineREGRESSED": null,
+      "METRIC_REGRESSION": null,
+      "RECALL_MISS": null,
+      "performanceSmokeSummary": "No independent run exists.",
+      "rollbackSummary": "No independent run exists.",
+      "featureFlagDefault": false,
+      "blockerStatus": "NO_INDEPENDENTLY_MATERIALIZED_PARAMETER_VERSION",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "decision": "NO_GO",
+      "notes": [
+        "The repo contains no independent combined-v2 candidate artifact.",
+        "Required by the step matrix, but must be recorded as not materialized rather than implicitly passing."
+      ]
+    },
+    {
+      "candidateId": "baseline_only_fallback",
+      "candidateName": "baseline-only fallback",
+      "parameterVersion": "baseline_only_fallback_weighted_rerank_disabled",
+      "parameterVersionStatus": "fallback_eval_only",
+      "metricSource": [
+        "docs/development/m1.3x-candidate-comparison-baseline-only-fallback-product-eval-20260610-200044.json",
+        "docs/development/m1.3x-candidate-comparison-m1.2-regression-20260610-200044.json"
+      ],
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1539,
+      "Top10 hit rate": 0.64,
+      "beforeToAfterREGRESSED": 4,
+      "afterVsBaselineREGRESSED": 9,
+      "METRIC_REGRESSION": 9,
+      "RECALL_MISS": 8,
+      "performanceSmokeSummary": "warm P95 998ms, error rate 0.0",
+      "rollbackSummary": "20ms, no index rebuild",
+      "featureFlagDefault": false,
+      "blockerStatus": "FALLBACK_PATH_ONLY; HARD_GATE_DATA_INCOMPLETE_IN_PRODUCT_EVAL; METRIC_REGRESSION_GT_0; COMPATIBILITY_RUNNER_REGRESSIONS_GT_0",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "decision": "NO_GO",
+      "notes": [
+        "Represents weighted-rerank-disabled current path, not a new weighted candidate.",
+        "Product eval alone cannot replace the primary candidate-comparison gate."
+      ]
+    }
+  ],
+  "validation": {
+    "commands": [
+      {
+        "command": "cd apps/api && pytest",
+        "status": "passed",
+        "summary": "189 passed in 20.85s"
+      },
+      {
+        "command": "cd apps/web && npm test",
+        "status": "passed",
+        "summary": "40 passed"
+      },
+      {
+        "command": "cd apps/web && npm run build",
+        "status": "passed",
+        "summary": "build passed"
+      },
+      {
+        "command": "cd apps/api && python scripts/day3_7_3_performance_smoke.py --out docs/development/m1.3x-candidate-comparison-performance-smoke-20260610-200044.json",
+        "status": "passed",
+        "summary": "warm P95 998ms, error rate 0.0"
+      },
+      {
+        "command": "cd apps/api && python scripts/day3_7_5_rollback_drill.py --out docs/development/m1.3x-candidate-comparison-rollback-drill-20260610-200044.json",
+        "status": "passed",
+        "summary": "recoveryWithin60Seconds=true, maxRollbackElapsedMs=20, no index rebuild"
+      },
+      {
+        "command": "cd apps/api && python -m app.eval.product_eval --comparison-mode product_chain --current-weighted-rerank --out docs/development/m1.3x-candidate-comparison-product-eval-20260610-200044.json --bad-cases-out docs/development/m1.3x-candidate-comparison-product-bad-cases-20260610-200044.json",
+        "status": "passed",
+        "summary": "baseline 0.032/0.134/0.48; current 0.048/0.171/0.68; metricRegression=7; recallMiss=7"
+      },
+      {
+        "command": "cd apps/api && python scripts/m1_2_regression.py --comparison-mode product_chain --out docs/development/m1.3x-candidate-comparison-m1.2-regression-20260610-200044.json --parameter-version-out docs/development/m1.3x-candidate-comparison-m1.2-parameter-version-20260610-200044.json",
+        "status": "passed",
+        "summary": "currentAfter 0.040/0.1539/0.64; before->after=4; after-vs-baseline=9; metricRegression=9; recallMiss=8"
+      },
+      {
+        "command": "cd apps/api && python scripts/m1_3_candidate_comparison.py --performance-smoke docs/development/m1.3x-candidate-comparison-performance-smoke-20260610-200044.json --rollback-drill docs/development/m1.3x-candidate-comparison-rollback-drill-20260610-200044.json --out-json docs/development/m1.3x-candidate-comparison-runner-20260610-200044.json --out-md docs/development/m1.3x-candidate-comparison-runner-20260610-200044.md --parameter-version-out docs/development/m1.3x-candidate-comparison-runner-parameter-version-20260610-200044.json",
+        "status": "passed",
+        "summary": "selected_status=NO_GO"
+      },
+      {
+        "command": "cd apps/api && python -m app.eval.product_eval --comparison-mode product_chain --no-current-weighted-rerank --out docs/development/m1.3x-candidate-comparison-baseline-only-fallback-product-eval-20260610-200044.json --bad-cases-out docs/development/m1.3x-candidate-comparison-baseline-only-fallback-bad-cases-20260610-200044.json",
+        "status": "passed",
+        "summary": "fallback current 0.040/0.1539/0.64; metricRegression=9; recallMiss=8"
+      }
+    ],
+    "correctedFailures": [
+      {
+        "command": "rg with PowerShell wildcard path literals",
+        "status": "corrected",
+        "summary": "Re-ran with valid PowerShell/rg path usage."
+      },
+      {
+        "command": "python - <<'PY' in PowerShell",
+        "status": "corrected",
+        "summary": "Re-ran using a PowerShell here-string piped to python -."
+      },
+      {
+        "command": "initial out paths using ../../docs/... from apps/api",
+        "status": "corrected",
+        "summary": "Misplaced files under C:\\Users\\yyl\\docs\\development were deleted and commands were rerun with docs/development/... paths."
+      }
+    ]
+  },
+  "conclusion": {
+    "selectedCandidate": null,
+    "exactlyOneSelectedCandidate": false,
+    "weightedRerankGrayCandidateStatus": "NO_GO",
+    "m2ReadinessStatus": "NO_GO",
+    "stepConclusion": "NO_GO",
+    "nextConversationTitle": "类案检索助手 M1.3x-7 灰度候选 readiness 复核"
+  },
+  "privacy": {
+    "rawQueryWritten": false,
+    "caseBodyWritten": false,
+    "chunkBodyWritten": false,
+    "allowedFieldsOnly": true
+  }
+}

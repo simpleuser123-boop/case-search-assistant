@@ -1,0 +1,1716 @@
+{
+  "version": "m1_3_recall_repair_v1",
+  "generatedAt": "2026-06-10T11:33:45",
+  "scope": "M1.3-3 remaining RECALL_MISS targeted repair only",
+  "privacy": {
+    "rawQueryTextWritten": false,
+    "caseFactTextWritten": false,
+    "candidateTextWritten": false,
+    "chunkTextWritten": false,
+    "fixtureContent": "sanitized_or_fictional"
+  },
+  "inputs": {
+    "triage": "docs\\development\\m1.3-regression-triage-20260609-205353.json",
+    "queries": "data\\eval\\product_eval_queries.jsonl",
+    "qrels": "data\\eval\\product_eval_qrels.jsonl",
+    "cases": "data\\processed\\cases.jsonl",
+    "chunks": "data\\processed\\chunks.jsonl"
+  },
+  "outputs": {
+    "markdown": "docs\\development\\m1.3-recall-repair-20260610-113200.md",
+    "json": "docs\\development\\m1.3-recall-repair-20260610-113200.json"
+  },
+  "repairRules": [
+    {
+      "id": "RECALL_ONLY_QUERY_MAPPING",
+      "boundary": "Only the two confirmed mapping types emit a separate recall-only vector query; no legal/cause weighting signal is added."
+    },
+    {
+      "id": "CONTROLLED_BM25_SUPPLEMENT",
+      "boundary": "Only unmapped queries with 5-40 vector cases and at most four Top10 overlaps admit at most four BM25-only cases at the rank-5 anchor."
+    }
+  ],
+  "runnerComparison": {
+    "beforeArtifact": "docs\\development\\m1.3-recall-repair-runner-before-20260610-113000.json",
+    "afterArtifact": "docs\\development\\m1.3-recall-repair-runner-after-20260610-113000.json",
+    "before": {
+      "top10HitRate": 0.52,
+      "recallMissCount": 11,
+      "beforeVsAfterRegressedCount": 4,
+      "afterVsBaselineRegressedCount": 9,
+      "metricRegressionCount": 9
+    },
+    "after": {
+      "top10HitRate": 0.64,
+      "recallMissCount": 8,
+      "beforeVsAfterRegressedCount": 4,
+      "afterVsBaselineRegressedCount": 9,
+      "metricRegressionCount": 9,
+      "top10MissCount": 9,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "hardGateDataComplete": true,
+      "missingInputs": [],
+      "blockedItems": []
+    },
+    "newFixedRegressions": [],
+    "typicalSuccess": [
+      {
+        "queryId": "product_q019",
+        "beforeTop10Hit": true,
+        "afterTop10Hit": true,
+        "beforeNdcgAt10": 0.193,
+        "afterNdcgAt10": 0.193,
+        "beforeChangeLabel": "IMPROVED",
+        "afterChangeLabel": "IMPROVED"
+      },
+      {
+        "queryId": "product_q020",
+        "beforeTop10Hit": true,
+        "afterTop10Hit": true,
+        "beforeNdcgAt10": 0.3516,
+        "afterNdcgAt10": 0.3516,
+        "beforeChangeLabel": "STABLE",
+        "afterChangeLabel": "STABLE"
+      },
+      {
+        "queryId": "product_q021",
+        "beforeTop10Hit": true,
+        "afterTop10Hit": true,
+        "beforeNdcgAt10": 0.2793,
+        "afterNdcgAt10": 0.2793,
+        "beforeChangeLabel": "REGRESSED",
+        "afterChangeLabel": "REGRESSED"
+      },
+      {
+        "queryId": "product_q022",
+        "beforeTop10Hit": true,
+        "afterTop10Hit": true,
+        "beforeNdcgAt10": 0.3341,
+        "afterNdcgAt10": 0.3341,
+        "beforeChangeLabel": "STABLE",
+        "afterChangeLabel": "STABLE"
+      },
+      {
+        "queryId": "product_q025",
+        "beforeTop10Hit": true,
+        "afterTop10Hit": true,
+        "beforeNdcgAt10": 0.4903,
+        "afterNdcgAt10": 0.4903,
+        "beforeChangeLabel": "STABLE",
+        "afterChangeLabel": "STABLE"
+      }
+    ]
+  },
+  "performance": {
+    "artifact": "docs\\development\\m1.3-recall-repair-performance-20260610-113100.json",
+    "warmP95Ms": 519,
+    "warmApiWallP95Ms": 526,
+    "warmP95Under3s": true,
+    "blocked": false
+  },
+  "targetQueryCount": 11,
+  "recoveredQueryIds": [
+    "product_q010",
+    "product_q011",
+    "product_q012"
+  ],
+  "rows": [
+    {
+      "queryId": "product_q001",
+      "targetCaseIds": [
+        "561314d5-2ad3-48fa-b514-1cd8b982100a",
+        "d34eda6a-a5c6-4152-8fca-9084f4f90934",
+        "f6300f37-2b14-4aca-8c43-75f25f80a0d1"
+      ],
+      "primaryCause": "CANDIDATE_MERGE_GATING",
+      "priority": "P0",
+      "inputHash": "d8f657543e361a13147bc18d7065604ff0e8dd0bcbfe234142ffa454bbe72fd5",
+      "inputLength": 24,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": false,
+        "mappingLabels": [],
+        "queryVariantCount": 0,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 38,
+            "caseId": "561314d5-2ad3-48fa-b514-1cd8b982100a"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 38,
+            "caseId": "561314d5-2ad3-48fa-b514-1cd8b982100a"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 50,
+          "mergedCandidateCount": 49,
+          "rawRelevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mergedRelevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 0,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": false
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 38,
+            "caseId": "561314d5-2ad3-48fa-b514-1cd8b982100a"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 38,
+            "caseId": "561314d5-2ad3-48fa-b514-1cd8b982100a"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 50,
+          "mergedCandidateCount": 49,
+          "rawRelevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mergedRelevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 0,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": false
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "top10Hit": false
+        }
+      },
+      "repairPath": "NONE",
+      "finalReason": "RECALL_POOL_MISS"
+    },
+    {
+      "queryId": "product_q002",
+      "targetCaseIds": [
+        "101305d2-00d3-443e-8f36-3843cbeb3379",
+        "6475c2e9-90a0-4744-a0d1-37808f0ce3a7",
+        "bae4f3fd-158e-467b-85bf-3128679b68f5"
+      ],
+      "primaryCause": "QRELS_OR_DATA_MISMATCH",
+      "priority": "P0",
+      "inputHash": "5dab98d4307322b93efcad2c4a15da60692f9769138780776ad86ce8a9e0d433",
+      "inputLength": 21,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "dangerous_driving_alcohol"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "expandedBm25": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 53,
+          "rawRelevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mergedRelevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 0,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": false
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "expandedBm25": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 53,
+          "rawRelevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mergedRelevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 0,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": false
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "top10Hit": false
+        }
+      },
+      "repairPath": "NONE",
+      "finalReason": "QRELS_OR_DATA_MISMATCH_EVIDENCE_UNRESOLVED"
+    },
+    {
+      "queryId": "product_q003",
+      "targetCaseIds": [
+        "211091c2-6eb0-4de2-b8d7-c55529053ea0",
+        "94517b43-ac1f-4694-b627-f312ce99bc3e",
+        "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+      ],
+      "primaryCause": "RERANK_SUPPRESSION",
+      "priority": "P0",
+      "inputHash": "97b8daa410b0a8840de7cb2acbe1b4f931a762c9e0f5a882b45b585b609eb3b8",
+      "inputLength": 15,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": false,
+        "mappingLabels": [],
+        "queryVariantCount": 0,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 38,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 38,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 50,
+          "mergedCandidateCount": 50,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 1,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 38,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 38,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 50,
+          "mergedCandidateCount": 50,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 1,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 15,
+            "caseId": "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+          },
+          "top10Hit": false
+        }
+      },
+      "repairPath": "NONE",
+      "finalReason": "RANKING_SUPPRESSION_DEFER_M1_3_4"
+    },
+    {
+      "queryId": "product_q004",
+      "targetCaseIds": [
+        "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+        "886d5b3e-863e-4106-9ac7-1afe4cc9583e",
+        "e9760ce5-799d-4a8d-8dc1-8409a795bb76"
+      ],
+      "primaryCause": "QUERY_MAPPING_NO_GAIN",
+      "priority": "P0",
+      "inputHash": "b217f8adf49cc01c513c0134923b6081895e2ac6f4cfb5e7d5bc9ff8723ee953",
+      "inputLength": 16,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "theft_household"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 47,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341"
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "expandedBm25": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 50,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 47,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 47,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 1,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 47,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341"
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 47,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341"
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "expandedBm25": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 50,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 47,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 47,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 1,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 47,
+            "caseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341"
+          },
+          "top10Hit": false
+        }
+      },
+      "repairPath": "NONE",
+      "finalReason": "RANKING_SUPPRESSION_DEFER_M1_3_4"
+    },
+    {
+      "queryId": "product_q005",
+      "targetCaseIds": [
+        "2993a8d9-85c5-4f1b-ad74-3f32ecdee158",
+        "304bf74e-edae-4d90-be20-e1df152b28ca",
+        "d0bd830b-50a3-442b-8922-014ca54331f2"
+      ],
+      "primaryCause": "QUERY_MAPPING_NO_GAIN",
+      "priority": "P0",
+      "inputHash": "38bc94a4f956472d42bef079b3c69c4221aebcdc5126c264d357c96c22044f67",
+      "inputLength": 16,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "harbor_drug_use"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "304bf74e-edae-4d90-be20-e1df152b28ca"
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 45,
+            "caseId": "2993a8d9-85c5-4f1b-ad74-3f32ecdee158"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 43,
+            "caseId": "2993a8d9-85c5-4f1b-ad74-3f32ecdee158"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 49,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "304bf74e-edae-4d90-be20-e1df152b28ca"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "304bf74e-edae-4d90-be20-e1df152b28ca"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 1,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "304bf74e-edae-4d90-be20-e1df152b28ca"
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "304bf74e-edae-4d90-be20-e1df152b28ca"
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 45,
+            "caseId": "2993a8d9-85c5-4f1b-ad74-3f32ecdee158"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 43,
+            "caseId": "2993a8d9-85c5-4f1b-ad74-3f32ecdee158"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 49,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "304bf74e-edae-4d90-be20-e1df152b28ca"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "304bf74e-edae-4d90-be20-e1df152b28ca"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 1,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "304bf74e-edae-4d90-be20-e1df152b28ca"
+          },
+          "top10Hit": false
+        }
+      },
+      "repairPath": "NONE",
+      "finalReason": "RANKING_SUPPRESSION_DEFER_M1_3_4"
+    },
+    {
+      "queryId": "product_q006",
+      "targetCaseIds": [
+        "49654efe-c3c1-4fd5-9717-f6c295dc3f80",
+        "6051e90c-c739-4eef-a3db-673ff6a66301",
+        "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+      ],
+      "primaryCause": "QUERY_MAPPING_NO_GAIN",
+      "priority": "P0",
+      "inputHash": "37acf51f8670366ab76835a459e45c00a7f4b43ae9cd70ccdaa9c72caee2107c",
+      "inputLength": 13,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "intentional_injury_minor"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 33,
+            "caseId": "6051e90c-c739-4eef-a3db-673ff6a66301"
+          },
+          "mappedRewriteVector": {
+            "hit": true,
+            "bestRank": 19,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 17,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 12,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 56,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 33,
+            "caseId": "6051e90c-c739-4eef-a3db-673ff6a66301"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 3,
+          "dedupeAppliedToRelevant": true,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 33,
+            "caseId": "6051e90c-c739-4eef-a3db-673ff6a66301"
+          },
+          "mappedRewriteVector": {
+            "hit": true,
+            "bestRank": 19,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 17,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 12,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 56,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 33,
+            "caseId": "6051e90c-c739-4eef-a3db-673ff6a66301"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 3,
+          "dedupeAppliedToRelevant": true,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+          },
+          "top10Hit": false
+        }
+      },
+      "repairPath": "NONE",
+      "finalReason": "RANKING_SUPPRESSION_DEFER_M1_3_4"
+    },
+    {
+      "queryId": "product_q009",
+      "targetCaseIds": [
+        "36df2795-f259-40ac-b08e-16e42c471885",
+        "37c160b5-4c96-44bf-a7a6-f7ba96fe346e",
+        "68058dc3-da5d-45c2-883a-e143e546bf61"
+      ],
+      "primaryCause": "RERANK_SUPPRESSION",
+      "priority": "P0",
+      "inputHash": "0aaef9ba4caf56ed5060285da032eab7c8829adfa584b024edb30e0a30c2418a",
+      "inputLength": 15,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": false,
+        "mappingLabels": [],
+        "queryVariantCount": 0,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 33,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 33,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 50,
+          "mergedCandidateCount": 48,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 4,
+          "dedupeAppliedToRelevant": true,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 33,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 33,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 50,
+          "mergedCandidateCount": 48,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 4,
+          "dedupeAppliedToRelevant": true,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 27,
+            "caseId": "68058dc3-da5d-45c2-883a-e143e546bf61"
+          },
+          "top10Hit": false
+        }
+      },
+      "repairPath": "NONE",
+      "finalReason": "RANKING_SUPPRESSION_DEFER_M1_3_4"
+    },
+    {
+      "queryId": "product_q010",
+      "targetCaseIds": [
+        "26627b67-8d0f-470a-84b1-2e08358fd1e8",
+        "8283a876-039c-444c-a24f-5a901980097d",
+        "df4a90b1-bf96-432a-8ec4-d61ccf817d22"
+      ],
+      "primaryCause": "QUERY_MAPPING_NO_GAIN",
+      "priority": "P0",
+      "inputHash": "255c8c09149eb39a56fd7be0c8c94929b410e7f5a4637510232f82526133b5d3",
+      "inputLength": 15,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "robbery_knife_money"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 1,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "mappedRewriteVector": {
+            "hit": true,
+            "bestRank": 13,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 26,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 21,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 35,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 4,
+          "dedupeAppliedToRelevant": true,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "mappedRewriteVector": {
+            "hit": true,
+            "bestRank": 13,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "recallOnlyMappingVector": {
+            "hit": true,
+            "bestRank": 5,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 26,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 21,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 38,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 20,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 7,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 6,
+          "dedupeAppliedToRelevant": true,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": false
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 7,
+            "caseId": "26627b67-8d0f-470a-84b1-2e08358fd1e8"
+          },
+          "top10Hit": true
+        }
+      },
+      "repairPath": "RECALL_ONLY_QUERY_MAPPING",
+      "finalReason": "TARGETED_RECALL_RECOVERED"
+    },
+    {
+      "queryId": "product_q011",
+      "targetCaseIds": [
+        "23e8e218-ac32-4670-83f7-e49ea45aa0ca",
+        "b7e49dc2-2a5d-41b2-8f4c-28e927d326a2",
+        "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+      ],
+      "primaryCause": "CANDIDATE_MERGE_GATING",
+      "priority": "P0",
+      "inputHash": "48a0453b415715d0b055f4ba414d7005acbe579d3fce7be4acab4a5706f5d88c",
+      "inputLength": 12,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": false,
+        "mappingLabels": [],
+        "queryVariantCount": 0,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 12,
+            "caseId": "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 12,
+            "caseId": "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 50,
+          "mergedCandidateCount": 40,
+          "rawRelevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mergedRelevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 0,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": false
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "mappedRewriteVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 12,
+            "caseId": "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 12,
+            "caseId": "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+          },
+          "controlledBm25Supplement": {
+            "hit": true,
+            "bestRank": 2,
+            "caseId": "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 54,
+          "mergedCandidateCount": 44,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 42,
+            "caseId": "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 7,
+            "caseId": "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 1,
+          "dedupeAppliedToRelevant": false,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": false
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 7,
+            "caseId": "e0d85c43-cccc-4f22-ae89-df0b36deee0a"
+          },
+          "top10Hit": true
+        }
+      },
+      "repairPath": "CONTROLLED_BM25_SUPPLEMENT",
+      "finalReason": "TARGETED_RECALL_RECOVERED"
+    },
+    {
+      "queryId": "product_q012",
+      "targetCaseIds": [
+        "6f832b41-3e4d-4ae6-b2b8-634d43566efa",
+        "a7dfe426-8c8d-488e-a625-571cd533762e",
+        "de1c4200-6528-4234-bdfd-30e13b63a3bf"
+      ],
+      "primaryCause": "QUERY_MAPPING_NO_GAIN",
+      "priority": "P0",
+      "inputHash": "b17c3bbbd6b0e3b3d7aa45446fff74103ced67e97220b8c2772b37ce1ce2af57",
+      "inputLength": 17,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "drug_possession_meth"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 1,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 35,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "mappedRewriteVector": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 18,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 16,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 51,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 35,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 24,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 2,
+          "dedupeAppliedToRelevant": true,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 24,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 35,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "mappedRewriteVector": {
+            "hit": true,
+            "bestRank": 22,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "recallOnlyMappingVector": {
+            "hit": true,
+            "bestRank": 1,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 18,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 16,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 110,
+          "mergedCandidateCount": 64,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 35,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 9,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 4,
+          "dedupeAppliedToRelevant": true,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": false
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 9,
+            "caseId": "6f832b41-3e4d-4ae6-b2b8-634d43566efa"
+          },
+          "top10Hit": true
+        }
+      },
+      "repairPath": "RECALL_ONLY_QUERY_MAPPING",
+      "finalReason": "TARGETED_RECALL_RECOVERED"
+    },
+    {
+      "queryId": "product_q013",
+      "targetCaseIds": [
+        "443c73ff-c05f-4b35-8770-317612d26adc",
+        "a40ca8f2-7833-4609-b299-1df502420039",
+        "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+      ],
+      "primaryCause": "GUARD_OVER_CORRECTION",
+      "priority": "P0",
+      "inputHash": "8f48e4351b58886f12042cf09f1d9a8b45f9561314d8823667192341220563bc",
+      "inputLength": 14,
+      "qrelCaseIdsMissingFromCorpus": [],
+      "queryPlanSignals": {
+        "mappingUsed": true,
+        "mappingLabels": [
+          "casino_online_profit"
+        ],
+        "queryVariantCount": 1,
+        "recallOnlyVariantCount": 0,
+        "legalElementCount": 0,
+        "caseCauseHintPresent": false
+      },
+      "before": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 16,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "mappedRewriteVector": {
+            "hit": true,
+            "bestRank": 19,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 14,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 11,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 34,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 16,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 14,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 2,
+          "dedupeAppliedToRelevant": true,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 14,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "top10Hit": false
+        }
+      },
+      "after": {
+        "channels": {
+          "originalVector": {
+            "hit": true,
+            "bestRank": 16,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "mappedRewriteVector": {
+            "hit": true,
+            "bestRank": 19,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "recallOnlyMappingVector": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          },
+          "cleanedBm25": {
+            "hit": true,
+            "bestRank": 14,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "expandedBm25": {
+            "hit": true,
+            "bestRank": 11,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "controlledBm25Supplement": {
+            "hit": false,
+            "bestRank": null,
+            "caseId": null
+          }
+        },
+        "candidatePool": {
+          "rawCandidateCount": 80,
+          "mergedCandidateCount": 34,
+          "rawRelevantPresence": {
+            "hit": true,
+            "bestRank": 16,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "mergedRelevantPresence": {
+            "hit": true,
+            "bestRank": 14,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "relevantCandidateOccurrencesBeforeMerge": 2,
+          "dedupeAppliedToRelevant": true,
+          "droppedByDedupe": false,
+          "droppedByTop10OrGating": true
+        },
+        "final": {
+          "relevantPresence": {
+            "hit": true,
+            "bestRank": 14,
+            "caseId": "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+          },
+          "top10Hit": false
+        }
+      },
+      "repairPath": "NONE",
+      "finalReason": "RANKING_SUPPRESSION_DEFER_M1_3_4"
+    }
+  ],
+  "boundaries": {
+    "rerankModified": false,
+    "guardModified": false,
+    "qrelsModified": false,
+    "evalSamplesModified": false,
+    "featureFlagDefaultsModified": false,
+    "enteredM13Step4": false,
+    "globalEnableWeightedRerank": false
+  }
+}

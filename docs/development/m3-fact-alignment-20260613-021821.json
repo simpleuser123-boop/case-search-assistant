@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "artifact": "m3-fact-alignment",
+  "step": "M3-4",
+  "generated_at": "2026-06-13T02:18:21+08:00",
+  "entry_gates": {
+    "m2_8": {
+      "base_search": "GO",
+      "m2_trusted_retrieval": "GO",
+      "m3_entry": "GO",
+      "evidence": "docs/development/m3-reading-entry-contract-20260612-194511.json#entry_register.m2_8_conclusions"
+    },
+    "m3_1": {
+      "path": "docs/development/m3-reading-entry-contract-20260612-194511.json",
+      "status": "GO"
+    },
+    "m3_2": {
+      "path": "docs/development/m3-holding-summary-closure-20260612-202913.json",
+      "status": "GO"
+    },
+    "m3_3": {
+      "path": "docs/development/m3-issue-focus-elements-20260612-212111.json",
+      "status": "GO",
+      "next_allowed_title": "类案检索助手 M3-4 相似事实对比"
+    },
+    "m2_3": {
+      "path": "docs/development/m2-coverage-privacy-20260612-140115.json",
+      "status": "GO"
+    }
+  },
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "weighted_rerank_default_changed": false,
+    "search_ranking_changed": false,
+    "candidate_recall_changed": false,
+    "source_selection_changed": false,
+    "m2_expanded_retrieval_default_changed": false,
+    "new_runtime_flags_added": false,
+    "added_config_key": "FACT_ALIGNMENT_TIMEOUT_SECONDS",
+    "added_config_default_seconds": 2.0
+  },
+  "implemented_contract": {
+    "endpoint": "POST /api/cases/{case_id}/fact-alignment",
+    "lazy_loaded": true,
+    "request_fields": ["query_signal"],
+    "request_query_signal_persisted": false,
+    "response_fields": [
+      "case_id",
+      "items",
+      "generation_status",
+      "degrade_reason",
+      "query_signal_present",
+      "query_session_id",
+      "timings"
+    ],
+    "item_fields": [
+      "dimension",
+      "dimension_key",
+      "query_side_signal",
+      "case_side_facts",
+      "source_anchors",
+      "match_type",
+      "confidence",
+      "degrade_reason"
+    ],
+    "match_types": ["same_dimension", "similar_dimension", "difference_to_review"],
+    "query_side_signal_states": [
+      "input_signals_dimension",
+      "input_does_not_mention_dimension"
+    ],
+    "query_side_signal_is_controlled_enum_only": true,
+    "case_side_visible_requires_source_anchors": true,
+    "required_anchor_fields": ["case_id", "source_chunk_id"],
+    "anchor_source": "case_detail_source_chunks",
+    "anchor_type_required": "detail_chunk",
+    "fake_anchor_binding": false,
+    "controlled_dimension_count": 8
+  },
+  "user_side_processing": {
+    "request_scoped_abstraction_only": true,
+    "abstraction_output": "controlled_dimension_keys_set",
+    "raw_query_text_retained": false,
+    "free_text_retained": false,
+    "long_context_retained": false,
+    "frontend_query_signal_in_query_key": false,
+    "frontend_query_signal_in_url": false,
+    "frontend_query_signal_in_storage": false,
+    "frontend_query_signal_transport": "post_request_body_only"
+  },
+  "case_side_processing": {
+    "facts_only_from_anchored_chunks": true,
+    "allowed_chunk_types": ["fact", "court_found", "court_opinion"],
+    "unanchored_case_fact_visible": false,
+    "candidate_body_written_to_report": false,
+    "chunk_body_written_to_report": false,
+    "case_side_label_is_controlled_dimension_plus_tokens": true
+  },
+  "copy_policy": {
+    "expresses_same_similar_or_difference_to_review": true,
+    "forbidden_outcome_or_certainty_copy_filtered": true,
+    "forbidden_terms_sample_count": 12,
+    "win_loss_or_probability_copy": false,
+    "deterministic_legal_conclusion_copy": false
+  },
+  "performance_policy": {
+    "lazy_loaded_on_demand": true,
+    "timeout_degrade": true,
+    "timeout_seconds": 2.0,
+    "degrade_preserves_detail_base_info": true,
+    "degrade_preserves_main_results": true,
+    "affects_results_sorting": false
+  },
+  "downgrade_policy": {
+    "hide_unanchored_case_facts": true,
+    "empty_state_without_white_screen": true,
+    "reason_codes": [
+      "missing_source_anchor",
+      "insufficient_source",
+      "missing_query_signal",
+      "fact_alignment_timeout",
+      "fact_alignment_failed"
+    ]
+  },
+  "runtime_boundaries": {
+    "affects_results_sorting": false,
+    "affects_candidate_recall": false,
+    "affects_source_selection": false,
+    "affects_rerank": false,
+    "uses_qrels": false,
+    "uses_label": false,
+    "uses_relevance": false,
+    "uses_query_id_special_case": false,
+    "uses_case_id_special_case_for_quality": false,
+    "implements_m3_5_or_later": false
+  },
+  "logging_policy": {
+    "logs_dimension_or_fact_label": false,
+    "logs_raw_query": false,
+    "logs_source_text": false,
+    "logs_status_item_count_match_type_count_reason_only": true
+  },
+  "modified_files": [
+    "apps/api/app/summary/fact_alignment.py",
+    "apps/api/app/summary/__init__.py",
+    "apps/api/app/schemas.py",
+    "apps/api/app/api/cases.py",
+    "apps/api/app/core/config.py",
+    "apps/api/tests/test_m3_fact_alignment.py",
+    "apps/web/src/types/search.ts",
+    "apps/web/src/services/searchApi.ts",
+    "apps/web/src/hooks/useFactAlignment.ts",
+    "apps/web/src/components/details/CaseDetailDrawer.tsx",
+    "apps/web/src/pages/SearchPage.tsx",
+    "apps/web/src/mocks/caseDetailMockFixture.ts",
+    "apps/web/src/pages/SearchPage.test.tsx"
+  ],
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py tests/test_performance_smoke.py tests/test_m3_fact_alignment.py",
+      "status": "passed",
+      "passed_count": 22,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/api; pytest tests/test_m3_fact_alignment.py",
+      "status": "passed",
+      "passed_count": 10,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/api; pytest tests/test_m3_holding_summary.py tests/test_m3_issue_focus.py tests/test_summary_service.py tests/test_health.py tests/test_m3_fact_alignment.py",
+      "status": "passed",
+      "passed_count": 40,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; npx vitest run",
+      "status": "passed",
+      "passed_count": 51,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; tsc -b (via npm run build)",
+      "status": "passed",
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; vite build",
+      "status": "passed",
+      "note": "production bundle built; default outDir cleanup hit EPERM on Windows-created dist on the Linux mount, an environment artifact unrelated to code; verified by building to a clean outDir",
+      "failed_count": 0
+    }
+  ],
+  "environment_notes": {
+    "windows_venv_unusable_in_linux_vm": true,
+    "python_deps_installed_in_sandbox": [
+      "fastapi==0.111.0",
+      "pydantic==2.7.1",
+      "pydantic-settings==2.2.1",
+      "httpx==0.27.0",
+      "pytest==8.2.0",
+      "SQLAlchemy==2.0.30",
+      "sqlmodel==0.0.18",
+      "python-dotenv==1.0.1",
+      "psycopg2-binary==2.9.9"
+    ],
+    "rollup_esbuild_linux_binaries_installed_no_save": true,
+    "file_tool_truncation_on_mount_worked_around_via_bash": true
+  },
+  "body_leakage_check": {
+    "raw_query_body_saved": false,
+    "case_fact_body_saved": false,
+    "candidate_body_saved": false,
+    "chunk_body_saved": false,
+    "judgment_body_saved": false,
+    "user_free_text_saved": false,
+    "fact_label_body_saved_in_report_json": false,
+    "source_fragment_body_saved_in_report_json": false,
+    "log_body_saved": false,
+    "test_snapshot_body_saved": false
+  },
+  "acceptance": {
+    "case_side_facts_100pct_anchored": true,
+    "user_side_raw_text_not_persisted": true,
+    "fact_alignment_expresses_review_clues_only": true,
+    "main_results_sorting_and_expanded_search_default_unchanged": true,
+    "no_body_leakage": true
+  },
+  "stop_loss_triggers": {
+    "user_raw_case_persisted": false,
+    "fact_alignment_without_source_anchor": false,
+    "fact_alignment_participates_in_runtime_sorting": false
+  },
+  "go_no_go": {
+    "status": "GO",
+    "failed_gates": [],
+    "reason_codes": [
+      "M2_8_GO_CONFIRMED",
+      "M3_1_GO_CONFIRMED",
+      "M3_2_GO_CONFIRMED",
+      "M3_3_GO_CONFIRMED",
+      "M2_3_GO_CONFIRMED",
+      "ENABLE_WEIGHTED_RERANK_FALSE_CONFIRMED",
+      "FACT_ALIGNMENT_CONTRACT_IMPLEMENTED",
+      "CASE_SIDE_FACTS_REQUIRE_SOURCE_ANCHORS",
+      "USER_SIDE_REQUEST_SCOPED_ABSTRACTION_ONLY",
+      "RAW_QUERY_NOT_PERSISTED",
+      "REVIEW_CLUE_ONLY_NO_OUTCOME_COPY",
+      "LAZY_LOAD_AND_TIMEOUT_DEGRADE",
+      "SEARCH_SORTING_BOUNDARY_PRESERVED",
+      "VALIDATION_PASSED",
+      "NO_BODY_LEAKAGE_IN_ARTIFACT"
+    ],
+    "next_allowed_title": "类案检索助手 M3-5 相似点高亮"
+  }
+}

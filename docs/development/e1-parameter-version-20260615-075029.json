@@ -1,0 +1,78 @@
+{
+  "artifact": "e1-parameter-version",
+  "milestone": "E 系列多产品生态全链路闭环（E-1 生态入口合同）",
+  "step": "E-1",
+  "generated_at": "2026-06-15T07:50:29",
+  "inherits_from": "docs/development/m5-parameter-version-20260615-063329.json",
+  "change_nature": "仅新增 flag 声明 + 契约白名单常量模块；不改任何已有参数、不改任何运行时默认行为",
+  "feature_flags": {
+    "unchanged_from_m5_10": {
+      "ENABLE_QUERY_REWRITE": false,
+      "ENABLE_SUMMARY": false,
+      "ENABLE_EXPANDED_SEARCH": false,
+      "ENABLE_WEIGHTED_RERANK": false,
+      "ENABLE_SEARCH_HISTORY": false,
+      "ENABLE_CASE_FAVORITE": false,
+      "ENABLE_CASE_LIST": false,
+      "ENABLE_LIST_EXPORT": false,
+      "ENABLE_REPORT_TEMPLATE": false,
+      "ENABLE_TEAM_REUSE": false,
+      "ENABLE_ACCOUNT_SYSTEM": false,
+      "ENABLE_TEAM_WORKSPACE": false,
+      "ENABLE_PERMISSION_TIERING": false,
+      "ENABLE_TEAM_SHARING": false,
+      "ENABLE_BULK_IMPORT": false,
+      "ENABLE_TENDENCY_ANALYSIS": false,
+      "ENABLE_BILLING": false
+    },
+    "newly_added_e1_backend": {
+      "ENABLE_ECOSYSTEM": false,
+      "ENABLE_INTAKE": false,
+      "ENABLE_STATUTE_SEARCH": false,
+      "ENABLE_DRAFTING": false,
+      "ENABLE_CASEBOOK": false
+    },
+    "newly_added_e1_frontend_vite_mirror": {
+      "VITE_ENABLE_ECOSYSTEM": false,
+      "VITE_ENABLE_INTAKE": false,
+      "VITE_ENABLE_STATUTE_SEARCH": false,
+      "VITE_ENABLE_DRAFTING": false,
+      "VITE_ENABLE_CASEBOOK": false
+    }
+  },
+  "ranking_and_retrieval_params": {
+    "note": "全部沿用 M5-10 末态，E-1 不改任何一项",
+    "RERANK_WEIGHT_VECTOR_SIMILARITY": 0.55,
+    "RERANK_WEIGHT_LEGAL_ELEMENT_OVERLAP": 0.20,
+    "RERANK_WEIGHT_CASE_CAUSE_MATCH": 0.10,
+    "RERANK_WEIGHT_KEY_PARAGRAPH_MATCH": 0.10,
+    "RERANK_WEIGHT_AUTHORITY_SIGNAL": 0.05,
+    "QUERY_MAX_LENGTH": 5000,
+    "QUERY_MIN_SEMANTIC_LENGTH": 4
+  },
+  "embedding_params": {
+    "note": "全部沿用 M5-10 末态，E-1 不改任何一项",
+    "EMBEDDING_PROVIDER": "ollama",
+    "EMBEDDING_MODEL": "bge-m3",
+    "EMBEDDING_DIMENSION": 1024,
+    "EMBEDDING_DISTANCE_METRIC": "cosine",
+    "CHROMA_COLLECTION": "case_chunks_bge_m3_v1"
+  },
+  "contract_object_whitelists": {
+    "frozen_at": "E-1",
+    "authoritative_source": "落地设计文档/17-E系列分步骤文档.md §3",
+    "module": "apps/api/app/contracts/whitelist.py",
+    "SearchProfile": ["case_cause", "region", "trial_level_preference", "dispute_focus_keywords", "query_text"],
+    "CandidateRef": ["case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchors"],
+    "DraftDescriptor": ["draft_id", "structure_skeleton", "candidate_refs", "note", "tag"],
+    "CaseFolder": ["case_folder_id", "owner_user_id", "team_id", "visibility", "search_profile_summary", "candidate_refs", "draft_descriptors", "created_at", "updated_at"],
+    "change_policy": "E-4~E-7 各产品落地时只能用、不能私自加字段；要改字段须回文档 17 走合同变更"
+  },
+  "verification": {
+    "backend_passed": 84,
+    "backend_failed": 0,
+    "frontend_build_modules": 118,
+    "frontend_tsc_exit": 0
+  },
+  "overall": "GO"
+}

@@ -1,0 +1,147 @@
+{
+  "version": "m1_3x_parameter_freeze_v1",
+  "runId": "m1_3x_6_parameter_freeze_20260610_200044",
+  "generatedAt": "2026-06-10T20:00:44+08:00",
+  "step": "M1.3x-6",
+  "selectedStatus": "NO_GO",
+  "selectedCandidateExists": false,
+  "selectedCandidateId": null,
+  "selectedCandidateName": null,
+  "exactlyOneSelectedCandidate": false,
+  "allCandidatesNoGo": true,
+  "parameterFreezeDecision": "ALL_NO_GO",
+  "defaultFeatureFlagState": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "featureFlagChanged": false
+  },
+  "frozenCandidates": [],
+  "candidateParameterVersions": [
+    {
+      "candidateId": "m1_2_baseline",
+      "candidateName": "M1.2 baseline",
+      "parameterVersion": "m1_2_baseline_static",
+      "status": "NO_GO",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "sourceArtifacts": [
+        "docs/development/m1.3x-candidate-comparison-runner-20260610-200044.json"
+      ],
+      "reasonCodes": [
+        "TOP10_HIT_RATE_BELOW_0_60",
+        "NDCG_NOT_GT_BASELINE",
+        "RECALL_MISS_GT_0"
+      ]
+    },
+    {
+      "candidateId": "m1_3_combined_candidate",
+      "candidateName": "M1.3 final combined candidate",
+      "parameterVersion": "m1_3_combined_candidate",
+      "status": "NO_GO",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "sourceArtifacts": [
+        "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+        "docs/development/m1.3-final-candidate-parameter-version-20260610-152812.json",
+        "docs/development/m1.3x-candidate-comparison-runner-20260610-200044.json"
+      ],
+      "reasonCodes": [
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0",
+        "RECALL_MISS_GT_0"
+      ]
+    },
+    {
+      "candidateId": "m1_3x_guard_v2_candidate",
+      "candidateName": "M1.3x guard v2 candidate",
+      "parameterVersion": "m1_3x_guard_v2_candidate",
+      "status": "NO_GO",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "parameters": {
+        "baselineAnchorTopN": 10,
+        "scoreBucketSize": 0.05,
+        "baselineAnchorStep": 0.001,
+        "targetedRecallRepairs": true,
+        "usesQrelsForRanking": false,
+        "expandsRecallPool": false,
+        "protectFactSupportedCandidatesWithinBucket": true,
+        "anchorLimitedToCurrentCandidateSet": true,
+        "defaultPathChanged": false
+      },
+      "sourceArtifacts": [
+        "docs/development/m1.3x-rerank-guard-v2-20260610-180500.json",
+        "docs/development/m1.3x-rerank-guard-v2-parameter-version-20260610-180500.json",
+        "docs/development/m1.3x-candidate-comparison-runner-20260610-200044.json"
+      ],
+      "reasonCodes": [
+        "BEFORE_VS_AFTER_REGRESSED_GT_0",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0",
+        "RECALL_MISS_GT_0"
+      ]
+    },
+    {
+      "candidateId": "m1_3x_recall_closure_candidate",
+      "candidateName": "M1.3x recall closure candidate",
+      "parameterVersion": "m1_3x_recall_closure_explanation_only",
+      "status": "NO_GO",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "logicChange": "none",
+      "sourceArtifacts": [
+        "docs/development/m1.3x-recall-miss-closure-20260610-184500.json",
+        "docs/development/m1.3x-recall-miss-closure-parameter-version-20260610-184500.json"
+      ],
+      "reasonCodes": [
+        "NO_INDEPENDENT_LOGIC_CHANGE",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0",
+        "RECALL_MISS_NOT_ZERO_ON_DEFAULT_PATH"
+      ]
+    },
+    {
+      "candidateId": "m1_3x_combined_v2_candidate",
+      "candidateName": "M1.3x combined v2 candidate",
+      "parameterVersion": "NOT_MATERIALIZED",
+      "status": "NO_GO",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "sourceArtifacts": [],
+      "reasonCodes": [
+        "NO_INDEPENDENTLY_MATERIALIZED_PARAMETER_VERSION"
+      ]
+    },
+    {
+      "candidateId": "baseline_only_fallback",
+      "candidateName": "baseline-only fallback",
+      "parameterVersion": "baseline_only_fallback_weighted_rerank_disabled",
+      "status": "NO_GO",
+      "meetsAllHardGates": false,
+      "allowGrayReadiness": false,
+      "sourceArtifacts": [
+        "docs/development/m1.3x-candidate-comparison-baseline-only-fallback-product-eval-20260610-200044.json",
+        "docs/development/m1.3x-candidate-comparison-m1.2-regression-20260610-200044.json"
+      ],
+      "reasonCodes": [
+        "FALLBACK_ONLY_NOT_WEIGHTED_CANDIDATE",
+        "HARD_GATE_DATA_INCOMPLETE_IN_PRODUCT_EVAL",
+        "METRIC_REGRESSION_GT_0",
+        "COMPATIBILITY_RUNNER_REGRESSIONS_GT_0"
+      ]
+    }
+  ],
+  "runnerBoundary": {
+    "mainRunner": "m1_3_candidate_comparison",
+    "compatibilityRunner": "m1_2_regression",
+    "explanation": "M1.2 compatibility runner remains as control evidence only and cannot replace the M1.3 primary candidate-comparison gate."
+  },
+  "rollbackPolicy": {
+    "defaultAction": "Keep ENABLE_WEIGHTED_RERANK=false.",
+    "weightedRerankPromotionAllowed": false,
+    "grayReadinessAllowed": false
+  },
+  "conclusion": {
+    "stepConclusion": "NO_GO",
+    "nextConversationTitle": "类案检索助手 M1.3x-7 灰度候选 readiness 复核"
+  }
+}

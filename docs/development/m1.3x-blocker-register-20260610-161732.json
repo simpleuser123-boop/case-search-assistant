@@ -1,0 +1,1878 @@
+{
+  "version": "m1_3x_blocker_register_v1",
+  "generatedAt": "2026-06-10T16:20:54+08:00",
+  "sourceArtifacts": [
+    "落地设计文档/11-M1.3x回归清零版分步骤文档.md",
+    "docs/development/m1.3-final-verification-20260610-152812.md",
+    "docs/development/m1.3-release-gate-20260610-152812.json",
+    "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+    "docs/development/m1.3-final-product-eval-product-chain-20260610-152812.json",
+    "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+    "docs/development/m1.3-final-regression-run-20260610-152812.json",
+    "docs/development/m1.3-final-candidate-parameter-version-20260610-152812.json",
+    "apps/api/scripts/m1_3_candidate_comparison.py",
+    "apps/api/scripts/m1_2_regression.py",
+    "apps/api/app/eval/result_format.py"
+  ],
+  "scope": {
+    "step": "M1.3x-1",
+    "name": "阻断证据冻结与门禁口径对齐",
+    "noSearchLogicChange": true,
+    "noQrelsChange": true,
+    "noEvalSampleChange": true,
+    "noHistoricalResultChange": true,
+    "noRerankParameterChange": true,
+    "enableWeightedRerankKeptFalse": true
+  },
+  "privacy": {
+    "allowedFieldClasses": [
+      "query id",
+      "case id",
+      "rank",
+      "score",
+      "label",
+      "count",
+      "status",
+      "runner name",
+      "gate conclusion"
+    ],
+    "rawQueryOrCaseTextWritten": false,
+    "rankEvidenceScope": "top10_only; null rank means the selected related case id is not present in the recorded top10 for that mode."
+  },
+  "gateBoundary": {
+    "primaryGate": {
+      "runner": "m1_3_candidate_comparison",
+      "artifact": "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+      "role": "M1.3x candidate comparison primary line; used for candidate selection and final hard gate.",
+      "selectedStatus": "NO_GO",
+      "selectedCandidateId": null,
+      "passedCandidateCount": 0,
+      "selectedCandidateName": null
+    },
+    "compatibilityGate": {
+      "runner": "m1_2_regression",
+      "artifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "role": "Compatibility reference only; must remain, must not replace M1.3 candidate comparison.",
+      "status": "passed",
+      "beforeVsAfterRegressedCount": 4,
+      "afterVsBaselineRegressedCount": 9,
+      "metricRegressionCount": 9
+    },
+    "defaultFeatureFlag": {
+      "ENABLE_WEIGHTED_RERANK_current_default": false,
+      "settings_default_ENABLE_WEIGHTED_RERANK": false,
+      ".env_ENABLE_WEIGHTED_RERANK": null,
+      ".env_example_ENABLE_WEIGHTED_RERANK": "false"
+    }
+  },
+  "summary": {
+    "totalBlockerEntries": 43,
+    "uniqueQueryCount": 17,
+    "byBlockerType": {
+      "M13_AFTER_VS_BASELINE_REGRESSED": 7,
+      "M1_2_COMPAT_AFTER_VS_BASELINE_REGRESSED": 9,
+      "M1_2_COMPAT_BEFORE_VS_AFTER_REGRESSED": 4,
+      "M1_2_COMPAT_METRIC_REGRESSION": 9,
+      "PRODUCT_EVAL_METRIC_REGRESSION": 7,
+      "PRODUCT_EVAL_RECALL_MISS": 7
+    },
+    "requiredCoverage": {
+      "m13AfterVsBaselineRegressed": 7,
+      "productEvalMetricRegression": 7,
+      "productEvalRecallMiss": 7,
+      "m12CompatBeforeVsAfterRegressed": 4,
+      "m12CompatAfterVsBaselineRegressed": 9,
+      "m12CompatMetricRegression": 9
+    },
+    "stepConclusion": "GO",
+    "unexplainedConflictCount": 0
+  },
+  "consistencyChecks": [
+    {
+      "check": "m1_3_candidate_comparison_vs_product_eval_bad_cases",
+      "status": "CONSISTENT",
+      "evidence": {
+        "m1_3_combined_afterVsBaselineRegressedQueryIds": [
+          "product_q008",
+          "product_q016",
+          "product_q018",
+          "product_q020",
+          "product_q021",
+          "product_q024",
+          "product_q025"
+        ],
+        "productEvalMetricRegressionQueryIds": [
+          "product_q008",
+          "product_q016",
+          "product_q018",
+          "product_q020",
+          "product_q021",
+          "product_q024",
+          "product_q025"
+        ],
+        "productEvalRecallMissQueryIds": [
+          "product_q001",
+          "product_q002",
+          "product_q003",
+          "product_q004",
+          "product_q006",
+          "product_q009",
+          "product_q013"
+        ],
+        "candidateCombinedCounts": {
+          "afterVsBaselineRegressedCount": 7,
+          "metricRegressionCount": 7,
+          "recallMissCount": 7
+        },
+        "badCaseDistribution": {
+          "METRIC_REGRESSION": 7,
+          "RECALL_MISS": 7
+        }
+      },
+      "explanation": "The 7 M1.3 combined after-vs-baseline REGRESSED query ids exactly match the 7 product eval METRIC_REGRESSION query ids; product eval adds 7 distinct RECALL_MISS ids."
+    },
+    {
+      "check": "m1_3_runner_vs_m1_2_runner_roles",
+      "status": "EXPLAINED_DIFFERENCE",
+      "evidence": {
+        "m1_3_primaryRunner": "m1_3_candidate_comparison",
+        "m1_3_bestCombinedCandidate": {
+          "candidateId": "m1_3_combined_candidate",
+          "top10HitRate": null,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 7,
+          "metricRegressionCount": 7,
+          "recallMissCount": 7
+        },
+        "m1_2CompatibilityRunner": {
+          "runner": "m1_2_regression",
+          "top10HitRate": 0.64,
+          "beforeVsAfterRegressedCount": 4,
+          "afterVsBaselineRegressedCount": 9,
+          "metricRegressionCount": 9,
+          "recallMissCount": 8
+        },
+        "m1_3RecallOnlyCandidateMatchesCompatRunner": {
+          "candidateId": "m1_3_recall_only_candidate",
+          "top10HitRate": null,
+          "beforeVsAfterRegressedCount": 4,
+          "afterVsBaselineRegressedCount": 9,
+          "metricRegressionCount": 9,
+          "recallMissCount": 8
+        }
+      },
+      "explanation": "The M1.2 compatibility runner preserves the legacy currentBefore/currentAfter check. Its counts match the M1.3 recall-only candidate, while the M1.3 combined candidate adds the M1.3 guard and is the primary gate candidate line."
+    },
+    {
+      "check": "release_gate_vs_final_verification",
+      "status": "CONSISTENT",
+      "evidence": {
+        "releaseGate": {
+          "baseSearchStatus": "GO",
+          "weightedRerankGrayCandidateStatus": "NO_GO",
+          "m2ReadinessStatus": "NO_GO"
+        },
+        "finalVerificationDecision": {
+          "baseSearch": "GO",
+          "weightedRerankGrayCandidate": "NO_GO",
+          "m2Readiness": "NO_GO"
+        }
+      },
+      "explanation": "Both artifacts conclude base search GO, weighted rerank gray candidate NO_GO, and M2 readiness NO_GO."
+    }
+  ],
+  "blockerQuerySets": {
+    "m13AfterVsBaselineRegressed": [
+      "product_q008",
+      "product_q016",
+      "product_q018",
+      "product_q020",
+      "product_q021",
+      "product_q024",
+      "product_q025"
+    ],
+    "productEvalMetricRegression": [
+      "product_q008",
+      "product_q016",
+      "product_q018",
+      "product_q020",
+      "product_q021",
+      "product_q024",
+      "product_q025"
+    ],
+    "productEvalRecallMiss": [
+      "product_q001",
+      "product_q002",
+      "product_q003",
+      "product_q004",
+      "product_q006",
+      "product_q009",
+      "product_q013"
+    ],
+    "m12CompatBeforeVsAfterRegressed": [
+      "product_q007",
+      "product_q017",
+      "product_q021",
+      "product_q023"
+    ],
+    "m12CompatAfterVsBaselineRegressed": [
+      "product_q008",
+      "product_q016",
+      "product_q017",
+      "product_q018",
+      "product_q020",
+      "product_q021",
+      "product_q023",
+      "product_q024",
+      "product_q025"
+    ],
+    "m12CompatMetricRegression": [
+      "product_q008",
+      "product_q016",
+      "product_q017",
+      "product_q018",
+      "product_q020",
+      "product_q021",
+      "product_q023",
+      "product_q024",
+      "product_q025"
+    ]
+  },
+  "blockers": [
+    {
+      "blockerId": "M13-AVB-001",
+      "queryId": "product_q008",
+      "relatedCaseId": "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+      "relatedCaseIds": [
+        "5489d0c1-6517-4d59-99ff-be09aec07f56",
+        "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+        "6b92ca2b-5680-4ced-8a97-3cf6704b427c"
+      ],
+      "blockerType": "M13_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_3_candidate_comparison",
+      "sourceArtifact": "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate",
+      "label": "REGRESSED",
+      "currentMode": "m1_3_combined_candidate_current",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 9,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.700384,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.1631,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "M1.3 candidate comparison primary gate blocker."
+      ]
+    },
+    {
+      "blockerId": "M13-AVB-002",
+      "queryId": "product_q016",
+      "relatedCaseId": "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+      "relatedCaseIds": [
+        "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+        "babab651-7e15-4404-ae83-9f207cdf524e",
+        "fd819cc8-aa9d-4253-8645-d263600c0b26"
+      ],
+      "blockerType": "M13_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_3_candidate_comparison",
+      "sourceArtifact": "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate",
+      "label": "REGRESSED",
+      "currentMode": "m1_3_combined_candidate_current",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 3,
+      "baselineRank": 1,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.752518,
+      "baselineScore": 1.0,
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.2323,
+        "currentNdcgAt10": 0.1161,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "M1.3 candidate comparison primary gate blocker."
+      ]
+    },
+    {
+      "blockerId": "M13-AVB-003",
+      "queryId": "product_q018",
+      "relatedCaseId": "c1d7ffef-8359-4ed8-bda5-6aa4c673e047",
+      "relatedCaseIds": [
+        "4547861c-c396-4f12-8e99-05d03e928dba",
+        "8e7a94e9-528b-4f0d-a5ca-20726e876ff2",
+        "c1d7ffef-8359-4ed8-bda5-6aa4c673e047"
+      ],
+      "blockerType": "M13_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_3_candidate_comparison",
+      "sourceArtifact": "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate",
+      "label": "REGRESSED",
+      "currentMode": "m1_3_combined_candidate_current",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 10,
+      "baselineRank": 8,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.710979,
+      "baselineScore": 0.609419,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.171,
+        "currentNdcgAt10": 0.1567,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "M1.3 candidate comparison primary gate blocker."
+      ]
+    },
+    {
+      "blockerId": "M13-AVB-004",
+      "queryId": "product_q020",
+      "relatedCaseId": "ba621929-822f-4603-9615-8952340fe5ce",
+      "relatedCaseIds": [
+        "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+        "2257114a-b61e-409a-8e85-ace02ecddbed",
+        "ba621929-822f-4603-9615-8952340fe5ce"
+      ],
+      "blockerType": "M13_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_3_candidate_comparison",
+      "sourceArtifact": "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate",
+      "label": "REGRESSED",
+      "currentMode": "m1_3_combined_candidate_current",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 3,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.588089,
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.3092,
+        "currentNdcgAt10": 0.3516,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "M1.3 candidate comparison primary gate blocker."
+      ]
+    },
+    {
+      "blockerId": "M13-AVB-005",
+      "queryId": "product_q021",
+      "relatedCaseId": "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00",
+      "relatedCaseIds": [
+        "32f50aa8-0dba-461b-b37b-d5011cc0a313",
+        "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+        "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00"
+      ],
+      "blockerType": "M13_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_3_candidate_comparison",
+      "sourceArtifact": "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate",
+      "label": "REGRESSED",
+      "currentMode": "m1_3_combined_candidate_current",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 4,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.950895,
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.3067,
+        "currentNdcgAt10": 0.3032,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "M1.3 candidate comparison primary gate blocker."
+      ]
+    },
+    {
+      "blockerId": "M13-AVB-006",
+      "queryId": "product_q024",
+      "relatedCaseId": "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+      "relatedCaseIds": [
+        "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+        "9031b615-e15e-44b1-8c23-a63d1f49db91",
+        "cefc5222-54f1-4036-8887-ee1dffdd3eeb"
+      ],
+      "blockerType": "M13_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_3_candidate_comparison",
+      "sourceArtifact": "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate",
+      "label": "REGRESSED",
+      "currentMode": "m1_3_combined_candidate_current",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 9,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.82194,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.4336,
+        "currentNdcgAt10": 0.2537,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "M1.3 candidate comparison primary gate blocker."
+      ]
+    },
+    {
+      "blockerId": "M13-AVB-007",
+      "queryId": "product_q025",
+      "relatedCaseId": "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+      "relatedCaseIds": [
+        "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+        "777a8109-12f6-48c0-a8cc-0be487c4087b",
+        "d02916ef-72b3-4e05-9ec2-456490dc0a9b"
+      ],
+      "blockerType": "M13_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_3_candidate_comparison",
+      "sourceArtifact": "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate",
+      "label": "REGRESSED",
+      "currentMode": "m1_3_combined_candidate_current",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 2,
+      "baselineRank": 1,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.739967,
+      "baselineScore": 1.0,
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.5664,
+        "currentNdcgAt10": 0.4903,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "M1.3 candidate comparison primary gate blocker."
+      ]
+    },
+    {
+      "blockerId": "PROD-METRIC-001",
+      "queryId": "product_q008",
+      "relatedCaseId": "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+      "relatedCaseIds": [
+        "5489d0c1-6517-4d59-99ff-be09aec07f56",
+        "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+        "6b92ca2b-5680-4ced-8a97-3cf6704b427c"
+      ],
+      "blockerType": "PRODUCT_EVAL_METRIC_REGRESSION",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "METRIC_REGRESSION",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 9,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.700384,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.1631,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Product eval bad-case blocker; same query set as M1.3 combined after-vs-baseline REGRESSED."
+      ]
+    },
+    {
+      "blockerId": "PROD-METRIC-002",
+      "queryId": "product_q016",
+      "relatedCaseId": "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+      "relatedCaseIds": [
+        "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+        "babab651-7e15-4404-ae83-9f207cdf524e",
+        "fd819cc8-aa9d-4253-8645-d263600c0b26"
+      ],
+      "blockerType": "PRODUCT_EVAL_METRIC_REGRESSION",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "METRIC_REGRESSION",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 3,
+      "baselineRank": 1,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.752518,
+      "baselineScore": 1.0,
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.2323,
+        "currentNdcgAt10": 0.1161,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Product eval bad-case blocker; same query set as M1.3 combined after-vs-baseline REGRESSED."
+      ]
+    },
+    {
+      "blockerId": "PROD-METRIC-003",
+      "queryId": "product_q018",
+      "relatedCaseId": "c1d7ffef-8359-4ed8-bda5-6aa4c673e047",
+      "relatedCaseIds": [
+        "4547861c-c396-4f12-8e99-05d03e928dba",
+        "8e7a94e9-528b-4f0d-a5ca-20726e876ff2",
+        "c1d7ffef-8359-4ed8-bda5-6aa4c673e047"
+      ],
+      "blockerType": "PRODUCT_EVAL_METRIC_REGRESSION",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "METRIC_REGRESSION",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 10,
+      "baselineRank": 8,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.710979,
+      "baselineScore": 0.609419,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.171,
+        "currentNdcgAt10": 0.1567,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Product eval bad-case blocker; same query set as M1.3 combined after-vs-baseline REGRESSED."
+      ]
+    },
+    {
+      "blockerId": "PROD-METRIC-004",
+      "queryId": "product_q020",
+      "relatedCaseId": "ba621929-822f-4603-9615-8952340fe5ce",
+      "relatedCaseIds": [
+        "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+        "2257114a-b61e-409a-8e85-ace02ecddbed",
+        "ba621929-822f-4603-9615-8952340fe5ce"
+      ],
+      "blockerType": "PRODUCT_EVAL_METRIC_REGRESSION",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "METRIC_REGRESSION",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 3,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.588089,
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.3092,
+        "currentNdcgAt10": 0.3516,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Product eval bad-case blocker; same query set as M1.3 combined after-vs-baseline REGRESSED."
+      ]
+    },
+    {
+      "blockerId": "PROD-METRIC-005",
+      "queryId": "product_q021",
+      "relatedCaseId": "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00",
+      "relatedCaseIds": [
+        "32f50aa8-0dba-461b-b37b-d5011cc0a313",
+        "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+        "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00"
+      ],
+      "blockerType": "PRODUCT_EVAL_METRIC_REGRESSION",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "METRIC_REGRESSION",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 4,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.950895,
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.3067,
+        "currentNdcgAt10": 0.3032,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Product eval bad-case blocker; same query set as M1.3 combined after-vs-baseline REGRESSED."
+      ]
+    },
+    {
+      "blockerId": "PROD-METRIC-006",
+      "queryId": "product_q024",
+      "relatedCaseId": "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+      "relatedCaseIds": [
+        "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+        "9031b615-e15e-44b1-8c23-a63d1f49db91",
+        "cefc5222-54f1-4036-8887-ee1dffdd3eeb"
+      ],
+      "blockerType": "PRODUCT_EVAL_METRIC_REGRESSION",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "METRIC_REGRESSION",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 9,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.82194,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.4336,
+        "currentNdcgAt10": 0.2537,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Product eval bad-case blocker; same query set as M1.3 combined after-vs-baseline REGRESSED."
+      ]
+    },
+    {
+      "blockerId": "PROD-METRIC-007",
+      "queryId": "product_q025",
+      "relatedCaseId": "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+      "relatedCaseIds": [
+        "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+        "777a8109-12f6-48c0-a8cc-0be487c4087b",
+        "d02916ef-72b3-4e05-9ec2-456490dc0a9b"
+      ],
+      "blockerType": "PRODUCT_EVAL_METRIC_REGRESSION",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "METRIC_REGRESSION",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 2,
+      "baselineRank": 1,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.739967,
+      "baselineScore": 1.0,
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.5664,
+        "currentNdcgAt10": 0.4903,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-2",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Product eval bad-case blocker; same query set as M1.3 combined after-vs-baseline REGRESSED."
+      ]
+    },
+    {
+      "blockerId": "PROD-RECALL-001",
+      "queryId": "product_q001",
+      "relatedCaseId": "561314d5-2ad3-48fa-b514-1cd8b982100a",
+      "relatedCaseIds": [
+        "561314d5-2ad3-48fa-b514-1cd8b982100a",
+        "d34eda6a-a5c6-4152-8fca-9084f4f90934",
+        "f6300f37-2b14-4aca-8c43-75f25f80a0d1"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "RECALL_MISS",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": null,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "NOT_IN_TOP10",
+      "currentScore": null,
+      "baselineScore": null,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.0,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": false,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-5",
+      "downstreamRepairStep": null,
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Relevant qrel case is absent from recorded baseline/current top10."
+      ]
+    },
+    {
+      "blockerId": "PROD-RECALL-002",
+      "queryId": "product_q002",
+      "relatedCaseId": "101305d2-00d3-443e-8f36-3843cbeb3379",
+      "relatedCaseIds": [
+        "101305d2-00d3-443e-8f36-3843cbeb3379",
+        "6475c2e9-90a0-4744-a0d1-37808f0ce3a7",
+        "bae4f3fd-158e-467b-85bf-3128679b68f5"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "RECALL_MISS",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": null,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "NOT_IN_TOP10",
+      "currentScore": null,
+      "baselineScore": null,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.0,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": false,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-5",
+      "downstreamRepairStep": null,
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Relevant qrel case is absent from recorded baseline/current top10."
+      ]
+    },
+    {
+      "blockerId": "PROD-RECALL-003",
+      "queryId": "product_q003",
+      "relatedCaseId": "211091c2-6eb0-4de2-b8d7-c55529053ea0",
+      "relatedCaseIds": [
+        "211091c2-6eb0-4de2-b8d7-c55529053ea0",
+        "94517b43-ac1f-4694-b627-f312ce99bc3e",
+        "ed524554-99f8-4e68-a0b3-b22f3c80324a"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "RECALL_MISS",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": null,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "NOT_IN_TOP10",
+      "currentScore": null,
+      "baselineScore": null,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.0,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": false,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-5",
+      "downstreamRepairStep": null,
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Relevant qrel case is absent from recorded baseline/current top10."
+      ]
+    },
+    {
+      "blockerId": "PROD-RECALL-004",
+      "queryId": "product_q004",
+      "relatedCaseId": "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+      "relatedCaseIds": [
+        "7597efca-9ab6-45d7-b590-7dd8d8f33341",
+        "886d5b3e-863e-4106-9ac7-1afe4cc9583e",
+        "e9760ce5-799d-4a8d-8dc1-8409a795bb76"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "RECALL_MISS",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": null,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "NOT_IN_TOP10",
+      "currentScore": null,
+      "baselineScore": null,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.0,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": false,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-5",
+      "downstreamRepairStep": null,
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Relevant qrel case is absent from recorded baseline/current top10."
+      ]
+    },
+    {
+      "blockerId": "PROD-RECALL-005",
+      "queryId": "product_q006",
+      "relatedCaseId": "49654efe-c3c1-4fd5-9717-f6c295dc3f80",
+      "relatedCaseIds": [
+        "49654efe-c3c1-4fd5-9717-f6c295dc3f80",
+        "6051e90c-c739-4eef-a3db-673ff6a66301",
+        "7f217392-4533-48dc-a1d6-76b8d7b1336b"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "RECALL_MISS",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": null,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "NOT_IN_TOP10",
+      "currentScore": null,
+      "baselineScore": null,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.0,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": false,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-5",
+      "downstreamRepairStep": null,
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Relevant qrel case is absent from recorded baseline/current top10."
+      ]
+    },
+    {
+      "blockerId": "PROD-RECALL-006",
+      "queryId": "product_q009",
+      "relatedCaseId": "36df2795-f259-40ac-b08e-16e42c471885",
+      "relatedCaseIds": [
+        "36df2795-f259-40ac-b08e-16e42c471885",
+        "37c160b5-4c96-44bf-a7a6-f7ba96fe346e",
+        "68058dc3-da5d-45c2-883a-e143e546bf61"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "RECALL_MISS",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": null,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "NOT_IN_TOP10",
+      "currentScore": null,
+      "baselineScore": null,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.0,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": false,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-5",
+      "downstreamRepairStep": null,
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Relevant qrel case is absent from recorded baseline/current top10."
+      ]
+    },
+    {
+      "blockerId": "PROD-RECALL-007",
+      "queryId": "product_q013",
+      "relatedCaseId": "443c73ff-c05f-4b35-8770-317612d26adc",
+      "relatedCaseIds": [
+        "443c73ff-c05f-4b35-8770-317612d26adc",
+        "a40ca8f2-7833-4609-b299-1df502420039",
+        "ec2f585d-9e59-4f13-838a-56cf9939c3d5"
+      ],
+      "blockerType": "PRODUCT_EVAL_RECALL_MISS",
+      "sourceRunner": "product_eval_product_chain",
+      "sourceArtifact": "docs/development/m1.3-final-product-bad-cases-product-chain-20260610-152812.json",
+      "candidateId": "m1_3_combined_candidate_equivalent_product_current",
+      "label": "RECALL_MISS",
+      "currentMode": "current_product_retrieval_plus_weighted_rerank_candidate",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": null,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "NOT_IN_TOP10",
+      "currentScore": null,
+      "baselineScore": null,
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.0,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": false,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-5",
+      "downstreamRepairStep": null,
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Relevant qrel case is absent from recorded baseline/current top10."
+      ]
+    },
+    {
+      "blockerId": "M12-BVA-001",
+      "queryId": "product_q007",
+      "relatedCaseId": "8736a2e1-ec4c-48db-9687-7bbf8aa1eb5d",
+      "relatedCaseIds": [
+        "0a0c472b-206c-43c5-b8a6-6a81025fa1ee",
+        "8736a2e1-ec4c-48db-9687-7bbf8aa1eb5d",
+        "e2bfd330-511a-4265-b9f9-8e190dd4ee82"
+      ],
+      "blockerType": "M1_2_COMPAT_BEFORE_VS_AFTER_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "currentBefore_raw_weighted_rerank_before_guard_replay",
+      "currentRank": 3,
+      "baselineRank": 2,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.8065,
+      "baselineScore": 0.5538,
+      "metrics": {
+        "baselineMode": "currentBefore",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.1465,
+        "currentNdcgAt10": 0.1161,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner compares currentBefore -> currentAfter, not M1.3 candidate selection."
+      ]
+    },
+    {
+      "blockerId": "M12-BVA-002",
+      "queryId": "product_q017",
+      "relatedCaseId": "78cefdcb-f35c-46de-9540-9983c5ce6c39",
+      "relatedCaseIds": [
+        "6bfb2334-8bec-4e1d-9a74-ae720be2ebb3",
+        "78cefdcb-f35c-46de-9540-9983c5ce6c39",
+        "a57cdb6a-2ee3-48b2-9f69-f4134835ee16"
+      ],
+      "blockerType": "M1_2_COMPAT_BEFORE_VS_AFTER_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "currentBefore_raw_weighted_rerank_before_guard_replay",
+      "currentRank": 8,
+      "baselineRank": 5,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.7755,
+      "baselineScore": 0.5462,
+      "metrics": {
+        "baselineMode": "currentBefore",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.2097,
+        "currentNdcgAt10": 0.171,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner compares currentBefore -> currentAfter, not M1.3 candidate selection."
+      ]
+    },
+    {
+      "blockerId": "M12-BVA-003",
+      "queryId": "product_q021",
+      "relatedCaseId": "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+      "relatedCaseIds": [
+        "32f50aa8-0dba-461b-b37b-d5011cc0a313",
+        "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+        "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00"
+      ],
+      "blockerType": "M1_2_COMPAT_BEFORE_VS_AFTER_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "currentBefore_raw_weighted_rerank_before_guard_replay",
+      "currentRank": 3,
+      "baselineRank": 2,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.7657,
+      "baselineScore": 0.5314,
+      "metrics": {
+        "baselineMode": "currentBefore",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.3032,
+        "currentNdcgAt10": 0.2793,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner compares currentBefore -> currentAfter, not M1.3 candidate selection."
+      ]
+    },
+    {
+      "blockerId": "M12-BVA-004",
+      "queryId": "product_q023",
+      "relatedCaseId": "7a4c7ffb-fe38-42b5-b316-a48db859cdf8",
+      "relatedCaseIds": [
+        "7a4c7ffb-fe38-42b5-b316-a48db859cdf8",
+        "ddbbf8a3-ea2e-4f86-91f8-755dfda11344",
+        "f83c44df-84b3-4945-8d0e-ff6b54ebbcbe"
+      ],
+      "blockerType": "M1_2_COMPAT_BEFORE_VS_AFTER_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "currentBefore_raw_weighted_rerank_before_guard_replay",
+      "currentRank": 5,
+      "baselineRank": 2,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.7229,
+      "baselineScore": 0.5172,
+      "metrics": {
+        "baselineMode": "currentBefore",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.5226,
+        "currentNdcgAt10": 0.3806,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner compares currentBefore -> currentAfter, not M1.3 candidate selection."
+      ]
+    },
+    {
+      "blockerId": "M12-AVB-001",
+      "queryId": "product_q008",
+      "relatedCaseId": "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+      "relatedCaseIds": [
+        "5489d0c1-6517-4d59-99ff-be09aec07f56",
+        "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+        "6b92ca2b-5680-4ced-8a97-3cf6704b427c"
+      ],
+      "blockerType": "M1_2_COMPAT_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 9,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.700384,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.1631,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner after-vs-baseline blocker retained for regression compatibility."
+      ]
+    },
+    {
+      "blockerId": "M12-AVB-002",
+      "queryId": "product_q016",
+      "relatedCaseId": "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+      "relatedCaseIds": [
+        "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+        "babab651-7e15-4404-ae83-9f207cdf524e",
+        "fd819cc8-aa9d-4253-8645-d263600c0b26"
+      ],
+      "blockerType": "M1_2_COMPAT_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 3,
+      "baselineRank": 1,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.7525,
+      "baselineScore": 1.0,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.2323,
+        "currentNdcgAt10": 0.1161,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner after-vs-baseline blocker retained for regression compatibility."
+      ]
+    },
+    {
+      "blockerId": "M12-AVB-003",
+      "queryId": "product_q017",
+      "relatedCaseId": "6bfb2334-8bec-4e1d-9a74-ae720be2ebb3",
+      "relatedCaseIds": [
+        "6bfb2334-8bec-4e1d-9a74-ae720be2ebb3",
+        "78cefdcb-f35c-46de-9540-9983c5ce6c39",
+        "a57cdb6a-2ee3-48b2-9f69-f4134835ee16"
+      ],
+      "blockerType": "M1_2_COMPAT_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 9,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.886911,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.3198,
+        "currentNdcgAt10": 0.171,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner after-vs-baseline blocker retained for regression compatibility."
+      ]
+    },
+    {
+      "blockerId": "M12-AVB-004",
+      "queryId": "product_q018",
+      "relatedCaseId": "c1d7ffef-8359-4ed8-bda5-6aa4c673e047",
+      "relatedCaseIds": [
+        "4547861c-c396-4f12-8e99-05d03e928dba",
+        "8e7a94e9-528b-4f0d-a5ca-20726e876ff2",
+        "c1d7ffef-8359-4ed8-bda5-6aa4c673e047"
+      ],
+      "blockerType": "M1_2_COMPAT_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 10,
+      "baselineRank": 8,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.6895,
+      "baselineScore": 0.609419,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.171,
+        "currentNdcgAt10": 0.1567,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner after-vs-baseline blocker retained for regression compatibility."
+      ]
+    },
+    {
+      "blockerId": "M12-AVB-005",
+      "queryId": "product_q020",
+      "relatedCaseId": "ba621929-822f-4603-9615-8952340fe5ce",
+      "relatedCaseIds": [
+        "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+        "2257114a-b61e-409a-8e85-ace02ecddbed",
+        "ba621929-822f-4603-9615-8952340fe5ce"
+      ],
+      "blockerType": "M1_2_COMPAT_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 3,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.588089,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.3092,
+        "currentNdcgAt10": 0.3516,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner after-vs-baseline blocker retained for regression compatibility."
+      ]
+    },
+    {
+      "blockerId": "M12-AVB-006",
+      "queryId": "product_q021",
+      "relatedCaseId": "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00",
+      "relatedCaseIds": [
+        "32f50aa8-0dba-461b-b37b-d5011cc0a313",
+        "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+        "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00"
+      ],
+      "blockerType": "M1_2_COMPAT_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 4,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.950895,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.3067,
+        "currentNdcgAt10": 0.2793,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner after-vs-baseline blocker retained for regression compatibility."
+      ]
+    },
+    {
+      "blockerId": "M12-AVB-007",
+      "queryId": "product_q023",
+      "relatedCaseId": "ddbbf8a3-ea2e-4f86-91f8-755dfda11344",
+      "relatedCaseIds": [
+        "7a4c7ffb-fe38-42b5-b316-a48db859cdf8",
+        "ddbbf8a3-ea2e-4f86-91f8-755dfda11344",
+        "f83c44df-84b3-4945-8d0e-ff6b54ebbcbe"
+      ],
+      "blockerType": "M1_2_COMPAT_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 6,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.827069,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.4265,
+        "currentNdcgAt10": 0.3806,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner after-vs-baseline blocker retained for regression compatibility."
+      ]
+    },
+    {
+      "blockerId": "M12-AVB-008",
+      "queryId": "product_q024",
+      "relatedCaseId": "9031b615-e15e-44b1-8c23-a63d1f49db91",
+      "relatedCaseIds": [
+        "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+        "9031b615-e15e-44b1-8c23-a63d1f49db91",
+        "cefc5222-54f1-4036-8887-ee1dffdd3eeb"
+      ],
+      "blockerType": "M1_2_COMPAT_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 8,
+      "baselineRank": 6,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.6799,
+      "baselineScore": 0.913952,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.4336,
+        "currentNdcgAt10": 0.4104,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner after-vs-baseline blocker retained for regression compatibility."
+      ]
+    },
+    {
+      "blockerId": "M12-AVB-009",
+      "queryId": "product_q025",
+      "relatedCaseId": "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+      "relatedCaseIds": [
+        "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+        "777a8109-12f6-48c0-a8cc-0be487c4087b",
+        "d02916ef-72b3-4e05-9ec2-456490dc0a9b"
+      ],
+      "blockerType": "M1_2_COMPAT_AFTER_VS_BASELINE_REGRESSED",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "REGRESSED",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 2,
+      "baselineRank": 1,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.74,
+      "baselineScore": 1.0,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.5664,
+        "currentNdcgAt10": 0.4903,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "Compatibility runner after-vs-baseline blocker retained for regression compatibility."
+      ]
+    },
+    {
+      "blockerId": "M12-METRIC-001",
+      "queryId": "product_q008",
+      "relatedCaseId": "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+      "relatedCaseIds": [
+        "5489d0c1-6517-4d59-99ff-be09aec07f56",
+        "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+        "6b92ca2b-5680-4ced-8a97-3cf6704b427c"
+      ],
+      "blockerType": "M1_2_COMPAT_METRIC_REGRESSION",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "METRIC_REGRESSION",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 9,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.700384,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.1631,
+        "currentNdcgAt10": 0.0,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": false
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "In m1_2_regression.py, metricRegressionCount is derived from afterVsBaseline REGRESSED count."
+      ]
+    },
+    {
+      "blockerId": "M12-METRIC-002",
+      "queryId": "product_q016",
+      "relatedCaseId": "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+      "relatedCaseIds": [
+        "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+        "babab651-7e15-4404-ae83-9f207cdf524e",
+        "fd819cc8-aa9d-4253-8645-d263600c0b26"
+      ],
+      "blockerType": "M1_2_COMPAT_METRIC_REGRESSION",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "METRIC_REGRESSION",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 3,
+      "baselineRank": 1,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.7525,
+      "baselineScore": 1.0,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.2323,
+        "currentNdcgAt10": 0.1161,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "In m1_2_regression.py, metricRegressionCount is derived from afterVsBaseline REGRESSED count."
+      ]
+    },
+    {
+      "blockerId": "M12-METRIC-003",
+      "queryId": "product_q017",
+      "relatedCaseId": "6bfb2334-8bec-4e1d-9a74-ae720be2ebb3",
+      "relatedCaseIds": [
+        "6bfb2334-8bec-4e1d-9a74-ae720be2ebb3",
+        "78cefdcb-f35c-46de-9540-9983c5ce6c39",
+        "a57cdb6a-2ee3-48b2-9f69-f4134835ee16"
+      ],
+      "blockerType": "M1_2_COMPAT_METRIC_REGRESSION",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "METRIC_REGRESSION",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 9,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.886911,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.3198,
+        "currentNdcgAt10": 0.171,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "In m1_2_regression.py, metricRegressionCount is derived from afterVsBaseline REGRESSED count."
+      ]
+    },
+    {
+      "blockerId": "M12-METRIC-004",
+      "queryId": "product_q018",
+      "relatedCaseId": "c1d7ffef-8359-4ed8-bda5-6aa4c673e047",
+      "relatedCaseIds": [
+        "4547861c-c396-4f12-8e99-05d03e928dba",
+        "8e7a94e9-528b-4f0d-a5ca-20726e876ff2",
+        "c1d7ffef-8359-4ed8-bda5-6aa4c673e047"
+      ],
+      "blockerType": "M1_2_COMPAT_METRIC_REGRESSION",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "METRIC_REGRESSION",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 10,
+      "baselineRank": 8,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.6895,
+      "baselineScore": 0.609419,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.171,
+        "currentNdcgAt10": 0.1567,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "In m1_2_regression.py, metricRegressionCount is derived from afterVsBaseline REGRESSED count."
+      ]
+    },
+    {
+      "blockerId": "M12-METRIC-005",
+      "queryId": "product_q020",
+      "relatedCaseId": "ba621929-822f-4603-9615-8952340fe5ce",
+      "relatedCaseIds": [
+        "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+        "2257114a-b61e-409a-8e85-ace02ecddbed",
+        "ba621929-822f-4603-9615-8952340fe5ce"
+      ],
+      "blockerType": "M1_2_COMPAT_METRIC_REGRESSION",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "METRIC_REGRESSION",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 3,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.588089,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.3092,
+        "currentNdcgAt10": 0.3516,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "In m1_2_regression.py, metricRegressionCount is derived from afterVsBaseline REGRESSED count."
+      ]
+    },
+    {
+      "blockerId": "M12-METRIC-006",
+      "queryId": "product_q021",
+      "relatedCaseId": "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00",
+      "relatedCaseIds": [
+        "32f50aa8-0dba-461b-b37b-d5011cc0a313",
+        "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+        "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00"
+      ],
+      "blockerType": "M1_2_COMPAT_METRIC_REGRESSION",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "METRIC_REGRESSION",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 4,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.950895,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.3067,
+        "currentNdcgAt10": 0.2793,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "In m1_2_regression.py, metricRegressionCount is derived from afterVsBaseline REGRESSED count."
+      ]
+    },
+    {
+      "blockerId": "M12-METRIC-007",
+      "queryId": "product_q023",
+      "relatedCaseId": "ddbbf8a3-ea2e-4f86-91f8-755dfda11344",
+      "relatedCaseIds": [
+        "7a4c7ffb-fe38-42b5-b316-a48db859cdf8",
+        "ddbbf8a3-ea2e-4f86-91f8-755dfda11344",
+        "f83c44df-84b3-4945-8d0e-ff6b54ebbcbe"
+      ],
+      "blockerType": "M1_2_COMPAT_METRIC_REGRESSION",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "METRIC_REGRESSION",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": null,
+      "baselineRank": 6,
+      "currentRankStatus": "NOT_IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": null,
+      "baselineScore": 0.827069,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.4265,
+        "currentNdcgAt10": 0.3806,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "In m1_2_regression.py, metricRegressionCount is derived from afterVsBaseline REGRESSED count."
+      ]
+    },
+    {
+      "blockerId": "M12-METRIC-008",
+      "queryId": "product_q024",
+      "relatedCaseId": "9031b615-e15e-44b1-8c23-a63d1f49db91",
+      "relatedCaseIds": [
+        "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+        "9031b615-e15e-44b1-8c23-a63d1f49db91",
+        "cefc5222-54f1-4036-8887-ee1dffdd3eeb"
+      ],
+      "blockerType": "M1_2_COMPAT_METRIC_REGRESSION",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "METRIC_REGRESSION",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 8,
+      "baselineRank": 6,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.6799,
+      "baselineScore": 0.913952,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.0,
+        "currentPrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.4336,
+        "currentNdcgAt10": 0.4104,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "In m1_2_regression.py, metricRegressionCount is derived from afterVsBaseline REGRESSED count."
+      ]
+    },
+    {
+      "blockerId": "M12-METRIC-009",
+      "queryId": "product_q025",
+      "relatedCaseId": "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+      "relatedCaseIds": [
+        "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+        "777a8109-12f6-48c0-a8cc-0be487c4087b",
+        "d02916ef-72b3-4e05-9ec2-456490dc0a9b"
+      ],
+      "blockerType": "M1_2_COMPAT_METRIC_REGRESSION",
+      "sourceRunner": "m1_2_regression_compatibility",
+      "sourceArtifact": "docs/development/m1.3-final-regression-run-20260610-152812.json",
+      "candidateId": null,
+      "label": "METRIC_REGRESSION",
+      "currentMode": "currentAfter_guarded_weighted_rerank_after_m1_2_5",
+      "baselineMode": "bm25_product_baseline",
+      "currentRank": 2,
+      "baselineRank": 1,
+      "currentRankStatus": "IN_TOP10",
+      "baselineRankStatus": "IN_TOP10",
+      "currentScore": 0.74,
+      "baselineScore": 1.0,
+      "metrics": {
+        "baselineMode": "baseline",
+        "currentMode": "currentAfter",
+        "baselinePrecisionAt5": 0.2,
+        "currentPrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.5664,
+        "currentNdcgAt10": 0.4903,
+        "baselineTop10Hit": true,
+        "currentTop10Hit": true
+      },
+      "repairOwnerStep": "M1.3x-3",
+      "downstreamRepairStep": "M1.3x-4",
+      "rankEvidenceScope": "top10_only_null_rank_means_related_case_not_in_recorded_top10",
+      "notes": [
+        "In m1_2_regression.py, metricRegressionCount is derived from afterVsBaseline REGRESSED count."
+      ]
+    }
+  ]
+}

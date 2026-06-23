@@ -1,0 +1,445 @@
+{
+  "generated_at": "2026-06-10T15:02:56+08:00",
+  "step": "M1.3-6",
+  "scope": "gray_candidate_preview_review_only",
+  "readiness_status": "NO_GO",
+  "readiness_conclusion": "M1.3-5 selected_status=NO_GO and no unique selected candidate exists. Continue keeping weighted rerank closed; do not enter M2 readiness.",
+  "selected_candidate": {
+    "status": "NO_GO",
+    "candidate_id": null,
+    "candidate_name": null,
+    "source": "docs/development/m1.3-candidate-comparison-20260610-141700.json",
+    "reason": "No candidate satisfies all M1.3 hard gates and success criteria.",
+    "candidate_count": 5,
+    "passed_candidate_count": 0,
+    "hard_gate_passed_candidate_ids": []
+  },
+  "source_parameter_version": {
+    "path": "docs/development/m1.3-parameter-version-20260610-141700.json",
+    "version_name": "m1_3_5_candidate_comparison",
+    "selected_status": "NO_GO",
+    "selected_candidate_id": null,
+    "selected_candidate_name": null,
+    "default_feature_flag_state": {
+      "settings_ENABLE_WEIGHTED_RERANK": false,
+      "env_ENABLE_WEIGHTED_RERANK": null,
+      "env_example_ENABLE_WEIGHTED_RERANK": "false",
+      "config_default": "False",
+      "featureFlagChanged": false
+    }
+  },
+  "read_sources": [
+    "落地设计文档/10-M1.3回归修复版分步骤文档.md",
+    "docs/development/m1.3-candidate-comparison-20260610-141700.md",
+    "docs/development/m1.3-candidate-comparison-20260610-141700.json",
+    "docs/development/m1.3-parameter-version-20260610-141700.json",
+    "docs/development/m1.3-regression-triage-20260609-205353.md",
+    "docs/development/m1.3-regression-gate-20260610-100636.md",
+    "docs/development/m1.3-recall-repair-20260610-113200.md",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.md",
+    "docs/development/m1.2-gray-readiness-20260609-193836.md",
+    "apps/api/app/core/config.py",
+    "apps/api/app/api/search.py",
+    "apps/api/app/api/health.py",
+    "apps/web/src/services/searchApi.ts",
+    "apps/web/src/pages/SearchPage.tsx",
+    "apps/api/scripts/day3_7_3_performance_smoke.py",
+    "apps/api/scripts/day3_7_5_rollback_drill.py",
+    "apps/api/pyproject.toml",
+    "apps/web/package.json"
+  ],
+  "feature_flags": {
+    "config_defaults": {
+      "ENABLE_QUERY_REWRITE": false,
+      "ENABLE_WEIGHTED_RERANK": false,
+      "ENABLE_SUMMARY": false,
+      "ENABLE_EXPANDED_SEARCH": false
+    },
+    "runtime_env": {
+      "ENABLE_QUERY_REWRITE": null,
+      "ENABLE_WEIGHTED_RERANK": null,
+      "ENABLE_SUMMARY": null,
+      "ENABLE_EXPANDED_SEARCH": null
+    },
+    "env_file": {
+      ".env_ENABLE_WEIGHTED_RERANK": null,
+      ".env_example_ENABLE_WEIGHTED_RERANK": "false"
+    },
+    "module_settings_ENABLE_WEIGHTED_RERANK": false,
+    "default_ENABLE_WEIGHTED_RERANK_false": true,
+    "changed_in_this_step": false
+  },
+  "default_flag_state": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "source": "apps/api/app/core/config.py Settings default plus no runtime env override",
+    "recovered_from_true": false
+  },
+  "health_check": {
+    "method": "FastAPI TestClient GET /health",
+    "http_status": 200,
+    "feature_flags": {
+      "ENABLE_QUERY_REWRITE": false,
+      "ENABLE_WEIGHTED_RERANK": false,
+      "ENABLE_SUMMARY": false,
+      "ENABLE_EXPANDED_SEARCH": false
+    },
+    "ollama_reachable": true,
+    "chroma_collection_queryable": true,
+    "passed": true
+  },
+  "api_schema_check": {
+    "method": "FastAPI TestClient POST /api/search with mocked dependencies for baseline and controlled weighted path",
+    "schema_stable": true,
+    "top_level_fields": [
+      "query_session_id",
+      "candidates",
+      "results",
+      "degraded",
+      "degraded_reasons",
+      "retrieval_duration_ms",
+      "timings"
+    ],
+    "result_fields_checked": [
+      "case_id",
+      "chunk_id",
+      "top_chunk_id",
+      "source_chunk_ids",
+      "hit_chunk_ids",
+      "retrieval_source",
+      "candidate_source",
+      "recall_stage",
+      "matched_by_vector",
+      "matched_by_bm25",
+      "matched_by_rewrite",
+      "retrieval_score",
+      "final_score",
+      "score_breakdown",
+      "title",
+      "case_no",
+      "court",
+      "court_level",
+      "trial_level",
+      "case_cause",
+      "judgment_date",
+      "similarity_score",
+      "confidence",
+      "summary",
+      "highlights",
+      "metadata",
+      "matched_text"
+    ],
+    "passed": true
+  },
+  "baseline_path_check": {
+    "http_status": 200,
+    "score_mode": "base_retrieval",
+    "weighted_rerank_enabled": false,
+    "final_score_equals_retrieval_score": true,
+    "result_count": 2,
+    "candidate_count": 2,
+    "rollback_verified": true,
+    "passed": true
+  },
+  "candidate_path_check": {
+    "selected_candidate_available": false,
+    "gray_candidate_eligible": false,
+    "controlled_weighted_path_probe": {
+      "http_status": 200,
+      "score_mode": "weighted_rerank",
+      "weighted_rerank_enabled": true,
+      "final_score_equals_retrieval_score": false,
+      "schema_compatible": true,
+      "distinguishable_by": [
+        "score_breakdown.score_mode",
+        "score_breakdown.weighted_rerank_enabled"
+      ]
+    },
+    "passed": false,
+    "failure_reason": "M1.3-5 has no unique selected candidate; controlled path was only probed generically and must not be treated as a gray candidate."
+  },
+  "product_eval_result": {
+    "command": "python -m app.eval.product_eval --comparison-mode product_chain --out <temp>/product-eval-product-chain.json --bad-cases-out <temp>/product-bad-cases-product-chain.json",
+    "evidence_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/product-eval-product-chain.json",
+    "bad_cases_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/product-bad-cases-product-chain.json",
+    "run_id": "product_eval_20260610_144907",
+    "baseline": {
+      "precision_at_5": 0.032,
+      "ndcg_at_10": 0.134,
+      "top10_hit_rate": 0.48,
+      "evaluated_query_count": 25
+    },
+    "current": {
+      "precision_at_5": 0.048,
+      "ndcg_at_10": 0.171,
+      "top10_hit_rate": 0.68,
+      "evaluated_query_count": 25
+    },
+    "bad_case_distribution": {
+      "METRIC_REGRESSION": 7,
+      "RECALL_MISS": 7
+    },
+    "grayCandidateHardGatePassed": false,
+    "weightedRerankGrayCandidate": false,
+    "feature_flag_changed": false,
+    "passed_for_gray_candidate": false,
+    "failure_reasons": [
+      "M1.3-5 selected_status=NO_GO",
+      "METRIC_REGRESSION_GT_0",
+      "Product eval aggregate metrics cannot override per-query regression gates."
+    ]
+  },
+  "fixed_regression_result": {
+    "command": "python scripts/m1_2_regression.py --comparison-mode product_chain --out <temp>/fixed-regression-product-chain.json --parameter-version-out <temp>/fixed-regression-parameter-version.json",
+    "evidence_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/fixed-regression-product-chain.json",
+    "parameter_version_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/fixed-regression-parameter-version.json",
+    "run_id": "m1_2_regression_20260610_144952",
+    "overall_metrics": {
+      "baseline": {
+        "Precision@5": 0.032,
+        "NDCG@10": 0.134,
+        "Top10 hit rate": 0.48,
+        "evaluatedQueryCount": 25
+      },
+      "currentBefore": {
+        "Precision@5": 0.048,
+        "NDCG@10": 0.1487,
+        "Top10 hit rate": 0.6,
+        "evaluatedQueryCount": 25
+      },
+      "currentAfter": {
+        "Precision@5": 0.04,
+        "NDCG@10": 0.1539,
+        "Top10 hit rate": 0.64,
+        "evaluatedQueryCount": 25
+      }
+    },
+    "before_to_after_label_distribution": {
+      "IMPROVED": 4,
+      "REGRESSED": 4,
+      "STABLE": 17
+    },
+    "after_vs_baseline_label_distribution": {
+      "IMPROVED": 8,
+      "REGRESSED": 9,
+      "STABLE": 8
+    },
+    "m13RegressionGate": {
+      "top10HitRate": 0.64,
+      "beforeVsAfterRegressedCount": 4,
+      "afterVsBaselineRegressedCount": 9,
+      "top10MissCount": 9,
+      "metricRegressionCount": 9,
+      "recallMissCount": 8,
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "blockedItems": [],
+      "hardGateFailedReasons": [
+        "BEFORE_VS_AFTER_REGRESSED_GT_0",
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ]
+    },
+    "passed_for_gray_candidate": false
+  },
+  "performance_smoke_result": {
+    "command": "python scripts/day3_7_3_performance_smoke.py --out <temp>/performance-smoke.json",
+    "evidence_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/performance-smoke.json",
+    "status_counts": {
+      "200": 5
+    },
+    "error_rate": 0.0,
+    "warm_p95_ms": 296,
+    "warm_p95_under_3s": true,
+    "vector_error_rate": 0.0,
+    "llm_timeout_rate": 0.0,
+    "degraded_reason_counts": {
+      "QUERY_REWRITE_DISABLED": 5,
+      "SUMMARY_DISABLED": 5
+    },
+    "passed": true
+  },
+  "rollback_drill_result": {
+    "command": "python scripts/day3_7_5_rollback_drill.py --out <temp>/rollback-drill.json",
+    "evidence_path": "C:/Users/yyl/AppData/Local/Temp/case-search-m13-gray-20260610-144843/rollback-drill.json",
+    "status": "passed",
+    "recovery_within_60_seconds": true,
+    "max_rollback_elapsed_ms": 16,
+    "weighted_rerank_scenario": {
+      "status": "passed",
+      "rollback_elapsed_ms": 7,
+      "score_mode": "base_retrieval",
+      "raw_query_logged": false,
+      "vector_index_rebuild_required": false
+    },
+    "passed": true
+  },
+  "frontend_check": {
+    "npm_test": {
+      "command": "npm test",
+      "status": "passed",
+      "test_files": 4,
+      "tests": 40
+    },
+    "npm_build": {
+      "command": "npm run build",
+      "status": "passed"
+    },
+    "browser_no_blank_screen": {
+      "method": "Vite dev server plus in-app browser DOM check",
+      "url": "http://127.0.0.1:5177/search",
+      "root_child_count": 1,
+      "body_text_length": 216,
+      "input_exists": true,
+      "buttons": [
+        "重新检索",
+        "测试数据"
+      ],
+      "h1_text": "输入案情后查看相似案例",
+      "browser_error_log_count": 0,
+      "passed": true
+    },
+    "passed": true
+  },
+  "backend_test_result": {
+    "command": "python -m pytest",
+    "status": "passed",
+    "tests": 176,
+    "warnings": [
+      "pytest_asyncio asyncio_default_fixture_loop_scope deprecation warning"
+    ]
+  },
+  "hard_gate_checklist": {
+    "overall_passed": false,
+    "items": [
+      {
+        "name": "M1.3-5 has one selected candidate",
+        "passed": false,
+        "actual": null
+      },
+      {
+        "name": "Top10 hit rate >= 0.60",
+        "passed": true,
+        "actual": {
+          "product_eval_current": 0.68,
+          "fixed_regression_currentAfter": 0.64
+        }
+      },
+      {
+        "name": "before -> after REGRESSED=0",
+        "passed": false,
+        "actual": 4
+      },
+      {
+        "name": "after vs baseline REGRESSED=0",
+        "passed": false,
+        "actual": 9
+      },
+      {
+        "name": "METRIC_REGRESSION=0",
+        "passed": false,
+        "actual": {
+          "product_eval": 7,
+          "fixed_regression": 9
+        }
+      },
+      {
+        "name": "weightedRerankGrayCandidate equals grayCandidateHardGatePassed",
+        "passed": true,
+        "actual": {
+          "weightedRerankGrayCandidate": false,
+          "grayCandidateHardGatePassed": false
+        }
+      },
+      {
+        "name": "performance smoke no obvious degradation and warm P95 < 3s",
+        "passed": true,
+        "actual": 296
+      },
+      {
+        "name": "rollback drill successful",
+        "passed": true,
+        "actual": {
+          "status": "passed",
+          "max_rollback_elapsed_ms": 16
+        }
+      },
+      {
+        "name": "API schema stable",
+        "passed": true,
+        "actual": true
+      },
+      {
+        "name": "frontend not blank",
+        "passed": true,
+        "actual": true
+      },
+      {
+        "name": "ENABLE_WEIGHTED_RERANK default remains false",
+        "passed": true,
+        "actual": false
+      }
+    ]
+  },
+  "enable_thresholds": [
+    "M1.3-5 or a later authorized parameter-finalization step must produce exactly one selected candidate with selected_status=GO.",
+    "ENABLE_WEIGHTED_RERANK must remain false by default until a separate controlled gray procedure explicitly enables it in a scoped environment.",
+    "Product eval must be repeatable with no blocked items and Top10 hit rate >= 0.60.",
+    "Fixed regression before -> after REGRESSED must equal 0.",
+    "Fixed regression after vs baseline REGRESSED must equal 0.",
+    "METRIC_REGRESSION must equal 0.",
+    "weightedRerankGrayCandidate must equal grayCandidateHardGatePassed.",
+    "Performance smoke must show no obvious degradation, error_rate=0 or documented non-blocking explanation, and warm P95 < 3000ms.",
+    "Rollback drill must pass with recovery < 60s and no vector index rebuild.",
+    "/api/search schema must remain compatible with current frontend fields.",
+    "Frontend /search must render without blank screen under tests/build/browser check.",
+    "Reports and logs must not contain raw query text, case facts, candidate text, or chunk text."
+  ],
+  "immediate_rollback_conditions": [
+    "ENABLE_WEIGHTED_RERANK=false but /api/search returns score_mode=weighted_rerank.",
+    "Controlled ENABLE_WEIGHTED_RERANK=true path cannot be distinguished by score_mode or weighted_rerank_enabled.",
+    "/api/search top-level or result fields required by SearchPage/searchApi are missing.",
+    "HTTP 5xx error rate >= 1% for 30 minutes in a controlled environment.",
+    "Warm P95 >= 3000ms or performance smoke shows clear degradation without non-blocking explanation.",
+    "Rollback drill fails, recovery >= 60s, or rollback requires vector index rebuild.",
+    "Precision@5 drops below baseline, NDCG@10 is not greater than baseline, or Top10 hit rate drops below 0.60.",
+    "before -> after REGRESSED > 0 or after vs baseline REGRESSED > 0.",
+    "METRIC_REGRESSION > 0.",
+    "Frontend /search blank screen, missing search input, missing submit button, or blocking browser console error.",
+    "Logs or artifacts include raw query text, case fact text, candidate text, or chunk text.",
+    "User-impact indicators such as zero-result rate, refine rate, or degradation rate exceed the predeclared baseline thresholds."
+  ],
+  "privacy_check": {
+    "passed": true,
+    "raw_query_text_present": false,
+    "case_fact_text_present": false,
+    "candidate_full_text_written": false,
+    "chunk_text_written": false,
+    "new_debug_output_with_case_body": false,
+    "allowed_identifiers_only": [
+      "query id",
+      "case id",
+      "metric",
+      "status",
+      "schema field",
+      "count",
+      "structured conclusion"
+    ]
+  },
+  "unresolved_blockers": [
+    "M1.3-5 selected_status=NO_GO; no unique selected candidate exists.",
+    "Latest fixed regression rerun still has before->after REGRESSED=4.",
+    "Latest fixed regression rerun still has after-vs-baseline REGRESSED=9.",
+    "METRIC_REGRESSION remains greater than 0.",
+    "No controlled gray candidate may be selected in M1.3-6."
+  ],
+  "boundary_confirmation": {
+    "did_not_modify_qrels": true,
+    "did_not_modify_eval_samples": true,
+    "did_not_modify_recall_strategy": true,
+    "did_not_modify_rerank_weights_or_guard_logic": true,
+    "did_not_enable_default_weighted_rerank": true,
+    "did_not_release_to_users": true,
+    "did_not_enter_m1_3_7": true,
+    "did_not_enter_m2": true
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "version": "m1_1_r6_final_verification_v1",
+  "generated_at": "2026-06-09T12:35:23",
+  "project_root": "C:\\Users\\yyl\\Desktop\\类案检索助手",
+  "source_gate_report": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-20260609-123148.json",
+  "source_gate_markdown": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-20260609-123148.md",
+  "policy": {
+    "default_feature_flags_must_remain_closed": true,
+    "does_not_modify_business_logic": true,
+    "does_not_rebuild_vector_indexes": true,
+    "does_not_clear_chroma": true,
+    "does_not_write_raw_query_or_case_text": true
+  },
+  "checks": [
+    {
+      "name": "default_feature_flags",
+      "command": "inspect Settings defaults and .env/.env.example feature flags",
+      "status": "passed",
+      "duration_ms": 2,
+      "evidence_path": null,
+      "summary": "Default enhancement flags remain closed.",
+      "failure_reason": null,
+      "details": {
+        "required_false_flags": [
+          "ENABLE_QUERY_REWRITE",
+          "ENABLE_WEIGHTED_RERANK",
+          "ENABLE_SUMMARY",
+          "ENABLE_EXPANDED_SEARCH"
+        ],
+        "settings_defaults": {
+          "ENABLE_QUERY_REWRITE": "False",
+          "ENABLE_WEIGHTED_RERANK": "False",
+          "ENABLE_SUMMARY": "False",
+          "ENABLE_EXPANDED_SEARCH": "False"
+        },
+        "env_files": {
+          ".env": {},
+          ".env.example": {
+            "ENABLE_QUERY_REWRITE": "false",
+            "ENABLE_SUMMARY": "false",
+            "ENABLE_EXPANDED_SEARCH": "false",
+            "ENABLE_WEIGHTED_RERANK": "false",
+            "VITE_ENABLE_EXPANDED_SEARCH": "false"
+          }
+        }
+      }
+    },
+    {
+      "name": "backend_tests",
+      "command": "python -m pytest",
+      "status": "passed",
+      "duration_ms": 21343,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-backend-tests-20260609-123148.json",
+      "summary": "Backend pytest completed successfully.",
+      "failure_reason": null,
+      "details": {
+        "exit_code": 0,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "frontend_tests",
+      "command": "npm test",
+      "status": "passed",
+      "duration_ms": 4098,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-frontend-tests-20260609-123148.json",
+      "summary": "Frontend npm test completed successfully.",
+      "failure_reason": null,
+      "details": {
+        "exit_code": 0,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "frontend_build",
+      "command": "npm run build",
+      "status": "passed",
+      "duration_ms": 4069,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-frontend-build-20260609-123148.json",
+      "summary": "Frontend production build completed successfully.",
+      "failure_reason": null,
+      "details": {
+        "exit_code": 0,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "day3_real_e2e",
+      "command": "npm run smoke:day3:7.1",
+      "status": "passed",
+      "duration_ms": 13236,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-day3-real-e2e-20260609-123148.json",
+      "summary": "Day3 real E2E smoke passed.",
+      "failure_reason": null,
+      "details": {
+        "exit_code": 0,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "runtime_preflight",
+      "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\runtime_preflight.py\"",
+      "status": "passed",
+      "duration_ms": 14491,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-runtime-preflight-20260609-123148.json",
+      "summary": "Live /health matches source /health and includes feature_flags.",
+      "failure_reason": null,
+      "details": {
+        "exit_code": 0,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "db_smoke",
+      "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\db_smoke.py\"",
+      "status": "failed",
+      "duration_ms": 5014,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-db-smoke-20260609-123148.json",
+      "summary": "DB smoke is degraded or failed.",
+      "failure_reason": "connection_failed",
+      "details": {
+        "db_reachable": false,
+        "db_status": "degraded"
+      }
+    },
+    {
+      "name": "performance",
+      "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\day3_7_3_performance_smoke.py\" --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-performance-smoke-20260609-123148.json\"",
+      "status": "passed",
+      "duration_ms": 27316,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-performance-smoke-20260609-123148.json",
+      "summary": "Warm P95 is 2553ms.",
+      "failure_reason": null,
+      "details": {
+        "warm_p95_ms": 2553,
+        "warm_p95_under_3s": true,
+        "slowest_warm_stage_by_p95": "embedding_duration_ms"
+      }
+    },
+    {
+      "name": "eval_corpus_preflight",
+      "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\eval_corpus_preflight.py\" --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-eval-preflight-20260609-123148.json\" --allow-blocked",
+      "status": "passed",
+      "duration_ms": 292,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-eval-preflight-20260609-123148.json",
+      "summary": "Comparable eval line status: lecardv2=blocked, product_local=ok.",
+      "failure_reason": null,
+      "details": {
+        "lecardv2_status": "blocked",
+        "product_local_status": "ok",
+        "overall_status": "blocked"
+      }
+    },
+    {
+      "name": "rerank_eval",
+      "command": "python -m app.eval.day3_rerank_eval --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-rerank-eval-20260609-123148.json\"",
+      "status": "blocked",
+      "duration_ms": 17592,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-rerank-eval-20260609-123148.json",
+      "summary": "Rerank eval status=blocked_missing_candidate_corpus, release_decision=PARTIAL_BLOCKED.",
+      "failure_reason": "blocked_missing_candidate_corpus",
+      "details": {
+        "current_rerank_eval_status": "blocked_missing_candidate_corpus",
+        "product_smoke_status": "ok",
+        "release_decision": "PARTIAL_BLOCKED",
+        "enable_new_rerank": false,
+        "reason": "LeCaRDv2 candidate case texts were not found; current rerank cannot be evaluated against qrels."
+      }
+    },
+    {
+      "name": "product_eval",
+      "command": "python -m app.eval.product_eval --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-product-eval-20260609-123148.json\" --bad-cases-out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-product-bad-cases-20260609-123148.json\"",
+      "status": "passed",
+      "duration_ms": 67596,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-product-eval-20260609-123148.json",
+      "summary": "Product eval comparable queries: baseline=25, current=25; new-rerank eligible=False.",
+      "failure_reason": null,
+      "details": {
+        "baseline_precision_at_5": 0.032,
+        "baseline_ndcg_at_10": 0.134,
+        "baseline_top10_hit_rate": 0.48,
+        "current_precision_at_5": 0.048,
+        "current_ndcg_at_10": 0.1248,
+        "current_top10_hit_rate": 0.44,
+        "gray_candidate_eligible": false,
+        "gray_candidate_reason": "NDCG@10 did not improve versus the BM25 product baseline.",
+        "bad_cases_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-product-bad-cases-20260609-123148.json"
+      }
+    },
+    {
+      "name": "rollback",
+      "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\day3_7_5_rollback_drill.py\" --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-rollback-drill-20260609-123148.json\"",
+      "status": "passed",
+      "duration_ms": 1891,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-rollback-drill-20260609-123148.json",
+      "summary": "Rollback drill status=passed, max_restore=19ms.",
+      "failure_reason": null,
+      "details": {
+        "flags": {
+          "ENABLE_QUERY_REWRITE": "passed",
+          "ENABLE_WEIGHTED_RERANK": "passed",
+          "ENABLE_SUMMARY": "passed",
+          "ENABLE_EXPANDED_SEARCH": "passed"
+        },
+        "recovery_within_60_seconds": true,
+        "max_rollback_elapsed_ms": 19
+      }
+    },
+    {
+      "name": "privacy",
+      "command": "internal privacy scan",
+      "status": "passed",
+      "duration_ms": 243,
+      "evidence_path": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-privacy-scan-20260609-123148.json",
+      "summary": "Gate and latest recognizable reports do not contain collected raw query/case terms or forbidden raw fields.",
+      "failure_reason": null,
+      "details": {
+        "scanned_file_count": 29,
+        "violation_count": 0
+      }
+    }
+  ],
+  "conclusions": {
+    "overall_status": "go_internal_only",
+    "internal_basic_search": {
+      "decision": "GO",
+      "reason": "主链路、性能、回滚、运行时一致性和隐私门禁通过；DB 仍为基础搜索可接受降级。",
+      "blocking_checks": [],
+      "db_mode": "conditional_degraded"
+    },
+    "external_gray": {
+      "decision": "NO_GO",
+      "reason": "根据 M1.1 版本定位与 R6 规则，本轮只允许内部基础搜索；对外灰度仍不可开。",
+      "blocking_checks": [
+        "version_scope_internal_only",
+        "db_degraded_for_future_non_search_features"
+      ]
+    },
+    "new_rerank": {
+      "decision": "NO_GO",
+      "reason": "产品本地评测 Top10 hit rate=0.44，未达到 0.6 阈值；新排序仍不可开。",
+      "blocking_checks": [
+        "product_eval_threshold_not_met",
+        "rerank_eval_not_comparable"
+      ]
+    },
+    "rule_inputs": {
+      "main_chain_passed": true,
+      "performance_passed": true,
+      "runtime_preflight_passed": true,
+      "rollback_passed": true,
+      "comparable_eval_ready": true,
+      "db_reachable": false,
+      "db_status": "degraded",
+      "gray_candidate_eligible": false
+    }
+  },
+  "path_check": {
+    "status": "passed",
+    "missing_paths": []
+  },
+  "reports": {
+    "json": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-final-verification-20260609-123523.json",
+    "markdown": "C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-final-verification-20260609-123523.md"
+  },
+  "privacy_check": {
+    "status": "passed",
+    "scanned_file_count": 39,
+    "violation_count": 0,
+    "evidence_paths": [
+      "docs\\development\\m1.1-risk-fix-gate-backend-tests-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-frontend-tests-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-frontend-build-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-day3-real-e2e-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-runtime-preflight-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-db-smoke-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-performance-smoke-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-eval-preflight-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-rerank-eval-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-product-eval-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-rollback-drill-20260609-123148.json",
+      "docs\\development\\m1.1-risk-fix-gate-privacy-scan-20260609-123148.json"
+    ]
+  }
+}

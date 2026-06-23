@@ -1,0 +1,76 @@
+{
+  "step": "M4-5",
+  "title": "类案清单导出 (F17)",
+  "date": "2026-06-14",
+  "go_no_go": "GO",
+  "backend_changes": 0,
+  "approach": "frontend-only localStorage export; backend ENABLE_LIST_EXPORT frozen in M4-1, case_list_export server fields optional",
+  "prerequisites_all_go": ["M4-1", "M4-2", "M4-3", "M4-4"],
+  "data_structure": {
+    "name": "CaseListExportDescriptor",
+    "fields": ["export_id", "list_id", "export_format", "fields", "export_status", "degrade_reason", "item_count", "created_at"],
+    "export_format_values": ["markdown", "csv"],
+    "export_status_values": ["exported", "empty", "degraded", "failed"]
+  },
+  "export_field_whitelist": ["case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchor", "note", "tag"],
+  "forbidden_from_export": ["judgment_long_text", "case_fact_body", "candidate_body", "chunk_body", "summary_body", "holding_body", "raw_query", "free_long_text"],
+  "reason_codes": ["list_not_found", "empty_list", "no_fields", "unsupported_format", "download_unavailable", "download_failed"],
+  "disclaimer_lines": 4,
+  "disclaimer_covers": ["metadata-only / no body", "data coverage / may miss cases / not complete retrieval", "no completeness guarantee / no win-loss / no definitive legal conclusion", "human review required"],
+  "forbidden_phrase_guard": ["已查全", "查全率", "保证无遗漏", "无遗漏", "确保覆盖", "胜诉概率", "败诉概率", "胜诉率", "败诉率", "必然胜诉", "必然败诉"],
+  "analytics_log": {
+    "event": "case_list_export",
+    "fields": ["event", "format", "status", "reason_code", "count"],
+    "no_body": true,
+    "no_case_number_note_tag_title_query": true,
+    "sample": {"event": "case_list_export", "format": "csv", "status": "exported", "reason_code": null, "count": 1}
+  },
+  "feature_flag": {
+    "frontend": "VITE_ENABLE_LIST_EXPORT",
+    "accessor": "isListExportEnabled",
+    "default": false,
+    "backend_config": "ENABLE_LIST_EXPORT (config.py, default false)",
+    "off_behavior": "no export entry rendered, no file generated, page returns to M4-4 end-state"
+  },
+  "affects_ranking": false,
+  "files": {
+    "added": [
+      "apps/web/src/lib/caseListExport.ts",
+      "apps/web/src/lib/caseListExport.test.ts",
+      "apps/web/src/pages/ListExportAcceptance.test.tsx"
+    ],
+    "modified": [
+      "apps/web/src/config/featureFlags.ts",
+      "apps/web/src/vite-env.d.ts",
+      "apps/web/src/components/results/CaseListPanel.tsx",
+      "apps/web/src/pages/SearchPage.tsx"
+    ]
+  },
+  "verification": {
+    "web_tsc": "exit 0",
+    "web_build_modules": 116,
+    "web_build_prev_modules": 115,
+    "web_vitest_passed": 195,
+    "web_vitest_prev": 167,
+    "web_vitest_added": 28,
+    "new_tests": {"caseListExport.test.ts": 21, "ListExportAcceptance.test.tsx": 7},
+    "api_pytest": {"files": ["test_health.py", "test_search_api_fallback_smoke.py", "test_feature_flag_rollback.py"], "passed": 18, "database_url": "sqlite"},
+    "exported_file_inspection": {
+      "source_seeded_with": ["case_fact_body", "judgment_long_text", "chunk_body", "candidate_body", "raw_query"],
+      "markdown": {"body_hits": [], "absolute_phrase_hits": [], "raw_query_leak": false, "disclaimer_lines_present": 4},
+      "csv": {"body_hits": [], "absolute_phrase_hits": [], "raw_query_leak": false, "disclaimer_lines_present": 4}
+    }
+  },
+  "gates": {
+    "export_only_metadata_source_anchor_note": "PASS",
+    "export_has_disclaimer": "PASS",
+    "export_failure_safe_degrade": "PASS",
+    "no_body_leak": "PASS",
+    "no_absolute_coverage_claim": "PASS",
+    "no_litigation_outcome_judgment": "PASS",
+    "no_ranking_pollution": "PASS",
+    "flag_default_off_returns_to_m4_4": "PASS"
+  },
+  "stop_loss_triggered": false,
+  "next_step": "M4-6 轻量报告模板"
+}

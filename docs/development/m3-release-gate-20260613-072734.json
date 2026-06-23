@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "artifact": "m3-release-gate",
+  "generated_at": "2026-06-13T07:27:34+08:00",
+  "scope": "M3-8 final verification and M4 entry decision",
+  "m2_8_entry_evidence": {
+    "source_artifacts": [
+      "m2-final-verification-20260612-191945.md",
+      "m2-release-gate-20260612-191945.json",
+      "m2-parameter-version-20260612-191945.json"
+    ],
+    "base_search": "GO",
+    "m2_trusted_retrieval": "GO",
+    "m3_entry": "GO",
+    "rollback_required": false,
+    "enable_weighted_rerank_default": false
+  },
+  "m3_steps": [
+    { "step": "M3-1", "capability": "reading_entry_contract", "artifact_prefix": "m3-reading-entry-contract-20260612-194511", "status": "GO" },
+    { "step": "M3-2", "capability": "holding_summary", "artifact_prefix": "m3-holding-summary-closure-20260612-202913", "status": "GO" },
+    { "step": "M3-3", "capability": "issue_focus_and_key_elements", "artifact_prefix": "m3-issue-focus-elements-20260612-212111", "status": "GO" },
+    { "step": "M3-4", "capability": "fact_alignment", "artifact_prefix": "m3-fact-alignment-20260613-021821", "status": "GO" },
+    { "step": "M3-5", "capability": "source_highlights", "artifact_prefix": "m3-source-highlights-20260613-035436", "status": "GO" },
+    { "step": "M3-6", "capability": "case_compare_view", "artifact_prefix": "m3-case-compare-gate-20260613-054541", "status": "GO" },
+    { "step": "M3-7", "capability": "citation_copy_boundary", "artifact_prefix": "m3-citation-copy-boundary-20260613-062814", "status": "GO" }
+  ],
+  "hard_gates": {
+    "all_m3_artifacts_exist": true,
+    "all_m3_status_go": true,
+    "case_side_ai_content_100pct_source_anchored": true,
+    "source_anchor_minimum_fields": ["case_id", "source_chunk_id"],
+    "unanchored_content_hidden_or_safe_degraded": true,
+    "user_side_raw_text_not_persisted": true,
+    "main_sorting_unchanged": true,
+    "source_selection_unchanged": true,
+    "rerank_default_unchanged": false,
+    "m2_default_behavior_unchanged": true,
+    "qrels_label_relevance_runtime_use_detected": false,
+    "query_or_case_id_special_case_detected": false,
+    "body_leakage_detected": false,
+    "forbidden_coverage_phrase_detected": false,
+    "win_loss_probability_or_legal_conclusion_detected": false,
+    "forbidden_reading_terms_guardrail_present": true,
+    "weighted_rerank_default_enabled": false,
+    "m3_feature_flags_default_off": true,
+    "env_example_weighted_rerank_default_true": false
+  },
+  "verification_runs": {
+    "web_vitest": { "files": 10, "tests": 101, "passed": 101, "failed": 0, "batches": ["47/47", "54/54"] },
+    "web_tsc_b": { "exit": 0 },
+    "web_vite_build": { "exit": 0, "modules": 107 },
+    "api_core_gate_pytest": {
+      "files": [
+        "test_m1_3_candidate_comparison.py",
+        "test_m1_3_legal_candidate_robustness.py",
+        "test_feature_flag_rollback.py",
+        "test_health.py",
+        "test_search_api_fallback_smoke.py",
+        "test_summary_service.py",
+        "test_performance_smoke.py"
+      ],
+      "passed": 60,
+      "failed": 0
+    },
+    "api_m3_focused_pytest": {
+      "files": [
+        "test_m3_fact_alignment.py",
+        "test_m3_holding_summary.py",
+        "test_m3_issue_focus.py",
+        "test_m3_source_highlights.py"
+      ],
+      "passed": 29,
+      "failed": 0
+    },
+    "performance_smoke": { "warm_p95_ms": 820, "warm_p95_under_3s": true, "gate_uses_warm_p95": true }
+  },
+  "rollback": {
+    "m3_backend_changes": "none (M3 capabilities are frontend-only over existing detail/fact-alignment endpoints)",
+    "m3_capabilities_degrade_path": true,
+    "compare_view_closeable_and_rollbackable": true,
+    "main_results_survive_detail_or_compare_failure": true,
+    "git_working_tree_business_code_changed_this_session": false
+  },
+  "stop_loss_triggers": {
+    "source_anchor_coverage_insufficient": false,
+    "user_raw_case_persisted": false,
+    "body_leak_in_report_json_log_snapshot": false,
+    "absolute_coverage_phrase": false,
+    "win_loss_probability_or_certain_legal_conclusion": false,
+    "qrels_label_relevance_in_runtime": false,
+    "query_or_case_id_special_case": false,
+    "weighted_rerank_default_on": false,
+    "m2_8_core_gate_regression": false,
+    "m3_detail_or_compare_unrollbackable_or_main_chain_down": false,
+    "any_triggered": false
+  },
+  "conclusions": {
+    "base_search_available": "GO",
+    "m3_reading_efficiency_complete": "GO",
+    "m4_entry": "GO",
+    "rollback_required": false,
+    "next_title": "类案检索助手 M4-1 工作流沉淀入口合同"
+  }
+}

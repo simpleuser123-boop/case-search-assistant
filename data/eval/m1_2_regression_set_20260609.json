@@ -1,0 +1,171 @@
+{
+  "version": "m1_2_fixed_regression_set_v1",
+  "createdAt": "2026-06-09",
+  "scope": "M1.2-6 bad case regression and parameter freeze",
+  "privacy": {
+    "containsRawQueryText": false,
+    "containsRawCaseText": false,
+    "containsCandidateText": false,
+    "sampleReferencePolicy": "query ids, case ids, labels, ranks, and score summaries only"
+  },
+  "sourceEvalQueries": "data/eval/product_eval_queries.jsonl",
+  "sourceQrels": "data/eval/product_eval_qrels.jsonl",
+  "selectionPolicy": [
+    "Keep all 25 product-local eval queries to avoid hiding adverse movement.",
+    "Annotate high-value bad cases from M1.2-1 to M1.2-5.",
+    "Annotate typical success cases with stable relevant Top10 hits.",
+    "Annotate weight-sensitive boundary cases affected by weak-signal rerank guards."
+  ],
+  "queries": [
+    {
+      "queryId": "product_q001",
+      "sampleType": "high_value_bad_case",
+      "tags": ["RECALL_MISS", "bm25_hit_outside_top10_or_not_merged"],
+      "sourceEvidence": ["m1.2-recall-repair-20260609.md", "m1.2-rerank-fusion-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q002",
+      "sampleType": "high_value_bad_case",
+      "tags": ["RECALL_MISS", "unresolved_recall_or_data_mismatch_candidate"],
+      "sourceEvidence": ["m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q003",
+      "sampleType": "high_value_bad_case",
+      "tags": ["RECALL_MISS", "vector_recovered_below_top10"],
+      "sourceEvidence": ["m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q004",
+      "sampleType": "high_value_bad_case",
+      "tags": ["RECALL_MISS", "mapping_no_measurable_gain_yet"],
+      "sourceEvidence": ["m1.2-query-understanding-step5.3-20260609.md", "m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q005",
+      "sampleType": "high_value_bad_case",
+      "tags": ["QUERY_UNDERSTANDING_GAP", "rank_improved_outside_top10"],
+      "sourceEvidence": ["m1.2-query-understanding-step5.3-20260609.md", "m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q006",
+      "sampleType": "high_value_bad_case",
+      "tags": ["QUERY_UNDERSTANDING_GAP", "rank_improved_outside_top10"],
+      "sourceEvidence": ["m1.2-query-understanding-step5.3-20260609.md", "m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q007",
+      "sampleType": "weight_sensitive_boundary",
+      "tags": ["typical_hit", "rerank_order_sensitive"],
+      "sourceEvidence": ["m1.2-product-eval-product-chain-step55-before-20260609.json", "m1.2-product-eval-product-chain-step55-after-20260609.json"]
+    },
+    {
+      "queryId": "product_q008",
+      "sampleType": "weight_sensitive_boundary",
+      "tags": ["baseline_hit", "current_before_lost_hit"],
+      "sourceEvidence": ["m1.2-product-eval-product-chain-step55-before-20260609.json", "m1.2-product-eval-product-chain-step55-after-20260609.json"]
+    },
+    {
+      "queryId": "product_q009",
+      "sampleType": "high_value_bad_case",
+      "tags": ["RECALL_MISS", "vector_recovered_below_top10"],
+      "sourceEvidence": ["m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q010",
+      "sampleType": "high_value_bad_case",
+      "tags": ["QUERY_UNDERSTANDING_GAP", "mapped_rank_improved"],
+      "sourceEvidence": ["m1.2-query-understanding-step5.3-20260609.md", "m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q011",
+      "sampleType": "high_value_bad_case",
+      "tags": ["RECALL_MISS", "bm25_hit_outside_top10_or_not_merged"],
+      "sourceEvidence": ["m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q012",
+      "sampleType": "high_value_bad_case",
+      "tags": ["QUERY_UNDERSTANDING_GAP", "mapped_rank_improved"],
+      "sourceEvidence": ["m1.2-query-understanding-step5.3-20260609.md", "m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q013",
+      "sampleType": "weight_sensitive_boundary",
+      "tags": ["weak_signal_tradeoff", "bm25_same_pool_after_lost_top10"],
+      "sourceEvidence": ["m1.2-rerank-fusion-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q014",
+      "sampleType": "high_value_bad_case",
+      "tags": ["RECALL_MISS", "entered_top10_after_recall_repair"],
+      "sourceEvidence": ["m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q015",
+      "sampleType": "high_value_bad_case",
+      "tags": ["QUERY_UNDERSTANDING_GAP", "entered_top10_after_mapping_and_recall"],
+      "sourceEvidence": ["m1.2-query-understanding-step5.3-20260609.md", "m1.2-recall-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q016",
+      "sampleType": "weight_sensitive_boundary",
+      "tags": ["metric_regression_candidate", "weak_signal_guard_sensitive"],
+      "sourceEvidence": ["m1.2-rerank-fusion-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q017",
+      "sampleType": "weight_sensitive_boundary",
+      "tags": ["guard_tradeoff", "same_pool_recovered_but_product_chain_worsened"],
+      "sourceEvidence": ["m1.2-rerank-fusion-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q018",
+      "sampleType": "weight_sensitive_boundary",
+      "tags": ["same_pool_recovered", "relevant_below_top5"],
+      "sourceEvidence": ["m1.2-rerank-fusion-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q019",
+      "sampleType": "typical_success",
+      "tags": ["stable_top10_hit", "baseline_success"],
+      "sourceEvidence": ["m1.2-product-eval-product-chain-step55-after-20260609.json"]
+    },
+    {
+      "queryId": "product_q020",
+      "sampleType": "typical_success",
+      "tags": ["stable_precision_at5", "stable_top10_hit"],
+      "sourceEvidence": ["m1.2-product-eval-product-chain-step55-after-20260609.json"]
+    },
+    {
+      "queryId": "product_q021",
+      "sampleType": "typical_success",
+      "tags": ["stable_precision_at5", "stable_top10_hit"],
+      "sourceEvidence": ["m1.2-product-eval-product-chain-step55-after-20260609.json"]
+    },
+    {
+      "queryId": "product_q022",
+      "sampleType": "typical_success",
+      "tags": ["stable_top10_hit", "baseline_success"],
+      "sourceEvidence": ["m1.2-product-eval-product-chain-step55-after-20260609.json"]
+    },
+    {
+      "queryId": "product_q023",
+      "sampleType": "weight_sensitive_boundary",
+      "tags": ["guard_tradeoff", "weak_signal_guard_sensitive"],
+      "sourceEvidence": ["m1.2-rerank-fusion-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q024",
+      "sampleType": "weight_sensitive_boundary",
+      "tags": ["weak_signal_guard_sensitive", "ndcg_sensitive"],
+      "sourceEvidence": ["m1.2-rerank-fusion-repair-20260609.md"]
+    },
+    {
+      "queryId": "product_q025",
+      "sampleType": "typical_success",
+      "tags": ["stable_precision_at5", "stable_top10_hit"],
+      "sourceEvidence": ["m1.2-product-eval-product-chain-step55-after-20260609.json"]
+    }
+  ]
+}

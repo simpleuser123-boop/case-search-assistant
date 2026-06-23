@@ -1,0 +1,52 @@
+{
+  "artifact": "e3-parameter-version",
+  "step": "E3-5",
+  "generated_at": "2026-06-16T17:55:09+08:00",
+  "supersedes": "docs/development/e3-parameter-version-20260616-021500.json",
+  "nature": "E3 full GO 补验收参数快照。仅更新验证状态，不改变检索运行时参数、排序/召回策略、flag 默认值或索引/语料。",
+  "runtime_parameters_unchanged_vs_previous_e3_gate": true,
+  "feature_flags_default": {
+    "ENABLE_QUERY_REWRITE": false,
+    "ENABLE_SUMMARY": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_SEARCH_HISTORY": false,
+    "ENABLE_CASE_FAVORITE": false,
+    "ENABLE_CASE_LIST": false,
+    "ENABLE_LIST_EXPORT": false,
+    "ENABLE_REPORT_TEMPLATE": false,
+    "ENABLE_TEAM_REUSE": false,
+    "ENABLE_ACCOUNT_SYSTEM": false,
+    "ENABLE_TEAM_WORKSPACE": false,
+    "ENABLE_PERMISSION_TIERING": false,
+    "ENABLE_TEAM_SHARING": false,
+    "ENABLE_BULK_IMPORT": false,
+    "ENABLE_TENDENCY_ANALYSIS": false,
+    "ENABLE_BILLING": false,
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false
+  },
+  "flags_total": 22,
+  "flags_default_true_count": 0,
+  "flag_default_change_in_e3": "none",
+  "verification_environment": {
+    "python": "3.11.9",
+    "venv": ".venv311",
+    "pytest": "8.2.0",
+    "pydantic": "2.7.1",
+    "pydantic_core": "2.18.2",
+    "backend_pytest_reexecuted_this_session": true,
+    "backend_pytest_results": [
+      "86 passed, 1 warning in 4.73s",
+      "143 passed, 1 warning in 8.12s"
+    ],
+    "frontend_build_reexecuted_previous_e3_5_session": true,
+    "frontend_build_modules": 118
+  },
+  "overall": "GO",
+  "next_step": "类案检索助手 E4-1 案情录入端入口合同与本地 only 边界"
+}
+

@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "scanned_paths": [
+    "docs\\development\\m1.1-r3-performance-smoke-20260609-final.json",
+    "docs\\development\\m1.1-r3-performance-smoke-20260609.json",
+    "docs\\development\\day3-7.3-performance-smoke-20260608-test.json",
+    "data\\eval\\product_eval_report_20260609_1130_script.json",
+    "data\\eval\\bad_cases_product_eval_20260609_1130_script.json",
+    "data\\eval\\eval_corpus_preflight_20260609_R4.json",
+    "data\\eval\\day3_rerank_eval_20260608_test.json",
+    "data\\eval\\day3_rerank_eval_20260608.json"
+  ],
+  "violations": [],
+  "forbidden_term_count": 62
+}

@@ -1,0 +1,153 @@
+{
+  "artifact": "e5-release-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E5 法条法规检索）",
+  "step": "E5-1",
+  "title": "法条检索入口合同与法条契约冻结",
+  "generated_at": "2026-06-17T08:37:58+08:00",
+  "nature": "合同冻结步（对标 E-1/E3-1/E4-1）：只冻结契约与红线断言口径，零业务实现、零行为变化。",
+  "baseline": {
+    "file": "docs/development/e4-release-gate-20260617-112542.json",
+    "overall": "GO",
+    "allow_enter_e5": true,
+    "reason": "E5 行为零变化比对基线"
+  },
+  "entry_gate": {
+    "e4_overall_go": true,
+    "allow_enter_e5_true": true,
+    "verdict": "GO"
+  },
+  "statute_contract": {
+    "contract_object": "StatuteRef",
+    "is_5th_cross_product_contract": true,
+    "registered_in": [
+      "落地设计文档/16-多产品生态全链路闭环设计文档.md §4.1.1",
+      "落地设计文档/17-E系列分步骤文档.md §3.5"
+    ],
+    "implemented_in": "apps/api/app/kernel/guardrails/contracts/statute_contract.py",
+    "exported_via": ["app.kernel.guardrails", "app.contracts"],
+    "statute_ref_whitelist": [
+      "statute_id",
+      "law_name",
+      "article_no",
+      "statute_anchors",
+      "article_text",
+      "source_corpus",
+      "effective_status",
+      "related_case_refs"
+    ],
+    "statute_anchor_whitelist": ["text_id", "law_name", "article_no", "anchor_type"],
+    "extra_policy": "forbid",
+    "statute_anchors_required_non_empty": true,
+    "each_anchor_requires_text_id": true,
+    "article_text_must_be_anchored_not_model_generated": true,
+    "forbidden_generated_statute_keys_sample": [
+      "generated_article",
+      "generated_text",
+      "llm_text",
+      "ai_generated_article",
+      "paraphrased_article",
+      "rewritten_article"
+    ],
+    "forbidden_display_body_keys_sample": [
+      "summary",
+      "summary_text",
+      "highlights",
+      "highlight_text",
+      "matched_text",
+      "holding_summary"
+    ],
+    "forbidden_body_keys_reused_from_e1": true,
+    "forbidden_pii_keys_reused_from_e4": true
+  },
+  "cross_jump_contract": {
+    "statute_to_case": "StatuteRef.related_case_refs = CandidateRef[]（白名单七字段、必有 source_anchors、零裁判正文）",
+    "candidate_ref_fields_changed": false,
+    "contract_does_not_embed_opposite_body": true
+  },
+  "enable_statute_search_boundary": {
+    "documented_only_not_wired": true,
+    "on_path_implemented": false,
+    "off_behavior": "端点 403 降级 + 前端无入口（E5-4/E5-5 才接线）"
+  },
+  "flags": {
+    "ENABLE_STATUTE_SEARCH": false,
+    "VITE_ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false,
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false,
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "new_default_true_business_flag_added": false,
+    "m4_m5_e1_flags_unchanged": true
+  },
+  "static_scans": {
+    "include_router_count": 13,
+    "product_packages": {
+      "statute": false,
+      "drafting": false,
+      "casebook": false,
+      "intake": true
+    },
+    "statute_endpoint_registered": false,
+    "statute_contract_imports_retrieval_or_rag": false,
+    "statute_contract_imports_fastapi": false,
+    "judgment_body_leak": 0,
+    "pii_leak": 0,
+    "model_generated_statute_text_leak": 0,
+    "credential_leak": 0,
+    "banned_copy_hits": 0,
+    "forbidden_key_tokens_context": "仅出现在 statute_contract.py 的 docstring 与黑名单常量定义、测试反例 fixture 中；无可执行搬运"
+  },
+  "hard_gates": {
+    "e4_go_and_allow_enter_e5": true,
+    "statute_ref_frozen_and_registered": true,
+    "statute_anchors_required_non_empty": true,
+    "article_text_anchored_not_generated": true,
+    "cross_jump_contract_only": true,
+    "candidate_ref_unchanged": true,
+    "extra_forbid": true,
+    "rejects_body_pii_generated_keys": true,
+    "enable_statute_search_default_false": true,
+    "no_new_default_true_flag": true,
+    "no_product_package": true,
+    "no_statute_endpoint": true,
+    "no_frontend_entry": true,
+    "no_statute_corpus_pipeline": true,
+    "no_kernel_statute_service_wiring": true,
+    "include_router_13": true,
+    "main_ranking_source_selection_rerank_default_unchanged": true,
+    "no_case_index_rebuild": true,
+    "no_qrels_label_in_runtime": true,
+    "no_query_or_case_id_special_casing": true,
+    "e4_regression_zero_new_failure": true
+  },
+  "verification_snapshot": {
+    "authoritative_environment": {
+      "venv": ".venv311",
+      "python": "3.11.9",
+      "note": "后端 pytest 以 host .venv311 实跑为权威口径（沿用 E3-5/E4 纪律）"
+    },
+    "vm_smoke_environment": {
+      "python": "3.10.12",
+      "pydantic": "2.13.4",
+      "database_url": "sqlite:///./test_e5.db",
+      "note": "VM 仅作快速 smoke；pydantic/pydantic_settings/fastapi 经 pip --break-system-packages 临时安装"
+    },
+    "backend": {
+      "e5_focused_suite": "tests/test_e5_statute_contracts.py => 54 passed",
+      "e4_regression_plus_e5": "12 files => 349 passed, 0 failed (VM Py3.10 smoke)"
+    },
+    "frontend": {
+      "touched": false,
+      "note": "E5-1 不写前端；build 仍为 E4 末态 121 modules（未触碰）"
+    }
+  },
+  "overall": "GO",
+  "overall_explanation": "E4 前置 GO 且 allow_enter_e5=true。StatuteRef 经文档16/17 合同变更登记冻结为第 5 个跨产品契约对象，字段白名单 + 锚点必填非空 + extra=forbid + 拒绝裁判正文/富展示/PII/模型生成条文型键；互跳只走契约对象且 CandidateRef 未改。ENABLE_STATUTE_SEARCH 及全部 flag 默认仍 false；无产品包/端点/前端入口/法条管道/内核法条服务接线；include_router 仍 13；主排序/source selection/rerank 默认未变。E5 focused 54 passed + E4 同款回归 349 passed 零新增失败。未出现 NO_GO/BLOCKED 项。",
+  "next_step": {
+    "allow_enter_e5_2": true,
+    "condition": "无剩余前置阻塞；E5-2 起须遵守 StatuteRef/CandidateRef 合同、条文必锚定不杜撰、复用既有向量库+law_articles 标注、不重建案件索引。host .venv311 复跑后端为权威口径。",
+    "title": "类案检索助手 E5-2 法条语料与标注管道"
+  }
+}

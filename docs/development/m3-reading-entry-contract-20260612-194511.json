@@ -1,0 +1,388 @@
+{
+  "version": 1,
+  "artifact": "m3-reading-entry-contract",
+  "generated_at": "2026-06-12T19:45:11+08:00",
+  "step": "M3-1",
+  "scope": {
+    "summary": "M3 reading assistance entry contract only",
+    "implements_m3_2_to_m3_8": false,
+    "changes_online_sorting": false,
+    "changes_source_selection": false,
+    "changes_rerank_defaults": false,
+    "changes_m2_expanded_search_default": false,
+    "changes_qrels_or_labels": false,
+    "changes_historical_eval_artifacts": false,
+    "contains_body_content": false
+  },
+  "read_inputs": [
+    "落地设计文档/13-M3阅读提效分步骤文档.md",
+    "落地设计文档/01-演进计划总览.md",
+    "落地设计文档/03-前端架构与设计系统.md",
+    "落地设计文档/04-数据层设计.md",
+    "落地设计文档/06-完整功能拆解.md",
+    "落地设计文档/07-开发步骤.md",
+    "落地设计文档/12-M2可信检索分步骤文档.md",
+    "docs/development/m2-final-verification-20260612-191945.md",
+    "docs/development/m2-release-gate-20260612-191945.json",
+    "docs/development/m2-parameter-version-20260612-191945.json",
+    "docs/development/m2-entry-contract-20260612-100850.md",
+    "docs/development/m2-entry-contract-20260612-100850.json",
+    "docs/development/m2-source-anchor-closure-20260612-104120.md",
+    "docs/development/m2-source-anchor-closure-20260612-104120.json",
+    "docs/development/m2-coverage-privacy-20260612-140115.md",
+    "docs/development/m2-coverage-privacy-20260612-140115.json",
+    "docs/development/m2-low-confidence-candidates-20260612-151624.md",
+    "docs/development/m2-low-confidence-candidates-20260612-151624.json",
+    "docs/development/m2-expanded-search-gate-20260612-155403.md",
+    "docs/development/m2-expanded-search-gate-20260612-155403.json",
+    "docs/development/m2-feedback-loop-20260612-171213.md",
+    "docs/development/m2-feedback-loop-20260612-171213.json",
+    "docs/development/m2-risk-hints-20260612-181106.md",
+    "docs/development/m2-risk-hints-20260612-181106.json",
+    "apps/api/app/core/config.py",
+    ".env.example"
+  ],
+  "entry_register": {
+    "m2_8_conclusions": {
+      "base_search": "GO",
+      "m2_trusted_retrieval": "GO",
+      "m3_entry": "GO",
+      "evidence": [
+        "docs/development/m2-final-verification-20260612-191945.md",
+        "docs/development/m2-release-gate-20260612-191945.json",
+        "docs/development/m2-parameter-version-20260612-191945.json"
+      ]
+    },
+    "m2_steps": [
+      {
+        "step": "M2-1",
+        "artifact_prefix": "m2-entry-contract-20260612-100850",
+        "status": "GO",
+        "inherited_boundary": "entry_contract_forbidden_fields_default_flags_offline_eval_isolation"
+      },
+      {
+        "step": "M2-2",
+        "artifact_prefix": "m2-source-anchor-closure-20260612-104120",
+        "status": "GO",
+        "inherited_boundary": "source_anchors_required_unanchored_content_hidden_or_degraded"
+      },
+      {
+        "step": "M2-3",
+        "artifact_prefix": "m2-coverage-privacy-20260612-140115",
+        "status": "GO",
+        "inherited_boundary": "coverage_no_fabrication_raw_query_not_persisted"
+      },
+      {
+        "step": "M2-4",
+        "artifact_prefix": "m2-low-confidence-candidates-20260612-151624",
+        "status": "GO",
+        "inherited_boundary": "low_confidence_separate_from_main_results_offline_fields_not_runtime"
+      },
+      {
+        "step": "M2-5",
+        "artifact_prefix": "m2-expanded-search-gate-20260612-155403",
+        "status": "GO",
+        "inherited_boundary": "expanded_search_gated_standard_search_unchanged_rollback_ready"
+      },
+      {
+        "step": "M2-6",
+        "artifact_prefix": "m2-feedback-loop-20260612-171213",
+        "status": "GO",
+        "inherited_boundary": "feedback_sanitized_only_does_not_affect_sorting"
+      },
+      {
+        "step": "M2-7",
+        "artifact_prefix": "m2-risk-hints-20260612-181106",
+        "status": "GO",
+        "inherited_boundary": "risk_hints_source_anchored_review_only_no_sorting_effect"
+      }
+    ],
+    "inherited_gates": {
+      "source_anchors_required_for_case_side_ai_content": true,
+      "source_anchor_minimum_fields": [
+        "case_id",
+        "source_chunk_id"
+      ],
+      "unanchored_case_side_ai_content_visible": false,
+      "raw_user_input_persistence_allowed": false,
+      "absolute_legal_conclusion_copy_allowed": false,
+      "main_search_p95_threshold_ms": 3000,
+      "rollback_or_degrade_required": true,
+      "qrels_label_relevance_runtime_use_allowed": false,
+      "query_id_or_case_id_special_case_allowed": false
+    }
+  },
+  "feature_flags": {
+    "current_evidence": {
+      "ENABLE_WEIGHTED_RERANK": {
+        "config_default": false,
+        "env_example_default": false,
+        "required_to_remain_false": true
+      },
+      "ENABLE_SUMMARY": {
+        "config_default": false,
+        "env_example_default": false,
+        "m3_1_enables": false
+      },
+      "ENABLE_EXPANDED_SEARCH": {
+        "config_default": false,
+        "env_example_default": false,
+        "m3_must_not_change_default": true
+      },
+      "VITE_ENABLE_EXPANDED_SEARCH": {
+        "env_example_default": false,
+        "m3_must_not_change_default": true
+      }
+    },
+    "m3_strategy": {
+      "m3_1_adds_runtime_flags": false,
+      "future_backend_umbrella_flag": "ENABLE_M3_READING_ASSIST",
+      "future_frontend_mirror_flag": "VITE_ENABLE_M3_READING_ASSIST",
+      "future_flags_default_closed_until_step_go": true,
+      "frontend_flags_cannot_bypass_backend": true,
+      "module_level_disable_or_degrade_required": true,
+      "standard_search_defaults_must_not_change": true
+    }
+  },
+  "source_anchor_policy": {
+    "required_for_case_side_ai_content": true,
+    "minimum_fields": [
+      "case_id",
+      "source_chunk_id"
+    ],
+    "optional_fields": [
+      "chunk_type",
+      "anchor_type",
+      "source_ref"
+    ],
+    "unanchored_display_policy": "hide_or_degrade_to_empty_state_or_source_entry",
+    "fake_anchor_allowed": false,
+    "manual_anchor_for_test_allowed": false,
+    "user_side_input_policy": {
+      "request_scoped_abstract_reference_allowed": true,
+      "raw_text_persistence_allowed": false,
+      "logs_reports_json_snapshots_may_store_raw_text": false
+    }
+  },
+  "m3_reading_contract": {
+    "holding_summary": {
+      "api_fields": [
+        "summary_items",
+        "source_anchors",
+        "confidence",
+        "generation_status",
+        "degrade_reason"
+      ],
+      "case_side_ai_content": true,
+      "source_anchors_required": true,
+      "ui_display_rule": "show_only_when_each_summary_item_has_clickable_source_entry",
+      "log_report_json_fields": [
+        "summary_item_count",
+        "anchor_count",
+        "status",
+        "reason_code",
+        "latency_ms"
+      ],
+      "degrade_policy": "empty_state_or_source_fragment_entry",
+      "affects_sorting": false
+    },
+    "issue_focus": {
+      "api_fields": [
+        "items.label",
+        "category",
+        "source_anchors",
+        "confidence",
+        "degrade_reason"
+      ],
+      "case_side_ai_content": true,
+      "source_anchors_required": true,
+      "ui_display_rule": "detail_reading_navigation_only",
+      "log_report_json_fields": [
+        "item_count",
+        "category_count",
+        "status",
+        "reason_code"
+      ],
+      "degrade_policy": "hide_unanchored_or_out_of_scope_items",
+      "affects_sorting": false
+    },
+    "key_elements": {
+      "api_fields": [
+        "items.label",
+        "category",
+        "source_anchors",
+        "confidence",
+        "degrade_reason"
+      ],
+      "case_side_ai_content": true,
+      "source_anchors_required": true,
+      "ui_display_rule": "reviewable_element_navigation_no_outcome_tendency",
+      "log_report_json_fields": [
+        "element_count",
+        "category_count",
+        "anchor_count",
+        "reason_code"
+      ],
+      "degrade_policy": "hide_unanchored_elements",
+      "affects_sorting": false
+    },
+    "fact_alignment": {
+      "api_fields": [
+        "dimension",
+        "query_side_signal",
+        "case_side_facts",
+        "source_anchors",
+        "match_type",
+        "confidence",
+        "degrade_reason"
+      ],
+      "case_side_ai_content": true,
+      "source_anchors_required_for_case_side": true,
+      "query_side_raw_text_persistence_allowed": false,
+      "ui_display_rule": "review_clues_only_same_or_similar_or_difference_to_review",
+      "log_report_json_fields": [
+        "dimension_count",
+        "match_type_count",
+        "status",
+        "reason_code"
+      ],
+      "degrade_policy": "empty_state_on_unanchored_case_side_or_failed_temporary_abstraction",
+      "affects_sorting": false
+    },
+    "similarity_highlights": {
+      "api_fields": [
+        "highlight_id",
+        "case_id",
+        "source_chunk_id",
+        "anchor_type",
+        "related_module",
+        "display_status",
+        "degrade_reason"
+      ],
+      "case_side_ai_content": false,
+      "source_anchors_required": true,
+      "ui_display_rule": "source_location_only_no_body_rewrite",
+      "log_report_json_fields": [
+        "highlight_count",
+        "related_module",
+        "status",
+        "reason_code"
+      ],
+      "degrade_policy": "hide_highlight_or_show_source_entry_unavailable",
+      "affects_sorting": false
+    },
+    "case_compare": {
+      "api_fields": [
+        "selected_case_ids",
+        "compare_sections",
+        "source_anchors",
+        "module_status",
+        "degrade_reason"
+      ],
+      "case_side_ai_content": true,
+      "source_anchors_required_for_case_side_compare_units": true,
+      "ui_display_rule": "current_results_only_closeable_no_workflow_persistence",
+      "log_report_json_fields": [
+        "selected_count",
+        "section_count",
+        "status",
+        "reason_code"
+      ],
+      "degrade_policy": "hide_unanchored_compare_units_and_preserve_main_results",
+      "affects_sorting": false,
+      "workflow_persistence_allowed": false
+    },
+    "citation_copy": {
+      "api_fields": [
+        "case_id",
+        "case_number",
+        "court",
+        "trial_level",
+        "judgment_date",
+        "citation_format",
+        "copy_status"
+      ],
+      "case_side_ai_content": false,
+      "metadata_only": true,
+      "ui_display_rule": "copy_single_case_or_small_explicit_selection_metadata_only",
+      "log_report_json_fields": [
+        "event_type",
+        "count",
+        "status",
+        "reason_code"
+      ],
+      "degrade_policy": "clipboard_failure_safe_notice_no_search_impact",
+      "affects_sorting": false,
+      "workflow_export_allowed": false
+    }
+  },
+  "forbidden_fields_policy": {
+    "allowed_development_artifact_fields": [
+      "field_name",
+      "count",
+      "status",
+      "reason_code",
+      "feature_flag_state",
+      "metric_summary",
+      "test_result",
+      "conclusion"
+    ],
+    "forbidden_body_content_types": [
+      "original_query",
+      "case_fact_body",
+      "candidate_body",
+      "chunk_body",
+      "judgment_body",
+      "user_free_text",
+      "long_context_that_can_reconstruct_raw_text",
+      "unanchored_ai_generated_explanation"
+    ],
+    "logs_reports_json_snapshots_may_store_body_content": false,
+    "api_ui_runtime_display_text_allowed_only_when_anchored": true,
+    "this_artifact_contains_body_content": false
+  },
+  "runtime_boundaries": {
+    "standard_search_default_behavior_changed": false,
+    "source_selection_changed": false,
+    "weighted_rerank_default_changed": false,
+    "m2_expanded_search_default_changed": false,
+    "qrels_runtime_use_allowed": false,
+    "label_runtime_use_allowed": false,
+    "relevance_runtime_use_allowed": false,
+    "query_id_special_case_allowed": false,
+    "case_id_special_case_allowed": false,
+    "m4_workflow_capabilities_allowed": false,
+    "collection_history_export_report_team_reuse_allowed": false
+  },
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_m1_3_candidate_comparison.py tests/test_m1_3_legal_candidate_robustness.py tests/test_feature_flag_rollback.py tests/test_health.py tests/test_search_api_fallback_smoke.py tests/test_summary_service.py tests/test_performance_smoke.py",
+      "status": "passed",
+      "passed_count": 60,
+      "failed_count": 0
+    }
+  ],
+  "m3_focused_contract_tests_added": false,
+  "go_no_go": {
+    "status": "GO",
+    "allows_entering_m3_2": true,
+    "allows_entering_m3_3_to_m3_8": false,
+    "allows_weighted_rerank_default_enablement": false,
+    "allows_standard_search_default_change": false,
+    "failed_gates": [],
+    "reason_codes": [
+      "M2_8_BASE_SEARCH_GO_CONFIRMED",
+      "M2_8_TRUSTED_RETRIEVAL_GO_CONFIRMED",
+      "M2_8_M3_ENTRY_GO_CONFIRMED",
+      "M2_1_TO_M2_7_ALL_GO_CONFIRMED",
+      "ENABLE_WEIGHTED_RERANK_FALSE_CONFIRMED",
+      "M3_FIELD_CONTRACT_DEFINED",
+      "SOURCE_ANCHOR_POLICY_DEFINED",
+      "PRIVACY_AND_FORBIDDEN_FIELDS_DEFINED",
+      "STANDARD_SEARCH_BOUNDARY_PRESERVED",
+      "VALIDATION_PASSED",
+      "NO_BODY_LEAKAGE_IN_ARTIFACT"
+    ],
+    "next_allowed_title": "类案检索助手 M3-2 裁判要旨摘要来源闭环"
+  }
+}

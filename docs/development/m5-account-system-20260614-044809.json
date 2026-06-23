@@ -1,0 +1,255 @@
+{
+  "version": "m5_account_system_v1",
+  "artifact": "m5-account-system",
+  "step": "M5-2",
+  "title": "账号体系与认证骨架",
+  "generated_at": "2026-06-14T04:48:09+08:00",
+  "depends_on": {
+    "m5_1_contract_md": "docs/development/m5-commercial-entry-contract-20260614-030248.md",
+    "m5_1_contract_json": "docs/development/m5-commercial-entry-contract-20260614-030248.json",
+    "m5_1_status": "GO",
+    "m4_7_assessment": "docs/development/m4-team-reuse-assessment-20260614-015309.json",
+    "account_system_prerequisite": "first not_ready capability in M4-7 (account_system)"
+  },
+  "scope": {
+    "summary": "引入服务端用户身份与认证最小骨架，把匿名单用户态映射到具名 user_id；密码仅单向哈希、会话令牌仅存哈希；ENABLE_ACCOUNT_SYSTEM 默认 false，关闭即回 M4 单用户私有末态。",
+    "is_scaffold_only": true,
+    "introduces_named_user_identity": true,
+    "implements_team_isolation": false,
+    "implements_permission_tiering": false,
+    "implements_sharing": false,
+    "implements_bulk_import": false,
+    "implements_tendency_or_billing": false,
+    "changes_online_sorting": false,
+    "changes_source_selection": false,
+    "changes_rerank_defaults": false,
+    "changes_m2_m3_m4_default_behavior": false,
+    "tool_autofills_or_manages_credentials": false
+  },
+  "feature_flag": {
+    "backend": "ENABLE_ACCOUNT_SYSTEM",
+    "backend_config_path": "apps/api/app/core/config.py",
+    "backend_config_default": false,
+    "frontend": "VITE_ENABLE_ACCOUNT_SYSTEM",
+    "frontend_helper": "apps/web/src/config/featureFlags.ts:isAccountSystemEnabled",
+    "frontend_default": false,
+    "env_example_backend": ".env.example:44 (ENABLE_ACCOUNT_SYSTEM=false)",
+    "env_example_frontend": ".env.example:85 (VITE_ENABLE_ACCOUNT_SYSTEM=false)",
+    "off_behavior": "所有 /api/auth/* 端点返回 403 ACCOUNT_SYSTEM_DISABLED；前端 AccountPanel 渲染 null；沉淀仍走本地 localStorage，行为与 M4 单用户私有末态完全一致。",
+    "decision": "DEFAULT_FALSE_SAFE"
+  },
+  "account_data_structure": {
+    "table": "m5_account",
+    "whitelist_columns": [
+      "user_id",
+      "login_name",
+      "display_name",
+      "account_status",
+      "auth_provider",
+      "auth_subject_ref",
+      "password_hash",
+      "created_at",
+      "updated_at",
+      "reason_code"
+    ],
+    "user_filled_short_fields": ["display_name", "login_name"],
+    "credential_columns": {
+      "password_hash": "one_way_pbkdf2_sha256_with_per_user_salt_only",
+      "auth_subject_ref": "sso_provider_and_subject_id_reference_only_no_token",
+      "stores_plaintext_password": false,
+      "stores_sso_or_oauth_token": false
+    },
+    "forbidden_columns_absent": [
+      "plaintext_password",
+      "password",
+      "token",
+      "session_token",
+      "raw_query",
+      "case_fact_body"
+    ]
+  },
+  "session_handling": {
+    "table": "m5_account_session",
+    "columns": [
+      "session_id",
+      "user_id",
+      "token_hash",
+      "created_at",
+      "expires_at",
+      "session_status",
+      "reason_code"
+    ],
+    "stores_raw_session_token": false,
+    "stores_only_token_hash": true,
+    "token_hash_algorithm": "sha256_hex",
+    "raw_token_lifecycle": "仅在 /api/auth/login 响应里一次性下发给客户端；服务端只持久化其 sha256 哈希，不可反推。",
+    "raw_token_in_business_table": false,
+    "raw_token_in_logs": false,
+    "raw_token_in_reports_or_json": false,
+    "raw_token_in_test_snapshots": false,
+    "logout_revokes_session": true
+  },
+  "password_hashing": {
+    "module": "apps/api/app/core/password.py",
+    "algorithm": "pbkdf2_sha256",
+    "iterations_default": 240000,
+    "per_user_salt": true,
+    "constant_time_verify": true,
+    "stored_format": "pbkdf2_sha256$<iterations>$<salt_hex>$<hash_hex>",
+    "stores_plaintext": false,
+    "swappable_to_bcrypt_or_argon2": true,
+    "store_layer_rejects_non_hash": true
+  },
+  "auth_scaffold_endpoints": {
+    "router": "apps/api/app/api/auth.py",
+    "prefix": "/api/auth",
+    "endpoints": [
+      {"path": "/api/auth/register", "method": "POST", "issues_session_token": false},
+      {"path": "/api/auth/login", "method": "POST", "issues_session_token": true},
+      {"path": "/api/auth/logout", "method": "POST", "revokes_session": true},
+      {"path": "/api/auth/session", "method": "GET", "returns_public_account_only": true},
+      {"path": "/api/auth/claim", "method": "POST", "requires_explicit_confirm": true}
+    ],
+    "disabled_status_code": 403,
+    "disabled_error_code": "ACCOUNT_SYSTEM_DISABLED",
+    "anonymous_compatibility": "未启用或未登录时不暴露任何账号能力，沉淀仍走本地 localStorage。"
+  },
+  "single_user_migration_claim": {
+    "module": "apps/api/app/account/migration.py",
+    "endpoint": "/api/auth/claim",
+    "auto_executes": false,
+    "requires_explicit_confirm": true,
+    "metadata_and_reference_only": true,
+    "introduces_body_text": false,
+    "anchor_inheritance": ["case_id", "source_chunk_id"],
+    "missing_anchor_behavior": "degraded_not_fabricated",
+    "forbidden_key_behavior": "rejected",
+    "unknown_key_behavior": "rejected",
+    "output_is_sanitized_counts_and_reason_codes_only": true,
+    "owner_user_id_in_output": "hashed_only (uidh_ prefix)"
+  },
+  "privacy_and_credential_rules": {
+    "logs_record_only": ["user_id_hash", "ok", "reason_code", "path", "counts"],
+    "logs_never_record": ["login_name", "display_name", "password", "session_token", "sso_token"],
+    "user_id_hash_helper": "apps/api/app/account/models.py:hash_user_id (uidh_ prefix, deterministic, masked)",
+    "tool_autofills_credentials": false,
+    "credentials_input_by_user_platform_side": true
+  },
+  "frontend": {
+    "session_state": {
+      "module": "apps/web/src/lib/sessionState.ts",
+      "session_token_storage": "in_memory_runtime_only",
+      "writes_token_to_localStorage": false,
+      "writes_token_to_sessionStorage": false,
+      "writes_token_to_cookie_by_js": false,
+      "public_account_fields_only": ["user_id", "display_name", "account_status", "auth_provider"]
+    },
+    "auth_api_client": {
+      "module": "apps/web/src/services/authApi.ts",
+      "persists_password": false,
+      "persists_token": false,
+      "prefills_credentials": false,
+      "403_maps_to": "disabled (return to M4 anonymous)"
+    },
+    "account_panel": {
+      "module": "apps/web/src/components/account/AccountPanel.tsx",
+      "flag_gated": true,
+      "renders_null_when_disabled": true,
+      "clears_password_field_after_submit": true,
+      "not_wired_into_default_pages": true
+    }
+  },
+  "allowed_changes_only": {
+    "backend_new_files": [
+      "apps/api/app/core/password.py",
+      "apps/api/app/account/__init__.py",
+      "apps/api/app/account/models.py",
+      "apps/api/app/account/store.py",
+      "apps/api/app/account/service.py",
+      "apps/api/app/account/migration.py",
+      "apps/api/app/account/schemas.py",
+      "apps/api/app/api/auth.py"
+    ],
+    "backend_edited_files": ["apps/api/app/main.py (include auth_router only)"],
+    "frontend_new_files": [
+      "apps/web/src/lib/sessionState.ts",
+      "apps/web/src/services/authApi.ts",
+      "apps/web/src/components/account/AccountPanel.tsx"
+    ],
+    "frontend_edited_files": ["apps/web/src/config/featureFlags.ts (add isAccountSystemEnabled only)"],
+    "config_files": ["apps/api/app/core/config.py (M5 flags already from M5-1)", ".env.example (add VITE_ENABLE_ACCOUNT_SYSTEM)"],
+    "tests": [
+      "apps/api/tests/test_m5_account_system.py",
+      "apps/web/src/lib/sessionState.test.ts",
+      "apps/web/src/services/authApi.test.ts",
+      "apps/web/src/components/account/AccountPanel.test.tsx"
+    ],
+    "touched_ranking_or_retrieval": false,
+    "touched_m2_m3_m4_business_logic": false
+  },
+  "verification": {
+    "api_required_tests": {
+      "files": ["tests/test_health.py", "tests/test_search_api_fallback_smoke.py", "tests/test_feature_flag_rollback.py"],
+      "result": "passed"
+    },
+    "api_focused_tests": {
+      "files": ["tests/test_m5_account_system.py"],
+      "count": 19,
+      "result": "passed"
+    },
+    "api_contract_regression": {
+      "files": ["tests/test_m5_commercial_entry_contract.py"],
+      "count": 14,
+      "result": "passed"
+    },
+    "api_total_passed": 51,
+    "web_test": {
+      "total_passed": 235,
+      "new_m5_2_tests_passed": 11,
+      "run_mode": "batched (<=2 files per batch due to VM 45s window)",
+      "result": "passed"
+    },
+    "web_build": {
+      "command": "tsc -b && vite build",
+      "modules_transformed": 118,
+      "result": "passed"
+    },
+    "credential_leak_grep": "no plaintext-credential field names; token stored only as hash; logs emit only user_id_hash/reason_code",
+    "db_note": "tests use temporary sqlite (StaticPool for in-memory shared schema); no postgres dependency"
+  },
+  "acceptance": {
+    "account_only_whitelist_fields_plus_password_hash": true,
+    "anonymous_or_disabled_equals_m4_single_user_private": true,
+    "no_plaintext_credential_or_token_in_artifact_or_log": true,
+    "account_system_does_not_change_main_sorting": true,
+    "no_body_leak": true,
+    "migration_claim_metadata_only_explicit_trigger": true
+  },
+  "stop_loss_checks": {
+    "plaintext_password_stored": false,
+    "token_or_sso_credential_in_table_log_report_or_snapshot": false,
+    "tool_autofills_credentials": false,
+    "enable_account_system_default_true": false,
+    "account_system_changed_existing_default_behavior": false,
+    "any_triggered": false
+  },
+  "go_no_go": {
+    "status": "GO",
+    "allows_entering_m5_3": true,
+    "failed_gates": [],
+    "reason_codes": [
+      "M5_1_CONTRACT_GO_INHERITED",
+      "ACCOUNT_WHITELIST_FIELDS_ONLY_PLUS_PASSWORD_HASH",
+      "PASSWORD_ONE_WAY_HASH_NO_PLAINTEXT",
+      "SESSION_TOKEN_HASH_ONLY_RAW_TOKEN_NEVER_PERSISTED_OR_LOGGED",
+      "ENABLE_ACCOUNT_SYSTEM_DEFAULT_FALSE_CONFIRMED",
+      "DISABLED_RETURNS_TO_M4_SINGLE_USER_PRIVATE",
+      "MIGRATION_CLAIM_METADATA_ONLY_EXPLICIT_CONFIRM",
+      "NO_TOOL_CREDENTIAL_AUTOFILL",
+      "MAIN_SORTING_AND_SOURCE_SELECTION_UNCHANGED",
+      "NO_BODY_LEAK",
+      "API_51_PASSED_WEB_235_PASSED_BUILD_GREEN"
+    ],
+    "next_allowed_title": "类案检索助手 M5-3 团队空间与数据隔离"
+  }
+}

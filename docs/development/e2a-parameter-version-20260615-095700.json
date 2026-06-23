@@ -1,0 +1,52 @@
+{
+  "artifact": "e2a-parameter-version",
+  "step": "E-2a",
+  "generated_at": "2026-06-15T09:57:00",
+  "baseline": "docs/development/e1-parameter-version-20260615-075029.json",
+  "nature": "E-2a 为结构重整（逻辑内核边界冻结），不引入任何新运行时参数、不改任何既有参数默认值；本文件用于与 E-1 逐位比对，证明参数面零变化。",
+  "feature_flags_default_false": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_QUERY_REWRITE": false,
+    "ENABLE_SUMMARY": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "ENABLE_ACCOUNT_SYSTEM": false,
+    "ENABLE_TEAM_WORKSPACE": false,
+    "ENABLE_PERMISSION_TIERING": false,
+    "ENABLE_TEAM_SHARING": false,
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false,
+    "VITE_ENABLE_ECOSYSTEM": false,
+    "VITE_ENABLE_INTAKE": false,
+    "VITE_ENABLE_STATUTE_SEARCH": false,
+    "VITE_ENABLE_DRAFTING": false,
+    "VITE_ENABLE_CASEBOOK": false
+  },
+  "flag_count_vs_e1": {
+    "backend_flags": "与 E-1 一致，无新增",
+    "vite_mirror_flags": "与 E-1 一致，无新增",
+    "any_new_flag_introduced": false,
+    "any_default_changed": false
+  },
+  "runtime_params_unchanged": {
+    "main_sorting": "unchanged",
+    "source_selection": "unchanged",
+    "rerank_default_switch": "unchanged",
+    "retrieval_top_k_and_recall_params": "unchanged",
+    "confidence_split_thresholds": "unchanged",
+    "no_new_runtime_param": true
+  },
+  "kernel_surface_is_structural_only": {
+    "reexported_symbols": 145,
+    "introduces_runtime_param": false,
+    "changes_called_function_signature": false
+  },
+  "verification": {
+    "e1_same_regression_set_passed": 84,
+    "e2a_boundary_guard_passed": 7,
+    "frontend_build_modules": 118,
+    "body_credential_phrasing_hits": 0
+  }
+}

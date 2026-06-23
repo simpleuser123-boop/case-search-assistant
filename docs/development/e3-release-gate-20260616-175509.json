@@ -1,0 +1,93 @@
+{
+  "artifact": "e3-release-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E-3 检索内部服务接口）",
+  "step": "E3-5",
+  "title": "E3 后端 pytest 补验收与 full GO 门禁",
+  "generated_at": "2026-06-16T17:55:09+08:00",
+  "nature": "补齐上一版 E3-5 的唯一 conditional 前置：按设计文档 18 §9 在当前可执行后端依赖环境中重跑两条后端 pytest 命令。未改业务代码。",
+  "supersedes": "docs/development/e3-release-gate-20260616-021500.json",
+  "baseline": {
+    "name": "E3-5 conditional gate",
+    "file": "docs/development/e3-release-gate-20260616-021500.json",
+    "overall": "CONDITIONAL_GO",
+    "conditional_reason": "后端 pytest 未能在上一会话重跑"
+  },
+  "entry_gate": {
+    "source": "docs/development/e3-entry-check-20260615-153349.json",
+    "verdict": "GO"
+  },
+  "contract_gate": {
+    "source": "docs/development/e3-service-contract-20260615-162202.json",
+    "verdict": "GO"
+  },
+  "service_gate": {
+    "source": "docs/development/e3-internal-search-service-20260615-173030.json",
+    "verdict": "GO"
+  },
+  "api_parity_gate": {
+    "source": "docs/development/e3-search-api-parity-20260615-190316.json",
+    "verdict": "GO"
+  },
+  "boundary_gate": {
+    "source": "docs/development/e3-boundary-guard-20260615-201701.json",
+    "verdict": "GO"
+  },
+  "regression_gate": {
+    "verdict": "GO",
+    "backend_pytest_reexecuted_this_session": true,
+    "commands": [
+      {
+        "cwd": "apps/api",
+        "command": "..\\\\..\\\\.venv311\\\\Scripts\\\\python.exe -m pytest tests/test_e3_internal_search_contracts.py tests/test_e3_internal_search_service.py tests/test_e3_search_api_parity.py tests/test_e3_internal_search_boundaries.py",
+        "result": "86 passed, 1 warning in 4.73s",
+        "exit_code": 0
+      },
+      {
+        "cwd": "apps/api",
+        "command": "..\\\\..\\\\.venv311\\\\Scripts\\\\python.exe -m pytest tests/test_m1_3_candidate_comparison.py tests/test_m1_3_legal_candidate_robustness.py tests/test_feature_flag_rollback.py tests/test_health.py tests/test_search_api_fallback_smoke.py tests/test_summary_service.py tests/test_performance_smoke.py tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e2b_shim_equivalence.py",
+        "result": "143 passed, 1 warning in 8.12s",
+        "exit_code": 0
+      }
+    ],
+    "warning": "starlette.formparsers PendingDeprecationWarning for python_multipart import; non-blocking.",
+    "count_note": "旧报告中的 169 + 60 / 204 passed 为 E3-4/E3-3 历史录得口径；本次按设计文档 18 §9 当前两条命令实际收集并通过 86 + 143。"
+  },
+  "frontend_parity_gate": {
+    "source": "docs/development/e3-release-gate-20260616-021500.json",
+    "verdict": "GO",
+    "note": "沿用上一版 E3-5 已实跑前端 build 结果：118 modules，hash 与 E-2b 一致。"
+  },
+  "verification_environment": {
+    "python": "3.11.9",
+    "venv": ".venv311",
+    "pytest": "8.2.0",
+    "pydantic": "2.7.1",
+    "pydantic_core": "2.18.2",
+    "network_evidence": {
+      "baidu_https": "curl -I https://www.baidu.com/ => HTTP 200",
+      "pypi_tcp_443": "Test-NetConnection pypi.org -Port 443 => true",
+      "pypi_https": "PowerShell/curl HTTPS probe still unstable; not required for pytest because dependencies are already installed"
+    }
+  },
+  "hard_gates": {
+    "e3_0_to_e3_4_all_go": true,
+    "candidate_ref_100pct_whitelist": true,
+    "candidate_ref_100pct_has_source_anchors": true,
+    "candidate_ref_zero_body": true,
+    "api_search_external_behavior_compatible": true,
+    "no_new_product_package": true,
+    "no_new_http_endpoint": true,
+    "no_frontend_change": true,
+    "no_flag_default_changed": true,
+    "frontend_build_verifiable_118": true,
+    "backend_pytest_reexecuted_this_session": true
+  },
+  "overall": "GO",
+  "overall_explanation": "上一版 E3-5 的唯一 conditional 前置已补齐：设计文档 18 §9 两条后端 pytest 命令已在当前可用后端依赖环境中实际重跑，结果为 86 passed + 143 passed，均 exit 0。E3-0 至 E3-4 既有门禁沿用上一版全部 GO，未出现 NO_GO/BLOCKED 项。",
+  "next_step": {
+    "allow_enter_e4": true,
+    "condition": "无剩余前置阻塞",
+    "title": "类案检索助手 E4-1 案情录入端入口合同与本地 only 边界"
+  }
+}
+

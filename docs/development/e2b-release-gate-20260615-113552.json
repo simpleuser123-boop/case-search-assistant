@@ -1,0 +1,171 @@
+{
+  "artifact": "e2b-release-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E-2b 共享内核物理迁移）",
+  "step": "E-2b",
+  "generated_at": "2026-06-15T11:35:52",
+  "nature": "结构重整步（先逻辑后物理之物理步）：把四组内核成员物理迁入 app/kernel/{rag,identity,guardrails,data}/，旧路径留 identity-preserving re-export shim，检索链路与全部引用经公开面/shim 解析；零运行时语义变化。",
+  "baseline": "docs/development/e2a-release-gate-20260615-095700.json",
+  "based_on": {
+    "design_doc_17_e2": "落地设计文档/17-E系列分步骤文档.md（E-2 全节，§2.1 内核成员归属为迁移目标权威来源）",
+    "e2a_kernel_boundary": "docs/development/e2a-kernel-boundary-20260615-095700.md",
+    "e2a_parameter_version": "docs/development/e2a-parameter-version-20260615-095700.json",
+    "e1_release_gate": "docs/development/e1-release-gate-20260615-075029.json"
+  },
+  "environment_constraints": {
+    "git_available": false,
+    "git_mv_used": false,
+    "git_mv_note": "本仓工作副本无 .git（历次 E 步基线均为 JSON gate，非 git commit）；git mv 环境不可用。物理迁移以『复制进 kernel + 重写内部 import + 旧路径原地改 shim + 删除被遮蔽的旧 surface 文件』等价实现，git 历史保留在环境层面不可能（已如实记录，非 E-2b 自身违规）。",
+    "mount_mv_rm_initially_denied": true,
+    "delete_permission_granted_for_cleanup": true,
+    "mount_flush_truncation_bug_present": true
+  },
+  "entry_evidence": {
+    "e2a_zero_behavior_change_go": true,
+    "e1_three_conclusions_all_go": true,
+    "enable_weighted_rerank_default_false": true,
+    "six_m4_flags_default_false": true,
+    "seven_m5_flags_default_false": true,
+    "five_e1_product_flags_default_false_incl_vite_mirror": true,
+    "pre_migration_backend_regression_baseline_passed": 91,
+    "entry_gate_passed": true
+  },
+  "physical_migration": {
+    "kernel_groups_now_packages": {
+      "rag": [
+        "retrieval",
+        "rerank",
+        "query_processing",
+        "summary"
+      ],
+      "identity": [
+        "account",
+        "team",
+        "permission",
+        "sharing"
+      ],
+      "guardrails": [
+        "contracts"
+      ],
+      "data": [
+        "pipeline",
+        "case_store"
+      ]
+    },
+    "real_impl_location": "apps/api/app/kernel/<group>/<pkg>/",
+    "migrated_file_count": 56,
+    "content_drift_lines_excluding_import_paths": 0,
+    "content_drift_method": "对 56 个迁入文件与 /tmp/premig 预迁移原件做『归一化 app.* 路径后 diff』，逐一 0 行漂移；证明仅 import 路径改写、无任何被调逻辑/签名/正文改动。",
+    "internal_imports_rewritten_to_kernel": true,
+    "surface_modules_converted_to_packages": [
+      "kernel/rag/__init__.py",
+      "kernel/identity/__init__.py",
+      "kernel/guardrails/__init__.py",
+      "kernel/data/__init__.py"
+    ],
+    "dead_shadowed_surface_files_deleted": [
+      "kernel/rag.py",
+      "kernel/identity.py",
+      "kernel/guardrails.py",
+      "kernel/data.py"
+    ],
+    "kernel_surface_total_symbols": 145
+  },
+  "old_path_shims": {
+    "all_11_old_packages_kept_as_shim": true,
+    "init_form": "re-export（importlib 转发 app.kernel.<group>.<pkg> 全部公开符号 + __all__）",
+    "submodule_form": "self-replacing（sys.modules[__name__] = import_module(新位置)；保证旧子模块路径与新位置为同一模块对象）",
+    "old_path_import_smoke_passed": true,
+    "old_path_import_smoke_cmd": "python3 -c \"import app.retrieval, app.rerank, app.query_processing, app.summary, app.account, app.team, app.permission, app.sharing, app.contracts, app.pipeline, app.case_store; print('shim ok')\"",
+    "no_implementation_fork": true
+  },
+  "shim_equivalence_test": {
+    "test_file": "apps/api/tests/test_e2b_shim_equivalence.py",
+    "passed": 49,
+    "assertions": {
+      "old_package_path_still_importable": "11 包全通过",
+      "submodule_shim_is_same_object": "25 关键子模块 old is new 模块对象",
+      "public_symbols_are_identical_objects": "11 包公开符号逐一 old is new 同一对象",
+      "kernel_surface_symbol_identity_against_old_paths": "13 抽样关键符号 app.kernel.X is 旧路径.X"
+    },
+    "method": "纯对象身份比对（is），不触发排序/检索/DB 写入，无正文、无凭据"
+  },
+  "import_boundary_guard": {
+    "test_file": "apps/api/tests/test_e2a_kernel_boundary.py",
+    "passed": 7,
+    "change": "仅把『公开面文件存在性』断言放宽为接受单文件 <group>.py 或包目录 <group>/__init__.py 两形态之一；依赖方向规则（a/b/c）逐字未改。",
+    "all_passed_after_migration": true
+  },
+  "test_results": {
+    "backend": {
+      "e2a_same_regression_set_passed": 91,
+      "matches_e2a_end_state": true,
+      "plus_shim_equivalence_passed": 49,
+      "regression_plus_shim_total_passed": 140,
+      "full_suite_passed": 545,
+      "full_suite_failed": 2,
+      "full_suite_failures": [
+        "tests/test_day1_api_skeleton.py::test_search_returns_real_candidates_with_query_session_id",
+        "tests/test_day1_api_skeleton.py::test_search_expand_returns_expanded_or_low_confidence_candidates"
+      ],
+      "failures_preexisting_independent_of_e2b": true,
+      "failures_proof": "同两条用例在 /tmp/premig 预迁移备份上以完全相同的 AssertionError(assert 1 == 2) 失败；证明为环境既有、与 E-2b 无关，且不在 E-2a 认证回归集（91）内。full_suite 545 = E-2a 末态 496 + 新增 shim 等价性 49。",
+      "command": "DATABASE_URL=sqlite:///./tmp.db python3 -B -m pytest"
+    },
+    "frontend": {
+      "build_status": "PASS",
+      "build_modules": 118,
+      "matches_e2a_118": true,
+      "tsc_exit": 0,
+      "vitest_all_passed": true,
+      "vitest_test_files_passed": 35,
+      "vitest_total_tests_passed_approx": 283,
+      "prior_blocker_resolved": "首跑时 14 个前端源/测试文件（vite-env.d.ts, config/featureFlags.ts, components/{bulkImport,permission,sharing,team}/*Panel(.test).tsx, pages/HomePage(.test).tsx, pages/SearchPage(.test).tsx, services/{billingApi,tendencyApi}.ts）在磁盘上被既有 mount flush 截断 bug 截断，与 E-2b 无关（E-2b 为后端 apps/api 单边迁移，未触碰任何前端文件）。",
+      "resolution": "用户在 Windows 侧用 codex 补全这些文件；因 host→VM 增量同步按内容写入事件触发（改 mtime 不触发），改已有文件未同步过来。最终用户在 Windows 侧 Compress-Archive 打包 src 为新文件 src_fixed.zip（新文件可同步），VM 侧解压覆盖 src/ 后 tsc 0 error、vite 118 modules transformed、全部 35 个前端测试文件通过。",
+      "e2b_touched_any_frontend_file": false
+    }
+  },
+  "hard_gates": {
+    "e2a_was_go": true,
+    "old_paths_all_kept_as_shim_no_dangling_ref": true,
+    "shim_same_object_no_behavior_fork": true,
+    "called_function_logic_signature_sorting_unchanged": true,
+    "source_selection_unchanged": true,
+    "rerank_default_switch_unchanged": true,
+    "no_new_product_package": true,
+    "kernel_does_not_import_product_package": true,
+    "no_retrieval_service_interface_exposed": true,
+    "no_new_api_endpoint_registered": true,
+    "no_frontend_product_entry_wired": true,
+    "search_chain_consumes_via_surface_only": true,
+    "all_existing_backend_flags_default_false": true,
+    "qrels_label_relevance_not_in_runtime": true,
+    "query_id_case_id_not_used_for_runtime_special_casing": true,
+    "content_drift_excluding_import_paths_zero": true,
+    "frontend_build_modules_unchanged_118": true
+  },
+  "scans": {
+    "body_leakage_hits_in_new_code": 0,
+    "body_leakage_note": "kernel 内命中均为 contracts/whitelist.py 的 FORBIDDEN_BODY_KEYS 定义（护栏本身）、各包 no-body 文档串、及 query_processing/client.py 既有 LLM 调用（逐字迁移，运行时行为不变）；无新增正文写入持久层/报告/JSON/日志/导出。",
+    "plaintext_credential_or_token_hits": 0,
+    "forbidden_disabled_phrasing_hits": 0
+  },
+  "conclusions": {
+    "basic_search_continues_available_backend": "GO",
+    "kernel_physically_migrated_history_env_limited": "GO",
+    "old_path_shims_identity_preserving_no_fork": "GO",
+    "e2b_backend_zero_behavior_change_vs_e2a": "GO",
+    "frontend_build_parity_vs_e2a": "GO (118 modules, tsc 0 error, 35 test files all passed)"
+  },
+  "overall": "GO",
+  "overall_explanation": "E-2b 共享内核物理迁移全部达标且行为零变化。后端：56 文件 0 行内容漂移、shim 旧符号 is 新符号、回归91+shim49=140 passed、硬门禁与扫描全过。前端：首跑时 14 个前端源/测试文件被既有 mount flush 截断 bug 损坏（与 E-2b 无关，E-2b 未触碰任何前端文件）；用户补全并经 zip 通道同步进 VM 后，tsc 0 error、vite 118 modules（与 E-2a 末态一致）、35 个测试文件全通过。E-2「共享内核抽取」整体收官。",
+  "rollback": {
+    "e2b_backend_is_recoverable": true,
+    "method": "删除 app/kernel/{rag,identity,guardrails,data}/ 物理目录，用 /sessions/.../outputs/e2b-backup/app-tests-backup-20260615-104530.tgz 还原 app/ 与 tests/ 即回到 E-2a 末态。",
+    "backup_artifact": "outputs/e2b-backup/app-tests-backup-20260615-104530.tgz"
+  },
+  "next_step": {
+    "step": "E-3",
+    "title": "检索内部服务接口",
+    "precondition": "无前置阻塞；本 e2b-release-gate 即 E-3 比对基线（E-2 末态）。检索助手对内暴露检索服务，输入 SearchProfile / 输出 CandidateRef，护栏在检索侧统一执行。"
+  }
+}

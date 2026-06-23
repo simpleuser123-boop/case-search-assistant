@@ -1,0 +1,32 @@
+{
+  "step": "E6-2",
+  "generated_at": "2026-06-18T13:33:16+08:00",
+  "package": "app/drafting",
+  "feature_flag": "ENABLE_DRAFTING",
+  "feature_flag_default": false,
+  "include_router": 15,
+  "structure_skeleton_item_max_len": 60,
+  "structure_skeleton_max_items": 64,
+  "note_max_len": 200,
+  "tag_max_len": 40,
+  "table_name": "draft_descriptor",
+  "table_columns": [
+    "draft_id", "owner_user_id", "team_id", "visibility",
+    "structure_skeleton", "candidate_refs", "statute_refs",
+    "note", "tag", "status", "reason_code", "created_at", "updated_at"
+  ],
+  "default_visibility": "private",
+  "write_allowed_keys": ["structure_skeleton", "candidate_refs", "statute_refs", "note", "tag", "status", "reason_code"],
+  "forbidden_persist_keys_count": 25,
+  "endpoints": [
+    "POST /api/drafting/drafts",
+    "GET /api/drafting/drafts",
+    "GET /api/drafting/drafts/{draft_id}",
+    "PUT /api/drafting/drafts/{draft_id}"
+  ],
+  "error_codes": ["DRAFTING_DISABLED", "DRAFTING_REQUIRES_LOGIN", "DRAFT_REJECTED", "DRAFT_NOT_FOUND", "VALIDATION_ERROR"],
+  "kernel_public_surfaces_used": ["app.kernel.guardrails", "app.kernel.identity"],
+  "infra_deps": ["app.core.db.engine", "app.core.config.settings", "app.api.errors", "app.schemas", "app.core.logging"],
+  "no_text_generation": true,
+  "no_other_product_import": true
+}

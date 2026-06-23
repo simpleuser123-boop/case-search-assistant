@@ -1,0 +1,241 @@
+{
+  "step": "M5-7",
+  "title": "法院/法官倾向分析（F19）数据质量门禁 v2（路线B·扩充语料后复评）",
+  "generated_at": "2026-06-14T13:40:44",
+  "timestamp": "20260614-134042",
+  "scope_change": "路线B方案B：移除法官维度；F19收窄为法院层级/案由/审级统计透明",
+  "corpus": "data/processed/tendency_corpus_meta.jsonl（裁判文书网备份只读元数据，零正文/零当事人）",
+  "feature_flag": {
+    "name": "ENABLE_TENDENCY_ANALYSIS",
+    "default": false,
+    "gate_recommends_unblock": true,
+    "note": "门禁pass仅授权进入M5-8展示；本步不改config默认值，flag仍默认false，由M5-8在展示侧带边界后再启用"
+  },
+  "gate": {
+    "gate_version": "m5-7-tendency-data-gate-v2",
+    "overall_status": "pass",
+    "f19_can_go_live": true,
+    "enable_tendency_analysis_recommended": true,
+    "data_source": "data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）",
+    "coverage_note": "数据来源：data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）；总样本 80996；覆盖范围 = 刑事判决（JuDGE）；更新时间字段缺失。 倾向分析门禁为只读评估，不改变主排序、不输出个案正文、不预测具名法官结果。",
+    "dimensions": [
+      {
+        "dimension": "court_level_coverage",
+        "name": "法院层级覆盖",
+        "threshold": "≥3 层级 & 非主导占比 ≥10.0%",
+        "actual": "4 层级，非主导层级占比 16.02%",
+        "gate_status": "pass",
+        "critical": true,
+        "data_source": "data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）",
+        "coverage_note": "层级分布：基层=68018, 最高=6, 中级=11898, 高级=991, (empty)=83",
+        "metrics": {
+          "n_levels": 4,
+          "secondary_share": 0.1602,
+          "level_counts": {
+            "基层": 68018,
+            "最高": 6,
+            "中级": 11898,
+            "高级": 991,
+            "(empty)": 83
+          }
+        }
+      },
+      {
+        "dimension": "per_unit_sample_adequacy",
+        "name": "统计单元样本量",
+        "threshold": "≥30 单元且每单元 ≥30",
+        "actual": "214 个达标单元（阈值/单元=30）",
+        "gate_status": "pass",
+        "critical": true,
+        "data_source": "data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）",
+        "coverage_note": "1690 ge fayuan, yangben>=30 de you 214 ge; zhongwei yangben/fayuan=2.0",
+        "metrics": {
+          "units_with_adequate_sample": 214,
+          "min_sample_per_unit_threshold": 30,
+          "observed_min_per_adequate_unit": 30
+        }
+      },
+      {
+        "dimension": "trial_level_coverage",
+        "name": "审级覆盖",
+        "threshold": "≥2 审级 & 非主导占比 ≥10.0%",
+        "actual": "4 审级，非主导占比 22.27%",
+        "gate_status": "pass",
+        "critical": true,
+        "data_source": "data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）",
+        "coverage_note": "审级分布：一审=62961, (empty)=823, 执行=8978, 二审=7907, 再审=327",
+        "metrics": {
+          "n_trials": 4,
+          "secondary_share": 0.2227,
+          "trial_counts": {
+            "一审": 62961,
+            "(empty)": 823,
+            "执行": 8978,
+            "二审": 7907,
+            "再审": 327
+          }
+        }
+      },
+      {
+        "dimension": "case_type_coverage",
+        "name": "案件领域覆盖",
+        "threshold": "≥2 领域",
+        "actual": "5 领域：civil, criminal, administrative, execution, compensation",
+        "gate_status": "pass",
+        "critical": true,
+        "data_source": "data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）",
+        "coverage_note": "",
+        "metrics": {
+          "domains": [
+            "civil",
+            "criminal",
+            "administrative",
+            "execution",
+            "compensation"
+          ]
+        }
+      },
+      {
+        "dimension": "total_sample_size",
+        "name": "总样本量",
+        "threshold": "≥5000",
+        "actual": "80996",
+        "gate_status": "pass",
+        "critical": true,
+        "data_source": "data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）",
+        "coverage_note": "当前总案例 80996，门槛 5000",
+        "metrics": {
+          "total_cases": 80996
+        }
+      },
+      {
+        "dimension": "data_source_transparency",
+        "name": "数据来源可声明",
+        "threshold": "≥95.0%",
+        "actual": "99.99%",
+        "gate_status": "pass",
+        "critical": true,
+        "data_source": "data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）",
+        "coverage_note": "source_url filled 80975/80996; source_name filled 80996/80996; source_updated_at filled 80996/80996",
+        "metrics": {
+          "source_transparency": 0.9999,
+          "source_fields": {
+            "source_url_filled": 80975,
+            "source_name_filled": 80996,
+            "source_updated_at_filled": 80996,
+            "source_updated_at_present": true
+          }
+        }
+      },
+      {
+        "dimension": "case_cause_distribution",
+        "name": "案由分布",
+        "threshold": "案由数 ≥20 且最高频 ≤40%",
+        "actual": "案由数 735，最高频占比 23.93%",
+        "gate_status": "pass",
+        "critical": false,
+        "data_source": "data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）",
+        "coverage_note": "",
+        "metrics": {
+          "distinct_case_cause": 735,
+          "top_share": 0.2393
+        }
+      },
+      {
+        "dimension": "region_completeness",
+        "name": "地域完整度",
+        "threshold": "缺失率 ≤5.0%",
+        "actual": "0.48%",
+        "gate_status": "pass",
+        "critical": false,
+        "data_source": "data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）",
+        "coverage_note": "",
+        "metrics": {
+          "region_missing_rate": 0.0048
+        }
+      },
+      {
+        "dimension": "temporal_consistency",
+        "name": "时间跨度一致性",
+        "threshold": "日期异常率 ≤1.0%",
+        "actual": "0.0%",
+        "gate_status": "pass",
+        "critical": false,
+        "data_source": "data/processed/cases.jsonl（JuDGE 刑事判决，只读元数据统计）",
+        "coverage_note": "parseable year range [1907, 2020]; anomaly(out-of-range/no-year) 1",
+        "metrics": {
+          "date_anomaly_rate": 0.0,
+          "year_min": 1907,
+          "year_max": 2020
+        }
+      }
+    ],
+    "failed_critical_dimensions": [],
+    "failed_noncritical_dimensions": [],
+    "gap_summary": [],
+    "remediation": []
+  },
+  "readonly_metrics_snapshot": {
+    "total_cases": 80996,
+    "court_level_counts": {
+      "基层": 68018,
+      "最高": 6,
+      "中级": 11898,
+      "高级": 991,
+      "(empty)": 83
+    },
+    "trial_level_counts": {
+      "一审": 62961,
+      "(empty)": 823,
+      "执行": 8978,
+      "二审": 7907,
+      "再审": 327
+    },
+    "distinct_courts": 1690,
+    "units_with_adequate_sample": 214,
+    "min_sample_per_adequate_unit": 30,
+    "per_unit_note": "1690 ge fayuan, yangben>=30 de you 214 ge; zhongwei yangben/fayuan=2.0",
+    "judge_field_present": false,
+    "judge_field_completeness": 0.0,
+    "case_type_domains": [
+      "civil",
+      "criminal",
+      "administrative",
+      "execution",
+      "compensation"
+    ],
+    "source_transparency": 0.9999135759790605,
+    "source_fields": {
+      "source_url_filled": 80975,
+      "source_name_filled": 80996,
+      "source_updated_at_filled": 80996,
+      "source_updated_at_present": true
+    },
+    "source_note": "source_url filled 80975/80996; source_name filled 80996/80996; source_updated_at filled 80996/80996",
+    "region_missing_rate": 0.004839745172601116,
+    "distinct_case_cause": 735,
+    "top_case_cause_share": 0.23933280655834857,
+    "date_anomaly_rate": 1.2346288705615092e-05,
+    "year_min": 1907,
+    "year_max": 2020,
+    "date_note": "parseable year range [1907, 2020]; anomaly(out-of-range/no-year) 1"
+  },
+  "judge_only_baseline": {
+    "total_cases": 2505,
+    "case_type_domains": [
+      "criminal"
+    ],
+    "note": "仅JuDGE刑事2505条评估仍fail，证明门禁非永远pass"
+  },
+  "boundaries": {
+    "readonly": true,
+    "data_modified": false,
+    "product_cases_jsonl_modified": false,
+    "vector_store_modified": false,
+    "eval_set_modified": false,
+    "main_ranking_changed": false,
+    "emits_case_body": false,
+    "emits_named_judge_prediction": false,
+    "judge_dimension": "removed"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "command": "npm run build",
+  "cwd": "C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\web",
+  "exit_code": 0,
+  "duration_ms": 3447,
+  "timed_out": false,
+  "stdout_line_count": 13,
+  "stderr_line_count": 0,
+  "stdout_sha256": "96dc0d9a6c4fdaad849a325fe740b3459b8c01cc6610e5dc004f2d6e6848a29d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 574,
+  "stderr_bytes": 0,
+  "output_policy": "stdout/stderr are hashed only to avoid writing raw query or case facts.",
+  "dry_run_summary": null
+}

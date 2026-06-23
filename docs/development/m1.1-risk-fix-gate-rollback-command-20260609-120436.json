@@ -1,0 +1,15 @@
+{
+  "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\day3_7_5_rollback_drill.py\" --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-rollback-drill-20260609-120436.json\"",
+  "cwd": "C:\\Users\\yyl\\Desktop\\类案检索助手",
+  "exit_code": 0,
+  "duration_ms": 1531,
+  "timed_out": false,
+  "stdout_line_count": 114,
+  "stderr_line_count": 4,
+  "stdout_sha256": "51108eb89cd75b17839965adc2229284750e365bbed36145e0cd3ba5513fbbf9",
+  "stderr_sha256": "40d2a78c5fd3895c465f9961b27a9b7397cb7192d98c010dd1772872ba6513e2",
+  "stdout_bytes": 3479,
+  "stderr_bytes": 418,
+  "output_policy": "stdout/stderr are hashed only to avoid writing raw query or case facts.",
+  "dry_run_summary": null
+}

@@ -1,0 +1,15 @@
+{
+  "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\db_smoke.py\"",
+  "cwd": "C:\\Users\\yyl\\Desktop\\类案检索助手",
+  "exit_code": 1,
+  "duration_ms": 4861,
+  "timed_out": false,
+  "stdout_line_count": 35,
+  "stderr_line_count": 0,
+  "stdout_sha256": "91d15ac7cb0643c822467e25656931c0b2bcaa03c62734209fb4182b0f47fe66",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 633,
+  "stderr_bytes": 0,
+  "output_policy": "stdout/stderr are hashed only to avoid writing raw query or case facts.",
+  "dry_run_summary": null
+}

@@ -1,0 +1,64 @@
+{
+  "step": "M5-9",
+  "title": "商业化闭环（套餐/试用/计费/续费意愿）",
+  "timestamp": "2026-06-15T04:20:28+08:00",
+  "decision": "GO",
+  "prerequisites": "M5-1..M5-8 all GO",
+  "backend": {
+    "new_package": "apps/api/app/billing/{__init__,privacy,models,schemas,store,service}.py",
+    "new_api": "apps/api/app/api/billing.py",
+    "registered_in": "apps/api/app/main.py",
+    "tables": [
+      {"name": "m5_billing_plan", "credentials": false, "note": "套餐目录,价格仅展示"},
+      {"name": "m5_subscription", "credentials": false, "note": "订阅+试用+续费意愿,白名单字段"},
+      {"name": "m5_payment_receipt_ref", "credentials": false, "note": "仅 payment_ref 单向哈希+状态+金额展示串"}
+    ],
+    "endpoints": [
+      "/api/billing/plans", "/api/billing/trial", "/api/billing/renewal-intent",
+      "/api/billing/payment-receipt", "/api/billing/subscription"
+    ],
+    "flag": "ENABLE_BILLING",
+    "flag_default": false,
+    "disabled_behavior": "403 BILLING_DISABLED, 回到 M5-8 末态",
+    "no_ranking_import": true
+  },
+  "frontend": {
+    "feature_flag": "isBillingEnabled (默认 false)",
+    "api_client": "apps/web/src/services/billingApi.ts (无凭据字段)",
+    "component": "apps/web/src/components/billing/BillingPanel.tsx (flag关渲染null,无凭据输入框)",
+    "env_example": ["VITE_ENABLE_BILLING=false", "VITE_ENABLE_TENDENCY_ANALYSIS=false"]
+  },
+  "credential_guard": {
+    "module": "apps/api/app/billing/privacy.py",
+    "fail_closed": true,
+    "forbidden_keys": "卡号/银行账户/CVV/各类支付令牌明文 + 正文/原始query键",
+    "value_regex": ["13-19位连续数字疑似卡号(边界排除字母数字下划线)", "tok_live_/sk_live_/pi_/card_ 等令牌前缀字面量"],
+    "tested_blocks": 7,
+    "false_positives": 0
+  },
+  "verification": {
+    "required_three": {"cmd": "test_health + test_search_api_fallback_smoke + test_feature_flag_rollback", "passed": 18},
+    "focused": {"file": "tests/test_m5_billing.py", "passed": 29},
+    "neighbor_regression": {"suites": "billing+bulk_import+tendency_analysis", "passed": 62},
+    "m5_regression": {"suites": "account/permission/sharing/team_isolation/release_gate", "passed": 79},
+    "gate_contract_reuse": {"suites": "tendency_gate/commercial_entry_contract/m4_team_reuse", "passed": 50},
+    "frontend_billing": {"file": "BillingPanel.test.tsx", "passed": 5},
+    "frontend_other": "services/lib/components/pages 分批全 ✓",
+    "build": {"tool": "vite build", "modules": 118, "rc": 0, "note": "新 outDir 规避 VM EPERM"}
+  },
+  "acceptance_criteria": {
+    "whitelist_only_no_credentials": true,
+    "payment_external_no_proxy_storage": true,
+    "billing_state_not_affect_ranking": true,
+    "flag_off_no_entry": true,
+    "no_credential_in_artifacts_or_logs": true
+  },
+  "no_go_triggers": {
+    "proxy_or_store_credentials": false,
+    "credential_or_token_persisted_or_logged": false,
+    "billing_affects_search_quality": false,
+    "billing_default_enabled": false
+  },
+  "leak_scan": {"real_credential_literals_in_source": 0},
+  "next_step": "M5-10 验收（M5 收官）"
+}

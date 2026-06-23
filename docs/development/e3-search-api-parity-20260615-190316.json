@@ -1,0 +1,57 @@
+{
+  "step": "E3-3",
+  "title": "/api/search 消费内部检索服务",
+  "timestamp": "20260615-190316",
+  "baseline": "docs/development/e3-internal-search-service-20260615-173030.json",
+  "upstream_baseline": "docs/development/e2b-release-gate-20260615-113552.json",
+  "overall": "GO",
+  "next_step_allowed": "E3-4",
+  "nature": "改 /api/search 内部实现以消费 InternalSearchService.execute；外部行为零变化；不注册端点、不建产品包、不改前端、不改排序/召回/summary 策略、不写库。",
+  "gates": {
+    "service_consumption_gate": "GO",
+    "api_parity_gate": "GO",
+    "error_code_gate": "GO",
+    "degrade_gate": "GO",
+    "log_sanitization_gate": "GO",
+    "single_authority_gate": "GO",
+    "boundary_gate": "GO",
+    "privacy_gate": "GO",
+    "flag_gate": "GO",
+    "regression_gate": "GO"
+  },
+  "regression": {
+    "e3_focused": {"files": ["test_e3_internal_search_contracts.py", "test_e3_internal_search_service.py", "test_e3_search_api_parity.py"], "passed": 64},
+    "regression_set": {"files": ["test_m1_3_candidate_comparison.py", "test_m1_3_legal_candidate_robustness.py", "test_feature_flag_rollback.py", "test_health.py", "test_search_api_fallback_smoke.py", "test_summary_service.py", "test_performance_smoke.py", "test_e1_contracts.py", "test_e2a_kernel_boundary.py", "test_e2b_shim_equivalence.py"], "passed": 140},
+    "total_passed": 204,
+    "failed": 0
+  },
+  "compatibility": {
+    "response_model_changed": false,
+    "frontend_change_required": false,
+    "search_request_fields": ["query", "mode", "limit"],
+    "search_response_fields_stable": true
+  },
+  "boundary": {
+    "new_http_endpoint": false,
+    "include_router_count": 12,
+    "search_post_paths": ["/api/search", "/api/search/expand"],
+    "product_packages_present": [],
+    "deep_kernel_import": false,
+    "ranking_recall_summary_changed": false,
+    "db_writes_added": false,
+    "profile_or_candidateref_persisted": false
+  },
+  "privacy": {
+    "query_text_as_data_field": "仅 SearchProfile(query_text=payload.query) 内存构造（提示词明确要求），不写持久层/日志",
+    "log_only": ["query_session_id", "input_hash", "counts", "degraded_reasons", "error_type"],
+    "body_leak": "none",
+    "banned_phrases": "none",
+    "secret_print": "none"
+  },
+  "flags_default_false": ["ENABLE_QUERY_REWRITE", "ENABLE_WEIGHTED_RERANK", "ENABLE_SUMMARY", "ENABLE_EXPANDED_SEARCH", "ENABLE_ECOSYSTEM"],
+  "behavior_diffs": [
+    "summary 异常日志由 API 层 search_summary_unhandled 迁为服务层 internal_search_summary_unhandled（消息名变化，降级口径 SUMMARY_LLM_UNAVAILABLE 不变，response 无差异）。",
+    "新增服务层 internal_search_completed 日志（不含正文）；API 层 search_completed 仍保留。两者均脱敏。"
+  ],
+  "frontend_parity_gate": "NOT_RUN（E3-3 未触碰前端；前端 build 复核留待 E3-5 收官，与 E-2b 既有截断条件一致）"
+}

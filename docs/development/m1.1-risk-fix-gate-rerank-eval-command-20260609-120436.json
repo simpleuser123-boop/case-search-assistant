@@ -1,0 +1,15 @@
+{
+  "command": "python -m app.eval.day3_rerank_eval --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-rerank-eval-20260609-120436.json\"",
+  "cwd": "C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api",
+  "exit_code": 0,
+  "duration_ms": 8911,
+  "timed_out": false,
+  "stdout_line_count": 25,
+  "stderr_line_count": 6,
+  "stdout_sha256": "6920469d27c415d9ece0619f11a7f80db974d5a7eb7e17d5255c020d626d90b9",
+  "stderr_sha256": "19b866a73605403ac28ed2e2e77f8551308f1bc66b6d72e108ffe16478ca109c",
+  "stdout_bytes": 933,
+  "stderr_bytes": 1424,
+  "output_policy": "stdout/stderr are hashed only to avoid writing raw query or case facts.",
+  "dry_run_summary": null
+}

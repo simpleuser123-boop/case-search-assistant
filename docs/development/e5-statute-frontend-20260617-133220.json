@@ -1,0 +1,90 @@
+{
+  "step": "E5-5",
+  "title": "前端法条检索页（gated）",
+  "timestamp": "20260617-133220",
+  "prerequisite": {
+    "e5_4_api": "e5-statute-api-20260617-122654",
+    "e5_4_verdict": "CONDITIONAL_GO",
+    "allow_enter_e5_5": true
+  },
+  "overall": "GO",
+  "allow_enter_e5_6": true,
+  "authoritative_runner": "前端 VM (vitest 1.6.0 + vite 5.2.11)；后端 statute 端点契约未触碰，无需 host pytest",
+  "files_added": [
+    "apps/web/src/services/statuteApi.ts",
+    "apps/web/src/services/statuteApi.test.ts",
+    "apps/web/src/pages/StatutePage.tsx",
+    "apps/web/src/pages/StatutePage.test.tsx",
+    "docs/development/e5-statute-frontend-20260617-133220.md",
+    "docs/development/e5-statute-frontend-20260617-133220.json"
+  ],
+  "files_modified": [
+    "apps/web/src/config/featureFlags.ts (新增 isStatuteSearchEnabled，读 VITE_ENABLE_STATUTE_SEARCH 默认 false；正交于 intake/M1-M5 验收开关)",
+    "apps/web/src/config/featureFlags.test.ts (新增 4 条 statute flag 默认/正交/on 路径断言)",
+    "apps/web/src/app/router.tsx (gated 注册 /statute 路由)",
+    "apps/web/src/pages/HomePage.tsx (gated 渲染「法条检索」入口)",
+    "apps/web/src/pages/SearchPage.tsx (gated 渲染「跳法条检索」反向入口)",
+    "落地设计文档/20-E5法条检索分步骤系统提示词文档.md (E5-5 小节补充)"
+  ],
+  "endpoints_consumed": [
+    {"method": "POST", "path": "/api/statute/search", "body_whitelist": ["case_cause", "region", "trial_level_preference", "dispute_focus_keywords", "query_text", "mode", "limit"]},
+    {"method": "POST", "path": "/api/statute/cases-by-statute", "body_whitelist": ["statute_id", "mode", "limit"]},
+    {"method": "POST", "path": "/api/statute/by-case", "body_whitelist": ["case_id", "mode", "limit"]}
+  ],
+  "gating": {
+    "flag": "VITE_ENABLE_STATUTE_SEARCH",
+    "default": false,
+    "double_gate": "router 不注册 /statute + StatutePage 内部 isStatuteSearchEnabled() 返回 null + HomePage/SearchPage 入口条件渲染",
+    "orthogonal_to": ["VITE_ENABLE_INTAKE", "VITE_ENABLE_M1_M5_ACCEPTANCE"]
+  },
+  "privacy_redlines": {
+    "article_text_only_from_backend": true,
+    "frontend_never_generates_or_rewrites_statute_text": true,
+    "anchorless_hits_dropped_clientside": "hasDisplayableAnchor 过滤无 text_id 锚点命中",
+    "crosslink_candidateref_zero_body": true,
+    "crosslink_link_carries_case_id_only": true,
+    "no_browser_storage": "localStorage/sessionStorage/IndexedDB/cookie 仅出现在注释，运行时断言未调用",
+    "no_pii_in_url_query_string": true,
+    "request_body_explicit_whitelist_no_spread": true
+  },
+  "verification": {
+    "tsc_b": "pass (no output)",
+    "vite_build": "123 modules transformed (E4 末态 121 + 2 gated statute 文件)；dist EPERM 经 --outDir /tmp 旁路后 built ok",
+    "vitest": {
+      "statuteApi.test.ts": "8 passed",
+      "StatutePage.test.tsx": "5 passed",
+      "featureFlags.test.ts": "9 passed",
+      "HomePage.test.tsx": "9 passed (回归)",
+      "SearchPage.test.tsx": "33 passed (回归)",
+      "total_touched": "64 passed"
+    }
+  },
+  "privacy_scan": {
+    "judgment_body_rendered": 0,
+    "model_generated_statute_text": 0,
+    "pii_in_request_body_or_url_or_storage": 0,
+    "credentials": 0,
+    "forbidden_marketing_or_verdict_copy": 0,
+    "anchorless_statute_text_rendered": 0
+  },
+  "flag_defaults_recheck": {
+    "ENABLE_STATUTE_SEARCH": false,
+    "VITE_ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_INTAKE": false,
+    "VITE_ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false,
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false,
+    "ENABLE_WEIGHTED_RERANK": false
+  },
+  "untouched": {
+    "backend_statute_contract": "未改 apps/api/app/statute/*（schemas/router/service）",
+    "api_search": "未改 /api/search、/api/search/expand",
+    "e3_internal_search_service": "未改",
+    "intake_endpoint": "未改 /api/intake/*",
+    "ranking_recall_source_selection_rerank": "未改",
+    "new_backend_product_package_or_endpoint": "无新建"
+  },
+  "statute_corpus_coverage": "刑事（沿用 E5-2 JuDGE law_corpus 种子）；民事/行政未扩充，前端不假设覆盖范围，UI 不杜撰条文",
+  "next_step_title": "类案检索助手 E5-6 消费边界与护栏守门"
+}

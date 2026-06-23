@@ -1,0 +1,93 @@
+{
+  "step": "M5-6",
+  "title": "批量导入",
+  "timestamp": "20260614-093728",
+  "decision": "GO",
+  "summary": "落地 M4-7 评估中 bulk_import: not_ready。支持把既有清单/案例批量导入团队空间；导入即元数据/引用 only，绝不引入正文；沿用 case_id + source_chunk_id 做锚点完整性校验；导入对象默认归属当前 owner、默认私有；ENABLE_BULK_IMPORT 默认 false 关闭即回 M5-5/M4 末态。",
+  "prerequisites": {
+    "M5-1_entry_contract": "GO",
+    "M5-2_account_system": "GO",
+    "M5-3_team_isolation": "GO",
+    "M5-4_permission_tiering": "GO",
+    "M5-5_sync_and_sharing": "GO"
+  },
+  "backend": {
+    "new_package": "apps/api/app/bulk_import/",
+    "files": [
+      "bulk_import/__init__.py",
+      "bulk_import/models.py",
+      "bulk_import/validation.py",
+      "bulk_import/store.py",
+      "bulk_import/service.py",
+      "bulk_import/schemas.py",
+      "api/bulk_import.py"
+    ],
+    "main_py_wiring": "include bulk_import_router (仅新增 import + include_router 两行)",
+    "data_structure": {
+      "table": "m5_bulk_import_job",
+      "columns": [
+        "import_job_id", "source_type", "item_count", "imported_count",
+        "rejected_count", "duplicate_count", "import_status", "degrade_reason",
+        "owner_user_id", "team_id", "created_at", "updated_at"
+      ],
+      "note": "仅聚合统计 + 短状态码 + 结构化关系 + 时间戳；无正文列；导入项明细不入账本表（避免正文经明细列混入）。实际导入对象复用 M5-3 m5_sedimentation_object。"
+    },
+    "import_boundary": {
+      "allowed_keys": ["case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchors", "note", "tag", "label", "list_id", "list_title", "report_id"],
+      "forbidden_keys": ["raw_query", "query", "case_fact_body", "candidate_body", "chunk_body", "judgment_long_text", "summary_body", "holding_body", "compare_body", "user_free_long_text", "text", "content", "password", "token", "session_token"],
+      "anchor_rule": "沿用 case_id + source_chunk_id；AI 内容承载型(case_list/report_template)无合法锚点则拒绝；任何出现的锚点都必须合法，否则拒绝；锚点净化只保留 case_id/source_chunk_id/anchor_type，不伪造锚点。",
+      "dedup": "按 case_id 去重（批内 + owner 私有域已存在）。",
+      "ownership": "导入对象默认 owner 私有(team_id=None / visibility=private)；team_id 仅进作业账本留痕，不据此放权可见性。可见性仍由 M5-3 tenant_visibility_clause 唯一承载。"
+    },
+    "api_endpoints": [
+      "POST /api/bulk-import/run (flag-gated, login-required)",
+      "GET /api/bulk-import/jobs (flag-gated, login-required)"
+    ],
+    "degrade": {
+      "flag_off": "403 BULK_IMPORT_DISABLED，不建表/不导入，回 M5-5/M4 末态",
+      "not_logged_in": "401 BULK_IMPORT_REQUIRES_LOGIN",
+      "body_field_via_schema": "422 (ImportItem extra=forbid)",
+      "job_level_failures": "empty_batch / invalid_source_type / batch_too_large -> failed 账本留痕，安全返回不影响主链路"
+    }
+  },
+  "frontend": {
+    "files": [
+      "apps/web/src/services/bulkImportApi.ts",
+      "apps/web/src/components/bulkImport/BulkImportPanel.tsx",
+      "apps/web/src/config/featureFlags.ts (新增 isBulkImportEnabled)"
+    ],
+    "flag": "VITE_ENABLE_BULK_IMPORT (默认 false)；关闭态 BulkImportPanel 渲染 null=回 M5-5/M4 末态；未登录也渲染 null",
+    "body_guard": "toItemBody 把每项收窄到白名单键；粘贴解析只取 case_id/案号/法院/source_chunk_id 四列，多余列(含正文)忽略；不上送正文",
+    "mounted": false,
+    "note": "面板为 flag-gated 独立组件，尚未挂载进主页面（与 M5-2~M5-5 同款，build 仍 118 modules）。"
+  },
+  "flags": {
+    "ENABLE_BULK_IMPORT": "config.py:68 默认 false（M5-1 已就位）",
+    "env_backend": ".env.example ENABLE_BULK_IMPORT=false",
+    "env_frontend": ".env.example VITE_ENABLE_BULK_IMPORT=false (本步新增；同时补回 M5-5 遗漏的 VITE_ENABLE_TEAM_SHARING)"
+  },
+  "tests": {
+    "backend_focused": "tests/test_m5_bulk_import.py 18 passed",
+    "backend_required_subset": "test_health + test_search_api_fallback_smoke + test_feature_flag_rollback 18 passed",
+    "backend_regression": "test_m5_sharing + test_m5_permission + test_m4_team_reuse 53 passed",
+    "frontend_focused": "bulkImportApi.test.ts 4 + BulkImportPanel.test.tsx 4 = 8 passed",
+    "frontend_full": "31 files 266 passed",
+    "tsc": "exit 0",
+    "vite_build": "118 modules built (--outDir /tmp 规避挂载 EPERM)"
+  },
+  "body_leak_inspection": {
+    "method": "脏批(含 case_fact_body/raw_query/chunk_body/锚点夹带 judgment_long_text/未知列/password)导入后抽查实际落库行",
+    "result": "含正文/凭据键的项被整项拒绝(forbidden_body_field)；仅干净锚点项落库；锚点剥离为 whitelist-only；leak terms 命中=0",
+    "verdict": "PASS"
+  },
+  "acceptance": {
+    "only_metadata_refs_short_fields": true,
+    "missing_anchor_rejected_no_fabrication": true,
+    "default_owner_private": true,
+    "flag_off_no_entry": true,
+    "no_body_leak": true,
+    "main_ranking_unchanged": true
+  },
+  "stop_loss_triggered": false,
+  "next_step": "M5-7 法院/法官倾向分析（F19）数据门禁"
+}

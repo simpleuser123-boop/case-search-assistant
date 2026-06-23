@@ -1,0 +1,15 @@
+{
+  "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\day3_7_3_performance_smoke.py\" --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-performance-smoke-20260609-123148.json\"",
+  "cwd": "C:\\Users\\yyl\\Desktop\\类案检索助手",
+  "exit_code": 0,
+  "duration_ms": 27316,
+  "timed_out": false,
+  "stdout_line_count": 360,
+  "stderr_line_count": 24,
+  "stdout_sha256": "526b71101849d9bdac8144faf903f7e20f89eea6ecf5b0b0a0034a4f7fc11f97",
+  "stderr_sha256": "7516cfcdf853e06c0d4c37ef140da397066787d298561a40286d548d7e5f6340",
+  "stdout_bytes": 8174,
+  "stderr_bytes": 7079,
+  "output_policy": "stdout/stderr are hashed only to avoid writing raw query or case facts.",
+  "dry_run_summary": null
+}

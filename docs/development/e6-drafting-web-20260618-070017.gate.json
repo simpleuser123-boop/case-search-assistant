@@ -1,0 +1,102 @@
+{
+  "milestone": "E6",
+  "step": "E6-3",
+  "title": "前端文书工作台页",
+  "generated_at": "2026-06-18T07:00:17+00:00",
+  "overall": "GO",
+  "nature": "受 VITE_ENABLE_DRAFTING 三重门控的前端文书工作台页 + draftingApi 客户端；只组装(标题骨架+带锚点引用+短字段)不起草；禁浏览器存储；引用零正文；草稿不入 URL。对标 E4-4/E5-5 gated 前端范式。",
+  "entry_gate": {
+    "e6_2_api_gate": "e6-drafting-api-20260618-053316.gate.json",
+    "e6_2_overall": "CONDITIONAL_GO",
+    "allow_enter_e6_3": true
+  },
+  "added_files": [
+    "apps/web/src/services/draftingApi.ts",
+    "apps/web/src/pages/DraftingPage.tsx",
+    "apps/web/src/services/draftingApi.test.ts",
+    "apps/web/src/pages/DraftingPage.test.tsx",
+    "docs/development/e6-drafting-web-20260618-070017.md",
+    "docs/development/e6-drafting-web-20260618-070017.gate.json"
+  ],
+  "modified_files": [
+    "apps/web/src/config/featureFlags.ts",
+    "apps/web/src/config/featureFlags.test.ts",
+    "apps/web/src/app/router.tsx",
+    "apps/web/src/pages/HomePage.tsx",
+    "apps/web/src/pages/SearchPage.tsx",
+    "落地设计文档/21-E6文书工作台分步骤系统提示词文档.md"
+  ],
+  "feature_flag": "VITE_ENABLE_DRAFTING",
+  "feature_flag_default": false,
+  "triple_gating": {
+    "route_not_registered": "router.tsx if(isDraftingEnabled()) 否则 /drafting 不进 routes",
+    "entry_not_rendered": "HomePage/SearchPage draftingEnabled ? <Link/> : null",
+    "component_returns_null": "DraftingPage 顶部 if(!isDraftingEnabled()) return null"
+  },
+  "flag_orthogonality": "isDraftingEnabled 直读 VITE_ENABLE_DRAFTING，不走 readM1M5UiFlag；与 M1M5/intake/statute 正交(featureFlags.test 4 守门)",
+  "api_client": {
+    "endpoints": [
+      "POST /api/drafting/drafts (createDraft)",
+      "GET /api/drafting/drafts (listDrafts)",
+      "GET /api/drafting/drafts/{id} (getDraft)",
+      "PUT /api/drafting/drafts/{id} (updateDraft)"
+    ],
+    "request_body_whitelist": ["structure_skeleton", "candidate_refs", "statute_refs", "note", "tag"],
+    "no_spread": true,
+    "auth": "Authorization: Bearer <token>（不入 body/URL）",
+    "draft_id_in_path_not_query": true,
+    "anchorless_refs_dropped": true,
+    "skeleton_only_titles": "去空白/丢空项/裁项数(≤64)/裁单项(≤60)"
+  },
+  "assemble_not_draft": {
+    "no_ai_drafting_entry": true,
+    "no_generate_paragraph_entry": true,
+    "no_conclusion_or_verdict_prediction": true,
+    "ui": "SkeletonEditor(纯标题) + ReferencePicker(带锚点引用) + ShortFields(note/tag) + SaveBar + SavedDrafts",
+    "dom_assertion": "无『自动起草/一键起草/AI 起草/生成段落/生成正文/生成结论/自动预测/预测胜负』文案，按钮文本不匹配 /起草|生成|预测|胜负|胜率/"
+  },
+  "refs_zero_body_proof": "toDraftRequestBody 逐字段取键不 spread；注入 draft_body/generated_text/conclusion/win_probability/verdict/raw_case/password 序列化 0 命中；candidate_refs 丢 summary/highlight/chunk_text/judgment_text",
+  "storage_scan": {
+    "pattern": "localStorage|sessionStorage|indexedDB|document.cookie",
+    "files": ["src/services/draftingApi.ts", "src/pages/DraftingPage.tsx"],
+    "actual_call_hits": 0,
+    "comment_only_hits": 1,
+    "note": "唯一命中为红线注释，非调用；DraftingPage.test 用 spyOn(Storage.prototype) 验证全流程 0 调用"
+  },
+  "draft_not_in_url": true,
+  "no_backend_or_search_change": "仅新增前端文件 + isDraftingEnabled flag + Home/Search 入口 gated 渲染；未改后端契约/api-search/E3/intake/statute/排序",
+  "build": {
+    "command": "npx vite build --outDir /tmp",
+    "modules": 125,
+    "baseline_modules": 123,
+    "delta": "+2 (DraftingPage + draftingApi)",
+    "status": "built ok"
+  },
+  "touched_tests": {
+    "src/services/draftingApi.test.ts": 13,
+    "src/pages/DraftingPage.test.tsx": 8,
+    "src/config/featureFlags.test.ts": 13,
+    "src/pages/HomePage.test.tsx": 9,
+    "src/pages/SearchPage.test.tsx": 33,
+    "src/pages/StatutePage.test.tsx": 5,
+    "src/pages/IntakePage.test.tsx": 6,
+    "total_passed": 87,
+    "regressions": 0
+  },
+  "hard_gates": {
+    "triple_gated_default_false_no_render": true,
+    "flag_orthogonal_to_m1m5_intake_statute": true,
+    "assemble_only_no_drafting_entry": true,
+    "refs_anchor_plus_metadata_only_zero_body": true,
+    "anchorless_refs_blocked_frontend": true,
+    "no_browser_storage": true,
+    "draft_not_in_url": true,
+    "no_change_to_backend_search_statute_intake_ordering": true,
+    "vite_enable_drafting_default_false": true
+  },
+  "vm_stale_mount_note": "host Edit/Write 经 VM 挂载读出多处尾部截断(featureFlags.ts/featureFlags.test.ts/HomePage.tsx/router.tsx/SearchPage.tsx/DraftingPage.test.tsx)，均按『绝不 VM 读全量写回』纪律以 host Read 验证完整后在 VM 内 heredoc 重写/外科修补，host 文件为权威；最终全部 file=UTF-8 且测试/build 全绿",
+  "next_step": {
+    "allow_enter_e6_4": true,
+    "title": "类案检索助手 E6-4 导出与免责头"
+  }
+}

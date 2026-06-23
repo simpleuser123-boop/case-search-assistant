@@ -1,0 +1,218 @@
+{
+  "artifact": "m2-feedback-loop",
+  "generated_at": "2026-06-12T17:12:13+08:00",
+  "step": "M2-6",
+  "entry_artifacts": [
+    {
+      "step": "M2-1",
+      "markdown": "docs/development/m2-entry-contract-20260612-100850.md",
+      "json": "docs/development/m2-entry-contract-20260612-100850.json",
+      "conclusion": "GO"
+    },
+    {
+      "step": "M2-2",
+      "markdown": "docs/development/m2-source-anchor-closure-20260612-104120.md",
+      "json": "docs/development/m2-source-anchor-closure-20260612-104120.json",
+      "conclusion": "GO"
+    },
+    {
+      "step": "M2-3",
+      "markdown": "docs/development/m2-coverage-privacy-20260612-140115.md",
+      "json": "docs/development/m2-coverage-privacy-20260612-140115.json",
+      "conclusion": "GO"
+    },
+    {
+      "step": "M2-4",
+      "markdown": "docs/development/m2-low-confidence-candidates-20260612-151624.md",
+      "json": "docs/development/m2-low-confidence-candidates-20260612-151624.json",
+      "conclusion": "GO"
+    },
+    {
+      "step": "M2-5",
+      "markdown": "docs/development/m2-expanded-search-gate-20260612-155403.md",
+      "json": "docs/development/m2-expanded-search-gate-20260612-155403.json",
+      "conclusion": "GO"
+    }
+  ],
+  "feedback_event_schema": {
+    "stored_fields": [
+      "event_type",
+      "session_hash",
+      "query_hash",
+      "case_id_hash",
+      "rank",
+      "feedback_value",
+      "search_mode",
+      "confidence_level"
+    ],
+    "hash_fields": [
+      "session_hash",
+      "query_hash",
+      "case_id_hash"
+    ],
+    "rank": {
+      "min": 1,
+      "max": 1000
+    },
+    "enum_values": {
+      "event_type": [
+        "result_feedback"
+      ],
+      "feedback_value": [
+        "relevant",
+        "not_relevant",
+        "cleared"
+      ],
+      "search_mode": [
+        "standard",
+        "expanded"
+      ],
+      "confidence_level": [
+        "high",
+        "medium",
+        "low"
+      ]
+    }
+  },
+  "forbidden_field_names": [
+    "query",
+    "raw_query",
+    "raw_text",
+    "content",
+    "text",
+    "case_text",
+    "case_body",
+    "candidate_body",
+    "chunk_text",
+    "chunk_body",
+    "judgment_text",
+    "reason",
+    "free_text_reason"
+  ],
+  "backend_behavior": {
+    "endpoint": "POST /api/feedback",
+    "allowlist_storage": true,
+    "rejects_extra_fields": true,
+    "rejects_invalid_enum_values": true,
+    "rejects_invalid_rank": true,
+    "rejects_invalid_hash": true,
+    "storage_reason_codes": [
+      "FEEDBACK_EVENT_STORAGE_UNAVAILABLE"
+    ],
+    "validation_reason_codes": [
+      "VALIDATION_ERROR"
+    ],
+    "log_fields": [
+      "event_type",
+      "session_hash",
+      "query_hash",
+      "case_id_hash",
+      "rank",
+      "feedback_value",
+      "search_mode",
+      "confidence_level",
+      "reason_code"
+    ]
+  },
+  "frontend_behavior": {
+    "primary_result_feedback": true,
+    "low_confidence_feedback": true,
+    "undo_supported": true,
+    "correction_supported": true,
+    "persistent_storage_used": false,
+    "request_fields": [
+      "event_type",
+      "session_hash",
+      "query_hash",
+      "case_id_hash",
+      "rank",
+      "feedback_value",
+      "search_mode",
+      "confidence_level"
+    ],
+    "copy_reason_codes": [
+      "MARKED_RELEVANT",
+      "MARKED_NOT_RELEVANT",
+      "FEEDBACK_NOT_RECORDED"
+    ],
+    "learning_or_sorting_claim": false
+  },
+  "sorting_boundary": {
+    "feedback_enters_retrieval": false,
+    "feedback_enters_rerank": false,
+    "feedback_enters_source_selection": false,
+    "feedback_changes_current_result_order": false,
+    "feedback_changes_weight": false,
+    "feedback_triggers_search": false,
+    "qrels_modified": false,
+    "labels_modified": false,
+    "historical_eval_modified": false
+  },
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "VITE_ENABLE_EXPANDED_SEARCH": false
+  },
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_m2_feedback_loop.py",
+      "result": "passed",
+      "passed_count": 15
+    },
+    {
+      "command": "cd apps/web; npm run test -- feedbackApi.test.ts SearchPage.test.tsx",
+      "result": "passed",
+      "passed_count": 31
+    },
+    {
+      "command": "cd apps/api; pytest tests/test_health.py tests/test_feature_flag_rollback.py tests/test_m2_feedback_loop.py",
+      "result": "passed",
+      "passed_count": 27
+    },
+    {
+      "command": "cd apps/web; npm run test",
+      "result": "passed",
+      "passed_count": 46
+    },
+    {
+      "command": "cd apps/web; npm run build",
+      "result": "passed"
+    }
+  ],
+  "browser_acceptance": {
+    "vite_started": true,
+    "mock_result_rendered": true,
+    "primary_feedback_button_visible": true,
+    "feedback_click_state_changed": true,
+    "feedback_request_sanitized": true,
+    "temporary_artifacts_removed": true,
+    "non_blocking_reason_codes": [
+      "EVENTS_API_UNAVAILABLE_IN_FRONTEND_ONLY_DEV_SERVER"
+    ]
+  },
+  "privacy_checks": {
+    "event_storage_allowlist_only": true,
+    "frontend_persistent_storage": false,
+    "report_body_leakage": false,
+    "json_body_leakage": false,
+    "temporary_snapshot_removed": true,
+    "temporary_log_removed": true
+  },
+  "go_no_go": {
+    "status": "GO",
+    "failed_gates": [],
+    "reason_codes": [
+      "M2_1_TO_M2_5_GO_CONFIRMED",
+      "FEEDBACK_SCHEMA_SANITIZED",
+      "BODY_FIELDS_REJECTED",
+      "ENUM_VALIDATION_PASSED",
+      "FEEDBACK_DOES_NOT_AFFECT_SORTING",
+      "FRONTEND_FEEDBACK_CONTROLS_PASSED",
+      "PERSISTENT_STORAGE_CHECK_PASSED",
+      "ENABLE_WEIGHTED_RERANK_FALSE",
+      "VALIDATION_PASSED",
+      "BODY_LEAKAGE_CHECK_PASSED"
+    ],
+    "next_allowed_title": "类案检索助手 M2-7 不利案例与风险提示雏形"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "artifact": "m4-parameter-version",
+  "parameter_version_id": "m4-final-20260614-102758",
+  "generated_at": "2026-06-14T10:27:58+08:00",
+  "scope": "M4-8 parameter and feature-flag snapshot (no business behavior change)",
+  "inherits_from": "m3-final-20260613-072734",
+  "rerank_candidate": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "note": "unchanged from M3-8; weighted rerank remains gated-off by default"
+  },
+  "feature_flags_default": {
+    "ENABLE_QUERY_REWRITE": false,
+    "ENABLE_SUMMARY": false,
+    "ENABLE_EXPANDED_SEARCH": false,
+    "VITE_ENABLE_EXPANDED_SEARCH": false,
+    "ENABLE_SEARCH_HISTORY": false,
+    "ENABLE_CASE_FAVORITE": false,
+    "ENABLE_CASE_LIST": false,
+    "ENABLE_LIST_EXPORT": false,
+    "ENABLE_REPORT_TEMPLATE": false,
+    "ENABLE_TEAM_REUSE": false,
+    "VITE_ENABLE_SEARCH_HISTORY": false,
+    "VITE_ENABLE_CASE_FAVORITE": false,
+    "VITE_ENABLE_CASE_LIST": false,
+    "VITE_ENABLE_LIST_EXPORT": false,
+    "VITE_ENABLE_REPORT_TEMPLATE": false
+  },
+  "rerank_weights_reference_only": {
+    "RERANK_WEIGHT_VECTOR_SIMILARITY": 0.55,
+    "RERANK_WEIGHT_LEGAL_ELEMENT_OVERLAP": 0.20,
+    "RERANK_WEIGHT_CASE_CAUSE_MATCH": 0.10,
+    "RERANK_WEIGHT_KEY_PARAGRAPH_MATCH": 0.10,
+    "RERANK_WEIGHT_AUTHORITY_SIGNAL": 0.05,
+    "note": "values inert while ENABLE_WEIGHTED_RERANK=false; listed for traceability only"
+  },
+  "m4_capability_parameters": {
+    "backend_business_changes": "none",
+    "persistence_layer": "frontend localStorage only (single browser / single user); no server-side business table",
+    "persistence_field_whitelist": [
+      "case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date",
+      "source_anchors", "note", "tag", "label", "list_id", "list_title", "report_id",
+      "export_id", "structured_relation", "created_at", "updated_at", "timestamp",
+      "status", "reason_code", "feature_flag_state"
+    ],
+    "persistence_field_forbidden": [
+      "raw_query", "case_fact_body", "candidate_body", "chunk_body",
+      "judgment_long_text", "summary_holding_compare_body", "user_free_long_text"
+    ],
+    "anchor_min_fields": ["case_id", "source_chunk_id"],
+    "search_history_max_entries": 10,
+    "case_favorite_max_entries": 200,
+    "case_list_max_lists": 50,
+    "case_list_max_items_per_list": 200,
+    "note_max_visible_chars": 120,
+    "tag_max_visible_chars": 24,
+    "list_title_max_visible_chars": 40,
+    "report_background_note_max_chars": 240,
+    "report_fragment_truncate_chars": 160,
+    "export_formats": ["markdown", "csv"],
+    "export_field_whitelist": ["case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchor", "note", "tag"],
+    "report_sections": ["search_background", "list_overview", "case_entries", "review_points", "disclaimer"],
+    "affects_runtime_sorting": false,
+    "affects_source_selection": false,
+    "user_raw_case_persisted_on_server": false
+  },
+  "team_reuse_reserved_fields": {
+    "owner": "private",
+    "visibility": "private",
+    "sharing": "disabled",
+    "team_id": null,
+    "owner_user_id": null,
+    "note": "declaration only; NOT injected into any in-use TS type or server table in M4; physical landing deferred to M5"
+  },
+  "storage_keys": {
+    "search_draft": "case-search:m4:search-draft:v1",
+    "search_history": "case-search:m4:search-history:v1",
+    "case_favorite": "case-search:m4:case-favorite:v1",
+    "case_list": "case-search:m4:case-list:v1"
+  },
+  "config_source_of_truth": {
+    "config_py": "apps/api/app/core/config.py:42 (ENABLE_WEIGHTED_RERANK=False), :52-57 (6 M4 flags=False)",
+    "env_example": ".env.example:23 (weighted rerank=false), :33-38 (backend M4 flags=false), :60-70 (VITE frontend flags=false)"
+  }
+}

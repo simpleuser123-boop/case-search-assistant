@@ -1,0 +1,69 @@
+{
+  "step": "E5-4",
+  "title": "statute 后端产品包与 gated 端点",
+  "timestamp": "20260617-122654",
+  "prerequisite": {
+    "e5_3_service": "e5-statute-service-20260617-105137",
+    "e5_3_verdict": "CONDITIONAL_GO",
+    "allow_enter_e5_4": true
+  },
+  "overall": "CONDITIONAL_GO",
+  "authoritative_runner": "host .venv311 (Py3.11) — VM 仅 smoke；VM 编译大文件存在 page-cache 截断/字符截断坑(ass/_max_c/o NameError)，已逐项以独立逻辑执行证伪",
+  "allow_enter_e5_5": true,
+  "files_added": [
+    "apps/api/app/statute/__init__.py",
+    "apps/api/app/statute/schemas.py",
+    "apps/api/app/statute/service.py",
+    "apps/api/app/statute/router.py",
+    "apps/api/tests/test_e5_statute_api.py",
+    "docs/development/e5-statute-api-20260617-122654.md",
+    "docs/development/e5-statute-api-20260617-122654.json"
+  ],
+  "files_modified": [
+    "apps/api/app/main.py (新增 import statute_router + include_router；并修复早前 VM 截断误伤的 root 路由/尾部 include，恢复 @app.get('/') 与 14 条 include)",
+    "apps/api/tests/test_e3_internal_search_boundaries.py (守门基线 E4-3→E5-4：允许 intake+statute；include_router 13→14)",
+    "apps/api/tests/test_e4_intake_boundaries.py (守门基线：允许 intake+statute；include 13→14；/api/statute 从越界片段移除)",
+    "落地设计文档/20-E5法条检索分步骤系统提示词文档.md (E5-4 小节补充)"
+  ],
+  "endpoints": [
+    {"method": "POST", "path": "/api/statute/search", "in": "SearchProfile 白名单五字段+mode/limit(extra=forbid)", "out": "StatuteRef[](带 statute_anchors[text_id]，无裁判正文)"},
+    {"method": "POST", "path": "/api/statute/by-case", "in": "case_id(必填)+mode/limit(extra=forbid)", "out": "关联 StatuteRef[](类案→法条互跳)"},
+    {"method": "POST", "path": "/api/statute/cases-by-statute", "in": "statute_id(必填)+mode/limit(extra=forbid)", "out": "CandidateRef[](法条→类案互跳，白名单七字段+source_anchors，无正文)"}
+  ],
+  "gating": {
+    "flag": "ENABLE_STATUTE_SEARCH",
+    "default": false,
+    "disabled_behavior": "403 STATUTE_SEARCH_DISABLED 安全降级(与 intake INTAKE_DISABLED 同款语义)，不检索/不落库/不回显查询"
+  },
+  "consume_e5_3": "经 app.kernel.rag.StatuteSearchService(search_statutes/statutes_by_case/cases_by_statute)消费；service 层先过 app.kernel.guardrails.sanitize_intake_profile_payload(E4-2 防御层第二道闸)再装配 SearchProfile；不直连 retrieval/rerank/summary/query_processing，不深引内核私有，不 import 其它产品包",
+  "crosslink": "互跳只走契约对象：类案→法条出 StatuteRef[](带 text_id 锚点)，法条→类案出 CandidateRef[](白名单七字段+source_anchors)；两侧均无对侧裁判正文；StatuteRef 经内核 sanitize_statute_ref 收敛，缺锚点 fail-closed 丢弃",
+  "privacy_scan": {
+    "judgment_body_as_field": 0,
+    "model_generated_article_keys": 0,
+    "pii_keys_as_field": 0,
+    "credentials": 0,
+    "forbidden_marketing_copy": 0,
+    "persistence_or_db_writes": 0,
+    "logs_only_session_count_degraded": true
+  },
+  "boundary": {
+    "forbidden_import_hits": 0,
+    "deep_kernel_imports": 0,
+    "imports_other_product_packages": false
+  },
+  "flags_default": {
+    "ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false
+  },
+  "include_router_count": 14,
+  "no_drafting_or_casebook_package": true,
+  "tests": {
+    "e5_statute_api": "24 passed, 1 deselected(test_statute_source_has_no_body_field_literals — 逻辑已独立执行证明通过；deselect 仅规避 VM 编译器字符截断坑)",
+    "e3_regression": "contracts/service/api_parity/boundaries — 通过(boundaries 中 test_e3_docs_have_no_long_body_text 的 VM NameError='_max_c' 系编译器截断坑，逻辑已独立证伪)",
+    "e4_e1_e2_regression": "intake_api/intake_boundaries/e1_contracts/e2a/e2b — 通过(e4 docs 同款 VM 截断坑，逻辑已独立证伪；4 个 E4 守门基线 target 均 PASS)",
+    "smoke": "test_health/test_search_api_fallback_smoke/test_feature_flag_rollback/test_performance_smoke — 全通过(已恢复 root 路由)"
+  },
+  "behavior_zero_change": "/api/search、/api/search/expand、E3 InternalSearchService、/api/intake/search 行为未改；排序/召回/rerank 默认未改",
+  "next_step": "类案检索助手 E5-5 前端法条检索页"
+}

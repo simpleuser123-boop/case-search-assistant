@@ -1,0 +1,95 @@
+{
+  "step": "E4-3",
+  "title": "intake 后端产品包与消费 E3 内部检索服务",
+  "timestamp": "20260617-001000",
+  "baseline": "docs/development/e4-intake-sanitize-20260616-235519.json (E4-2 CONDITIONAL_GO, allow_enter_e4_3=true)",
+  "overall": "GO",
+  "allow_enter_e4_4": true,
+  "next_step": "类案检索助手 E4-4 前端录入页（本地 only）",
+  "files": {
+    "added": [
+      "apps/api/app/intake/__init__.py",
+      "apps/api/app/intake/schemas.py",
+      "apps/api/app/intake/service.py",
+      "apps/api/app/intake/router.py",
+      "apps/api/tests/test_e4_intake_api.py",
+      "docs/development/e4-intake-api-20260617-001000.md",
+      "docs/development/e4-intake-api-20260617-001000.json",
+      "apps/api/docs/development/e4-intake-api-20260617-001000.md",
+      "apps/api/docs/development/e4-intake-api-20260617-001000.json"
+    ],
+    "modified": [
+      "apps/api/app/main.py",
+      "落地设计文档/19-E4案情录入端分步骤系统提示词文档.md"
+    ]
+  },
+  "endpoint": {
+    "method": "POST",
+    "path": "/api/intake/search",
+    "gated_by": "ENABLE_INTAKE",
+    "request_whitelist": ["case_cause", "region", "trial_level_preference", "dispute_focus_keywords", "query_text"],
+    "request_params": ["mode", "limit"],
+    "request_extra_policy": "forbid",
+    "response_whitelist": ["query_session_id", "candidate_refs", "candidate_count", "degraded", "degraded_reasons", "search_mode"],
+    "candidate_ref_whitelist": ["case_id", "case_number", "court", "trial_level", "case_cause", "judgment_date", "source_anchors"],
+    "error_codes": ["403 INTAKE_DISABLED", "422 VALIDATION_ERROR", "400 INTAKE_PROFILE_REJECTED"]
+  },
+  "consumes_e3": {
+    "via": "app.kernel.rag.InternalSearchService.search_candidate_refs",
+    "kernel_public_surface_only": ["app.kernel", "app.kernel.rag", "app.kernel.guardrails"],
+    "deep_import_forbidden_check": "PASS",
+    "other_product_import_check": "PASS",
+    "copies_search_main_path": false
+  },
+  "degrade_behavior": {
+    "flag_off": "403 INTAKE_DISABLED, no search, no persistence, no internal leak",
+    "internal_degrade": "passthrough degraded + degraded_reasons (structured codes, zero body)",
+    "incomplete_anchor": "fail-closed dropped by E3 service (CANDIDATE_REF_DROPPED_NO_ANCHOR)"
+  },
+  "auth": {
+    "model": "same as /api/search (session-based via query_session_id middleware, no login token)",
+    "access_gate": "ENABLE_INTAKE default false",
+    "new_unauthenticated_endpoint": false
+  },
+  "privacy_scan_vm": {
+    "raw_case": 0,
+    "pii": 0,
+    "body_data_keys": 0,
+    "credentials": 0,
+    "banned_copy": 0,
+    "persistence_in_intake": 0,
+    "ai_extraction_wiring": 0,
+    "logs_contain_query_text_or_pii": false
+  },
+  "flags_default": {
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false
+  },
+  "include_router_count": 13,
+  "new_product_packages_forbidden": {
+    "statute": false,
+    "drafting": false,
+    "casebook": false
+  },
+  "vm_verification_pass": [
+    "py_compile: intake/* + main.py + test_e4_intake_api.py",
+    "AST boundary: no retrieval/rerank/summary/query_processing deep import; no other product import; kernel top public surface only",
+    "sanitize defense harness (real intake_sanitize): fail-closed reject raw_case/name/phone/full_text/id_card; zero PII in exception; value-level redact (张三->[姓名], 13800138000->[手机号]); whitelist narrowing",
+    "flag defaults false"
+  ],
+  "host_verification_pass": {
+    "commands": [
+      "cd apps/api && export DATABASE_URL=sqlite:///./test_e4.db",
+      "pytest tests/test_e4_intake_api.py tests/test_e4_intake_sanitize.py",
+      "pytest tests/test_e3_internal_search_contracts.py tests/test_e3_internal_search_service.py tests/test_e3_search_api_parity.py tests/test_e3_internal_search_boundaries.py tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e2b_shim_equivalence.py",
+      "pytest tests/test_search_api_fallback_smoke.py tests/test_feature_flag_rollback.py tests/test_health.py tests/test_performance_smoke.py",
+      "grep -cE 'app\\.include_router' apps/api/app/main.py"
+    ],
+    "results": {
+      "e4_intake_api_and_sanitize": "46 passed",
+      "e3_e1_e2_regression": "169 passed",
+      "fallback_flag_health_performance": "20 passed",
+      "include_router_count": 13
+    }
+  }
+}

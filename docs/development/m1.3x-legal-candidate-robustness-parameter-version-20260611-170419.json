@@ -1,0 +1,771 @@
+{
+  "version_name": "m1_3x_legal_candidate_robustness",
+  "generated_at": "2026-06-11T17:04:19",
+  "selected_status": "ROBUST_GO",
+  "selected_candidate_id": "m1_3x_legal_score_shape_router_v2_candidate",
+  "selected_threshold": 0.001,
+  "parameter_grid": {
+    "currentRank8GapMax": [
+      0.0,
+      0.00025,
+      0.0005,
+      0.00075,
+      0.001,
+      0.00125,
+      0.0015,
+      0.002,
+      0.003
+    ],
+    "predeclared": true,
+    "selectionSignals": [
+      "rank",
+      "score",
+      "score_gap",
+      "top_k_score_distribution"
+    ],
+    "topN": 10,
+    "guardMeanFloor": 0.71,
+    "currentStdMax": 0.04
+  },
+  "robust_gate": {
+    "status": "ROBUST_GO",
+    "failedReasons": []
+  },
+  "threshold_sensitivity": [
+    {
+      "threshold": 0.0,
+      "currentRank8GapMax": 0.0,
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1908,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 1,
+      "METRIC_REGRESSION count": 1,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "REGRESSED": 1,
+        "STABLE": 11
+      },
+      "hardGateFailedReasons": [
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ]
+    },
+    {
+      "threshold": 0.00025,
+      "currentRank8GapMax": 0.00025,
+      "goNoGo": "NO_GO",
+      "failedReasons": [
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1908,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 1,
+      "METRIC_REGRESSION count": 1,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "REGRESSED": 1,
+        "STABLE": 11
+      },
+      "hardGateFailedReasons": [
+        "AFTER_VS_BASELINE_REGRESSED_GT_0",
+        "METRIC_REGRESSION_GT_0"
+      ]
+    },
+    {
+      "threshold": 0.0005,
+      "currentRank8GapMax": 0.0005,
+      "goNoGo": "GO",
+      "failedReasons": [],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1954,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "STABLE": 12
+      },
+      "hardGateFailedReasons": []
+    },
+    {
+      "threshold": 0.00075,
+      "currentRank8GapMax": 0.00075,
+      "goNoGo": "GO",
+      "failedReasons": [],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1954,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "STABLE": 12
+      },
+      "hardGateFailedReasons": []
+    },
+    {
+      "threshold": 0.001,
+      "currentRank8GapMax": 0.001,
+      "goNoGo": "GO",
+      "failedReasons": [],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1954,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "STABLE": 12
+      },
+      "hardGateFailedReasons": []
+    },
+    {
+      "threshold": 0.00125,
+      "currentRank8GapMax": 0.00125,
+      "goNoGo": "GO",
+      "failedReasons": [],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1954,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "STABLE": 12
+      },
+      "hardGateFailedReasons": []
+    },
+    {
+      "threshold": 0.0015,
+      "currentRank8GapMax": 0.0015,
+      "goNoGo": "GO",
+      "failedReasons": [],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1954,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "STABLE": 12
+      },
+      "hardGateFailedReasons": []
+    },
+    {
+      "threshold": 0.002,
+      "currentRank8GapMax": 0.002,
+      "goNoGo": "GO",
+      "failedReasons": [],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1954,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "STABLE": 12
+      },
+      "hardGateFailedReasons": []
+    },
+    {
+      "threshold": 0.003,
+      "currentRank8GapMax": 0.003,
+      "goNoGo": "GO",
+      "failedReasons": [],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1949,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 10,
+        "STABLE": 15
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 12,
+        "STABLE": 13
+      },
+      "hardGateFailedReasons": []
+    }
+  ],
+  "cross_validation": {
+    "foldCount": 5,
+    "method": "deterministic_query_id_sorted_round_robin_k_fold",
+    "folds": [
+      {
+        "foldId": 0,
+        "validationQueryCount": 5,
+        "trainingSelectedThreshold": 0.001,
+        "trainingSelectedGoNoGo": "GO",
+        "trainingSelectedFailedReasons": [],
+        "validationGoNoGo": "GO",
+        "validationFailedReasons": [],
+        "validation": {
+          "threshold": 0.001,
+          "currentRank8GapMax": 0.001,
+          "goNoGo": "GO",
+          "failedReasons": [],
+          "Precision@5": 0.08,
+          "baselinePrecision@5": 0.08,
+          "NDCG@10": 0.1447,
+          "baselineNDCG@10": 0.1078,
+          "Top10 hit rate": 0.6,
+          "baselineTop10 hit rate": 0.4,
+          "evaluatedQueryCount": 5,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 0,
+          "METRIC_REGRESSION count": 0,
+          "RECALL_MISS count": 2,
+          "top10MissCount": 2,
+          "labelDistribution": {
+            "IMPROVED": 3,
+            "STABLE": 2
+          },
+          "afterVsBaselineLabelDistribution": {
+            "IMPROVED": 2,
+            "STABLE": 3
+          },
+          "hardGateFailedReasons": []
+        }
+      },
+      {
+        "foldId": 1,
+        "validationQueryCount": 5,
+        "trainingSelectedThreshold": 0.001,
+        "trainingSelectedGoNoGo": "GO",
+        "trainingSelectedFailedReasons": [],
+        "validationGoNoGo": "GO",
+        "validationFailedReasons": [],
+        "validation": {
+          "threshold": 0.001,
+          "currentRank8GapMax": 0.001,
+          "goNoGo": "GO",
+          "failedReasons": [],
+          "Precision@5": 0.08,
+          "baselinePrecision@5": 0.0,
+          "NDCG@10": 0.202,
+          "baselineNDCG@10": 0.1121,
+          "Top10 hit rate": 0.8,
+          "baselineTop10 hit rate": 0.6,
+          "evaluatedQueryCount": 5,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 0,
+          "METRIC_REGRESSION count": 0,
+          "RECALL_MISS count": 1,
+          "top10MissCount": 1,
+          "labelDistribution": {
+            "IMPROVED": 1,
+            "STABLE": 4
+          },
+          "afterVsBaselineLabelDistribution": {
+            "IMPROVED": 4,
+            "STABLE": 1
+          },
+          "hardGateFailedReasons": []
+        }
+      },
+      {
+        "foldId": 2,
+        "validationQueryCount": 5,
+        "trainingSelectedThreshold": 0.001,
+        "trainingSelectedGoNoGo": "GO",
+        "trainingSelectedFailedReasons": [],
+        "validationGoNoGo": "GO",
+        "validationFailedReasons": [],
+        "validation": {
+          "threshold": 0.001,
+          "currentRank8GapMax": 0.001,
+          "goNoGo": "GO",
+          "failedReasons": [],
+          "Precision@5": 0.04,
+          "baselinePrecision@5": 0.0,
+          "NDCG@10": 0.1713,
+          "baselineNDCG@10": 0.1521,
+          "Top10 hit rate": 0.6,
+          "baselineTop10 hit rate": 0.6,
+          "evaluatedQueryCount": 5,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 0,
+          "METRIC_REGRESSION count": 0,
+          "RECALL_MISS count": 2,
+          "top10MissCount": 2,
+          "labelDistribution": {
+            "IMPROVED": 2,
+            "STABLE": 3
+          },
+          "afterVsBaselineLabelDistribution": {
+            "IMPROVED": 1,
+            "STABLE": 4
+          },
+          "hardGateFailedReasons": []
+        }
+      },
+      {
+        "foldId": 3,
+        "validationQueryCount": 5,
+        "trainingSelectedThreshold": 0.001,
+        "trainingSelectedGoNoGo": "GO",
+        "trainingSelectedFailedReasons": [],
+        "validationGoNoGo": "GO",
+        "validationFailedReasons": [],
+        "validation": {
+          "threshold": 0.001,
+          "currentRank8GapMax": 0.001,
+          "goNoGo": "GO",
+          "failedReasons": [],
+          "Precision@5": 0.0,
+          "baselinePrecision@5": 0.0,
+          "NDCG@10": 0.1567,
+          "baselineNDCG@10": 0.1228,
+          "Top10 hit rate": 0.6,
+          "baselineTop10 hit rate": 0.4,
+          "evaluatedQueryCount": 5,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 0,
+          "METRIC_REGRESSION count": 0,
+          "RECALL_MISS count": 2,
+          "top10MissCount": 2,
+          "labelDistribution": {
+            "IMPROVED": 2,
+            "STABLE": 3
+          },
+          "afterVsBaselineLabelDistribution": {
+            "IMPROVED": 2,
+            "STABLE": 3
+          },
+          "hardGateFailedReasons": []
+        }
+      },
+      {
+        "foldId": 4,
+        "validationQueryCount": 5,
+        "trainingSelectedThreshold": 0.001,
+        "trainingSelectedGoNoGo": "GO",
+        "trainingSelectedFailedReasons": [],
+        "validationGoNoGo": "GO",
+        "validationFailedReasons": [],
+        "validation": {
+          "threshold": 0.001,
+          "currentRank8GapMax": 0.001,
+          "goNoGo": "GO",
+          "failedReasons": [],
+          "Precision@5": 0.08,
+          "baselinePrecision@5": 0.08,
+          "NDCG@10": 0.3023,
+          "baselineNDCG@10": 0.1751,
+          "Top10 hit rate": 1.0,
+          "baselineTop10 hit rate": 0.4,
+          "evaluatedQueryCount": 5,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 0,
+          "METRIC_REGRESSION count": 0,
+          "RECALL_MISS count": 0,
+          "top10MissCount": 0,
+          "labelDistribution": {
+            "IMPROVED": 3,
+            "STABLE": 2
+          },
+          "afterVsBaselineLabelDistribution": {
+            "IMPROVED": 4,
+            "STABLE": 1
+          },
+          "hardGateFailedReasons": []
+        }
+      }
+    ],
+    "aggregateValidation": {
+      "threshold": -1.0,
+      "currentRank8GapMax": -1.0,
+      "goNoGo": "GO",
+      "failedReasons": [],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1954,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "STABLE": 12
+      },
+      "hardGateFailedReasons": []
+    },
+    "fixedV2Folds": [
+      {
+        "foldId": 0,
+        "validationQueryCount": 5,
+        "threshold": 0.001,
+        "validationGoNoGo": "GO",
+        "validationFailedReasons": [],
+        "validation": {
+          "threshold": 0.001,
+          "currentRank8GapMax": 0.001,
+          "goNoGo": "GO",
+          "failedReasons": [],
+          "Precision@5": 0.08,
+          "baselinePrecision@5": 0.08,
+          "NDCG@10": 0.1447,
+          "baselineNDCG@10": 0.1078,
+          "Top10 hit rate": 0.6,
+          "baselineTop10 hit rate": 0.4,
+          "evaluatedQueryCount": 5,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 0,
+          "METRIC_REGRESSION count": 0,
+          "RECALL_MISS count": 2,
+          "top10MissCount": 2,
+          "labelDistribution": {
+            "IMPROVED": 3,
+            "STABLE": 2
+          },
+          "afterVsBaselineLabelDistribution": {
+            "IMPROVED": 2,
+            "STABLE": 3
+          },
+          "hardGateFailedReasons": []
+        }
+      },
+      {
+        "foldId": 1,
+        "validationQueryCount": 5,
+        "threshold": 0.001,
+        "validationGoNoGo": "GO",
+        "validationFailedReasons": [],
+        "validation": {
+          "threshold": 0.001,
+          "currentRank8GapMax": 0.001,
+          "goNoGo": "GO",
+          "failedReasons": [],
+          "Precision@5": 0.08,
+          "baselinePrecision@5": 0.0,
+          "NDCG@10": 0.202,
+          "baselineNDCG@10": 0.1121,
+          "Top10 hit rate": 0.8,
+          "baselineTop10 hit rate": 0.6,
+          "evaluatedQueryCount": 5,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 0,
+          "METRIC_REGRESSION count": 0,
+          "RECALL_MISS count": 1,
+          "top10MissCount": 1,
+          "labelDistribution": {
+            "IMPROVED": 1,
+            "STABLE": 4
+          },
+          "afterVsBaselineLabelDistribution": {
+            "IMPROVED": 4,
+            "STABLE": 1
+          },
+          "hardGateFailedReasons": []
+        }
+      },
+      {
+        "foldId": 2,
+        "validationQueryCount": 5,
+        "threshold": 0.001,
+        "validationGoNoGo": "GO",
+        "validationFailedReasons": [],
+        "validation": {
+          "threshold": 0.001,
+          "currentRank8GapMax": 0.001,
+          "goNoGo": "GO",
+          "failedReasons": [],
+          "Precision@5": 0.04,
+          "baselinePrecision@5": 0.0,
+          "NDCG@10": 0.1713,
+          "baselineNDCG@10": 0.1521,
+          "Top10 hit rate": 0.6,
+          "baselineTop10 hit rate": 0.6,
+          "evaluatedQueryCount": 5,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 0,
+          "METRIC_REGRESSION count": 0,
+          "RECALL_MISS count": 2,
+          "top10MissCount": 2,
+          "labelDistribution": {
+            "IMPROVED": 2,
+            "STABLE": 3
+          },
+          "afterVsBaselineLabelDistribution": {
+            "IMPROVED": 1,
+            "STABLE": 4
+          },
+          "hardGateFailedReasons": []
+        }
+      },
+      {
+        "foldId": 3,
+        "validationQueryCount": 5,
+        "threshold": 0.001,
+        "validationGoNoGo": "GO",
+        "validationFailedReasons": [],
+        "validation": {
+          "threshold": 0.001,
+          "currentRank8GapMax": 0.001,
+          "goNoGo": "GO",
+          "failedReasons": [],
+          "Precision@5": 0.0,
+          "baselinePrecision@5": 0.0,
+          "NDCG@10": 0.1567,
+          "baselineNDCG@10": 0.1228,
+          "Top10 hit rate": 0.6,
+          "baselineTop10 hit rate": 0.4,
+          "evaluatedQueryCount": 5,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 0,
+          "METRIC_REGRESSION count": 0,
+          "RECALL_MISS count": 2,
+          "top10MissCount": 2,
+          "labelDistribution": {
+            "IMPROVED": 2,
+            "STABLE": 3
+          },
+          "afterVsBaselineLabelDistribution": {
+            "IMPROVED": 2,
+            "STABLE": 3
+          },
+          "hardGateFailedReasons": []
+        }
+      },
+      {
+        "foldId": 4,
+        "validationQueryCount": 5,
+        "threshold": 0.001,
+        "validationGoNoGo": "GO",
+        "validationFailedReasons": [],
+        "validation": {
+          "threshold": 0.001,
+          "currentRank8GapMax": 0.001,
+          "goNoGo": "GO",
+          "failedReasons": [],
+          "Precision@5": 0.08,
+          "baselinePrecision@5": 0.08,
+          "NDCG@10": 0.3023,
+          "baselineNDCG@10": 0.1751,
+          "Top10 hit rate": 1.0,
+          "baselineTop10 hit rate": 0.4,
+          "evaluatedQueryCount": 5,
+          "beforeVsAfterRegressedCount": 0,
+          "afterVsBaselineRegressedCount": 0,
+          "METRIC_REGRESSION count": 0,
+          "RECALL_MISS count": 0,
+          "top10MissCount": 0,
+          "labelDistribution": {
+            "IMPROVED": 3,
+            "STABLE": 2
+          },
+          "afterVsBaselineLabelDistribution": {
+            "IMPROVED": 4,
+            "STABLE": 1
+          },
+          "hardGateFailedReasons": []
+        }
+      }
+    ],
+    "fixedV2AggregateValidation": {
+      "threshold": 0.001,
+      "currentRank8GapMax": 0.001,
+      "goNoGo": "GO",
+      "failedReasons": [],
+      "Precision@5": 0.056,
+      "baselinePrecision@5": 0.032,
+      "NDCG@10": 0.1954,
+      "baselineNDCG@10": 0.134,
+      "Top10 hit rate": 0.72,
+      "baselineTop10 hit rate": 0.48,
+      "evaluatedQueryCount": 25,
+      "beforeVsAfterRegressedCount": 0,
+      "afterVsBaselineRegressedCount": 0,
+      "METRIC_REGRESSION count": 0,
+      "RECALL_MISS count": 7,
+      "top10MissCount": 7,
+      "labelDistribution": {
+        "IMPROVED": 11,
+        "STABLE": 14
+      },
+      "afterVsBaselineLabelDistribution": {
+        "IMPROVED": 13,
+        "STABLE": 12
+      },
+      "hardGateFailedReasons": []
+    }
+  },
+  "repeatability": {
+    "repeatCount": 3,
+    "consistent": true,
+    "signatures": [
+      {
+        "selectedCandidateId": "m1_3x_legal_score_shape_router_v2_candidate",
+        "goNoGo": "GO",
+        "Precision@5": 0.056,
+        "NDCG@10": 0.1954,
+        "Top10 hit rate": 0.72,
+        "beforeVsAfterRegressedCount": 0,
+        "afterVsBaselineRegressedCount": 0,
+        "METRIC_REGRESSION count": 0,
+        "RECALL_MISS count": 7
+      },
+      {
+        "selectedCandidateId": "m1_3x_legal_score_shape_router_v2_candidate",
+        "goNoGo": "GO",
+        "Precision@5": 0.056,
+        "NDCG@10": 0.1954,
+        "Top10 hit rate": 0.72,
+        "beforeVsAfterRegressedCount": 0,
+        "afterVsBaselineRegressedCount": 0,
+        "METRIC_REGRESSION count": 0,
+        "RECALL_MISS count": 7
+      },
+      {
+        "selectedCandidateId": "m1_3x_legal_score_shape_router_v2_candidate",
+        "goNoGo": "GO",
+        "Precision@5": 0.056,
+        "NDCG@10": 0.1954,
+        "Top10 hit rate": 0.72,
+        "beforeVsAfterRegressedCount": 0,
+        "afterVsBaselineRegressedCount": 0,
+        "METRIC_REGRESSION count": 0,
+        "RECALL_MISS count": 7
+      }
+    ]
+  },
+  "default_feature_flag_state": {
+    "settings_ENABLE_WEIGHTED_RERANK": false,
+    "env_ENABLE_WEIGHTED_RERANK": null,
+    "env_example_ENABLE_WEIGHTED_RERANK": "false",
+    "config_default": "False",
+    "featureFlagChanged": false
+  },
+  "privacy_check": {
+    "passed": true,
+    "rawQueryTextPresent": false,
+    "forbiddenTextFieldsPresent": false,
+    "candidateFullTextWritten": false,
+    "chunkTextWritten": false,
+    "newDataContainsRawFacts": false
+  },
+  "scope_confirmation": {
+    "qrelsUsedForRouterRanking": false,
+    "qrelsUsedForOfflineScoringOnly": true,
+    "queryIdUsedForRanking": false,
+    "queryIdUsedForDeterministicFoldSplitOnly": true,
+    "caseIdUsedForRankingSpecialCase": false,
+    "manualRankOverride": false,
+    "onlineRerankLogicChanged": false,
+    "onlineRecallLogicChanged": false,
+    "featureFlagDefaultModified": false,
+    "enteredM2": false
+  }
+}

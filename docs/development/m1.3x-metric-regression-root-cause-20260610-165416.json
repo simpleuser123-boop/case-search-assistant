@@ -1,0 +1,563 @@
+{
+  "version": "m1_3x_metric_regression_root_cause_v1",
+  "generatedAt": "2026-06-10T16:54:16+08:00",
+  "scope": {
+    "step": "M1.3x-2",
+    "name": "METRIC_REGRESSION root cause matrix",
+    "diagnosisOnly": true,
+    "onlineRerankLogicChanged": false,
+    "onlineRecallLogicChanged": false,
+    "defaultPathChanged": false,
+    "qrelsChanged": false,
+    "historicalResultsChanged": false
+  },
+  "privacy": {
+    "rawQueryTextWritten": false,
+    "caseFactTextWritten": false,
+    "candidateFullTextWritten": false,
+    "chunkTextWritten": false,
+    "allowedFieldClasses": [
+      "query id",
+      "case id",
+      "rank",
+      "score",
+      "bucket",
+      "label",
+      "count",
+      "status",
+      "reason code",
+      "runner/gate name"
+    ]
+  },
+  "sourceArtifacts": [
+    "落地设计文档/11-M1.3x回归清零版分步骤文档.md",
+    "docs/development/m1.3x-blocker-register-20260610-161732.md",
+    "docs/development/m1.3x-blocker-register-20260610-161732.json",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.md",
+    "docs/development/m1.3-rerank-regression-repair-20260610-134631.json",
+    "docs/development/m1.3-final-candidate-comparison-20260610-152812.json",
+    "apps/api/app/rerank/service.py",
+    "apps/api/app/retrieval/merge.py",
+    "apps/api/app/eval/product_eval.py",
+    "apps/api/scripts/m1_3_candidate_comparison.py"
+  ],
+  "rootCauseEnum": [
+    "BASELINE_PROTECTION_GAP",
+    "VECTOR_BUCKET_TIE_BREAK_ERROR",
+    "MULTI_SOURCE_BONUS_OVERBOOST",
+    "WEAK_SIGNAL_RESIDUAL_BOOST",
+    "RECALL_POOL_ORDERING_SIDE_EFFECT",
+    "QRELS_OR_DATA_BOUNDARY",
+    "UNREPAIRABLE_WITH_CURRENT_SIGNALS"
+  ],
+  "crossRelation": {
+    "metricRegressionQueryIds": [
+      "product_q008",
+      "product_q016",
+      "product_q018",
+      "product_q020",
+      "product_q021",
+      "product_q024",
+      "product_q025"
+    ],
+    "afterVsBaselineRegressedQueryIds": [
+      "product_q008",
+      "product_q016",
+      "product_q018",
+      "product_q020",
+      "product_q021",
+      "product_q024",
+      "product_q025"
+    ],
+    "sameSet": true,
+    "metricRegressionCount": 7,
+    "afterVsBaselineRegressedCount": 7,
+    "m12CompatibilityExtraMetricRegressionQueryIds": [
+      "product_q017",
+      "product_q023"
+    ],
+    "m12CompatibilityLineIsNotPrimaryGate": true
+  },
+  "summary": {
+    "coveredMetricRegressionQueries": 7,
+    "rootCauseDistribution": {
+      "BASELINE_PROTECTION_GAP": 4,
+      "VECTOR_BUCKET_TIE_BREAK_ERROR": 3,
+      "MULTI_SOURCE_BONUS_OVERBOOST": 0,
+      "WEAK_SIGNAL_RESIDUAL_BOOST": 0,
+      "RECALL_POOL_ORDERING_SIDE_EFFECT": 0,
+      "QRELS_OR_DATA_BOUNDARY": 0,
+      "UNREPAIRABLE_WITH_CURRENT_SIGNALS": 0
+    },
+    "layerDistribution": {
+      "SORTING_LAYER": 7,
+      "RECALL_LAYER": 0,
+      "DATA_BOUNDARY": 0
+    },
+    "needsAdditionalRunnerDiagnostics": false,
+    "computedOfflineDiagnosticFields": [
+      "vectorScoreBucket"
+    ],
+    "stepConclusion": "GO"
+  },
+  "routing": {
+    "m13x4SortingRepairQueries": [
+      "product_q008",
+      "product_q016",
+      "product_q018",
+      "product_q020",
+      "product_q021",
+      "product_q024",
+      "product_q025"
+    ],
+    "m13x5MetricRegressionRecallClosureQueries": [],
+    "m13x5ExistingRecallMissQueriesFromBlockerRegister": [
+      "product_q001",
+      "product_q002",
+      "product_q003",
+      "product_q004",
+      "product_q006",
+      "product_q009",
+      "product_q013"
+    ],
+    "riskExplanationOnlyQueries": []
+  },
+  "queries": [
+    {
+      "queryId": "product_q008",
+      "protectedRelevantCaseId": "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+      "relatedCaseIds": [
+        "5489d0c1-6517-4d59-99ff-be09aec07f56",
+        "54a9c6bc-854e-4c17-ab91-56b2351768cc",
+        "6b92ca2b-5680-4ced-8a97-3cf6704b427c"
+      ],
+      "labels": {
+        "metricRegression": true,
+        "afterVsBaseline": "REGRESSED",
+        "beforeVsAfter": "STABLE"
+      },
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "m13CandidatePrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.1631,
+        "m13CandidateNdcgAt10": 0.0,
+        "baselineTop10Hit": true,
+        "m13CandidateTop10Hit": false
+      },
+      "rankBreakdown": {
+        "baselineRelevantRank": 9,
+        "m13CandidateRelevantRank": 12,
+        "m13CandidateTop10Rank": null,
+        "rankEvidenceScope": "target_replay_top100"
+      },
+      "scoreBreakdown": {
+        "finalScore": 0.8011,
+        "baseRetrievalScore": 0.800088,
+        "rawWeightedScore": 0.550298,
+        "weightedScore": 0.429048,
+        "vectorScore": 0.780088,
+        "vectorScoreBucket": 0.8,
+        "legalElementScore": 0.0,
+        "caseCauseScore": 0.0,
+        "keyParagraphEffectiveScore": 0.0,
+        "authorityEffectiveScore": 0.0,
+        "finalScoreSource": "m1_3_guarded_candidate"
+      },
+      "guardReasons": [
+        "no_fact_support_base_retrieval",
+        "key_paragraph_without_fact_support",
+        "authority_without_fact_support",
+        "no_fact_guard_relaxed_strong_vector",
+        "weak_signal_tiebreak_limited_to_vector_bucket"
+      ],
+      "primaryCause": "VECTOR_BUCKET_TIE_BREAK_ERROR",
+      "secondaryFactors": [
+        "WEAK_SIGNAL_RESIDUAL_BOOST"
+      ],
+      "layer": "SORTING_LAYER",
+      "evidenceSummary": [
+        "baseline_rank_9_relevant_case_is_rank_12_in_m13_candidate",
+        "m13_top10_hit_lost",
+        "protected_case_and_nonrelevant_top10_items_share_guarded_vector_bucket_pattern",
+        "legal_case_cause_key_effective_authority_effective_scores_are_zero"
+      ],
+      "nextStep": "M1.3x-4"
+    },
+    {
+      "queryId": "product_q016",
+      "protectedRelevantCaseId": "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+      "relatedCaseIds": [
+        "7d0d0eac-187e-48a6-bb95-bdb7db055737",
+        "babab651-7e15-4404-ae83-9f207cdf524e",
+        "fd819cc8-aa9d-4253-8645-d263600c0b26"
+      ],
+      "labels": {
+        "metricRegression": true,
+        "afterVsBaseline": "REGRESSED",
+        "beforeVsAfter": "IMPROVED"
+      },
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "m13CandidatePrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.2323,
+        "m13CandidateNdcgAt10": 0.1161,
+        "baselineTop10Hit": true,
+        "m13CandidateTop10Hit": true
+      },
+      "rankBreakdown": {
+        "baselineRelevantRank": 1,
+        "m13CandidateRelevantRank": 3,
+        "m13CandidateTop10Rank": 3,
+        "rankEvidenceScope": "target_replay_top100"
+      },
+      "scoreBreakdown": {
+        "finalScore": 0.7525,
+        "baseRetrievalScore": 0.752518,
+        "rawWeightedScore": 0.516635,
+        "weightedScore": 0.402885,
+        "vectorScore": 0.732518,
+        "vectorScoreBucket": 0.7,
+        "legalElementScore": 0.0,
+        "caseCauseScore": 0.0,
+        "keyParagraphEffectiveScore": 0.0,
+        "authorityEffectiveScore": 0.0,
+        "finalScoreSource": "m1_3_guarded_candidate"
+      },
+      "guardReasons": [
+        "no_fact_support_base_retrieval",
+        "key_paragraph_without_fact_support",
+        "authority_without_fact_support"
+      ],
+      "primaryCause": "BASELINE_PROTECTION_GAP",
+      "secondaryFactors": [
+        "WEAK_SIGNAL_RESIDUAL_BOOST"
+      ],
+      "layer": "SORTING_LAYER",
+      "evidenceSummary": [
+        "baseline_rank_1_relevant_case_is_rank_3_in_m13_candidate",
+        "top10_hit_is_retained_but_ndcg_at_10_is_lower_than_baseline",
+        "no_baseline_success_sample_protection_is_applied",
+        "legal_case_cause_key_effective_authority_effective_scores_are_zero"
+      ],
+      "nextStep": "M1.3x-4"
+    },
+    {
+      "queryId": "product_q018",
+      "protectedRelevantCaseId": "c1d7ffef-8359-4ed8-bda5-6aa4c673e047",
+      "relatedCaseIds": [
+        "4547861c-c396-4f12-8e99-05d03e928dba",
+        "8e7a94e9-528b-4f0d-a5ca-20726e876ff2",
+        "c1d7ffef-8359-4ed8-bda5-6aa4c673e047"
+      ],
+      "labels": {
+        "metricRegression": true,
+        "afterVsBaseline": "REGRESSED",
+        "beforeVsAfter": "STABLE"
+      },
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "m13CandidatePrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.171,
+        "m13CandidateNdcgAt10": 0.1567,
+        "baselineTop10Hit": true,
+        "m13CandidateTop10Hit": true
+      },
+      "rankBreakdown": {
+        "baselineRelevantRank": 8,
+        "m13CandidateRelevantRank": 10,
+        "m13CandidateTop10Rank": 10,
+        "rankEvidenceScope": "target_replay_top100"
+      },
+      "scoreBreakdown": {
+        "finalScore": 0.711,
+        "baseRetrievalScore": 0.689518,
+        "rawWeightedScore": 0.489485,
+        "weightedScore": 0.368235,
+        "vectorScore": 0.669518,
+        "vectorScoreBucket": 0.7,
+        "legalElementScore": 0.0,
+        "caseCauseScore": 0.0,
+        "keyParagraphEffectiveScore": 0.0,
+        "authorityEffectiveScore": 0.0,
+        "finalScoreSource": "m1_3_guarded_candidate"
+      },
+      "guardReasons": [
+        "no_fact_support_base_retrieval",
+        "key_paragraph_without_fact_support",
+        "authority_without_fact_support",
+        "no_fact_guard_relaxed_multi_source",
+        "weak_signal_tiebreak_limited_to_vector_bucket"
+      ],
+      "primaryCause": "VECTOR_BUCKET_TIE_BREAK_ERROR",
+      "secondaryFactors": [
+        "MULTI_SOURCE_BONUS_OVERBOOST",
+        "WEAK_SIGNAL_RESIDUAL_BOOST"
+      ],
+      "layer": "SORTING_LAYER",
+      "evidenceSummary": [
+        "baseline_rank_8_relevant_case_is_rank_10_in_m13_candidate",
+        "candidate_score_is_vector_bucket_0_7_plus_multi_source_bonus",
+        "nonrelevant_items_ahead_share_same_guarded_bucket_pattern",
+        "legal_case_cause_key_effective_authority_effective_scores_are_zero"
+      ],
+      "nextStep": "M1.3x-4"
+    },
+    {
+      "queryId": "product_q020",
+      "protectedRelevantCaseId": "ba621929-822f-4603-9615-8952340fe5ce",
+      "relatedCaseIds": [
+        "0c5ed403-cce7-4cf6-95b7-2fc6225278e6",
+        "2257114a-b61e-409a-8e85-ace02ecddbed",
+        "ba621929-822f-4603-9615-8952340fe5ce"
+      ],
+      "labels": {
+        "metricRegression": true,
+        "afterVsBaseline": "REGRESSED",
+        "beforeVsAfter": "STABLE"
+      },
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "m13CandidatePrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.3092,
+        "m13CandidateNdcgAt10": 0.3516,
+        "baselineTop10Hit": true,
+        "m13CandidateTop10Hit": true
+      },
+      "rankBreakdown": {
+        "baselineRelevantRank": 3,
+        "m13CandidateRelevantRank": 28,
+        "m13CandidateTop10Rank": null,
+        "rankEvidenceScope": "target_replay_top100"
+      },
+      "scoreBreakdown": {
+        "finalScore": 0.6109,
+        "baseRetrievalScore": 0.663711,
+        "rawWeightedScore": 0.472166,
+        "weightedScore": 0.354041,
+        "vectorScore": 0.643711,
+        "vectorScoreBucket": 0.6,
+        "legalElementScore": 0.0,
+        "caseCauseScore": 0.0,
+        "keyParagraphEffectiveScore": 0.0,
+        "authorityEffectiveScore": 0.0,
+        "finalScoreSource": "m1_3_guarded_candidate"
+      },
+      "guardReasons": [
+        "no_fact_support_base_retrieval",
+        "key_paragraph_without_fact_support",
+        "authority_without_fact_support",
+        "no_fact_guard_relaxed_multi_source",
+        "weak_signal_tiebreak_limited_to_vector_bucket"
+      ],
+      "primaryCause": "BASELINE_PROTECTION_GAP",
+      "secondaryFactors": [
+        "MULTI_SOURCE_BONUS_OVERBOOST",
+        "RECALL_POOL_ORDERING_SIDE_EFFECT"
+      ],
+      "layer": "SORTING_LAYER",
+      "evidenceSummary": [
+        "baseline_rank_3_relevant_case_is_rank_28_in_m13_candidate",
+        "m13_top10_hit_is_retained_by_other_relevant_cases_but_precision_at_5_is_lower_than_baseline",
+        "protected_case_has_lower_vector_bucket_than_top_bucket_items",
+        "baseline_success_sample_has_no_general_protection_in_candidate_ordering"
+      ],
+      "nextStep": "M1.3x-4"
+    },
+    {
+      "queryId": "product_q021",
+      "protectedRelevantCaseId": "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00",
+      "relatedCaseIds": [
+        "32f50aa8-0dba-461b-b37b-d5011cc0a313",
+        "6d50d3be-fb98-4d23-96d3-88dcb828a735",
+        "b2a2f213-3a5b-4b8c-9f02-87b1dfa20b00"
+      ],
+      "labels": {
+        "metricRegression": true,
+        "afterVsBaseline": "REGRESSED",
+        "beforeVsAfter": "STABLE"
+      },
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "m13CandidatePrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.3067,
+        "m13CandidateNdcgAt10": 0.3032,
+        "baselineTop10Hit": true,
+        "m13CandidateTop10Hit": true
+      },
+      "rankBreakdown": {
+        "baselineRelevantRank": 4,
+        "m13CandidateRelevantRank": 14,
+        "m13CandidateTop10Rank": null,
+        "rankEvidenceScope": "target_replay_top100"
+      },
+      "scoreBreakdown": {
+        "finalScore": 0.711,
+        "baseRetrievalScore": 0.707838,
+        "rawWeightedScore": 0.499561,
+        "weightedScore": 0.378311,
+        "vectorScore": 0.687838,
+        "vectorScoreBucket": 0.7,
+        "legalElementScore": 0.0,
+        "caseCauseScore": 0.0,
+        "keyParagraphEffectiveScore": 0.0,
+        "authorityEffectiveScore": 0.0,
+        "finalScoreSource": "m1_3_guarded_candidate"
+      },
+      "guardReasons": [
+        "no_fact_support_base_retrieval",
+        "key_paragraph_without_fact_support",
+        "authority_without_fact_support",
+        "no_fact_guard_relaxed_multi_source",
+        "weak_signal_tiebreak_limited_to_vector_bucket"
+      ],
+      "primaryCause": "BASELINE_PROTECTION_GAP",
+      "secondaryFactors": [
+        "RECALL_POOL_ORDERING_SIDE_EFFECT",
+        "WEAK_SIGNAL_RESIDUAL_BOOST"
+      ],
+      "layer": "SORTING_LAYER",
+      "evidenceSummary": [
+        "baseline_rank_4_relevant_case_is_rank_14_in_m13_candidate",
+        "m13_top10_hit_is_retained_by_other_relevant_cases_but_ndcg_at_10_is_lower_than_baseline",
+        "protected_case_is_not_preserved_by_candidate_ordering",
+        "legal_case_cause_key_effective_authority_effective_scores_are_zero"
+      ],
+      "nextStep": "M1.3x-4"
+    },
+    {
+      "queryId": "product_q024",
+      "protectedRelevantCaseId": "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+      "relatedCaseIds": [
+        "348202e6-9aee-42d5-aabb-66a3f5a8998e",
+        "9031b615-e15e-44b1-8c23-a63d1f49db91",
+        "cefc5222-54f1-4036-8887-ee1dffdd3eeb"
+      ],
+      "labels": {
+        "metricRegression": true,
+        "afterVsBaseline": "REGRESSED",
+        "beforeVsAfter": "STABLE"
+      },
+      "metrics": {
+        "baselinePrecisionAt5": 0.0,
+        "m13CandidatePrecisionAt5": 0.0,
+        "baselineNdcgAt10": 0.4336,
+        "m13CandidateNdcgAt10": 0.2537,
+        "baselineTop10Hit": true,
+        "m13CandidateTop10Hit": true
+      },
+      "rankBreakdown": {
+        "baselineRelevantRank": 9,
+        "m13CandidateRelevantRank": 11,
+        "m13CandidateTop10Rank": null,
+        "rankEvidenceScope": "target_replay_top100"
+      },
+      "scoreBreakdown": {
+        "finalScore": 0.6108,
+        "baseRetrievalScore": 0.644573,
+        "rawWeightedScore": 0.375765,
+        "weightedScore": 0.354515,
+        "vectorScore": 0.644573,
+        "vectorScoreBucket": 0.6,
+        "legalElementScore": 0.0,
+        "caseCauseScore": 0.0,
+        "keyParagraphEffectiveScore": 0.0,
+        "authorityEffectiveScore": 0.0,
+        "finalScoreSource": "m1_3_guarded_candidate"
+      },
+      "guardReasons": [
+        "no_fact_support_base_retrieval",
+        "authority_without_fact_support",
+        "no_fact_guard_relaxed_multi_source",
+        "weak_signal_tiebreak_limited_to_vector_bucket"
+      ],
+      "primaryCause": "VECTOR_BUCKET_TIE_BREAK_ERROR",
+      "secondaryFactors": [
+        "MULTI_SOURCE_BONUS_OVERBOOST",
+        "WEAK_SIGNAL_RESIDUAL_BOOST"
+      ],
+      "layer": "SORTING_LAYER",
+      "evidenceSummary": [
+        "baseline_rank_9_relevant_case_is_rank_11_in_m13_candidate",
+        "m1_2_guarded_rank_10_becomes_m1_3_candidate_rank_11",
+        "m1_3_vector_bucket_score_is_lower_than_base_retrieval_score_for_the_protected_case",
+        "legal_case_cause_key_effective_authority_effective_scores_are_zero"
+      ],
+      "nextStep": "M1.3x-4"
+    },
+    {
+      "queryId": "product_q025",
+      "protectedRelevantCaseId": "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+      "relatedCaseIds": [
+        "533b682e-98e8-4a62-9eaa-1c889c4b3c19",
+        "777a8109-12f6-48c0-a8cc-0be487c4087b",
+        "d02916ef-72b3-4e05-9ec2-456490dc0a9b"
+      ],
+      "labels": {
+        "metricRegression": true,
+        "afterVsBaseline": "REGRESSED",
+        "beforeVsAfter": "STABLE"
+      },
+      "metrics": {
+        "baselinePrecisionAt5": 0.2,
+        "m13CandidatePrecisionAt5": 0.2,
+        "baselineNdcgAt10": 0.5664,
+        "m13CandidateNdcgAt10": 0.4903,
+        "baselineTop10Hit": true,
+        "m13CandidateTop10Hit": true
+      },
+      "rankBreakdown": {
+        "baselineRelevantRank": 1,
+        "m13CandidateRelevantRank": 2,
+        "m13CandidateTop10Rank": 2,
+        "rankEvidenceScope": "target_replay_top100"
+      },
+      "scoreBreakdown": {
+        "finalScore": 0.74,
+        "baseRetrievalScore": 0.739967,
+        "rawWeightedScore": 0.517232,
+        "weightedScore": 0.395982,
+        "vectorScore": 0.719967,
+        "vectorScoreBucket": 0.7,
+        "legalElementScore": 0.0,
+        "caseCauseScore": 0.0,
+        "keyParagraphEffectiveScore": 0.0,
+        "authorityEffectiveScore": 0.0,
+        "finalScoreSource": "m1_3_guarded_candidate"
+      },
+      "guardReasons": [
+        "no_fact_support_base_retrieval",
+        "key_paragraph_without_fact_support",
+        "authority_without_fact_support"
+      ],
+      "primaryCause": "BASELINE_PROTECTION_GAP",
+      "secondaryFactors": [
+        "WEAK_SIGNAL_RESIDUAL_BOOST"
+      ],
+      "layer": "SORTING_LAYER",
+      "evidenceSummary": [
+        "baseline_rank_1_relevant_case_is_rank_2_in_m13_candidate",
+        "top10_hit_and_precision_at_5_are_retained_but_ndcg_at_10_is_lower_than_baseline",
+        "one_nonrelevant_case_is_ahead_without_baseline_success_sample_protection",
+        "legal_case_cause_key_effective_authority_effective_scores_are_zero"
+      ],
+      "nextStep": "M1.3x-4"
+    }
+  ],
+  "verification": {
+    "commands": [
+      {
+        "command": "cd apps/api; pytest",
+        "status": "passed",
+        "summary": "176 passed in 19.73s"
+      }
+    ],
+    "jsonValidated": true
+  },
+  "defaultFeatureFlagState": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "settings_ENABLE_WEIGHTED_RERANK": false,
+    "env_ENABLE_WEIGHTED_RERANK": null,
+    "env_example_ENABLE_WEIGHTED_RERANK": "false",
+    "featureFlagChanged": false
+  }
+}

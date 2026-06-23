@@ -1,0 +1,461 @@
+{
+  "generated_at": "2026-06-10T21:04:11+08:00",
+  "step": "M1.3x-7",
+  "scope": "gray_candidate_readiness_review_only",
+  "readiness_status": "NO_GO",
+  "readiness_conclusion": "M1.3x-6 has no selected candidate. Keep ENABLE_WEIGHTED_RERANK closed, do not enter M2 readiness, and retain only evaluation, logging, regression, and controlled experiment capability.",
+  "selected_candidate": {
+    "exists": false,
+    "status": "NO_GO",
+    "candidate_id": null,
+    "candidate_name": null,
+    "exactly_one_selected_candidate": false,
+    "all_candidates_no_go": true,
+    "source_artifacts": [
+      "docs/development/m1.3x-candidate-comparison-20260610-200044.json",
+      "docs/development/m1.3x-parameter-version-20260610-200044.json",
+      "docs/development/m1.3x-gray-candidate-comparison-runner-20260610-210411.json"
+    ],
+    "reason_codes": [
+      "M1_3X_6_SELECTED_CANDIDATE_ABSENT",
+      "M1_3X_6_SELECTED_STATUS_NO_GO"
+    ]
+  },
+  "read_sources": [
+    "落地设计文档/11-M1.3x回归清零版分步骤文档.md",
+    "docs/development/m1.3x-candidate-comparison-20260610-200044.md",
+    "docs/development/m1.3x-candidate-comparison-20260610-200044.json",
+    "docs/development/m1.3x-parameter-version-20260610-200044.json",
+    "docs/development/m1.3-gray-candidate-readiness-20260610-150256.md",
+    "docs/development/m1.3-gray-candidate-readiness-20260610-150256.json",
+    "apps/api/app/core/config.py",
+    "apps/api/app/api/search.py",
+    "apps/api/app/api/health.py",
+    "apps/web/src/services/searchApi.ts",
+    "apps/web/src/pages/SearchPage.tsx",
+    "apps/api/scripts/day3_7_3_performance_smoke.py",
+    "apps/api/scripts/day3_7_5_rollback_drill.py",
+    "apps/api/scripts/m1_3_candidate_comparison.py",
+    "apps/api/scripts/m1_2_regression.py",
+    "apps/api/app/eval/product_eval.py"
+  ],
+  "feature_flags": {
+    "config_default": false,
+    "runtime_env_value": null,
+    "env_file_value": null,
+    "env_example_value": "false",
+    "health_feature_flags": {
+      "ENABLE_QUERY_REWRITE": false,
+      "ENABLE_WEIGHTED_RERANK": false,
+      "ENABLE_SUMMARY": false,
+      "ENABLE_EXPANDED_SEARCH": false
+    },
+    "default_false_required": true,
+    "default_false_preserved": true,
+    "changed_in_this_step": false
+  },
+  "runtime_health_probe": {
+    "method": "FastAPI TestClient GET /health",
+    "http_status": 200,
+    "feature_flags": {
+      "ENABLE_QUERY_REWRITE": false,
+      "ENABLE_WEIGHTED_RERANK": false,
+      "ENABLE_SUMMARY": false,
+      "ENABLE_EXPANDED_SEARCH": false
+    },
+    "ollama_reachable": true,
+    "chroma_collection_queryable": true,
+    "passed": true
+  },
+  "api_schema_probe": {
+    "method": "FastAPI TestClient POST /api/search with mocked retrieval and summary for baseline path and controlled weighted path",
+    "baseline_path": {
+      "http_status": 200,
+      "score_mode": "base_retrieval",
+      "weighted_rerank_enabled": false,
+      "final_score_equals_retrieval_score": true,
+      "result_count": 2,
+      "candidate_count": 2,
+      "degraded_reasons": [
+        "QUERY_REWRITE_DISABLED",
+        "SUMMARY_DISABLED"
+      ]
+    },
+    "candidate_path_probe": {
+      "http_status": 200,
+      "score_mode": "weighted_rerank",
+      "weighted_rerank_enabled": true,
+      "final_score_equals_retrieval_score": false,
+      "result_count": 2,
+      "candidate_count": 2,
+      "degraded_reasons": [
+        "QUERY_REWRITE_DISABLED",
+        "SUMMARY_DISABLED"
+      ],
+      "probe_only": true,
+      "selected_candidate_authorized": false,
+      "distinguishable_by": [
+        "score_breakdown.score_mode",
+        "score_breakdown.weighted_rerank_enabled"
+      ]
+    },
+    "schema_compatible": true,
+    "top_level_field_count": 7,
+    "result_field_count": 32,
+    "field_sets_equal": true,
+    "frontend_consumed_field_types_compatible": true,
+    "baseline_path_continues_available": true
+  },
+  "frontend_stability": {
+    "method": "Vite dev server plus Browser DOM and console probe",
+    "url": "http://127.0.0.1:5177/search",
+    "root_child_count": 1,
+    "has_main": true,
+    "has_textarea": true,
+    "primary_button_count": 2,
+    "has_h1": true,
+    "console_error_count": 0,
+    "white_screen": false,
+    "passed": true
+  },
+  "validation_artifacts": {
+    "product_eval": "docs/development/m1.3x-gray-candidate-product-eval-20260610-210411.json",
+    "product_bad_cases": "docs/development/m1.3x-gray-candidate-product-bad-cases-20260610-210411.json",
+    "m1_2_regression": "docs/development/m1.3x-gray-candidate-m1.2-regression-20260610-210411.json",
+    "m1_2_parameter_version": "docs/development/m1.3x-gray-candidate-m1.2-parameter-version-20260610-210411.json",
+    "m1_3_candidate_comparison": "docs/development/m1.3x-gray-candidate-comparison-runner-20260610-210411.json",
+    "m1_3_candidate_comparison_md": "docs/development/m1.3x-gray-candidate-comparison-runner-20260610-210411.md",
+    "m1_3_candidate_parameter_version": "docs/development/m1.3x-gray-candidate-comparison-runner-parameter-version-20260610-210411.json",
+    "performance_smoke": "docs/development/m1.3x-gray-candidate-performance-smoke-20260610-210411.json",
+    "rollback_drill": "docs/development/m1.3x-gray-candidate-rollback-drill-20260610-210411.json"
+  },
+  "validation": {
+    "commands": [
+      {
+        "command": "cd apps/api && pytest",
+        "status": "passed",
+        "summary": "189 passed in 19.88s",
+        "warning": "pytest-asyncio default fixture loop scope deprecation warning"
+      },
+      {
+        "command": "cd apps/web && npm test",
+        "status": "passed",
+        "summary": "4 files, 40 tests passed"
+      },
+      {
+        "command": "cd apps/web && npm run build",
+        "status": "passed",
+        "summary": "vite production build passed"
+      },
+      {
+        "command": "cd apps/api && python -m app.eval.product_eval --comparison-mode product_chain --current-weighted-rerank --out docs/development/m1.3x-gray-candidate-product-eval-20260610-210411.json --bad-cases-out docs/development/m1.3x-gray-candidate-product-bad-cases-20260610-210411.json",
+        "status": "passed",
+        "summary": "current P@5=0.048, NDCG@10=0.171, Top10=0.68, METRIC_REGRESSION=7, RECALL_MISS=7"
+      },
+      {
+        "command": "cd apps/api && python scripts/m1_3_candidate_comparison.py --performance-smoke docs/development/m1.3x-gray-candidate-performance-smoke-20260610-210411.json --rollback-drill docs/development/m1.3x-gray-candidate-rollback-drill-20260610-210411.json --out-json docs/development/m1.3x-gray-candidate-comparison-runner-20260610-210411.json --out-md docs/development/m1.3x-gray-candidate-comparison-runner-20260610-210411.md --parameter-version-out docs/development/m1.3x-gray-candidate-comparison-runner-parameter-version-20260610-210411.json",
+        "status": "passed",
+        "summary": "selected_status=NO_GO, selected_candidate_id=null"
+      },
+      {
+        "command": "cd apps/api && python scripts/m1_2_regression.py --comparison-mode product_chain --out docs/development/m1.3x-gray-candidate-m1.2-regression-20260610-210411.json --parameter-version-out docs/development/m1.3x-gray-candidate-m1.2-parameter-version-20260610-210411.json",
+        "status": "passed",
+        "summary": "currentAfter P@5=0.040, NDCG@10=0.1539, Top10=0.64, before->after=4, after-vs-baseline=9, metricRegression=9"
+      },
+      {
+        "command": "cd apps/api && python scripts/day3_7_3_performance_smoke.py --out docs/development/m1.3x-gray-candidate-performance-smoke-20260610-210411.json",
+        "status": "passed",
+        "summary": "status_counts={200:5}, error_rate=0.0, warm_p95_ms=454"
+      },
+      {
+        "command": "cd apps/api && python scripts/day3_7_5_rollback_drill.py --out docs/development/m1.3x-gray-candidate-rollback-drill-20260610-210411.json",
+        "status": "passed",
+        "summary": "status=passed, maxRollbackElapsedMs=19, weighted rerank rollback probe=12ms, no index rebuild"
+      }
+    ]
+  },
+  "product_eval_result": {
+    "run_id": "product_eval_20260610_210555",
+    "baseline": {
+      "precision_at_5": 0.032,
+      "ndcg_at_10": 0.134,
+      "top10_hit_rate": 0.48,
+      "evaluated_query_count": 25
+    },
+    "current": {
+      "precision_at_5": 0.048,
+      "ndcg_at_10": 0.171,
+      "top10_hit_rate": 0.68,
+      "evaluated_query_count": 25
+    },
+    "gray_candidate": {
+      "grayCandidateHardGatePassed": false,
+      "weightedRerankGrayCandidate": false,
+      "hardGateDataComplete": false,
+      "metricRegressionCount": 7,
+      "recallMissCount": 7,
+      "hardGateFailedReasons": [
+        "MISSING_HARD_GATE_INPUTS",
+        "METRIC_REGRESSION_GT_0"
+      ]
+    },
+    "bad_case_reason_distribution": {
+      "METRIC_REGRESSION": 7,
+      "RECALL_MISS": 7
+    }
+  },
+  "m1_3_candidate_comparison_result": {
+    "run_id": "m1_3_candidate_comparison_20260610_210631",
+    "selected_status": "NO_GO",
+    "selected_candidate_id": null,
+    "no_go_reason": "No candidate satisfies all M1.3 hard gates and success criteria.",
+    "candidate_matrix_summary": [
+      {
+        "candidate_id": "m1_2_baseline",
+        "top10_hit_rate": 0.48,
+        "beforeVsAfterRegressedCount": 0,
+        "afterVsBaselineRegressedCount": 0,
+        "metricRegressionCount": 0,
+        "recallMissCount": 13,
+        "goNoGo": "NO_GO"
+      },
+      {
+        "candidate_id": "m1_2_guarded_rerank_v1",
+        "top10_hit_rate": 0.52,
+        "beforeVsAfterRegressedCount": 4,
+        "afterVsBaselineRegressedCount": 9,
+        "metricRegressionCount": 9,
+        "recallMissCount": 11,
+        "goNoGo": "NO_GO"
+      },
+      {
+        "candidate_id": "m1_3_recall_only_candidate",
+        "top10_hit_rate": 0.64,
+        "beforeVsAfterRegressedCount": 4,
+        "afterVsBaselineRegressedCount": 9,
+        "metricRegressionCount": 9,
+        "recallMissCount": 8,
+        "goNoGo": "NO_GO"
+      },
+      {
+        "candidate_id": "m1_3_rerank_guard_candidate",
+        "top10_hit_rate": 0.56,
+        "beforeVsAfterRegressedCount": 0,
+        "afterVsBaselineRegressedCount": 7,
+        "metricRegressionCount": 7,
+        "recallMissCount": 10,
+        "goNoGo": "NO_GO"
+      },
+      {
+        "candidate_id": "m1_3_combined_candidate",
+        "top10_hit_rate": 0.68,
+        "beforeVsAfterRegressedCount": 0,
+        "afterVsBaselineRegressedCount": 7,
+        "metricRegressionCount": 7,
+        "recallMissCount": 7,
+        "goNoGo": "NO_GO"
+      },
+      {
+        "candidate_id": "m1_3x_guard_v2_candidate",
+        "top10_hit_rate": 0.64,
+        "beforeVsAfterRegressedCount": 5,
+        "afterVsBaselineRegressedCount": 3,
+        "metricRegressionCount": 3,
+        "recallMissCount": 9,
+        "goNoGo": "NO_GO"
+      }
+    ]
+  },
+  "m1_2_runner_compatibility": {
+    "run_id": "m1_2_regression_20260610_210556",
+    "currentAfter": {
+      "Precision@5": 0.04,
+      "NDCG@10": 0.1539,
+      "Top10 hit rate": 0.64
+    },
+    "beforeVsAfterRegressedCount": 4,
+    "afterVsBaselineRegressedCount": 9,
+    "metricRegressionCount": 9,
+    "recallMissCount": 8,
+    "grayCandidateHardGatePassed": false,
+    "weightedRerankGrayCandidate": false,
+    "hardGateFailedReasons": [
+      "BEFORE_VS_AFTER_REGRESSED_GT_0",
+      "AFTER_VS_BASELINE_REGRESSED_GT_0",
+      "METRIC_REGRESSION_GT_0"
+    ]
+  },
+  "performance_smoke_result": {
+    "status": "passed",
+    "sample_count": 5,
+    "warm_sample_count": 4,
+    "status_counts": {
+      "200": 5
+    },
+    "error_rate": 0.0,
+    "warm_p95_ms": 454,
+    "warm_p95_under_3s": true,
+    "vector_error_rate": 0.0,
+    "llm_timeout_rate": 0.0,
+    "slowest_warm_stage_by_p95": "embedding_duration_ms",
+    "degraded_reason_counts": {
+      "QUERY_REWRITE_DISABLED": 5,
+      "SUMMARY_DISABLED": 5
+    }
+  },
+  "rollback_drill_result": {
+    "status": "passed",
+    "recovery_within_60_seconds": true,
+    "max_rollback_elapsed_ms": 19,
+    "vector_index_rebuild_required": false,
+    "weighted_rerank_scenario": {
+      "flag": "ENABLE_WEIGHTED_RERANK",
+      "http_status": 200,
+      "rollback_elapsed_ms": 12,
+      "score_mode_after_rollback": "base_retrieval",
+      "rollback_event_logged": true
+    }
+  },
+  "gate_summary": [
+    {
+      "gate": "selected_candidate_exists",
+      "status": "FAIL",
+      "reason_code": "M1_3X_6_SELECTED_CANDIDATE_ABSENT"
+    },
+    {
+      "gate": "enable_weighted_rerank_default_false",
+      "status": "PASS",
+      "reason_code": "DEFAULT_FLAG_FALSE_PRESERVED"
+    },
+    {
+      "gate": "baseline_path_available",
+      "status": "PASS",
+      "reason_code": "BASELINE_SCORE_MODE_BASE_RETRIEVAL"
+    },
+    {
+      "gate": "candidate_path_schema_compatible",
+      "status": "PASS",
+      "reason_code": "SCHEMA_COMPATIBLE"
+    },
+    {
+      "gate": "product_eval_gray_candidate_hard_gate",
+      "status": "FAIL",
+      "reason_code": "METRIC_REGRESSION_GT_0"
+    },
+    {
+      "gate": "m1_3_candidate_comparison_selected_status",
+      "status": "FAIL",
+      "reason_code": "M1_3_CANDIDATE_COMPARISON_NO_GO"
+    },
+    {
+      "gate": "m1_2_runner_compatibility_regressions_zero",
+      "status": "FAIL",
+      "reason_code": "COMPATIBILITY_RUNNER_REGRESSIONS_GT_0"
+    },
+    {
+      "gate": "warm_p95_under_3_seconds",
+      "status": "PASS",
+      "reason_code": "WARM_P95_UNDER_3S"
+    },
+    {
+      "gate": "rollback_under_60_seconds_no_rebuild",
+      "status": "PASS",
+      "reason_code": "ROLLBACK_WITHIN_60S_NO_REBUILD"
+    },
+    {
+      "gate": "frontend_no_blank_screen",
+      "status": "PASS",
+      "reason_code": "SEARCH_PAGE_RENDERED"
+    },
+    {
+      "gate": "api_schema_stable",
+      "status": "PASS",
+      "reason_code": "API_SCHEMA_STABLE"
+    }
+  ],
+  "enablement_thresholds": [
+    "Exactly one authorized selected candidate exists and selectedStatus=GO.",
+    "ENABLE_WEIGHTED_RERANK default remains false in config, env, env.example, and /health.",
+    "Baseline path stays available with score_mode=base_retrieval.",
+    "Controlled candidate path stays distinguishable with score_mode=weighted_rerank and schema-compatible fields.",
+    "Product eval satisfies Precision@5 >= baseline, NDCG@10 > baseline, Top10 hit rate >= 0.60, and METRIC_REGRESSION=0.",
+    "M1.3 candidate comparison satisfies before->after REGRESSED=0, after-vs-baseline REGRESSED=0, and grayCandidateHardGatePassed=true.",
+    "M1.2 compatibility runner shows no remaining regression blockers.",
+    "Warm P95 remains below 3000ms with no blocking error-rate regression.",
+    "Rollback drill remains below 60 seconds and requires no index rebuild.",
+    "Frontend /search does not white-screen and continues to consume the API schema without breakage.",
+    "Reports and logs remain sanitized and do not write raw query, case body, candidate body, or chunk body text."
+  ],
+  "immediate_rollback_conditions": [
+    {
+      "reason_code": "FLAG_STATE_MISMATCH",
+      "condition": "ENABLE_WEIGHTED_RERANK=false but /api/search returns score_mode=weighted_rerank."
+    },
+    {
+      "reason_code": "API_SCHEMA_BREAK",
+      "condition": "Top-level search fields or frontend-consumed result fields are missing, renamed, or incompatible."
+    },
+    {
+      "reason_code": "HTTP_5XX_RATE_HIGH",
+      "condition": "5xx error rate reaches or exceeds 1 percent for 30 minutes."
+    },
+    {
+      "reason_code": "PERFORMANCE_REGRESSION",
+      "condition": "Warm P95 reaches or exceeds 3000ms or smoke evidence shows material deterioration."
+    },
+    {
+      "reason_code": "ROLLBACK_BUDGET_BROKEN",
+      "condition": "Rollback drill fails, takes 60 seconds or more, or requires vector index rebuild."
+    },
+    {
+      "reason_code": "QUALITY_REGRESSION",
+      "condition": "P@5 drops below baseline, NDCG@10 is not above baseline, or Top10 drops below 0.60."
+    },
+    {
+      "reason_code": "PER_QUERY_REGRESSION",
+      "condition": "before->after REGRESSED > 0, after-vs-baseline REGRESSED > 0, or METRIC_REGRESSION > 0."
+    },
+    {
+      "reason_code": "FRONTEND_WHITE_SCREEN",
+      "condition": "Search page white-screens, primary textarea disappears, primary buttons disappear, or blocking render errors appear."
+    },
+    {
+      "reason_code": "PRIVACY_LEAK",
+      "condition": "Any report or log writes raw query, case body, candidate body, or chunk body text."
+    }
+  ],
+  "rollback_action": {
+    "default_action": "Keep or set ENABLE_WEIGHTED_RERANK=false.",
+    "reload_required": true,
+    "post_checks": [
+      "/health.feature_flags.ENABLE_WEIGHTED_RERANK=false",
+      "/api/search.results[].score_breakdown.score_mode=base_retrieval"
+    ],
+    "index_rebuild_required": false,
+    "validated_within_ms": 19
+  },
+  "privacy": {
+    "raw_query_text_written": false,
+    "case_body_text_written": false,
+    "candidate_body_text_written": false,
+    "chunk_body_text_written": false,
+    "allowed_fields_only": true
+  },
+  "boundary_confirmation": {
+    "sorting_fix_added": false,
+    "recall_fix_added": false,
+    "qrels_modified": false,
+    "historical_eval_modified": false,
+    "bad_cases_deleted": false,
+    "case_id_hardcoding": false,
+    "query_id_special_case": false,
+    "default_flag_enabled": false,
+    "entered_m2": false
+  },
+  "stoploss_decision": {
+    "keep_weighted_rerank_closed": true,
+    "enter_m2_readiness": false,
+    "retain_eval_log_regression_controlled_experiment_only": true
+  },
+  "next_conversation_title": "类案检索助手 M1.3x-8 验收与 M2 入口结论"
+}

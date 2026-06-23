@@ -1,0 +1,140 @@
+{
+  "artifact": "e2a-release-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E-2a 共享内核逻辑边界冻结）",
+  "step": "E-2a",
+  "generated_at": "2026-06-15T09:57:00",
+  "nature": "结构重整步（先逻辑后物理之逻辑步）：声明内核公开面 + 收敛检索链路引用 + import 边界守门；零文件移动、零运行时语义变化",
+  "baseline": "docs/development/e1-release-gate-20260615-075029.json",
+  "based_on": {
+    "design_doc_16": "落地设计文档/16-多产品生态全链路闭环设计文档.md",
+    "design_doc_17_e2": "落地设计文档/17-E系列分步骤文档.md（E-2 全节，§2 内核成员与公开面为冻结口径）",
+    "e1_release_gate": "docs/development/e1-release-gate-20260615-075029.json",
+    "e1_entry_contract": "docs/development/e1-entry-contract-20260615-075029.md",
+    "m5_10_final_verification": "docs/development/m5-final-verification-20260615-063329.md"
+  },
+  "entry_evidence": {
+    "e1_three_conclusions_all_go": true,
+    "e1_basic_search_go": true,
+    "e1_entry_contract_frozen_go": true,
+    "e1_zero_behavior_change_vs_m5_10_go": true,
+    "enable_weighted_rerank_default_false": true,
+    "six_m4_flags_default_false": true,
+    "seven_m5_flags_default_false": true,
+    "five_e1_product_flags_default_false_incl_vite_mirror": true,
+    "entry_gate_passed": true
+  },
+  "kernel_surface_frozen": {
+    "surface_module": "apps/api/app/kernel/__init__.py",
+    "group_modules": ["apps/api/app/kernel/rag.py", "apps/api/app/kernel/identity.py", "apps/api/app/kernel/guardrails.py", "apps/api/app/kernel/data.py"],
+    "pure_reexport_no_impl_copy": true,
+    "no_signature_change": true,
+    "symbol_identity_is_source": true,
+    "total_reexported_symbols": 145,
+    "kernel_groups": {
+      "rag": ["retrieval", "rerank", "query_processing", "summary"],
+      "identity": ["account", "team", "permission", "sharing"],
+      "guardrails": ["contracts", "锚点校验(sharing.anchors)", "多租户过滤(team.isolation)", "对象级鉴权(permission.access)"],
+      "data": ["pipeline", "case_store"]
+    },
+    "out_of_kernel_scope_per_doc17_s2_1": ["billing", "bulk_import", "tendency_analysis", "tendency_gate", "eval"],
+    "kernel_imports_no_product_package": true,
+    "zero_physical_file_move": true
+  },
+  "search_chain_convergence": {
+    "file": "apps/api/app/api/search.py",
+    "change": "仅把 RAG 核心组引用改走 app.kernel.rag 公开面；import 来源路径收敛",
+    "logic_order_signature_unchanged": true,
+    "call_sites_intact": ["query_processing_service.process", "retrieval_service.retrieve", "merge_case_candidates", "rerank_service.rerank", "split_low_confidence_candidates", "summary_service.build_presentations", "build_risk_hints"],
+    "module_level_singletons_unchanged": true,
+    "note": "search.py 因挂载盘 flush 截断 bug 用 bash heredoc 整文件重写恢复；A/B 测试证明 body 与原始逐位等价（原始深引与公开面引用两版本行为完全一致）"
+  },
+  "import_boundary_guard": {
+    "test_file": "apps/api/tests/test_e2a_kernel_boundary.py",
+    "test_count": 7,
+    "all_passed": true,
+    "assertions": {
+      "a_kernel_surface_not_import_product_packages": true,
+      "a_kernel_member_packages_not_import_product_packages": true,
+      "b_product_packages_absent_or_no_cross_import": true,
+      "c_search_chain_consumes_kernel_via_surface_only": true,
+      "c_no_new_deep_kernel_imports_beyond_grandfather": true,
+      "grandfather_files_exist": true,
+      "kernel_surface_files_present": true
+    },
+    "method": "ast 静态扫描，零运行时副作用、不受 flag 默认值漂移影响",
+    "grandfather_baseline": ["api/auth.py", "api/billing.py", "api/bulk_import.py", "api/cases.py", "api/health.py", "api/permission.py", "api/sharing.py", "api/team.py"],
+    "grandfather_note": "E-2a 仅收敛检索主链路 search.py；其余 M5 身份/商业化端点既有深引冻结为基线，只禁新增，留待 E-2b shim"
+  },
+  "test_results": {
+    "backend": {
+      "e1_same_regression_set_passed": 84,
+      "e1_regression_matches_e1_end_state": true,
+      "e2a_boundary_guard_passed": 7,
+      "e1_plus_e2a_passed": 91,
+      "full_suite_passed": 496,
+      "full_suite_failed": 2,
+      "full_suite_failures": ["tests/test_day1_api_skeleton.py::test_search_returns_real_candidates_with_query_session_id", "tests/test_day1_api_skeleton.py::test_search_expand_returns_expanded_or_low_confidence_candidates"],
+      "failures_preexisting_independent_of_e2a": true,
+      "failures_ab_proof": "把 search.py 换回原始深引 import（去掉 kernel 公开面）后，同两条用例以完全相同的 StopIteration 失败；证明失败为环境既有、与 E-2a 无关，且不在 E-1/M5 认证回归集内",
+      "command": "DATABASE_URL=sqlite:///./e2a_tmp.db python3 -B -m pytest"
+    },
+    "frontend": {
+      "build_modules": 118,
+      "build_matches_e1": true,
+      "tsc_exit": 0,
+      "build_status": "clean（118 modules transformed，bundle 正常渲染）",
+      "note": "E-2a 零前端源码改动；旧 dist/ 删除遇挂载盘 EPERM，改 --outDir dist_e2a --emptyOutDir 全量构建通过后清理临时目录"
+    }
+  },
+  "hard_gates": {
+    "e1_three_conclusions_all_go": true,
+    "zero_physical_file_move_or_rename": true,
+    "no_new_product_package": true,
+    "no_retrieval_service_interface_exposed": true,
+    "no_new_api_endpoint_registered": true,
+    "no_frontend_product_entry_wired": true,
+    "kernel_surface_pure_reexport": true,
+    "search_chain_consumes_via_surface": true,
+    "all_existing_flags_default_false": true,
+    "weighted_rerank_still_default_false": true,
+    "frontend_build_modules_unchanged_118": true,
+    "main_sorting_unchanged": true,
+    "source_selection_unchanged": true,
+    "rerank_default_switch_unchanged": true,
+    "called_function_runtime_semantics_unchanged": true,
+    "qrels_label_relevance_not_in_runtime": true,
+    "query_id_case_id_not_used_for_runtime_special_casing": true
+  },
+  "scans": {
+    "body_leakage_hits_in_new_code": 0,
+    "plaintext_credential_or_token_hits": 0,
+    "forbidden_absolute_phrasing_hits": 0,
+    "note": "凭据扫描唯一命中为 re-export 符号名 hash_session_token（函数名，非凭据值）"
+  },
+  "no_go_triggers": {
+    "e1_not_all_three_go": false,
+    "any_kernel_file_physically_moved_or_renamed": false,
+    "out_of_scope_product_package_or_service_or_endpoint_or_frontend_entry": false,
+    "any_flag_default_true_or_sorting_source_rerank_default_changed": false,
+    "called_function_semantics_changed_or_e1_regression_new_failure": false,
+    "frontend_build_modules_changed": false,
+    "qrels_label_relevance_entered_runtime_or_id_special_casing": false,
+    "body_or_credential_leak_in_artifact_code_or_log": false
+  },
+  "rollback": {
+    "e2a_is_additive_only": true,
+    "remove_app_kernel_and_revert_search_imports_returns_to_e1_end_state": true
+  },
+  "conclusions": {
+    "basic_search_continues_available": "GO",
+    "kernel_logical_boundary_frozen_pure_reexport": "GO",
+    "e2a_zero_behavior_change_vs_e1": "GO"
+  },
+  "overall": "GO",
+  "next_step": {
+    "step": "E-2b",
+    "title": "共享内核物理迁移",
+    "scope": "把四组内核 git mv 进 app/kernel/{rag,identity,guardrails,data}/，旧路径留 re-export shim，引用切到 kernel，行为与 E-2a 末态逐位一致",
+    "baseline": "本 e2a-release-gate 即 E-2b 行为零变化回归的比对基线"
+  }
+}

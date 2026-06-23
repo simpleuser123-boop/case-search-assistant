@@ -1,0 +1,223 @@
+{
+  "version": "day3_7_3_performance_smoke_v1",
+  "scope": "small_sample_smoke_not_load_test",
+  "sample_count": 5,
+  "health": {
+    "status_code": 200,
+    "returned_200_when_dependencies_unavailable": true,
+    "secret_value_leaked": false,
+    "secrets_present": {
+      "DEEPSEEK_API_KEY": true
+    },
+    "ollama_reachable": true,
+    "chroma_collection_queryable": true,
+    "chroma_chunk_count": 9621,
+    "dependency_reasons": {
+      "ollama": null,
+      "chroma": null
+    }
+  },
+  "api": {
+    "status_counts": {
+      "200": 5
+    },
+    "error_rate": 0.0,
+    "p95_under_3s": false,
+    "api_wall_ms": {
+      "min": 304,
+      "max": 3555,
+      "avg": 998,
+      "p95": 3555,
+      "p99": 3555
+    },
+    "response_total_duration_ms": {
+      "min": 295,
+      "max": 3545,
+      "avg": 990,
+      "p95": 3545,
+      "p99": 3545
+    },
+    "missing_timing_samples": []
+  },
+  "stability": {
+    "llm_timeout_count": 0,
+    "llm_timeout_rate": 0.0,
+    "vector_error_count": 0,
+    "vector_error_rate": 0.0,
+    "degraded_query_count": 5,
+    "degraded_reason_counts": {
+      "QUERY_REWRITE_DISABLED": 5,
+      "SUMMARY_DISABLED": 5
+    }
+  },
+  "stage_duration_ms": {
+    "rewrite_duration_ms": {
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "p95": 0,
+      "p99": 0
+    },
+    "embedding_duration_ms": {
+      "min": 267,
+      "max": 3506,
+      "avg": 959,
+      "p95": 3506,
+      "p99": 3506
+    },
+    "retrieval_duration_ms": {
+      "min": 12,
+      "max": 23,
+      "avg": 16,
+      "p95": 23,
+      "p99": 23
+    },
+    "rerank_duration_ms": {
+      "min": 0,
+      "max": 1,
+      "avg": 0,
+      "p95": 1,
+      "p99": 1
+    },
+    "summary_duration_ms": {
+      "min": 8,
+      "max": 13,
+      "avg": 11,
+      "p95": 13,
+      "p99": 13
+    },
+    "total_duration_ms": {
+      "min": 295,
+      "max": 3545,
+      "avg": 990,
+      "p95": 3545,
+      "p99": 3545
+    }
+  },
+  "slowest_stage_by_p95": "embedding_duration_ms",
+  "stoploss_recommendations": [
+    "Lower EMBEDDING_TIMEOUT_SECONDS and rely on BM25 fallback when Ollama is slow."
+  ],
+  "samples": [
+    {
+      "sample_id": "sample_01",
+      "query_hash": "9fe695a5bbe82a39",
+      "input_length": 36,
+      "status_code": 200,
+      "api_wall_ms": 3555,
+      "query_session_id": "qs_20260608104954_1c491b40cf1d",
+      "result_count": 10,
+      "degraded": true,
+      "degraded_reasons": [
+        "QUERY_REWRITE_DISABLED",
+        "SUMMARY_DISABLED"
+      ],
+      "missing_timing_fields": [],
+      "timings": {
+        "rewrite_duration_ms": 0,
+        "embedding_duration_ms": 3506,
+        "retrieval_duration_ms": 23,
+        "rerank_duration_ms": 1,
+        "summary_duration_ms": 11,
+        "total_duration_ms": 3545
+      },
+      "error_code": null
+    },
+    {
+      "sample_id": "sample_02",
+      "query_hash": "54e72d6ce10db7f3",
+      "input_length": 35,
+      "status_code": 200,
+      "api_wall_ms": 399,
+      "query_session_id": "qs_20260608104958_795ad56f3413",
+      "result_count": 10,
+      "degraded": true,
+      "degraded_reasons": [
+        "QUERY_REWRITE_DISABLED",
+        "SUMMARY_DISABLED"
+      ],
+      "missing_timing_fields": [],
+      "timings": {
+        "rewrite_duration_ms": 0,
+        "embedding_duration_ms": 359,
+        "retrieval_duration_ms": 16,
+        "rerank_duration_ms": 0,
+        "summary_duration_ms": 13,
+        "total_duration_ms": 391
+      },
+      "error_code": null
+    },
+    {
+      "sample_id": "sample_03",
+      "query_hash": "79e7287df8d12fde",
+      "input_length": 35,
+      "status_code": 200,
+      "api_wall_ms": 380,
+      "query_session_id": "qs_20260608104958_5265fa26d7de",
+      "result_count": 10,
+      "degraded": true,
+      "degraded_reasons": [
+        "QUERY_REWRITE_DISABLED",
+        "SUMMARY_DISABLED"
+      ],
+      "missing_timing_fields": [],
+      "timings": {
+        "rewrite_duration_ms": 0,
+        "embedding_duration_ms": 344,
+        "retrieval_duration_ms": 12,
+        "rerank_duration_ms": 1,
+        "summary_duration_ms": 10,
+        "total_duration_ms": 370
+      },
+      "error_code": null
+    },
+    {
+      "sample_id": "sample_04",
+      "query_hash": "df0aa5e5013b3386",
+      "input_length": 32,
+      "status_code": 200,
+      "api_wall_ms": 354,
+      "query_session_id": "qs_20260608104958_a1742c29da50",
+      "result_count": 10,
+      "degraded": true,
+      "degraded_reasons": [
+        "QUERY_REWRITE_DISABLED",
+        "SUMMARY_DISABLED"
+      ],
+      "missing_timing_fields": [],
+      "timings": {
+        "rewrite_duration_ms": 0,
+        "embedding_duration_ms": 319,
+        "retrieval_duration_ms": 16,
+        "rerank_duration_ms": 0,
+        "summary_duration_ms": 8,
+        "total_duration_ms": 347
+      },
+      "error_code": null
+    },
+    {
+      "sample_id": "sample_05",
+      "query_hash": "bca31cbac3fe86a3",
+      "input_length": 32,
+      "status_code": 200,
+      "api_wall_ms": 304,
+      "query_session_id": "qs_20260608104959_2799a2728e8f",
+      "result_count": 10,
+      "degraded": true,
+      "degraded_reasons": [
+        "QUERY_REWRITE_DISABLED",
+        "SUMMARY_DISABLED"
+      ],
+      "missing_timing_fields": [],
+      "timings": {
+        "rewrite_duration_ms": 0,
+        "embedding_duration_ms": 267,
+        "retrieval_duration_ms": 13,
+        "rerank_duration_ms": 0,
+        "summary_duration_ms": 12,
+        "total_duration_ms": 295
+      },
+      "error_code": null
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "artifact": "e5-statute-service-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E5 法条法规检索）",
+  "step": "E5-3",
+  "title": "内核法条检索服务",
+  "generated_at": "2026-06-17T10:51:37+08:00",
+  "nature": "内核能力层步：在 app.kernel.rag 新增内部法条检索服务（查询/类案 -> StatuteRef[]，法条 -> CandidateRef[] 互跳）；依赖注入 + 纯转换 + 零正文泄露，不接线端点/前端，行为对既有检索零影响。",
+  "entry_gate": {
+    "e5_2_overall_go": true,
+    "allow_enter_e5_3_true": true,
+    "source": "docs/development/e5-statute-corpus-20260617-101358.json",
+    "verdict": "GO"
+  },
+  "added_files": [
+    "apps/api/app/kernel/rag/statute_search_service.py",
+    "apps/api/tests/test_e5_statute_search_service.py"
+  ],
+  "modified_files": [
+    "apps/api/app/kernel/rag/__init__.py (仅追加 re-export + __all__；不改既有符号)",
+    "落地设计文档/20-E5法条检索分步骤系统提示词文档.md (E5-3 完成登记)"
+  ],
+  "service_entries": {
+    "search_statutes": "查询文本 / SearchProfile -> StatuteSearchResult(statute_refs=StatuteRef[])；命中带 text_id 锚点，无裁判正文；缺锚点 fail-closed 丢弃并记 STATUTE_REF_DROPPED_NO_ANCHOR。",
+    "statutes_by_case": "CandidateRef / case_id -> StatuteSearchResult(statute_refs=StatuteRef[])；基于 E5-2 类案→法条关联标注（case_statute_links.jsonl）做「类案→法条」互跳，无正文。",
+    "cases_by_statute": "StatuteRef / statute_id -> StatuteCaseRefResult(candidate_refs=CandidateRef[])；基于 E5-2 关联标注做「法条→类案」互跳；CandidateRef 经 sanitize_candidate_ref 严格白名单七字段 + 锚点校验，缺锚点丢弃并记 STATUTE_CASE_REF_DROPPED_NO_ANCHOR。"
+  },
+  "cross_jump_contract_only": {
+    "case_to_statute_emits": "StatuteRef（经 sanitize_statute_ref 收敛白名单 + text_id 锚点）",
+    "statute_to_case_emits": "CandidateRef（经 sanitize_candidate_ref 收敛 E-1 白名单七字段 + source_anchors）",
+    "no_opposite_side_body": true,
+    "candidate_ref_has_source_anchors": true,
+    "statute_ref_has_text_id_anchor": true
+  },
+  "dependency_injection": {
+    "port": "StatuteCorpusPort（runtime_checkable Protocol：search_statutes / statutes_for_case / cases_for_statute）",
+    "default_impl": "JsonlStatuteCorpus（懒加载只读 statutes.jsonl + case_statute_links.jsonl + chunks.jsonl 取代表性 source_chunk_id 锚点）",
+    "test_inject": "FakeCorpus（短假法条/假 case_id/假 text_id/假 chunk_id）",
+    "writes_anything": false
+  },
+  "anchor_drop_stats": {
+    "statute_ref_drop_reason_code": "STATUTE_REF_DROPPED_NO_ANCHOR",
+    "case_ref_drop_reason_code": "STATUTE_CASE_REF_DROPPED_NO_ANCHOR",
+    "fail_closed": "缺 text_id 的法条命中 / 缺 source_chunk_id 的互跳类案 -> sanitize 抛 ContractViolationError -> 服务丢弃 + 记一条降级原因码，绝不展示不可溯源候选。",
+    "smoke_verified": "VM importlib smoke：anchorless 法条被丢弃且记 STATUTE_REF_DROPPED_NO_ANCHOR；anchorless 类案被丢弃且记 STATUTE_CASE_REF_DROPPED_NO_ANCHOR。"
+  },
+  "import_boundary": {
+    "service_imports": [
+      "app.core.logging",
+      "app.kernel.guardrails.contracts",
+      "app.kernel.rag.internal_search_contracts",
+      "app.kernel.rag.query_processing"
+    ],
+    "imports_fastapi": false,
+    "imports_app_api": false,
+    "imports_app_schemas": false,
+    "imports_product_package": false,
+    "backrefs_aggregate_init": false,
+    "deep_imports_retrieval_rerank_summary_private": false,
+    "note": "经子包公开面（internal_search_contracts / query_processing）与护栏公开面（guardrails.contracts）消费 E3 契约、查询规范化、StatuteRef sanitize；不从聚合 app.kernel.rag / app.kernel 回引（循环导入规避）。"
+  },
+  "identity_preserved": {
+    "rag_X_is_kernel_X": true,
+    "checked": [
+      "app.kernel.rag.StatuteSearchService is app.kernel.StatuteSearchService",
+      "app.kernel.rag.STATUTE_REF_DROPPED_NO_ANCHOR is app.kernel.STATUTE_REF_DROPPED_NO_ANCHOR",
+      "app.kernel.rag.STATUTE_CASE_REF_DROPPED_NO_ANCHOR is app.kernel.STATUTE_CASE_REF_DROPPED_NO_ANCHOR"
+    ],
+    "note": "运行时身份断言纳入 test_e5_statute_search_service.py::test_public_face_identity_preserved（host .venv311 实跑权威）。"
+  },
+  "behavior_zero_impact": {
+    "internal_search_service_unchanged": true,
+    "internal_search_contracts_unchanged": true,
+    "api_search_unchanged": true,
+    "api_search_expand_unchanged": true,
+    "intake_endpoint_unchanged": true,
+    "ranking_recall_rerank_defaults_unchanged": true,
+    "case_index_not_rebuilt": true,
+    "evidence": "仅新增 statute_search_service.py + 追加 rag/__init__.py re-export；未打开/编辑 internal_search_service.py / internal_search_contracts.py / api/search.py / intake 源文件。法条检索是新增并行能力，案件检索路径逐位不变。"
+  },
+  "flags": {
+    "ENABLE_STATUTE_SEARCH": false,
+    "VITE_ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false,
+    "ENABLE_DRAFTING": false,
+    "ENABLE_CASEBOOK": false,
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "service_depends_on_business_flag_on_path": false,
+    "new_default_true_business_flag_added": false,
+    "new_external_business_flag_added": false,
+    "note": "服务是纯能力层，不依赖任何业务 flag 的 on 路径（flag 门控在 E5-4 端点层做）。仅用内部数据目录环境变量 STATUTE_CORPUS_DIR（非对外业务 flag）。"
+  },
+  "include_router": 13,
+  "privacy_scan": {
+    "judicial_body_tokens": 0,
+    "pii_tokens": 0,
+    "model_generated_statute_text": 0,
+    "credentials": 0,
+    "disabled_copy": 0,
+    "scanned": ["statute_search_service.py", "test_e5_statute_search_service.py"],
+    "note": "body/display/generated-statute 键仅作为 forbidden-list 字面量出现在测试断言与服务 docstring（描述「绝不搬运」），无真实正文/PII/凭据/禁用文案。"
+  },
+  "hard_gates": {
+    "e5_2_go_and_allow_enter_e5_3": true,
+    "statute_text_from_corpus_not_generated": true,
+    "statute_ref_anchored_or_dropped": true,
+    "cross_jump_contract_only_no_opposite_body": true,
+    "candidate_ref_strict_whitelist_7_fields": true,
+    "candidate_ref_100pct_source_anchors": true,
+    "internal_search_service_behavior_unchanged": true,
+    "api_search_unchanged": true,
+    "intake_endpoint_unchanged": true,
+    "ranking_recall_rerank_defaults_unchanged": true,
+    "case_index_not_rebuilt": true,
+    "no_statute_endpoint": true,
+    "no_frontend_page": true,
+    "no_new_product_package": true,
+    "service_not_depend_business_flag_on_path": true,
+    "no_deep_private_import": true,
+    "no_aggregate_init_backref_circular_import": true,
+    "no_import_product_package": true,
+    "public_face_identity_preserved": true,
+    "include_router_13": true,
+    "all_flags_default_false": true,
+    "qrels_label_not_in_runtime": true,
+    "no_query_or_case_id_special_casing": true,
+    "no_body_or_pii_in_logs_or_reports": true
+  },
+  "verification_snapshot": {
+    "py_compile": "statute_search_service.py + rag/__init__.py 均 OK（rag/__init__.py 经 heredoc 重写后 208 行+尾换行，规避 VM mount 中文尾部 stale 截断）。",
+    "vm_importlib_smoke": "ALL_VM_SMOKE_PASS —— 经 importlib 以真身契约/转换逻辑加载 statute_search_service（stub 仅 app.core.logging.logger + identity.sharing.anchors.is_valid_anchor 真等价实现），跑通 search_statutes(锚定/丢弃/SearchProfile) / statutes_by_case(CandidateRef+case_id) / cases_by_statute(白名单7+100%锚点+丢弃+StatuteRef入参) / type-guard。",
+    "static_boundary": "STATIC_BOUNDARY_OK —— service 仅 import app.core.logging / guardrails.contracts / rag.internal_search_contracts / rag.query_processing + stdlib；无 fastapi/app.api/app.schemas/产品包；无聚合 __init__ 回引。",
+    "backend_pytest_authoritative": "需 host .venv311（Py3.11.9，含 pydantic/sqlmodel/sqlalchemy/fastapi）实跑：pytest tests/test_e5_statute_search_service.py tests/test_e5_statute_contracts.py 及 E3/E4 同款回归集（test_e3_internal_search_contracts/_service/_search_api_parity/_internal_search_boundaries + test_e4_intake_api/_intake_boundaries）；VM 缺 sqlalchemy/sqlmodel/pydantic-settings 且无网络，按项目约定 host 为权威复跑口径。",
+    "include_router_check": "grep -cE app.include_router app/main.py = 13（未变）"
+  },
+  "vm_mount_caveat": "VM mount 对含中文尾部的文件偶发 tail 截断（py_compile 读 stale 193 行报 unterminated string，Read 工具读全量 209 行正确）；按既有 recipe 用 heredoc 从 VM 侧整文件重写 rag/__init__.py 使 mount 与 host 重新一致后 py_compile OK。host .venv311 pytest 为权威复跑口径。",
+  "overall": "CONDITIONAL_GO",
+  "overall_explanation": "E5-3 内核法条检索服务三入口（search_statutes / statutes_by_case / cases_by_statute）实现完毕：StatuteRef 带 text_id 锚点、经 sanitize_statute_ref 收敛白名单、缺锚点 fail-closed 丢弃并记 STATUTE_REF_DROPPED_NO_ANCHOR；互跳只走契约对象（类案→法条出 StatuteRef、法条→类案出 CandidateRef 严格白名单七字段+100%source_anchors），两侧均无对侧正文；服务不生成/改写条文（article_text 原样透传，catalog 模式为 None）。依赖注入 + 纯转换；经子包/护栏公开面消费、无聚合 __init__ 回引、无深引私有、无 import 产品包；公开面身份保持。行为对既有检索零影响：未改 InternalSearchService/api/search/intake 源文件，未重建案件索引，未改排序/召回/rerank 默认。include_router 仍 13；全 flag 默认 false 且服务不依赖业务 flag on 路径；qrels/label 未进运行时、无 query/case id 特判；隐私扫描全 0。VM 经 importlib 真身 smoke 全过 + 静态边界全过 + py_compile 全过；后端 pytest 与 E3/E4 回归按项目约定需 host .venv311 实跑为权威口径（VM 缺 sqlalchemy/sqlmodel/pydantic-settings 且无网络）。故判 CONDITIONAL_GO（功能/边界/隐私在 VM 已充分验证，唯 pytest 计数待 host 复跑确认），allow_enter_e5_4 在 host 回归全绿后为 true。",
+  "allow_enter_e5_4": true,
+  "allow_enter_e5_4_condition": "host .venv311 复跑 test_e5_statute_search_service.py + test_e5_statute_contracts.py 全通过，且 E3/E4 同款回归集零新增失败、include_router 仍 13。",
+  "next_step": "类案检索助手 E5-4 statute 后端包与 gated 端点"
+}

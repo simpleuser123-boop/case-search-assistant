@@ -1,0 +1,114 @@
+{
+  "artifact": "e4-parameter-version",
+  "step": "E4-6",
+  "generated_at": "2026-06-17T11:25:42+08:00",
+  "baseline": "docs/development/e3-release-gate-20260616-175509.json",
+  "release_gate": "docs/development/e4-release-gate-20260617-112542.json",
+  "purpose": "E4 收官验收参数快照；只记录当前合同、flag、端点和验证口径，不改变运行时参数。",
+  "flags": {
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false,
+    "VITE_ENABLE_INTAKE": false,
+    "VITE_ENABLE_INTAKE_AI_EXTRACTION": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "m4_m5_e1_flags_unchanged": true
+  },
+  "intake_contract": {
+    "request_profile_whitelist": [
+      "case_cause",
+      "region",
+      "trial_level_preference",
+      "dispute_focus_keywords",
+      "query_text"
+    ],
+    "request_params": {
+      "mode": ["standard", "expanded"],
+      "limit": {
+        "default": 10,
+        "min": 1,
+        "max": 50
+      }
+    },
+    "request_extra_policy": "forbid",
+    "candidate_ref_whitelist": [
+      "case_id",
+      "case_number",
+      "court",
+      "trial_level",
+      "case_cause",
+      "judgment_date",
+      "source_anchors"
+    ],
+    "source_anchor_whitelist": [
+      "case_id",
+      "source_chunk_id",
+      "anchor_type"
+    ],
+    "candidate_ref_body_fields_forbidden": [
+      "summary",
+      "highlights",
+      "matched_text",
+      "chunk_text",
+      "full_text",
+      "content",
+      "body"
+    ]
+  },
+  "routing": {
+    "include_router_count": 13,
+    "intake_endpoint": {
+      "method": "POST",
+      "path": "/api/intake/search",
+      "gated_by": "ENABLE_INTAKE",
+      "disabled_behavior": "403 INTAKE_DISABLED; no search; no persistence"
+    },
+    "forbidden_new_product_packages": {
+      "statute": false,
+      "drafting": false,
+      "casebook": false
+    }
+  },
+  "service_boundary": {
+    "intake_consumes_search_via": "app.kernel.rag.InternalSearchService.search_candidate_refs",
+    "deep_import_retrieval_rerank_summary_query_processing": false,
+    "copies_search_main_path": false,
+    "persistence_in_intake": false,
+    "server_side_ai_extraction_on_path": false
+  },
+  "privacy_boundary": {
+    "raw_case_server_upload": false,
+    "pii_server_upload": false,
+    "raw_case_browser_storage": false,
+    "raw_case_url_query": false,
+    "logs_query_text_or_pii": false,
+    "test_or_doc_real_long_case_body": false
+  },
+  "verification_snapshot": {
+    "environment": {
+      "venv": ".venv311",
+      "python": "3.11.9",
+      "pytest": "8.2.0",
+      "pydantic": "2.7.1",
+      "pydantic_core": "2.18.2",
+      "database_url": "sqlite:///./test_e4.db"
+    },
+    "backend": {
+      "e4_full_suite": "126 passed, 1 warning",
+      "e1_e2_e3_regression": "172 passed, 1 warning",
+      "m1_feature_health_summary_performance_smoke": "60 passed, 1 warning"
+    },
+    "frontend": {
+      "npm_run_test": "38 files / 307 tests passed",
+      "npm_run_build": "PASS, 121 modules transformed"
+    },
+    "non_blocking_warnings": [
+      "starlette.formparsers PendingDeprecationWarning for python_multipart import",
+      "React act(...) warnings in IntakePage.test.tsx"
+    ]
+  },
+  "overall": "GO",
+  "next_step": {
+    "allow_enter_e5": true,
+    "title": "类案检索助手 E5-1 法条法规检索入口合同"
+  }
+}

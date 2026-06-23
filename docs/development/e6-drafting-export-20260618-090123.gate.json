@@ -1,0 +1,110 @@
+{
+  "milestone": "E6",
+  "step": "E6-4",
+  "title": "DraftDescriptor 导出与免责头",
+  "generated_at": "2026-06-18T09:01:23+00:00",
+  "overall": "GO",
+  "nature": "前端导出能力（对标 M4-5 清单导出范式）：把已取的 DraftDescriptor（零正文）本地生成 Markdown / 纯文本文件，强制注入免责头 + 数据覆盖说明，只含元数据 + 来源锚点 + 用户备注；无锚点引用丢弃；不重新生成/补全文本；导出失败安全降级。前端落点，未新增后端端点、include_router 仍 15。",
+  "entry_gate": {
+    "e6_2_api_gate": "e6-drafting-api-20260618-053316.gate.json",
+    "e6_2_overall": "CONDITIONAL_GO(host .venv311 全量回归全绿后无条件 GO，allow_enter_e6_3=true)",
+    "e6_3_web_gate": "e6-drafting-web-20260618-070017.gate.json",
+    "e6_3_overall": "GO",
+    "allow_enter_e6_4": true
+  },
+  "export_location": "frontend",
+  "export_location_reason": "M4-5 既有导出实现即为前端纯函数模块（apps/web/src/lib/caseListExport.ts，Blob+a[download]+可注入下载器）。E6-4 明确『沿用 M4-5 落点』，故落前端 helper，与 M4-5 同构；不新增后端导出端点，避免 include_router 再增、避免新增对外业务 flag。",
+  "added_files": [
+    "apps/web/src/lib/draftingExport.ts",
+    "apps/web/src/lib/draftingExport.test.ts",
+    "docs/development/e6-drafting-export-20260618-090123.md",
+    "docs/development/e6-drafting-export-20260618-090123.gate.json"
+  ],
+  "modified_files": [
+    "apps/web/src/pages/DraftingPage.tsx",
+    "落地设计文档/21-E6文书工作台分步骤系统提示词文档.md"
+  ],
+  "export_formats": ["markdown", "text"],
+  "export_content_whitelist": {
+    "structure_skeleton": "段落标题清单（去空白/丢空项；仍是标题，不含正文）",
+    "candidate_refs": "CandidateRef 白名单元数据（case_number/court/trial_level/case_cause/judgment_date）+ 来源锚点(case_id#chunk_id)",
+    "statute_refs": "StatuteRef 白名单元数据（law_name/article_no）+ 来源锚点(text_id)；**不取 article_text**",
+    "user_fields": "note / tag（用户自填短字段）"
+  },
+  "disclaimer_header": {
+    "forced": true,
+    "cannot_disable": "DRAFT_EXPORT_DISCLAIMER_LINES 在 generateDraftMarkdown / generateDraftText 头部无条件注入，无开关参数",
+    "no_individual_conclusion": true,
+    "lines_summary": [
+      "本文件仅含结构骨架(标题)+引用元数据+来源锚点+用户备注，不含裁判文书正文/原始案情/起草正文",
+      "数据覆盖说明：底层语料以刑事裁判文书与相关法条为主，为阶段性沉淀，可能未覆盖、不代表完整检索",
+      "不承诺检索完整性，不提供胜诉/败诉等诉讼结果判断、裁判结果预测及确定性法律结论，不构成法律意见",
+      "使用前请结合权威数据库与原始裁判文书/现行有效法条人工复核，自行判断相关性与适用性"
+    ]
+  },
+  "export_boundary_proof": {
+    "no_judgment_body": "导出只读 DraftDescriptorView 白名单字段；judgment_text/chunk_text/summary/highlight/raw_case/raw_query/draft_body/generated_text 0 命中（grep 扫描）",
+    "no_article_text": "collectStatuteRows 显式不取 ref.article_text；grep `\\.article_text|article_text:` 0 命中（仅注释 2 处声明红线）",
+    "no_outcome_or_verdict": "win_probability/verdict 0 命中；胜诉/败诉/胜率/必然胜败 仅出现在免责头否定式表述 + FORBIDDEN_EXPORT_PHRASES 黑名单 + 注释，数据生成区 0 命中",
+    "skeleton_titles_only": "structure_skeleton 导出为有序标题清单，无段落正文",
+    "anchorless_dropped": "collectCandidateRows/collectStatuteRows filter(hasAnchor)；无锚点引用不进入导出（测试断言 case_b/某法 不出现）",
+    "no_text_regeneration": "导出 100% 搬运已收敛 DraftDescriptor 字段，零文本生成/零补全/零结论"
+  },
+  "failure_safe_degrade": {
+    "draft_null": "failed + draft_not_found，content=null，不抛出",
+    "empty_skeleton": "empty + empty_skeleton，不抛出",
+    "downloader_throw": "degraded + download_failed，content 仍返回，不抛出",
+    "no_downloader": "degraded + download_unavailable，content 仍返回",
+    "main_chain_unaffected": "exportDraft 全程 try/catch，UI 仅 setExportNotice 提示，不影响保存/列表/检索主链路"
+  },
+  "log_redaction": {
+    "fields": "event / format / status / reason_code / skeleton_count / candidate_count / statute_count",
+    "no_body_no_title_no_id": "buildDraftExportLog 仅计数；测试断言序列化后不含案号/note/tag/标题/draft_001"
+  },
+  "backend_untouched": {
+    "no_new_endpoint": true,
+    "include_router": 15,
+    "no_new_business_flag": true,
+    "search_e3_intake_statute_unchanged": "未触碰 /api/search、E3/intake/statute 端点与排序；仅前端新增"
+  },
+  "privacy_scan": {
+    "judgment_or_body": 0,
+    "article_text_read": 0,
+    "outcome_or_verdict_in_data_path": 0,
+    "credentials": 0,
+    "storage_calls": 0,
+    "forbidden_phrases_in_data_path": 0
+  },
+  "tests": {
+    "draftingExport.test.ts": 15,
+    "DraftingPage.test.tsx": 8,
+    "draftingApi.test.ts": 13,
+    "featureFlags.test.ts": 13,
+    "HomePage.test.tsx": 9,
+    "SearchPage.test.tsx": 33,
+    "StatutePage.test.tsx": 5,
+    "regressions": 0,
+    "build_modules": 126,
+    "build_baseline": 125,
+    "build_delta": "+1 (draftingExport)"
+  },
+  "vm_stale_mount_note": "host Edit/Write 经 VM 挂载读出尾部截断（draftingExport.test.ts 244 行截断、DraftingPage.tsx 766 行截断），按『绝不 VM 读全量写回』纪律以 host Read 验证完整后在 VM 内 head 截断到 last-good 行 + heredoc 重写尾部修复；host 文件为权威（test 258 行 / page 830 行末态），最终 file=UTF-8 且测试/build 全绿。wc -l 在 stale 态计数偏少不可信。",
+  "hard_gates": {
+    "disclaimer_forced_not_disablable_no_individual_conclusion": true,
+    "export_metadata_anchor_note_only_zero_body": true,
+    "skeleton_titles_only_no_paragraph_body": true,
+    "anchorless_refs_excluded_from_export": true,
+    "article_text_not_exported": true,
+    "no_text_regeneration_on_export": true,
+    "export_failure_safe_degrade_no_main_chain_impact": true,
+    "log_no_body_no_title": true,
+    "no_new_unauth_export_endpoint": true,
+    "include_router_15_unchanged": true,
+    "no_change_to_search_e3_intake_statute_ordering": true,
+    "no_new_external_business_flag": true
+  },
+  "next_step": {
+    "allow_enter_e6_5": true,
+    "title": "类案检索助手 E6-5 消费边界与护栏守门"
+  }
+}

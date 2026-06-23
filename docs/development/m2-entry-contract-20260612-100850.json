@@ -1,0 +1,338 @@
+{
+  "version": "m2_entry_contract_v1",
+  "generated_at": "2026-06-12T10:08:50+08:00",
+  "step": "M2-1",
+  "scope": {
+    "summary": "entry evidence freeze and trusted retrieval contract only",
+    "implements_m2_2_to_m2_8": false,
+    "changes_online_sorting": false,
+    "changes_source_selection": false,
+    "changes_rerank_defaults": false,
+    "changes_qrels_or_labels": false,
+    "changes_historical_eval_artifacts": false
+  },
+  "evidence": {
+    "m1_3x_10_artifacts": [
+      "docs/development/m1.3x-legal-candidate-robustness-20260611-170419.md",
+      "docs/development/m1.3x-legal-candidate-robustness-20260611-170419.json",
+      "docs/development/m1.3x-legal-candidate-robustness-parameter-version-20260611-170419.json"
+    ],
+    "selected_candidate_id": "m1_3x_legal_score_shape_router_v2_candidate",
+    "robust_status": "ROBUST_GO",
+    "selected_threshold": 0.001,
+    "entered_m2_in_source_evidence": false,
+    "privacy_check_passed": true
+  },
+  "entry_register": {
+    "selected_candidate": "m1_3x_legal_score_shape_router_v2_candidate",
+    "candidate_scope": "offline_candidate_comparison_and_robustness_evidence_only",
+    "current_core_metrics": {
+      "top10_hit_rate": 0.72,
+      "baseline_top10_hit_rate": 0.48,
+      "ndcg_at_10": 0.1954,
+      "baseline_ndcg_at_10": 0.134,
+      "precision_at_5": 0.056,
+      "baseline_precision_at_5": 0.032,
+      "before_vs_after_regressed_count": 0,
+      "after_vs_baseline_regressed_count": 0,
+      "metric_regression_count": 0,
+      "recall_miss_count": 7,
+      "evaluated_query_count": 25,
+      "repeat_count": 3,
+      "repeat_consistent": true
+    },
+    "remaining_recall_miss_boundary": {
+      "count": 7,
+      "blocks_m2_entry": false,
+      "allows_exhaustive_claim": false,
+      "reason_code": "RESIDUAL_RECALL_BOUNDARY_NOT_EXHAUSTIVE_PROOF"
+    },
+    "default_closed_feature_flags": {
+      "ENABLE_QUERY_REWRITE": false,
+      "ENABLE_WEIGHTED_RERANK": false,
+      "ENABLE_SUMMARY": false,
+      "ENABLE_EXPANDED_SEARCH": false,
+      "VITE_ENABLE_EXPANDED_SEARCH": false
+    },
+    "online_sorting_boundaries": {
+      "keep_weighted_rerank_default_false": true,
+      "keep_expanded_search_default_false": true,
+      "qrels_offline_only": true,
+      "labels_offline_only": true,
+      "relevance_offline_only": true,
+      "no_query_id_ranking_special_case": true,
+      "no_case_id_ranking_special_case": true,
+      "no_manual_rank_override": true
+    }
+  },
+  "trusted_retrieval_contract": {
+    "source_anchors": {
+      "api_fields": [
+        "case_id",
+        "source_chunk_id",
+        "chunk_type",
+        "anchor_type",
+        "source_url"
+      ],
+      "ui_requirement": "show_source_entry_only_when_anchor_exists",
+      "log_fields": [
+        "anchor_count",
+        "anchor_id_or_hash",
+        "missing_anchor_reason_code"
+      ],
+      "report_json_fields": [
+        "anchor_count",
+        "anchor_id_or_hash",
+        "reason_code"
+      ],
+      "api_may_return_necessary_display_body_later": true,
+      "logs_events_reports_may_store_body": false
+    },
+    "coverage": {
+      "api_fields": [
+        "data_source",
+        "data_until",
+        "index_version",
+        "total_candidate_count",
+        "search_mode",
+        "degraded_reasons"
+      ],
+      "ui_requirement": "show_factual_coverage_without_exhaustive_claims",
+      "log_fields": [
+        "candidate_count",
+        "search_mode",
+        "status_code",
+        "degraded_reason_code"
+      ],
+      "report_json_fields": [
+        "count",
+        "mode",
+        "status_code",
+        "reason_code",
+        "metric_summary"
+      ],
+      "logs_events_reports_may_store_body": false
+    },
+    "confidence_level": {
+      "api_fields": [
+        "confidence_level",
+        "score",
+        "score_band",
+        "reason_codes"
+      ],
+      "allowed_values": [
+        "high",
+        "medium",
+        "low"
+      ],
+      "ui_requirement": "retrieval_confidence_only_not_legal_conclusion",
+      "log_fields": [
+        "confidence_level",
+        "score_band",
+        "reason_code"
+      ],
+      "report_json_fields": [
+        "confidence_level",
+        "rank",
+        "score",
+        "reason_code"
+      ],
+      "logs_events_reports_may_store_body": false
+    },
+    "low_confidence_candidates": {
+      "api_fields": [
+        "case_id",
+        "rank",
+        "score",
+        "confidence_level",
+        "reason_codes",
+        "source_anchors"
+      ],
+      "ui_requirement": "separate_from_main_results",
+      "log_fields": [
+        "count",
+        "rank",
+        "score_band",
+        "reason_code"
+      ],
+      "report_json_fields": [
+        "count",
+        "rank",
+        "score",
+        "reason_code"
+      ],
+      "implemented_in_m2_1": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "expanded_search": {
+      "api_fields": [
+        "enabled",
+        "mode",
+        "trigger",
+        "status",
+        "degraded_reasons",
+        "feature_flag_state"
+      ],
+      "ui_requirement": "hidden_when_disabled_and_no_exhaustive_wording",
+      "log_fields": [
+        "trigger_code",
+        "mode",
+        "status_code",
+        "result_count",
+        "reason_code"
+      ],
+      "report_json_fields": [
+        "feature_flag_state",
+        "status_code",
+        "count",
+        "reason_code"
+      ],
+      "implemented_in_m2_1": false,
+      "default_enabled": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "feedback_event": {
+      "api_fields": [
+        "event_type",
+        "session_hash",
+        "query_hash",
+        "case_id_hash",
+        "rank",
+        "feedback_value",
+        "search_mode",
+        "confidence_level",
+        "reason_codes"
+      ],
+      "ui_requirement": "does_not_imply_immediate_ranking_learning",
+      "log_fields": [
+        "event_type",
+        "session_hash",
+        "query_hash",
+        "case_id_hash",
+        "rank",
+        "feedback_value",
+        "search_mode",
+        "confidence_level",
+        "reason_code"
+      ],
+      "report_json_fields": [
+        "event_count",
+        "rank",
+        "feedback_value",
+        "reason_code"
+      ],
+      "affects_current_ranking": false,
+      "implemented_in_m2_1": false,
+      "logs_events_reports_may_store_body": false
+    },
+    "risk_hint": {
+      "api_fields": [
+        "risk_type",
+        "confidence_level",
+        "source_anchors",
+        "reason_codes"
+      ],
+      "ui_requirement": "review_lead_only_no_legal_conclusion",
+      "log_fields": [
+        "risk_type",
+        "anchor_count",
+        "reason_code"
+      ],
+      "report_json_fields": [
+        "count_by_risk_type",
+        "anchor_coverage",
+        "reason_code"
+      ],
+      "source_required_before_display": true,
+      "implemented_in_m2_1": false,
+      "logs_events_reports_may_store_body": false
+    }
+  },
+  "body_boundary_policy": {
+    "allowed_report_json_fields": [
+      "sanitized_id",
+      "hash",
+      "count",
+      "rank",
+      "score",
+      "score_band",
+      "status_code",
+      "reason_code",
+      "feature_flag_state",
+      "metric_summary"
+    ],
+    "forbidden_body_content_types": [
+      "original_query_body",
+      "case_fact_body",
+      "candidate_body",
+      "chunk_body",
+      "unmasked_personal_data",
+      "unanchored_generated_legal_explanation"
+    ],
+    "api_can_return_necessary_display_snippets": true,
+    "logs_events_reports_can_store_display_snippets": false,
+    "development_artifacts_can_store_display_snippets": false,
+    "this_artifact_contains_body_text": false
+  },
+  "feature_flag_strategy": {
+    "ENABLE_WEIGHTED_RERANK": {
+      "config_default": false,
+      "env_example_default": false,
+      "m2_1_decision": "KEEP_FALSE"
+    },
+    "ENABLE_EXPANDED_SEARCH": {
+      "config_default": false,
+      "env_example_default": false,
+      "m2_1_decision": "KEEP_FALSE_UNTIL_GATED"
+    },
+    "VITE_ENABLE_EXPANDED_SEARCH": {
+      "env_example_default": false,
+      "m2_1_decision": "KEEP_FALSE_BACKEND_FLAG_REMAINS_AUTHORITY"
+    },
+    "new_m2_capabilities": {
+      "default_must_be_disableable": true,
+      "must_have_rollback_or_safe_degrade_path": true,
+      "must_not_mutate_current_ranking_without_explicit_later_gate": true
+    }
+  },
+  "forbidden_behaviors": [
+    "CHANGE_ONLINE_RANKING_IN_M2_1",
+    "CHANGE_SOURCE_SELECTION_IN_M2_1",
+    "ENABLE_WEIGHTED_RERANK_BY_DEFAULT",
+    "ENABLE_EXPANDED_SEARCH_BY_DEFAULT_WITHOUT_GATE",
+    "USE_QRELS_LABELS_RELEVANCE_IN_RUNTIME_RANKING",
+    "USE_QUERY_ID_OR_CASE_ID_SPECIAL_CASE_IN_RANKING",
+    "DELETE_BAD_SAMPLES",
+    "MANUALLY_EDIT_RANK",
+    "MODIFY_HISTORICAL_EVAL_ARTIFACTS",
+    "WRITE_FEEDBACK_DIRECTLY_TO_CURRENT_RANKING",
+    "PROMISE_EXHAUSTIVE_SEARCH"
+  ],
+  "leakage_risk_record": {
+    "m1_3x_markdown_claims_no_body_content": true,
+    "m1_3x_json_privacy_check_passed": true,
+    "m1_3x_json_raw_body_present": false,
+    "m1_3x_json_forbidden_text_fields_present": false,
+    "m2_1_runtime_log_migration_performed": false,
+    "m2_1_runtime_log_full_audit_performed": false,
+    "follow_up_steps": [
+      "M2-2_SOURCE_ANCHOR_RUNTIME_CHECKS",
+      "M2-3_PRIVACY_AND_COVERAGE_RUNTIME_CHECKS"
+    ]
+  },
+  "go_no_go": {
+    "status": "GO",
+    "allows_entering_m2_2": true,
+    "allows_entering_m2_3_to_m2_8": false,
+    "allows_weighted_rerank_default_enablement": false,
+    "allows_expanded_search_default_enablement": false,
+    "failed_gates": [],
+    "reason_codes": [
+      "M1_3X_10_ROBUST_GO_CONFIRMED",
+      "SELECTED_CANDIDATE_CONFIRMED",
+      "DEFAULT_FLAGS_REMAIN_FALSE",
+      "CONTRACT_DEFINED_WITH_BODY_BOUNDARY"
+    ],
+    "next_allowed_title": "类案检索助手 M2-2 来源锚点链路闭环"
+  }
+}

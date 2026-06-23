@@ -1,0 +1,15 @@
+{
+  "command": "python \"C:\\Users\\yyl\\Desktop\\类案检索助手\\apps\\api\\scripts\\eval_corpus_preflight.py\" --out \"C:\\Users\\yyl\\Desktop\\类案检索助手\\docs\\development\\m1.1-risk-fix-gate-eval-preflight-20260609-120436.json\" --allow-blocked",
+  "cwd": "C:\\Users\\yyl\\Desktop\\类案检索助手",
+  "exit_code": 0,
+  "duration_ms": 234,
+  "timed_out": false,
+  "stdout_line_count": 108,
+  "stderr_line_count": 0,
+  "stdout_sha256": "ff1cd44609f5a6287a0686c87a2ff8d93285f7aa8b45cb7f68678d875b93e0e5",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_bytes": 3263,
+  "stderr_bytes": 0,
+  "output_policy": "stdout/stderr are hashed only to avoid writing raw query or case facts.",
+  "dry_run_summary": null
+}

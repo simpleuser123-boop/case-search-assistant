@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "artifact": "m2-release-gate",
+  "generated_at": "2026-06-12T19:19:45+08:00",
+  "scope": "M2-8 final verification",
+  "m1_3x_entry": {
+    "selected_candidate_id": "m1_3x_legal_score_shape_router_v2_candidate",
+    "robust_status": "ROBUST_GO",
+    "before_vs_after_regressed_count": 0,
+    "after_vs_baseline_regressed_count": 0,
+    "metric_regression_count": 0,
+    "recall_miss_count": 7,
+    "recall_miss_blocking": false,
+    "enable_weighted_rerank_default": false,
+    "status": "GO"
+  },
+  "m2_steps": [
+    {
+      "step": "M2-1",
+      "artifact_prefix": "m2-entry-contract-20260612-100850",
+      "status": "GO"
+    },
+    {
+      "step": "M2-2",
+      "artifact_prefix": "m2-source-anchor-closure-20260612-104120",
+      "status": "GO"
+    },
+    {
+      "step": "M2-3",
+      "artifact_prefix": "m2-coverage-privacy-20260612-140115",
+      "status": "GO"
+    },
+    {
+      "step": "M2-4",
+      "artifact_prefix": "m2-low-confidence-candidates-20260612-151624",
+      "status": "GO"
+    },
+    {
+      "step": "M2-5",
+      "artifact_prefix": "m2-expanded-search-gate-20260612-155403",
+      "status": "GO"
+    },
+    {
+      "step": "M2-6",
+      "artifact_prefix": "m2-feedback-loop-20260612-171213",
+      "status": "GO"
+    },
+    {
+      "step": "M2-7",
+      "artifact_prefix": "m2-risk-hints-20260612-181106",
+      "status": "GO"
+    }
+  ],
+  "hard_gates": {
+    "all_prior_m2_artifacts_exist": true,
+    "all_prior_m2_status_go": true,
+    "source_anchor_coverage_status": "GO",
+    "source_anchor_minimum_fields": [
+      "case_id",
+      "source_chunk_id"
+    ],
+    "unanchored_ai_content_downgraded": true,
+    "coverage_display_status": "GO",
+    "coverage_fabrication_detected": false,
+    "low_confidence_separated": true,
+    "expanded_search_gated": true,
+    "expanded_search_rollback_ready": true,
+    "feedback_sanitized": true,
+    "feedback_affects_sorting": false,
+    "risk_hints_source_anchored": true,
+    "risk_hints_review_only": true,
+    "qrels_label_relevance_runtime_use_detected": false,
+    "query_or_case_id_special_case_detected": false,
+    "weighted_rerank_default_enabled": false,
+    "m1_3x_core_regression_detected": false
+  },
+  "privacy_scan": {
+    "raw_query_persisted": false,
+    "case_fact_body_persisted": false,
+    "candidate_body_persisted": false,
+    "chunk_body_persisted": false,
+    "judgment_body_persisted": false,
+    "free_text_feedback_persisted": false,
+    "long_context_persisted": false,
+    "report_body_leakage_detected": false,
+    "json_body_leakage_detected": false,
+    "log_body_leakage_detected": false,
+    "test_snapshot_body_leakage_detected": false
+  },
+  "copy_scan": {
+    "runtime_forbidden_copy_match_count": 0,
+    "test_negative_assertion_match_count": 2,
+    "blocking_copy_detected": false
+  },
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": {
+      "config_default": false,
+      "env_example_default": false,
+      "status": "GO"
+    },
+    "ENABLE_EXPANDED_SEARCH": {
+      "config_default": false,
+      "env_example_default": false,
+      "status": "GO"
+    },
+    "VITE_ENABLE_EXPANDED_SEARCH": {
+      "env_example_default": false,
+      "status": "GO"
+    }
+  },
+  "validation": {
+    "api_pytest": {
+      "status": "passed",
+      "passed_count": 95,
+      "failed_count": 0,
+      "focused_m2_tests_included": true
+    },
+    "web_vitest": {
+      "status": "passed",
+      "test_file_count": 5,
+      "passed_count": 48,
+      "failed_count": 0
+    },
+    "web_build": {
+      "status": "passed"
+    },
+    "browser_acceptance": {
+      "status": "passed",
+      "mode": "frontend_mock",
+      "coverage_visible": true,
+      "source_entry_visible": true,
+      "risk_hints_visible": true,
+      "low_confidence_visible": true,
+      "feedback_controls_visible": true,
+      "console_error_count": 0
+    },
+    "performance_smoke": {
+      "status": "passed",
+      "warm_p95_ms": 820,
+      "threshold_ms": 3000
+    }
+  },
+  "conclusions": {
+    "base_search": "GO",
+    "m2_trusted_retrieval": "GO",
+    "m3_entry": "GO",
+    "rollback_required": false,
+    "next_title": "类案检索助手 M3-1 阅读提效入口合同"
+  }
+}

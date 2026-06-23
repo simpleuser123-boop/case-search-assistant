@@ -1,0 +1,117 @@
+{
+  "artifact": "e6-parameter-version",
+  "step": "E6-6",
+  "generated_at": "2026-06-22T01:32:21+08:00",
+  "milestone": "E 系列多产品生态全链路闭环（E6 文书辅助工作台 drafting）收官",
+  "feature_flags_defaults": {
+    "ENABLE_DRAFTING": false,
+    "VITE_ENABLE_DRAFTING": false,
+    "ENABLE_STATUTE_SEARCH": false,
+    "VITE_ENABLE_STATUTE_SEARCH": false,
+    "ENABLE_INTAKE": false,
+    "ENABLE_INTAKE_AI_EXTRACTION": false,
+    "VITE_ENABLE_INTAKE": false,
+    "ENABLE_CASEBOOK": false,
+    "ENABLE_ECOSYSTEM": false,
+    "ENABLE_WEIGHTED_RERANK": false,
+    "new_default_true_business_flag_added": false,
+    "new_external_business_flag_added": false,
+    "ai_drafting_flag_added": false
+  },
+  "contract_objects": {
+    "count": 5,
+    "list": ["CandidateRef", "SearchProfile", "AnchorRef", "ShareGrant", "StatuteRef"],
+    "note": "E6 未新增契约对象。DraftDescriptor 是 E-1 已冻结的第 3 契约对象（核心 5 字段 draft_id/structure_skeleton/candidate_refs/note/tag 逐位不变），经文档 16 §4 / 17 §3.3 合同变更登记追加可选 statute_refs + 持久层元数据；E6 权威白名单冻结为独立常量 DRAFT_DESCRIPTOR_E6_FIELDS，不进 CONTRACT_FIELD_WHITELIST。",
+    "draft_descriptor_core_five_fields": ["draft_id", "structure_skeleton", "candidate_refs", "note", "tag"],
+    "draft_descriptor_e6_optional_additions": ["statute_refs", "created_at", "updated_at", "owner_user_id", "team_id", "visibility"],
+    "candidate_ref_whitelist_7_fields_unchanged": true,
+    "statute_ref_whitelist_unchanged": true,
+    "extra_policy": "forbid"
+  },
+  "product_packages": {
+    "count": 3,
+    "list": ["intake", "statute", "drafting"],
+    "forbidden_not_present": ["casebook"],
+    "drafting_kernel_dependencies": ["app.kernel.guardrails", "app.kernel.identity"],
+    "drafting_no_deep_import": ["retrieval", "rerank", "summary", "query_processing"],
+    "drafting_no_cross_product_import": ["intake", "statute", "casebook"]
+  },
+  "routers": {
+    "include_router_count": 15,
+    "drafting_endpoints": [
+      "POST /api/drafting/drafts",
+      "GET /api/drafting/drafts",
+      "GET /api/drafting/drafts/{draft_id}",
+      "PUT /api/drafting/drafts/{draft_id}"
+    ],
+    "drafting_disabled_status_code": 403,
+    "drafting_disabled_code": "DRAFTING_DISABLED",
+    "drafting_error_codes": {
+      "DRAFTING_DISABLED": "403 flag 关闭安全降级",
+      "DRAFTING_REQUIRES_LOGIN": "401 未登录",
+      "DRAFT_REJECTED": "400 sanitize fail-closed（引用内正文/裁判正文/PII/胜负键 或 标题超长/缺锚点）",
+      "DRAFT_NOT_FOUND": "404 越权/不存在（不泄露存在性差异）",
+      "VALIDATION_ERROR": "422 pydantic extra=forbid"
+    }
+  },
+  "drafting_persistence": {
+    "table": "draft_descriptor",
+    "columns_count": 13,
+    "columns": ["draft_id", "owner_user_id", "team_id", "visibility", "structure_skeleton", "candidate_refs", "statute_refs", "note", "tag", "status", "reason_code", "created_at", "updated_at"],
+    "body_columns": 0,
+    "default_visibility": "private",
+    "tenant_isolation": "_tenant_clause（与 SedimentationObject 同口径）+ owner 校验，越权读写 404",
+    "assemble_not_draft": "service.assemble_draft = sanitize_draft_descriptor（E6-1 纯函数）；零 LLM/模型/检索/文本生成调用",
+    "log_redaction": "仅 user_id_hash/draft_id_hash/skeleton_count/candidate_count/statute_count/note_meta(len+hash)/reason_code"
+  },
+  "drafting_export": {
+    "location": "frontend (apps/web/src/lib/draftingExport.ts，对标 M4-5 caseListExport.ts 纯函数)",
+    "formats": ["markdown", "text"],
+    "forced_disclaimer": "DRAFT_EXPORT_DISCLAIMER_LINES 无条件注入（markdown + text 各 1 处 + 常量定义 = 3），无开关、不可关闭、不含个案结论",
+    "content_whitelist": "structure_skeleton(标题) + CandidateRef 元数据 + 来源锚点 + StatuteRef 元数据(不取 article_text) + note/tag",
+    "anchorless_dropped": true,
+    "no_text_regeneration": true,
+    "backend_endpoint_added": false,
+    "include_router_unchanged_by_export": 15
+  },
+  "case_products_integrity": {
+    "cases_jsonl_sha256": "8fcb2ec40ee3c8c9df12041fa414033c3dfd78e5f42d355cd3c747ca2d4a27b1",
+    "chunks_jsonl_sha256": "8f391e681d5c9be697cbc5cc99307869e089a4ce0fd0480c59671374ee42ceee",
+    "unchanged_vs_e5_baseline": true,
+    "case_chroma_rebuilt": false,
+    "statute_index_rebuilt": false,
+    "eval_baseline_changed": false
+  },
+  "behavior_zero_change": {
+    "api_search": "未改",
+    "api_search_expand": "未改",
+    "e3_internal_search_service": "未改",
+    "intake_endpoint": "未改",
+    "statute_endpoint": "未改",
+    "ranking_recall_source_selection_rerank_defaults": "未改"
+  },
+  "verification_environment": {
+    "authoritative_backend": {"venv": ".venv311", "python": "3.11.9", "note": "后端 pytest host 权威"},
+    "vm_static": {"python": "3.10.12", "backend_deps_present": false, "network": false, "note": "VM 仅 py_compile + AST 边界 + 隐私扫描 + flag/列集/router/build 权威；后端 pytest 须 host"},
+    "frontend": {"vite": "5.2.11", "build_modules": 126}
+  },
+  "e6_6_test_reconciliation": {
+    "scope": "纯测试调和，零业务代码改动；E2/E2a/E3/E4/E5 守门规则未放宽",
+    "files": [
+      "apps/api/tests/test_e4_intake_boundaries.py",
+      "apps/api/tests/test_e5_statute_boundaries.py"
+    ],
+    "changes": [
+      "test_e4_intake_boundaries: ALLOWED_PRODUCT_PACKAGES {intake,statute} -> {intake,statute,drafting}",
+      "test_e4_intake_boundaries: test_include_router_count_is_13(断言14) -> test_include_router_count_is_15(断言15)",
+      "test_e5_statute_boundaries: ALLOWED_PRODUCT_PACKAGES {intake,statute} -> {intake,statute,drafting}",
+      "test_e5_statute_boundaries: test_include_router_count_is_14(断言14) -> test_include_router_count_is_15(断言15)"
+    ],
+    "delegated_by": "e6-drafting-gate-20260618-111250.json stale_assertions_for_e6_6_host_reconcile (is_vm_artifact=false)",
+    "host_rerun_required": true
+  },
+  "overall": "CONDITIONAL_GO",
+  "allow_enter_e7": true,
+  "allow_enter_e7_condition": "唯一条件 = 后端 pytest（E6 全套 + E1~E5 回归 + smoke）须 host .venv311 codex 复跑全绿；该条件满足后无条件升 GO（同 E6-2/E6-5/E5-7 范式）。VM 静态权威项已全过。",
+  "next_step_title": "类案检索助手 E7-1 案件协作工作台入口合同（CaseFolder 聚合，复用 M5 多租户/权限/共享）"
+}

@@ -1,0 +1,98 @@
+{
+  "artifact": "e4-release-gate",
+  "milestone": "E 系列多产品生态全链路闭环（E-4 案情智能录入端）",
+  "step": "E4-1",
+  "title": "案情录入端入口合同与本地 only 边界",
+  "generated_at": "2026-06-16T06:55:16+08:00",
+  "nature": "合同冻结步：仅声明二级 flag + 文档 + 纯函数契约常量/测试；零业务实现、零运行时行为变化。",
+  "entry_gate": {
+    "source": "docs/development/e3-release-gate-20260616-175509.json",
+    "e3_overall": "GO",
+    "allow_enter_e4": true,
+    "verdict": "GO"
+  },
+  "hard_gates": {
+    "e3_overall_go": true,
+    "e3_allow_enter_e4_true": true,
+    "enable_intake_default_false": true,
+    "enable_intake_ai_extraction_default_false": true,
+    "vite_enable_intake_ai_extraction_default_false": true,
+    "enable_weighted_rerank_default_false": true,
+    "all_m4_m5_e1_flags_default_false": true,
+    "no_new_product_package": true,
+    "no_new_http_endpoint": true,
+    "no_frontend_entry_wired": true,
+    "no_intake_on_path": true,
+    "no_ai_extraction_on_path": true,
+    "include_router_count_is_12": true,
+    "main_ranking_unchanged": true,
+    "source_selection_unchanged": true,
+    "rerank_default_unchanged": true,
+    "intake_contract_search_profile_5_fields": true,
+    "intake_contract_candidate_ref_7_fields": true,
+    "whitelist_reuses_e1_single_source": true,
+    "raw_case_zero_upload_assertion_present": true,
+    "contract_module_no_retrieval_runtime_import": true,
+    "no_raw_case_leak": true,
+    "no_pii_leak": true,
+    "no_body_leak": true,
+    "no_credential_leak": true,
+    "no_disabled_copy_leak": true
+  },
+  "verification": {
+    "pure_logic_verified_in_vm": {
+      "verdict": "PASS",
+      "method": "VM Python 3.10 standalone exec of intake_contract（无 pydantic 依赖，仅依赖 whitelist.py）",
+      "checks": [
+        "契约方向 SearchProfile/CandidateRef 冻结",
+        "白名单 is E-1 同一 frozenset（5/7 字段）",
+        "is_forbidden_pii_key 命中 name/id_card/phone/mobile/email/address/bank_card/plate_no + 大小写不敏感",
+        "assert_no_raw_case_payload fail-closed 拒绝正文型 + PII 型键",
+        "异常消息不回显键值（无 PII 泄露）",
+        "sanitize_intake_search_profile 只留白名单、丢弃 extra、拒绝 bad key、纯函数不改输入"
+      ]
+    },
+    "py_compile": {
+      "verdict": "PASS",
+      "files": [
+        "app/kernel/guardrails/contracts/intake_contract.py",
+        "app/kernel/guardrails/contracts/__init__.py",
+        "app/contracts/__init__.py",
+        "app/core/config.py",
+        "tests/test_e4_intake_contracts.py"
+      ]
+    },
+    "flag_default_scan": {
+      "verdict": "PASS",
+      "config_enable_flags_all_false": 23,
+      "env_enable_flags_all_false": 23,
+      "env_vite_flags_all_false": 19
+    },
+    "leak_scan": {
+      "verdict": "PASS",
+      "phone_11_digit": 0,
+      "id_card_18_digit": 0,
+      "credential_values": 0,
+      "body_keys_only_in_blacklist_context": true
+    },
+    "backend_pytest_regression": {
+      "verdict": "PENDING_HOST_RERUN",
+      "reason": "本会话 Linux VM 无 pydantic/pytest 且 PyPI 不可达（SSL EOF）；既有 .venv311 为 Windows 解释器无法在 VM 运行。与 E3-5 同款约束（codex 已在 host .venv311 实跑 E3 两条命令）。",
+      "structural_zero_change_argument": "E4-1 仅新增一个默认 False 的 flag 声明 + 一个不被任何端点/运行时 import 的纯函数模块 + 新测试文件；未触碰 /api/search、E3 服务、检索/rerank/排序/source selection；故 E3 同款回归集逐位一致由结构保证。",
+      "host_commands_to_rerun": [
+        "cd apps/api",
+        "..\\..\\.venv311\\Scripts\\python.exe -m pytest tests/test_e1_contracts.py tests/test_e2a_kernel_boundary.py tests/test_e2b_shim_equivalence.py tests/test_e3_internal_search_contracts.py tests/test_e3_internal_search_service.py tests/test_e3_search_api_parity.py tests/test_e3_internal_search_boundaries.py",
+        "..\\..\\.venv311\\Scripts\\python.exe -m pytest tests/test_m1_3_candidate_comparison.py tests/test_m1_3_legal_candidate_robustness.py tests/test_feature_flag_rollback.py tests/test_health.py tests/test_search_api_fallback_smoke.py tests/test_summary_service.py tests/test_performance_smoke.py",
+        "..\\..\\.venv311\\Scripts\\python.exe -m pytest tests/test_e4_intake_contracts.py"
+      ],
+      "expected": "E3 同款两条命令应仍为 86 passed + 143 passed（行为零变化）；新增 tests/test_e4_intake_contracts.py 全通过。"
+    }
+  },
+  "overall": "CONDITIONAL_GO",
+  "overall_explanation": "契约冻结、二级 flag 声明（默认 false）、原始案情零上送断言口径、白名单复用 E-1、纯函数逻辑、py_compile、flag 默认值与泄露扫描在 VM 内全部 PASS；唯一未决项是 E3 同款后端 pytest 回归集——因 VM 缺依赖且 PyPI 不可达无法在本会话实跑（与 E3-5 同款约束）。E4-1 改动结构上零运行时行为变化（仅默认 False flag + 不接线纯模块 + 新测试），回归逐位一致由结构保证。在 host .venv311 重跑上述命令并确认 86+143 passed、新测试通过后，本步即升为 GO。",
+  "next_step": {
+    "allow_enter_e4_2": true,
+    "condition": "host .venv311 重跑 E3 同款回归集确认零新增失败 + 新契约测试通过；契约白名单/flag 默认值不得改动",
+    "title": "类案检索助手 E4-2 SearchProfile 产出与脱敏契约"
+  }
+}

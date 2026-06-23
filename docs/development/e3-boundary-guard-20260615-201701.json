@@ -1,0 +1,51 @@
+{
+  "step": "E3-4",
+  "title": "消费边界与护栏守门",
+  "timestamp": "20260615-201701",
+  "verdict": "GO",
+  "baseline": {
+    "e3_3_parity": "docs/development/e3-search-api-parity-20260615-190316.json",
+    "e2b_release": "docs/development/e2b-release-gate-20260615-113552.json"
+  },
+  "nature": "只新增守门测试 + 文档；不改 InternalSearchService 行为、不注册端点、不新建产品包、不改排序/召回/summary",
+  "added_files": [
+    "apps/api/tests/test_e3_internal_search_boundaries.py"
+  ],
+  "modified_files": [
+    "apps/api/tests/test_e2a_kernel_boundary.py"
+  ],
+  "doc_files": [
+    "docs/development/e3-boundary-guard-20260615-201701.md",
+    "docs/development/e3-boundary-guard-20260615-201701.json"
+  ],
+  "guards": {
+    "g1_internal_service_public_face_present": "GO",
+    "g2_service_module_no_product_import": "GO",
+    "g3_product_packages_absent": "GO",
+    "g4_no_new_deep_kernel_import_search_via_internal_service": "GO",
+    "g5_no_new_e3_external_endpoints": "GO",
+    "g6_candidate_ref_strict_e1_whitelist_subset": "GO",
+    "g7_candidate_ref_requires_metadata_only_anchors": "GO",
+    "g8_no_long_body_text_in_fixtures_and_docs": "GO"
+  },
+  "tests": {
+    "verification_suite": "169 passed",
+    "search_chain_regression": "60 passed",
+    "new_boundary_file": "22 passed",
+    "e2a_guard_after_e3_append": "10 passed (7 original + 3 E3, none relaxed)"
+  },
+  "boundary_scan": {
+    "product_packages": "absent (intake/statute/drafting/casebook)",
+    "include_router_count": 12,
+    "forbidden_endpoints": "none (/api/internal/* /api/ecosystem/* absent)",
+    "flags_default_false": ["ENABLE_QUERY_REWRITE", "ENABLE_WEIGHTED_RERANK", "ENABLE_SUMMARY", "ENABLE_EXPANDED_SEARCH", "ENABLE_ECOSYSTEM"]
+  },
+  "behavior_change_to_api_search": false,
+  "e2_rules_relaxed": false,
+  "privacy_scan": {
+    "long_body_text": "none (max contiguous CJK <= threshold 40)",
+    "null_byte_corruption": "none in final files"
+  },
+  "allow_next_step": true,
+  "next_step": "类案检索助手 E3-5 验收与下一步门禁"
+}

@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "artifact": "m3-issue-focus-elements",
+  "step": "M3-3",
+  "generated_at": "2026-06-12T21:21:11+08:00",
+  "entry_gates": {
+    "m3_1": {
+      "path": "docs/development/m3-reading-entry-contract-20260612-194511.json",
+      "status": "GO"
+    },
+    "m3_2": {
+      "path": "docs/development/m3-holding-summary-closure-20260612-202913.json",
+      "status": "GO"
+    },
+    "m2_risk_hints": {
+      "path": "docs/development/m2-risk-hints-20260612-181106.json",
+      "status": "GO"
+    }
+  },
+  "feature_flags": {
+    "ENABLE_WEIGHTED_RERANK": false,
+    "weighted_rerank_default_changed": false,
+    "search_ranking_changed": false,
+    "candidate_recall_changed": false,
+    "source_selection_changed": false,
+    "m2_expanded_retrieval_default_changed": false
+  },
+  "implemented_contract": {
+    "response_fields": [
+      "issue_focus",
+      "key_elements"
+    ],
+    "item_fields": [
+      "label",
+      "category",
+      "source_anchors",
+      "confidence",
+      "degrade_reason"
+    ],
+    "allowed_categories": [
+      "争议焦点",
+      "裁判理由中的关键事实",
+      "法院认定的关键要素",
+      "与用户阅读相关的程序或证据节点"
+    ],
+    "visible_item_requires_source_anchors": true,
+    "required_anchor_fields": [
+      "case_id",
+      "source_chunk_id"
+    ],
+    "anchor_source": "case_detail_source_chunks",
+    "fake_anchor_binding": false,
+    "frontend_client_side_anchor_consistency_check": true
+  },
+  "downgrade_policy": {
+    "hide_unanchored_items": true,
+    "hide_forbidden_category_items": true,
+    "safe_fallback_without_white_screen": true,
+    "reason_codes": [
+      "missing_source_anchor",
+      "insufficient_source",
+      "model_failed",
+      "source_mismatch"
+    ]
+  },
+  "runtime_boundaries": {
+    "affects_results_sorting": false,
+    "affects_candidate_recall": false,
+    "affects_source_selection": false,
+    "affects_rerank": false,
+    "uses_qrels": false,
+    "uses_label": false,
+    "uses_relevance": false,
+    "uses_query_id_special_case": false,
+    "uses_case_id_special_case_for_quality": false,
+    "implements_m3_4_or_later": false
+  },
+  "logging_policy": {
+    "logs_item_label": false,
+    "logs_source_text": false,
+    "logs_status_count_category_reason_only": true
+  },
+  "modified_files": [
+    "apps/api/app/schemas.py",
+    "apps/api/app/summary/service.py",
+    "apps/api/app/summary/__init__.py",
+    "apps/api/app/api/cases.py",
+    "apps/api/tests/test_m3_issue_focus.py",
+    "apps/web/src/types/search.ts",
+    "apps/web/src/components/details/CaseDetailDrawer.tsx",
+    "apps/web/src/pages/SearchPage.test.tsx",
+    "apps/web/src/mocks/caseDetailMockFixture.ts"
+  ],
+  "validation": [
+    {
+      "command": "cd apps/api; pytest tests/test_m3_issue_focus.py tests/test_m3_holding_summary.py",
+      "status": "passed",
+      "passed_count": 11,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/api; pytest tests/test_summary_service.py tests/test_feature_flag_rollback.py tests/test_health.py tests/test_m3_issue_focus.py",
+      "status": "passed",
+      "passed_count": 29,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; npm run test",
+      "status": "passed",
+      "passed_count": 50,
+      "failed_count": 0
+    },
+    {
+      "command": "cd apps/web; npm run build",
+      "status": "passed",
+      "failed_count": 0
+    }
+  ],
+  "browser_acceptance": {
+    "status": "passed",
+    "local_api_health_checked": true,
+    "local_web_loaded": true,
+    "used_frontend_test_data_for_detail_ui": true,
+    "base_results_rendered": true,
+    "detail_drawer_loaded": true,
+    "issue_focus_visible_with_source_entry": true,
+    "key_elements_visible_with_source_entry": true,
+    "source_entry_clickable": true,
+    "no_white_screen": true,
+    "forbidden_outcome_copy_visible": false
+  },
+  "body_leakage_check": {
+    "raw_query_body_saved": false,
+    "case_fact_body_saved": false,
+    "candidate_body_saved": false,
+    "chunk_body_saved": false,
+    "judgment_body_saved": false,
+    "focus_or_element_body_saved_in_report_json": false,
+    "source_fragment_body_saved_in_report_json": false,
+    "log_body_saved": false,
+    "test_snapshot_body_saved": false
+  },
+  "go_no_go": {
+    "status": "GO",
+    "failed_gates": [],
+    "reason_codes": [
+      "M3_1_GO_CONFIRMED",
+      "M3_2_GO_CONFIRMED",
+      "M2_RISK_HINTS_GO_CONFIRMED",
+      "ENABLE_WEIGHTED_RERANK_FALSE_CONFIRMED",
+      "ISSUE_FOCUS_AND_KEY_ELEMENTS_CONTRACT_IMPLEMENTED",
+      "VISIBLE_ITEMS_REQUIRE_SOURCE_ANCHORS",
+      "UNANCHORED_OR_FORBIDDEN_ITEMS_HIDDEN",
+      "DETAIL_READING_NAVIGATION_ONLY",
+      "SEARCH_SORTING_BOUNDARY_PRESERVED",
+      "VALIDATION_PASSED",
+      "NO_BODY_LEAKAGE_IN_ARTIFACT"
+    ],
+    "next_allowed_title": "类案检索助手 M3-4 相似事实对比"
+  }
+}
