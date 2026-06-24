@@ -24,8 +24,6 @@
     {"step": "M5-4", "title": "权限分级", "artifact": "m5-permission-tiering-20260614-065238.json", "status": "GO"},
     {"step": "M5-5", "title": "沉淀同步与团队共享", "artifact": "m5-sync-and-sharing-20260614-080403.json", "status": "GO"},
     {"step": "M5-6", "title": "批量导入", "artifact": "m5-bulk-import-20260614-093728.json", "status": "GO"},
-    {"step": "M5-7", "title": "F19 倾向分析数据门禁(v2, PASS)", "artifact": "m5-tendency-data-gate-20260614-134042.json", "status": "GO", "gate_overall_status": "pass", "f19_can_go_live": true},
-    {"step": "M5-8", "title": "F19 展示与边界", "artifact": "m5-tendency-analysis-20260615-024038.json", "status": "GO"},
     {"step": "M5-9", "title": "商业化闭环(套餐/试用/计费/续费意愿)", "artifact": "m5-billing-20260615-042028.json", "status": "GO"}
   ],
   "all_m5_steps_go": true,
@@ -35,7 +33,7 @@
       "fallback_summary_performance_smoke": 19,
       "entry_account_isolation_permission": 66,
       "sharing_bulk_team_reuse": 54,
-      "tendency_gate_analysis_billing": 66,
+      "billing_contract_reuse": 66,
       "total_passed": 246,
       "total_failed": 0,
       "command": "DATABASE_URL=sqlite python3 -m pytest <指定集+M5 focused> -q"
@@ -70,19 +68,15 @@
     "sharing_default_private_explicit_grant_only": true,
     "no_tool_credential_autofill_or_storage": true,
     "user_raw_fact_not_uploaded_to_server_persistence": true,
-    "f19_refs_case_id_only_no_body": true,
-    "f19_double_gate_flag_and_data_gate": true,
-    "f19_runtime_fail_closed_clean_assert": true,
-    "f19_no_individual_prediction_probability_or_definitive_conclusion": true,
     "m5_packages_do_not_import_rerank_retrieval_search": true,
     "main_sorting_unchanged": true,
     "source_selection_unchanged": true,
     "rerank_default_switch_unchanged": true,
-    "qrels_label_relevance_not_in_account_team_sharing_import_tendency_or_sorting": true,
+    "qrels_label_relevance_not_in_account_team_sharing_import_or_sorting": true,
     "query_id_case_id_not_used_for_runtime_special_casing": true,
     "weighted_rerank_default_false": true,
     "six_m4_flags_default_false": true,
-    "seven_m5_flags_default_false": true,
+    "six_m5_flags_default_false": true,
     "env_example_no_flag_defaulted_true": true
   },
   "scans": {
@@ -109,8 +103,6 @@
     "object_level_over_privilege_unblocked": false,
     "default_cross_user_visibility_or_non_private_sharing": false,
     "user_raw_fact_uploaded_to_server_persistence": false,
-    "share_import_report_f19_reference_without_source": false,
-    "f19_live_when_gate_failed_or_emits_prediction": false,
     "absolute_coverage_phrasing": false,
     "qrels_label_relevance_entered_runtime": false,
     "query_id_case_id_special_casing": false,
@@ -125,6 +117,6 @@
   },
   "next_milestone": {
     "title": "类案检索助手 M6-1 运营与规模化入口合同",
-    "scope": "数据规模化迁移 Milvus、F19 持续扩样、商业化指标跟踪与迭代"
+    "scope": "数据规模化迁移 Milvus、商业化指标跟踪与迭代"
   }
 }

@@ -22,7 +22,6 @@
       "ENABLE_PERMISSION_TIERING": false,
       "ENABLE_TEAM_SHARING": false,
       "ENABLE_BULK_IMPORT": false,
-      "ENABLE_TENDENCY_ANALYSIS": false,
       "ENABLE_BILLING": false
     },
     "newly_added_e1_backend": {

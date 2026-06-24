@@ -6,10 +6,6 @@
 - 多租户过滤：team/isolation.py（见 kernel.identity，护栏视角导出）。
 - 对象级鉴权：permission/access.py（见 kernel.identity，护栏视角导出）。
 
-> 禁用文案守门（tendency_gate/privacy.py FORBIDDEN_PHRASES）属 M5 商业化能力，
-> 文档 17 §2.1 明确不在 E-2 内核公开面冻结范围（与 billing/bulk_import/tendency_* 同列），
-> 故本组不导出该符号，留待后续步骤判定归属。
-
 本模块只把上述「现有可调用入口」收敛为稳定公开符号，**纯 re-export**：
 不复制实现、不改签名、不改运行时语义。护栏只在内核实现一次，消费方调用不重写不旁路。
 

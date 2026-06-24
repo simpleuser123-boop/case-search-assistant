@@ -61,7 +61,7 @@ class Settings(BaseSettings):
     ENABLE_TEAM_REUSE: bool = False
 
     # --- M5 商业化扩展开关（M5-1 合同冻结：默认全部 false，安全态）---
-    # 仅声明开关位，M5-1 不实现任何账号/隔离/权限/共享/导入/倾向分析/计费业务行为；
+    # 仅声明开关位，M5-1 不实现任何账号/隔离/权限/共享/导入/计费业务行为；
     # 关闭时回到 M4 末态（单用户、纯前端沉淀），不改变标准搜索默认行为、排序、
     # source selection 或 rerank 默认开关。M5-2 至 M5-9 才逐步实现对应能力，
     # 且每个能力都必须可关闭/可降级、不默认开启跨用户可见性、不代管凭据明文。
@@ -70,7 +70,6 @@ class Settings(BaseSettings):
     ENABLE_PERMISSION_TIERING: bool = False
     ENABLE_TEAM_SHARING: bool = False
     ENABLE_BULK_IMPORT: bool = False
-    ENABLE_TENDENCY_ANALYSIS: bool = False
     ENABLE_BILLING: bool = False
 
     # --- E 系列多产品生态开关（E-1 合同冻结：默认全部 false，安全态）---

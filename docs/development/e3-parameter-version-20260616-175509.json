@@ -21,7 +21,6 @@
     "ENABLE_PERMISSION_TIERING": false,
     "ENABLE_TEAM_SHARING": false,
     "ENABLE_BULK_IMPORT": false,
-    "ENABLE_TENDENCY_ANALYSIS": false,
     "ENABLE_BILLING": false,
     "ENABLE_ECOSYSTEM": false,
     "ENABLE_INTAKE": false,
@@ -29,7 +28,7 @@
     "ENABLE_DRAFTING": false,
     "ENABLE_CASEBOOK": false
   },
-  "flags_total": 22,
+  "flags_total": 21,
   "flags_default_true_count": 0,
   "flag_default_change_in_e3": "none",
   "verification_environment": {
@@ -49,4 +48,3 @@
   "overall": "GO",
   "next_step": "类案检索助手 E4-1 案情录入端入口合同与本地 only 边界"
 }
-

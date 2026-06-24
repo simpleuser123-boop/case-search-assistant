@@ -21,7 +21,6 @@ from app.api.team import router as team_router
 from app.api.permission import router as permission_router
 from app.api.sharing import router as sharing_router
 from app.api.bulk_import import router as bulk_import_router
-from app.api.tendency import router as tendency_router
 from app.api.billing import router as billing_router
 # E4-3：案情录入端 intake 产品包（E 系列第一个产品包，flag-gated，默认 false 降级）。
 from app.intake import router as intake_router
@@ -124,7 +123,6 @@ app.include_router(team_router)
 app.include_router(permission_router)
 app.include_router(sharing_router)
 app.include_router(bulk_import_router)
-app.include_router(tendency_router)
 app.include_router(billing_router)
 app.include_router(intake_router)
 app.include_router(statute_router)

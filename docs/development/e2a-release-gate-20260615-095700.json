@@ -19,7 +19,7 @@
     "e1_zero_behavior_change_vs_m5_10_go": true,
     "enable_weighted_rerank_default_false": true,
     "six_m4_flags_default_false": true,
-    "seven_m5_flags_default_false": true,
+    "six_m5_flags_default_false": true,
     "five_e1_product_flags_default_false_incl_vite_mirror": true,
     "entry_gate_passed": true
   },
@@ -36,7 +36,7 @@
       "guardrails": ["contracts", "锚点校验(sharing.anchors)", "多租户过滤(team.isolation)", "对象级鉴权(permission.access)"],
       "data": ["pipeline", "case_store"]
     },
-    "out_of_kernel_scope_per_doc17_s2_1": ["billing", "bulk_import", "tendency_analysis", "tendency_gate", "eval"],
+    "out_of_kernel_scope_per_doc17_s2_1": ["billing", "bulk_import", "eval"],
     "kernel_imports_no_product_package": true,
     "zero_physical_file_move": true
   },

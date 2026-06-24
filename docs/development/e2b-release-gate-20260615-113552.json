@@ -119,7 +119,7 @@
       "vitest_all_passed": true,
       "vitest_test_files_passed": 35,
       "vitest_total_tests_passed_approx": 283,
-      "prior_blocker_resolved": "首跑时 14 个前端源/测试文件（vite-env.d.ts, config/featureFlags.ts, components/{bulkImport,permission,sharing,team}/*Panel(.test).tsx, pages/HomePage(.test).tsx, pages/SearchPage(.test).tsx, services/{billingApi,tendencyApi}.ts）在磁盘上被既有 mount flush 截断 bug 截断，与 E-2b 无关（E-2b 为后端 apps/api 单边迁移，未触碰任何前端文件）。",
+      "prior_blocker_resolved": "首跑时 13 个前端源/测试文件（vite-env.d.ts, config/featureFlags.ts, components/{bulkImport,permission,sharing,team}/*Panel(.test).tsx, pages/HomePage(.test).tsx, pages/SearchPage(.test).tsx, services/billingApi.ts）在磁盘上被既有 mount flush 截断 bug 截断，与 E-2b 无关（E-2b 为后端 apps/api 单边迁移，未触碰任何前端文件）。",
       "resolution": "用户在 Windows 侧用 codex 补全这些文件；因 host→VM 增量同步按内容写入事件触发（改 mtime 不触发），改已有文件未同步过来。最终用户在 Windows 侧 Compress-Archive 打包 src 为新文件 src_fixed.zip（新文件可同步），VM 侧解压覆盖 src/ 后 tsc 0 error、vite 118 modules transformed、全部 35 个前端测试文件通过。",
       "e2b_touched_any_frontend_file": false
     }

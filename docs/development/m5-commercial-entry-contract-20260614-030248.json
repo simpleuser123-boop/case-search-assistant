@@ -5,7 +5,7 @@
   "title": "商业化扩展入口合同",
   "generated_at": "2026-06-14T03:02:48+08:00",
   "scope": {
-    "summary": "冻结 M4-8 三类 GO 入场证据；定义 M5 多租户数据边界、鉴权边界、凭据安全边界、共享/导入/倾向分析/计费合同字段、服务端多用户持久化字段白名单与凭据红线；仅声明，不实现 M5-2 之后任何业务行为。",
+    "summary": "冻结 M4-8 三类 GO 入场证据；定义 M5 多租户数据边界、鉴权边界、凭据安全边界、共享/导入/计费合同字段、服务端多用户持久化字段白名单与凭据红线；仅声明，不实现 M5-2 之后任何业务行为。",
     "is_contract_and_scaffold_only": true,
     "implements_m5_2_to_m5_10": false,
     "implements_account_system": false,
@@ -13,7 +13,6 @@
     "implements_permission_tiering": false,
     "implements_team_sharing": false,
     "implements_bulk_import": false,
-    "implements_tendency_analysis": false,
     "implements_billing": false,
     "introduces_server_multiuser_state": false,
     "changes_online_sorting": false,
@@ -25,7 +24,7 @@
     "manages_or_autofills_credentials": false,
     "backend_business_files_changed": 0,
     "frontend_business_files_changed": 0,
-    "config_changes": "config.py + .env.example 仅新增 7 个默认 false 的 M5 flag 开关位，无业务行为"
+    "config_changes": "config.py + .env.example 仅新增 6 个默认 false 的 M5 flag 开关位，无业务行为"
   },
   "entry_register": {
     "m4_8_artifacts": [
@@ -391,46 +390,6 @@
       "affects_ranking": false,
       "logs_events_reports_may_store_body": false
     },
-    "tendency_analysis": {
-      "purpose": "F19 法院/法官倾向分析的统计口径、样本量、覆盖范围、数据门禁状态",
-      "feature_flag": "ENABLE_TENDENCY_ANALYSIS",
-      "server_persistable_fields": [
-        "dimension",
-        "sample_size",
-        "coverage_range",
-        "data_source",
-        "data_gate_status",
-        "threshold",
-        "actual",
-        "confidence_note",
-        "contributing_case_ids",
-        "created_at",
-        "reason_code"
-      ],
-      "data_gate_status_vocab": [
-        "pass",
-        "fail",
-        "not_evaluated"
-      ],
-      "requires_data_quality_gate_pass_before_display": true,
-      "predicts_individual_case_outcome": false,
-      "outputs_win_loss_probability": false,
-      "outputs_certain_legal_conclusion": false,
-      "aggregations_traceable_to_case_ids": true,
-      "displays_case_body": false,
-      "forbidden_persistable_fields": [
-        "raw_query",
-        "case_fact_body",
-        "candidate_body",
-        "chunk_body",
-        "judgment_long_text",
-        "named_judge_outcome_prediction",
-        "user_free_long_text"
-      ],
-      "implemented_in_m5_1": false,
-      "affects_ranking": false,
-      "logs_events_reports_may_store_body": false
-    },
     "billing_plan_subscription": {
       "purpose": "套餐、试用、计费状态、续费意愿采集；不含任何支付凭据",
       "feature_flag": "ENABLE_BILLING",
@@ -614,8 +573,7 @@
     "applies_to": [
       "shared_object",
       "bulk_import_job",
-      "report_template",
-      "tendency_analysis"
+      "report_template"
     ],
     "unanchored_content_enters_deliverable": false,
     "fabricates_source_chunk_id": false
@@ -677,11 +635,6 @@
       "m5_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
     },
     "ENABLE_BULK_IMPORT": {
-      "config_default": false,
-      "env_example_default": false,
-      "m5_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"
-    },
-    "ENABLE_TENDENCY_ANALYSIS": {
       "config_default": false,
       "env_example_default": false,
       "m5_1_decision": "DECLARE_FALSE_SAFE_DEFAULT"

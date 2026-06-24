@@ -34,7 +34,7 @@
     },
     "2_ten_truncated_frontend_files_status": {
       "instruction": "检查 E-2b 记录的（14 个）前端文件是否仍为截断状态，不重写。",
-      "files_checked": 15,
+      "files_checked": 14,
       "all_intact": true,
       "method": "逐文件检查行数/字节数 + tail 收尾语法（是否以完整 } / ); 结尾，非半句截断）。",
       "files": [
@@ -51,8 +51,7 @@
         {"path": "src/pages/HomePage.tsx", "lines": 48, "bytes": 1864, "tail_ok": true},
         {"path": "src/pages/HomePage.test.tsx", "lines": 221, "bytes": 7839, "tail_ok": true},
         {"path": "src/pages/SearchPage.test.tsx", "lines": 1692, "bytes": 59145, "tail_ok": true},
-        {"path": "src/services/billingApi.ts", "lines": 244, "bytes": 7561, "tail_ok": true},
-        {"path": "src/services/tendencyApi.ts", "lines": 142, "bytes": 4651, "tail_ok": true}
+        {"path": "src/services/billingApi.ts", "lines": 244, "bytes": 7561, "tail_ok": true}
       ],
       "verdict": "全部完整，无半句截断。E-2b 记录的 mount flush 截断阻塞在现盘已清零（未重写任何文件）。"
     },
@@ -93,16 +92,16 @@
     "5_no_product_packages": {
       "checked": ["app/intake", "app/statute", "app/drafting", "app/casebook"],
       "all_absent": true,
-      "app_top_level_dirs": ["account", "api", "billing", "bulk_import", "case_store", "contracts", "core", "eval", "kernel", "permission", "pipeline", "query_processing", "rerank", "retrieval", "sharing", "summary", "team", "tendency_analysis", "tendency_gate"],
+      "app_top_level_dirs": ["account", "api", "billing", "bulk_import", "case_store", "contracts", "core", "eval", "kernel", "permission", "pipeline", "query_processing", "rerank", "retrieval", "sharing", "summary", "team"],
       "verdict": "四个 E-4~E-7 产品能力包均不存在，符合 E3-0 入场要求。"
     },
     "6_no_e3_endpoints": {
       "internal_search_endpoint_present": false,
       "searchprofile_candidateref_endpoint_wired": false,
       "contracts_module_wired_to_any_endpoint": false,
-      "router_include_count": 12,
-      "routers": ["health", "search", "cases", "events", "feedback", "auth", "team", "permission", "sharing", "bulk_import", "tendency", "billing"],
-      "router_count_discrepancy_note": "E-2b 报告称『10 router 不变』，实测 main.py include_router 为 12（含 M5 的 tendency/billing，E 系列之前即存在）。此为 E-2b 自身计数口径出入，与 E3-0 无关：E3-0 仅校验有无【新增 E3 端点】，结论为无。所有 12 个路由均为 M1~M5 既有路由，无任何 internal/search 或产品端点。",
+      "router_include_count": 11,
+      "routers": ["health", "search", "cases", "events", "feedback", "auth", "team", "permission", "sharing", "bulk_import", "billing"],
+      "router_count_discrepancy_note": "E-2b 报告称『10 router 不变』，实测 main.py include_router 为 11（含 M5 的 billing，E 系列之前即存在）。此为 E-2b 自身计数口径出入，与 E3-0 无关：E3-0 仅校验有无【新增 E3 端点】，结论为无。所有 11 个路由均为 M1~M5 既有路由，无任何 internal/search 或产品端点。",
       "verdict": "无任何 E-3 范畴的内部检索服务端点或产品端点被注册。"
     },
     "7_flags_default_false": {
@@ -114,7 +113,6 @@
       "ENABLE_TEAM_WORKSPACE": false,
       "ENABLE_PERMISSION_TIERING": false,
       "ENABLE_TEAM_SHARING": false,
-      "ENABLE_TENDENCY_ANALYSIS": false,
       "ENABLE_BILLING": false,
       "ENABLE_ECOSYSTEM": false,
       "ENABLE_INTAKE": false,

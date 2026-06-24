@@ -19,7 +19,6 @@ import {
   isStatuteSearchEnabled,
   isTeamSharingEnabled,
   isTeamWorkspaceEnabled,
-  isTendencyAnalysisEnabled,
 } from "./featureFlags";
 
 afterEach(() => {
@@ -42,7 +41,6 @@ describe("feature flags", () => {
     expect(isPermissionTieringEnabled()).toBe(false);
     expect(isTeamSharingEnabled()).toBe(false);
     expect(isBulkImportEnabled()).toBe(false);
-    expect(isTendencyAnalysisEnabled()).toBe(false);
     expect(isBillingEnabled()).toBe(false);
   });
 
@@ -61,7 +59,6 @@ describe("feature flags", () => {
     expect(isPermissionTieringEnabled()).toBe(true);
     expect(isTeamSharingEnabled()).toBe(true);
     expect(isBulkImportEnabled()).toBe(true);
-    expect(isTendencyAnalysisEnabled()).toBe(true);
     expect(isBillingEnabled()).toBe(true);
   });
 

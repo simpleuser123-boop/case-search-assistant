@@ -85,11 +85,6 @@ export function isBulkImportEnabled() {
   return readM1M5UiFlag(import.meta.env.VITE_ENABLE_BULK_IMPORT);
 }
 
-// M5-8 法院/法官倾向分析（F19）。默认 false。后端数据门禁未达标即便开启也会被 403 拦截。
-export function isTendencyAnalysisEnabled() {
-  return readM1M5UiFlag(import.meta.env.VITE_ENABLE_TENDENCY_ANALYSIS);
-}
-
 // E4-4 案情录入端入口（E-1 已冻结 ENABLE_INTAKE）。默认 false：关闭时不渲染录入端入口/路由。
 // 与本机 M1-M5 验收总开关正交，不被其联动开启 —— 录入端只看自己的 VITE_ENABLE_INTAKE。
 export function isIntakeEnabled() {

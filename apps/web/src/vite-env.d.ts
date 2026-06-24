@@ -20,7 +20,6 @@ interface ImportMetaEnv {
   readonly VITE_ENABLE_PERMISSION_TIERING?: string;
   readonly VITE_ENABLE_TEAM_SHARING?: string;
   readonly VITE_ENABLE_BULK_IMPORT?: string;
-  readonly VITE_ENABLE_TENDENCY_ANALYSIS?: string;
   readonly VITE_ENABLE_BILLING?: string;
   // E4-4: 案情录入端入口开关（E-1 冻结 / 默认 false / 关闭即不渲染录入入口/路由）。
   readonly VITE_ENABLE_INTAKE?: string;

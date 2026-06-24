@@ -35,7 +35,6 @@ M5_FLAGS = (
     "ENABLE_PERMISSION_TIERING",
     "ENABLE_TEAM_SHARING",
     "ENABLE_BULK_IMPORT",
-    "ENABLE_TENDENCY_ANALYSIS",
     "ENABLE_BILLING",
 )
 
@@ -297,7 +296,6 @@ def test_m5_commercial_contract_fields_declare_no_runtime_or_body_impact():
         "membership_role",
         "shared_object",
         "bulk_import_job",
-        "tendency_analysis",
         "billing_plan_subscription",
     }
     for name, field in fields.items():
@@ -327,14 +325,6 @@ def test_m5_commercial_contract_fields_declare_no_runtime_or_body_impact():
     assert bulk["rejects_or_degrades_items_missing_anchor"] is True
     assert bulk["imported_object_default_visibility"] == "private"
 
-    # tendency analysis: gate before display, no prediction
-    tend = fields["tendency_analysis"]
-    assert tend["requires_data_quality_gate_pass_before_display"] is True
-    assert tend["predicts_individual_case_outcome"] is False
-    assert tend["outputs_win_loss_probability"] is False
-    assert tend["outputs_certain_legal_conclusion"] is False
-    assert tend["displays_case_body"] is False
-
     # billing: no credentials
     pay = fields["billing_plan_subscription"]["payment_handling"]
     assert pay["tool_autofills_payment_form"] is False
@@ -356,7 +346,6 @@ def test_m5_anchor_inheritance_requires_case_id_and_source_chunk_id():
         "shared_object",
         "bulk_import_job",
         "report_template",
-        "tendency_analysis",
     }
 
 
