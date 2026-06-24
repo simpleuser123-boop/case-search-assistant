@@ -26,6 +26,96 @@ describe("HomePage", () => {
     expect(screen.getByText("类案检索助手")).toBeInTheDocument();
     expect(screen.getByLabelText("案情描述")).toBeInTheDocument();
   });
+
+  it("does not render removed workbench links even when legacy flags are enabled", () => {
+    vi.stubEnv("VITE_ENABLE_DRAFTING", "true");
+    vi.stubEnv("VITE_ENABLE_CASEBOOK", "true");
+    vi.stubEnv("VITE_ENABLE_ECOSYSTEM", "true");
+
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByRole("link", { name: "文书工作台" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "协作工作台" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "反哺工作台" })).toBeNull();
+  });
+
+  it("does not render the account panel when the account flag is off", () => {
+    vi.stubEnv("VITE_ENABLE_ACCOUNT_SYSTEM", "false");
+
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByLabelText("账号")).toBeNull();
+    expect(screen.queryByRole("button", { name: "登录" })).toBeNull();
+  });
+
+  it("opens the account login workspace from the top login button when the account flag is on", () => {
+    vi.stubEnv("VITE_ENABLE_ACCOUNT_SYSTEM", "true");
+
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByText("覆盖信息由本次检索返回")).toBeNull();
+    expect(screen.queryByLabelText("账号")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "登录" }));
+
+    expect(screen.getByRole("dialog", { name: "登录工作台" })).toBeInTheDocument();
+    expect(screen.getByLabelText("账号")).toBeInTheDocument();
+    expect(screen.getAllByText("登录").length).toBeGreaterThan(0);
+    expect(screen.getByText("注册")).toBeInTheDocument();
+  });
+
+  it("closes the account login workspace", () => {
+    vi.stubEnv("VITE_ENABLE_ACCOUNT_SYSTEM", "true");
+
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "登录" }));
+    fireEvent.click(screen.getByRole("button", { name: "关闭登录工作台" }));
+
+    expect(screen.queryByRole("dialog", { name: "登录工作台" })).toBeNull();
+  });
+
+  it("moves team, permission, and sharing panels behind settings without subscription settings", () => {
+    vi.stubEnv("VITE_ENABLE_TEAM_WORKSPACE", "true");
+    vi.stubEnv("VITE_ENABLE_PERMISSION_TIERING", "true");
+    vi.stubEnv("VITE_ENABLE_TEAM_SHARING", "true");
+    vi.stubEnv("VITE_ENABLE_BILLING", "true");
+
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByLabelText("团队空间")).toBeNull();
+    expect(screen.queryByLabelText("权限分级")).toBeNull();
+    expect(screen.queryByLabelText("沉淀同步与团队共享")).toBeNull();
+    expect(screen.queryByLabelText("套餐与订阅")).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "设置" }));
+
+    expect(screen.getByRole("dialog", { name: "设置" })).toBeInTheDocument();
+    expect(screen.getByLabelText("团队空间")).toBeInTheDocument();
+    expect(screen.getByLabelText("权限分级")).toBeInTheDocument();
+    expect(screen.getByLabelText("沉淀同步与团队共享")).toBeInTheDocument();
+    expect(screen.queryByLabelText("套餐与订阅")).toBeNull();
+    expect(screen.queryByText(/套餐与订阅/)).toBeNull();
+  });
 });
 
 describe("SearchComposer", () => {

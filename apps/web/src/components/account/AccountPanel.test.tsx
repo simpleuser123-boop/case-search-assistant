@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
 import { AccountPanel } from "./AccountPanel";
 import { clearSession } from "../../lib/sessionState";
@@ -43,5 +43,21 @@ describe("AccountPanel (flag-gated)", () => {
     const pw = screen.getByLabelText("密码") as HTMLInputElement;
     expect(pw.value).toBe("");
     expect(pw.type).toBe("password");
+  });
+
+  it("shows local validation errors before calling auth API", () => {
+    flagMock.mockReturnValue(true);
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<AccountPanel />);
+    fireEvent.click(screen.getByText("注册"));
+    fireEvent.change(screen.getByLabelText("登录名"), { target: { value: "alice" } });
+    fireEvent.change(screen.getByLabelText("密码"), { target: { value: "1234567" } });
+    const registerButtons = screen.getAllByRole("button", { name: "注册" });
+    fireEvent.click(registerButtons[registerButtons.length - 1]);
+
+    expect(screen.getByText("密码至少 8 位。")).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });

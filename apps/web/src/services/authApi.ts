@@ -45,7 +45,7 @@ async function postJson(path: string, body: unknown, withAuth = false): Promise<
 
 function classify(status: number): "disabled" | "rejected" | "http_error" {
   if (status === 403) return "disabled";
-  if (status === 400 || status === 401) return "rejected";
+  if (status === 400 || status === 401 || status === 422) return "rejected";
   return "http_error";
 }
 

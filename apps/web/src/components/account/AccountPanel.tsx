@@ -21,7 +21,40 @@ import {
 
 type Mode = "login" | "register";
 
-export function AccountPanel() {
+type AccountPanelProps = {
+  compact?: boolean;
+};
+
+const LOGIN_NAME_MIN_LENGTH = 3;
+const PASSWORD_MIN_LENGTH = 8;
+const DISPLAY_NAME_MAX_LENGTH = 60;
+
+function validateAuthInput(mode: Mode, loginName: string, password: string, displayName: string) {
+  if (loginName.trim().length < LOGIN_NAME_MIN_LENGTH) {
+    return "登录名至少 3 个字符。";
+  }
+  if (password.length < PASSWORD_MIN_LENGTH) {
+    return "密码至少 8 位。";
+  }
+  if (mode === "register" && displayName.length > DISPLAY_NAME_MAX_LENGTH) {
+    return "显示名最多 60 个字符。";
+  }
+  return null;
+}
+
+function authFailureMessage(
+  action: "login" | "register",
+  reason: "disabled" | "rejected" | "network_error" | "http_error"
+) {
+  if (reason === "disabled") return "账号体系未启用。";
+  if (reason === "network_error") return "无法连接认证服务，请确认后端服务已启动。";
+  if (reason === "http_error") return "认证服务暂不可用，请确认数据库和后端服务正常。";
+  return action === "register"
+    ? "注册未通过：登录名可能已存在，或输入不符合规则。"
+    : "登录未通过：请检查登录名和密码。";
+}
+
+export function AccountPanel({ compact = false }: AccountPanelProps) {
   const enabled = isAccountSystemEnabled();
   const [session, setSessionLocal] = useState<SessionState | null>(getSession());
   const [mode, setMode] = useState<Mode>("login");
@@ -51,14 +84,22 @@ export function AccountPanel() {
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (busy) return;
-    setBusy(true);
     setStatus(null);
+
+    const inputError = validateAuthInput(mode, loginName, password, displayName);
+    if (inputError) {
+      clearPasswordField();
+      setStatus(inputError);
+      return;
+    }
+
+    setBusy(true);
     try {
       if (mode === "register") {
         const result = await register({ loginName, password, displayName });
         clearPasswordField();
         if (!result.ok) {
-          setStatus(result.reason === "disabled" ? "账号体系未启用。" : "注册未通过，请检查输入。");
+          setStatus(authFailureMessage("register", result.reason));
           return;
         }
         setStatus("注册成功，请登录。");
@@ -68,7 +109,7 @@ export function AccountPanel() {
       const result = await login({ loginName, password });
       clearPasswordField();
       if (!result.ok) {
-        setStatus(result.reason === "disabled" ? "账号体系未启用。" : "登录未通过。");
+        setStatus(authFailureMessage("login", result.reason));
         return;
       }
       setStatus(null);
@@ -91,7 +132,9 @@ export function AccountPanel() {
     return (
       <section
         aria-label="账号"
-        className="rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-text)]"
+        className={`rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-text)] ${
+          compact ? "border-transparent bg-transparent px-0 py-0" : ""
+        }`}
       >
         <div className="flex items-center justify-between gap-3">
           <div>
@@ -120,7 +163,9 @@ export function AccountPanel() {
   return (
     <section
       aria-label="账号"
-      className="rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-text)]"
+      className={`rounded-[6px] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-text)] ${
+        compact ? "border-transparent bg-transparent px-0 py-0" : ""
+      }`}
     >
       <div className="mb-2 flex gap-2 text-xs">
         <button
@@ -156,7 +201,7 @@ export function AccountPanel() {
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              maxLength={60}
+              maxLength={DISPLAY_NAME_MAX_LENGTH}
               className="rounded-[4px] border border-[var(--color-border)] px-2 py-1.5 text-sm"
             />
           </label>
@@ -184,5 +229,94 @@ export function AccountPanel() {
       </p>
       {status ? <p className="mt-1 text-xs text-[var(--color-text-muted)]">{status}</p> : null}
     </section>
+  );
+}
+
+export function AccountDialogButton() {
+  const enabled = isAccountSystemEnabled();
+  const [session, setSessionLocal] = useState<SessionState | null>(getSession());
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+    return subscribe((next) => setSessionLocal(next));
+  }, [enabled]);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [open]);
+
+  if (!enabled) {
+    return null;
+  }
+
+  const accountLabel = session?.account.display_name || session?.account.user_id;
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center gap-2 rounded-[8px] border border-[var(--color-border-strong)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-medium text-[var(--color-brand)] transition hover:bg-[var(--color-brand-soft)] active:translate-y-px"
+        aria-haspopup="dialog"
+      >
+        <span
+          aria-hidden="true"
+          className={`h-1.5 w-1.5 rounded-full ${
+            session ? "bg-[var(--color-success)]" : "bg-[var(--color-text-subtle)]"
+          }`}
+        />
+        {session ? accountLabel : "登录"}
+      </button>
+
+      {open ? (
+        <div
+          className="fixed inset-0 z-40 flex items-start justify-center bg-[#111827]/35 px-4 py-16 backdrop-blur-sm sm:items-center sm:py-6"
+          role="presentation"
+          onMouseDown={() => setOpen(false)}
+        >
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="account-dialog-title"
+            className="w-full max-w-[420px] rounded-[8px] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 text-[var(--color-text)] shadow-[0_24px_80px_-32px_rgba(15,23,42,0.45)]"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <div className="mb-4 flex items-start justify-between gap-4">
+              <div>
+                <h2 id="account-dialog-title" className="text-base font-semibold">
+                  登录工作台
+                </h2>
+                <p className="mt-1 text-xs leading-5 text-[var(--color-text-muted)]">
+                  账号只用于显式登录和认领，本次检索排序不受影响。
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] border border-[var(--color-border)] text-lg leading-none text-[var(--color-text-muted)] transition hover:bg-[var(--color-surface-muted)] active:translate-y-px"
+                aria-label="关闭登录工作台"
+              >
+                ×
+              </button>
+            </div>
+            <AccountPanel compact />
+          </section>
+        </div>
+      ) : null}
+    </>
   );
 }
